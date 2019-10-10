@@ -5,7 +5,6 @@
 **/terraform.tfstate.d
 **/terraform.tfstate.backup
 **/.terraform.tfstate.lock.info
-**/*.auto.tfvars
 **/~*.*
 **/*Dockerfile
 **/*.gitignore
