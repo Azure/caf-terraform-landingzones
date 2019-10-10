@@ -46,13 +46,13 @@ module "log_analytics" {
 }
 
 #Create the Azure Security Center workspace
-module "security_center" {
-  source  = "aztfmod/caf-security-center/azurerm"
-  version = "0.1"
+# module "security_center" {
+#   source  = "aztfmod/caf-security-center/azurerm"
+#   version = "0.1"
 
-  contact_email = var.security_center["contact_email"]
-  contact_phone = var.security_center["contact_phone"]
-  scope_id      = "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
-  workspace_id  = module.log_analytics.id
-}
+#   contact_email = var.security_center["contact_email"]
+#   contact_phone = var.security_center["contact_phone"]
+#   scope_id      = "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
+#   workspace_id  = module.log_analytics.id
+# }
 
