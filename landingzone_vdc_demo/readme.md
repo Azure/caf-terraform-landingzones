@@ -5,6 +5,7 @@ The VDC landing zone demo is a simplified Virtual Datacenter Prototype for you t
 
 # Overall architecture
 The following diagram shows the environement we are deploying for this POC: 
+![Overall VDC Demo Diagram](https://github.com/aztfmod/landingzones/blob/vdc_demo/landingzone_vdc_demo/docs/diagram-tranquility.png)
 
 
 # Getting Started
