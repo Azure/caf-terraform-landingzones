@@ -2,6 +2,11 @@
 Blueprint_tranquility is the first blueprint to deploy. <br/>
 It's job is to provide with the foundations of security and auditing for an Azure deployment with come customization capabilities. <br/>
 
+# Overall architecture
+The following diagram shows the environment we are deploying in this blueprint: 
+![Tranquility](https://github.com/aztfmod/landingzones/blob/master/landingzone_vdc_demo/docs/diagram-tranquility.png)
+
+
 ## Capabilities
 
  - Resource groups

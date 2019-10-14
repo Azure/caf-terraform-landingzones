@@ -1,6 +1,11 @@
 # blueprint_networking_shared_transit
 blueprint_networking_shared_transit brings the foundation of tranit network in a hub-spoke topology. This current blueprint implements only the vpn transit, but could easily be extended to implement an ExpressRoute option. 
 
+# Overall architecture
+The following diagram shows the environment we are deploying in this blueprint: 
+![Transit](https://github.com/aztfmod/landingzones/blob/master/landingzone_vdc_demo/docs/diagram-transit.png)
+
+
 ## Capabilities
 
  - Virtual network

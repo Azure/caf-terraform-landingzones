@@ -4,8 +4,8 @@ Welcome to Azure Terraform VDC demo.
 The VDC landing zone demo is a simplified Virtual Datacenter Prototype for you to use in demo/POC, feel free to use/reuse/hack and contribute.
 
 # Overall architecture
-The following diagram shows the environement we are deploying for this POC: 
-![Overall VDC Demo Diagram](https://github.com/aztfmod/landingzones/blob/vdc_demo/landingzone_vdc_demo/docs/diagram-tranquility.png)
+The following diagram shows the environment we are deploying for this POC: 
+![Overall VDC Demo Diagram](https://github.com/aztfmod/landingzones/blob/master/landingzone_vdc_demo/docs/diagram-overall.png)
 
 
 # Getting Started

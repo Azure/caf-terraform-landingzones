@@ -1,6 +1,11 @@
 # blueprint_shared_egress
 blueprint_networking_shared_egress implements Azure Firewall to manage egress from a hub and spoke topology.  
 
+# Overall architecture
+The following diagram shows the environment we are deploying in this blueprint: 
+![Egress](https://github.com/aztfmod/landingzones/blob/master/landingzone_vdc_demo/docs/diagram-egress.png)
+
+
 ## Capabilities
 The following components are managed by this blueprint
  - Virtual network
