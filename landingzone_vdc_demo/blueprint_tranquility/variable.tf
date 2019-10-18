@@ -50,7 +50,7 @@ variable "security_center" {
 # }
 
 variable "analytics_workspace_name" {
-  default = ""
+  description = "(Required) Name for the log analytics workspace"
 }
 
 variable "tags_hub" {

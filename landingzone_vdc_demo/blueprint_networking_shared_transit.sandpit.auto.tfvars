@@ -43,8 +43,8 @@ public_ip_addr = {
     allocation_method = "Dynamic"
     sku               = "Basic"
     #For basic SKU, you can pick the zone to be deployed - if you want multi zone - pick Standard IP and pick AZ aware VPN gateway SKU
-    dns_prefix        = "arnaudvpn"
-    zones             = ["1"]
+    #dns_prefix        = "arnaudvpn"
+    #zones             = ["1"]
 }
 
 ip_diags = {

@@ -46,9 +46,9 @@ ip_addr = {
         #properties below are optional 
         sku                 = "Standard"                        #defaults to Basic
         ip_version          = "IPv4"                            #defaults to IP4, Only dynamic for IPv6, Supported arguments are IPv4 or IPv6, NOT Both
-        dns_prefix          = "arnaudmytest" 
+        #dns_prefix          = "arnaudmytest" 
         #timeout             = 15                                #TCP timeout for idle connections. The value can be set between 4 and 30 minutes.
-        zones               = [1]                               #1 zone number, IP address must be standard, ZoneRedundant argument is not supported in provider at time of writing
+        #zones               = [1]                               #1 zone number, IP address must be standard, ZoneRedundant argument is not supported in provider at time of writing
         #reverse_fqdn        = ""   
         #public_ip_prefix_id = "/subscriptions/00000000-00000-0000-0000-000000000000/resourceGroups/uqvh-hub-ingress-net/providers/Microsoft.Network/publicIPPrefixes/myprefix"
         #refer to the prefix and check sku types are same in IP and prefix 

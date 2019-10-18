@@ -7,7 +7,7 @@ resource_groups_shared_services = {
     }
 }
 
-enable_ddos_standard = true
+enable_ddos_standard = false
 ddos_name            = "ddos_protection_plan"
 
 shared_services_vnet = {
