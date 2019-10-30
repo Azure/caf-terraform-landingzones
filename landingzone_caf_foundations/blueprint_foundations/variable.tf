@@ -1,10 +1,10 @@
 
 variable "prefix" {
-  
+  description = "(Optional) Prefix to uniquely identify the deployment"  
 }
 
 variable "resource_groups_hub" {
-
+  description = "(Required) Contains the resource groups object to be created for hub"
 }
 
 # Example:
@@ -27,16 +27,18 @@ variable "resource_groups_hub" {
 #     },
 # }
 
-variable "location_map" {
-  description = "Default location to create the resources"
-  type        = map(string)
+variable "location" {
+  description = "Azure region to create the resources"
+  type        = string
 }
 
 # Example:
-# location_map = {
-#     region1   = "southeastasia"
-#     region2   = "eastasia"
-# }
+# location = "southeastasia"
+
+variable "enable_security_center" {
+  description = "Enable security cetner"
+  type = bool
+}
 
 variable "security_center" {
   description = "Attributes: [contact_email,contact_phone]"
@@ -74,4 +76,3 @@ variable "provision_rbac" {
   description = "(Optional) defines if the AAD roles and role assignments will be completed. This requires AAD privileged-acount"
   default = false
 }
-
