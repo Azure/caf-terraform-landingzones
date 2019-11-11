@@ -70,3 +70,7 @@ variable "provision_rbac" {
   default = false
 }
 
+variable "enable_security_center" {
+  description = "Enable security cetner"
+  type = bool
+}

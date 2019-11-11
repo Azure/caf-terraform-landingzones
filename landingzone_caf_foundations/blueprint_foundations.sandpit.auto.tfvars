@@ -38,6 +38,7 @@ tags_hub = {
 analytics_workspace_name = "lalogs"
 
 #Azure Security Center Configuration 
+enable_security_center = false
 security_center = {
     contact_email   = "email@email.com" 
     contact_phone   = "9293829328"
@@ -64,6 +65,10 @@ solution_plan_map = {
     DnsAnalytics = {
         "publisher" = "Microsoft"
         "product"   = "OMSGallery/DnsAnalytics"
+    },
+    ContainerInsights = {
+        "publisher" = "Microsoft"
+        "product"   = "OMSGallery/ContainerInsights"
     },
     KeyVaultAnalytics = {
         "publisher" = "Microsoft"

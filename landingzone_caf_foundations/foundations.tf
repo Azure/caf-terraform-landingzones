@@ -3,7 +3,8 @@ module "blueprint_foundations" {
 
     prefix                              = local.prefix
 
-    location_map                        = var.location_map
+    location                            = var.location_map["region1"]
+    enable_security_center              = var.enable_security_center
     security_center                     = var.security_center
     azure_activity_logs_retention       = var.azure_activity_logs_retention
     azure_diagnostics_logs_retention    = var.azure_diagnostics_logs_retention

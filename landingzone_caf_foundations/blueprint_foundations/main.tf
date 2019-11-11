@@ -15,3 +15,9 @@ terraform {
     }
 }
 
+locals {
+  blueprint_tag          = {
+    "blueprint" = basename(abspath(path.module))
+  }
+  tags                = merge(var.tags_hub,local.blueprint_tag)
+}
