@@ -6,7 +6,7 @@
 version: '3.7'
 services:
   rover:
-    image: aztfmod/rover:1911.1113
+    image: aztfmod/rover:1911.1217
  
     volumes:
       # This is where VS Code should expect to find your project's source code
