@@ -20,8 +20,6 @@ resource_groups_shared_egress = {
                 name                = "AzureFirewallSubnet"
                 cidr                = "10.0.0.0/26"
                 service_endpoints   = []
-                nsg_inbound         = []
-                nsg_outbound        = []
             }
           }
         subnets = {
