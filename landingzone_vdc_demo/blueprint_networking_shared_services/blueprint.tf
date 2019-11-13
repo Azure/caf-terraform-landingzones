@@ -11,7 +11,7 @@ module "networking_shared_services" {
   source  = "aztfmod/caf-virtual-network/azurerm"
   version = "0.1.0"
 
-  virtual_network_rg                = module.resource_group_shared_services.names["HUB-CORE-NET"]
+  virtual_network_rg                = lookup(module.resource_group_shared_services.names, "HUB-CORE-NET", null)
   prefix                            = var.prefix
   location                          = var.location["region1"]
   networking_object                 = var.shared_services_vnet
@@ -25,7 +25,7 @@ module "ddos_protection_std" {
 
   enable_ddos_standard              = var.enable_ddos_standard
   name                              = var.ddos_name
-  rg                                = module.resource_group_shared_services.names["HUB-CORE-NET"]
+  rg                                = lookup(module.resource_group_shared_services.names, "HUB-CORE-NET", null)
   location                          = var.location["region1"] 
   tags                              = local.tags
 }

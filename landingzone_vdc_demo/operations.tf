@@ -7,9 +7,9 @@
     auto_diags                         = var.auto_diags
     auto_account                       = var.auto_account
 
-    resource_groups_operations         = module.blueprint_tranquility.resource_group_hub_names["HUB-OPERATIONS"]
-    asr_rg                             = module.blueprint_tranquility.resource_group_hub_names["HUB-OPERATIONS"]   
-    auto_rg                            = module.blueprint_tranquility.resource_group_hub_names["HUB-OPERATIONS"]
+    resource_groups_operations         = lookup(module.blueprint_tranquility.resource_group_hub_names, "HUB-OPERATIONS", null)
+    asr_rg                             = lookup(module.blueprint_tranquility.resource_group_hub_names, "HUB-OPERATIONS", null)  
+    auto_rg                            = lookup(module.blueprint_tranquility.resource_group_hub_names, "HUB-OPERATIONS", null)
     
     location                           = module.blueprint_tranquility.location_map
     log_analytics_workspace            = module.blueprint_tranquility.log_analytics_workspace
