@@ -1,4 +1,4 @@
-module "resource_group_shared_egress" {
+module "resource_group" {
   source  = "aztfmod/caf-resource-group/azurerm"
   version = "0.1.1"
 
@@ -7,13 +7,18 @@ module "resource_group_shared_egress" {
   tags            = local.tags
 }
 
+locals {
+  HUB-EGRESS-NET = lookup(module.resource_group.names, "HUB-EGRESS-NET", null)
+}
+
+
 module "networking_shared_egress_vnet" {
   source  = "aztfmod/caf-virtual-network/azurerm"
   version = "0.1.0"
     
-  virtual_network_rg                = module.resource_group_shared_egress.names["HUB-EGRESS-NET"]
+  virtual_network_rg                = local.HUB-EGRESS-NET
   prefix                            = var.prefix
-  location                          = var.location["region1"]
+  location                          = var.location
   networking_object                 = var.networking_object
   tags                              = local.tags
   diagnostics_map                   = var.diagnostics_map
@@ -25,8 +30,8 @@ module "networking_shared_public_ip" {
   version = "0.1.2"
 
   name                             = var.ip_name
-  location                         = var.location["region1"]
-  rg                               = module.resource_group_shared_egress.names["HUB-EGRESS-NET"]
+  location                         = var.location
+  rg                               = local.HUB-EGRESS-NET
   ip_addr                          = var.ip_addr
   tags                             = local.tags
   diagnostics_map                  = var.diagnostics_map
@@ -39,10 +44,10 @@ module "networking_shared_egress_azfirewall" {
   version = "0.1.2"
 
   az_fw_name                        = var.az_fw_name
-  az_fw_rg                          = module.resource_group_shared_egress.names["HUB-EGRESS-NET"]
-  subnet_id                         = module.networking_shared_egress_vnet.vnet_subnets["AzureFirewallSubnet"]
+  az_fw_rg                          = local.HUB-EGRESS-NET
+  subnet_id                         = lookup(module.networking_shared_egress_vnet.vnet_subnets, "AzureFirewallSubnet", null)
   public_ip_id                      = module.networking_shared_public_ip.id
-  location                          = var.location["region1"]
+  location                          = var.location
   tags                              = local.tags
   diagnostics_map                   = var.diagnostics_map
   log_analytics_workspace_id        = var.log_analytics_workspace.id
@@ -59,8 +64,8 @@ module "user_route_egress_to_az_firewall" {
   source = "git://github.com/aztfmod/route_table.git?ref=v0.2"
 
   route_name                        = var.udr_route_name
-  route_resource_group              = module.resource_group_shared_egress.names["HUB-EGRESS-NET"]
-  location                          = var.location["region1"]
+  route_resource_group              = local.HUB-EGRESS-NET
+  location                          = var.location
   route_prefix                      = var.udr_prefix
   route_nexthop_type                = var.udr_nexthop_type
   route_nexthop_ip                  = module.networking_shared_egress_azfirewall.az_firewall_config.az_ipconfig[0].private_ip_address
@@ -82,7 +87,7 @@ resource "azurerm_virtual_network_peering" "peering_egress_to_shared_services" {
   name                          = "egress_to_shared_services"
   depends_on                    = [ module.networking_shared_egress_vnet ]
 
-  resource_group_name           = module.resource_group_shared_egress.names["HUB-EGRESS-NET"]
+  resource_group_name           = local.HUB-EGRESS-NET
   virtual_network_name          = module.networking_shared_egress_vnet.vnet_obj.name
   remote_virtual_network_id     = var.shared_services_vnet_object.vnet_id
   allow_virtual_network_access  = false

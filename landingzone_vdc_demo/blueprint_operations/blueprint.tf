@@ -5,7 +5,7 @@ module "site_recovery" {
   
   asr_vault_name           = var.asr_vault_name
   resource_group_name      = var.asr_rg
-  location                 = var.location["region1"] 
+  location                 = var.location
   tags                     = var.tags
   la_workspace_id          = var.log_analytics_workspace.id
   diagnostics_map          = var.diagnostics_map
@@ -19,7 +19,7 @@ module "automation" {
 
   auto_name               = var.auto_account
   resource_group_name     = var.auto_rg
-  location                = var.location["region1"] 
+  location                = var.location
   tags                    = var.tags
   la_workspace_id         = var.log_analytics_workspace.id
   diagnostics_map         = var.diagnostics_map

@@ -11,5 +11,5 @@ output "shared_services_subnet_table" {
 }
 
 output "resource_group_shared_services" {
-  value = module.resource_group_shared_services
+  value = module.resource_group
 }
