@@ -11,7 +11,7 @@ module "networking_shared_egress_vnet" {
   source  = "aztfmod/caf-virtual-network/azurerm"
   version = "0.1.0"
     
-  virtual_network_rg                = module.resource_group_shared_egress.names["HUB-EGRESS-NET"]
+  virtual_network_rg                = lookup(module.resource_group_shared_egress.names, "HUB-EGRESS-NET", null)
   prefix                            = var.prefix
   location                          = var.location["region1"]
   networking_object                 = var.networking_object
@@ -26,7 +26,7 @@ module "networking_shared_public_ip" {
 
   name                             = var.ip_name
   location                         = var.location["region1"]
-  rg                               = module.resource_group_shared_egress.names["HUB-EGRESS-NET"]
+  rg                               = lookup(module.resource_group_shared_egress.names, "HUB-EGRESS-NET", null)
   ip_addr                          = var.ip_addr
   tags                             = local.tags
   diagnostics_map                  = var.diagnostics_map
@@ -39,8 +39,8 @@ module "networking_shared_egress_azfirewall" {
   version = "0.1.2"
 
   az_fw_name                        = var.az_fw_name
-  az_fw_rg                          = module.resource_group_shared_egress.names["HUB-EGRESS-NET"]
-  subnet_id                         = module.networking_shared_egress_vnet.vnet_subnets["AzureFirewallSubnet"]
+  az_fw_rg                          = lookup(module.resource_group_shared_egress.names, "HUB-EGRESS-NET", null)
+  subnet_id                         = lookup(module.networking_shared_egress_vnet.vnet_subnets, "AzureFirewallSubnet", null)
   public_ip_id                      = module.networking_shared_public_ip.id
   location                          = var.location["region1"]
   tags                              = local.tags
@@ -59,7 +59,7 @@ module "user_route_egress_to_az_firewall" {
   source = "git://github.com/aztfmod/route_table.git?ref=v0.2"
 
   route_name                        = var.udr_route_name
-  route_resource_group              = module.resource_group_shared_egress.names["HUB-EGRESS-NET"]
+  route_resource_group              = lookup(module.resource_group_shared_egress.names, "HUB-EGRESS-NET", null)
   location                          = var.location["region1"]
   route_prefix                      = var.udr_prefix
   route_nexthop_type                = var.udr_nexthop_type
@@ -71,7 +71,7 @@ resource "azurerm_virtual_network_peering" "peering_shared_services_to_egress" {
   depends_on                    = [ module.networking_shared_egress_vnet ]
 
   name                          = "shared_services_to_egress"
-  resource_group_name           = var.virtual_network_rg.names["HUB-CORE-NET"]
+  resource_group_name           = lookup(module.resource_group_shared_egress.names, "HUB-CORE-NET", null)
   virtual_network_name          = var.shared_services_vnet_object.vnet_name
   remote_virtual_network_id     = module.networking_shared_egress_vnet.vnet_obj.id
   allow_virtual_network_access  = true
@@ -82,7 +82,7 @@ resource "azurerm_virtual_network_peering" "peering_egress_to_shared_services" {
   name                          = "egress_to_shared_services"
   depends_on                    = [ module.networking_shared_egress_vnet ]
 
-  resource_group_name           = module.resource_group_shared_egress.names["HUB-EGRESS-NET"]
+  resource_group_name           = lookup(module.resource_group_shared_egress.names, "HUB-EGRESS-NET", null)
   virtual_network_name          = module.networking_shared_egress_vnet.vnet_obj.name
   remote_virtual_network_id     = var.shared_services_vnet_object.vnet_id
   allow_virtual_network_access  = false

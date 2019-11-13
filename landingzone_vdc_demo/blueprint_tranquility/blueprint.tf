@@ -14,7 +14,7 @@ module "activity_logs" {
   version = "0.1.1"
 
   prefix              = var.prefix
-  resource_group_name = module.resource_group_hub.names["HUB-CORE-SEC"]
+  resource_group_name = lookup(module.resource_group_hub.names, "HUB-CORE-SEC", null)
   location            = var.location_map["region1"]
   tags                = local.tags
   logs_rentention     = var.azure_activity_logs_retention
@@ -26,7 +26,7 @@ module "diagnostics_logging" {
   version = "0.1.1"
 
   prefix                = var.prefix
-  resource_group_name   = module.resource_group_hub.names["HUB-OPERATIONS"]
+  resource_group_name   = lookup(module.resource_group_hub.names, "HUB-OPERATIONS", null)
   location              = var.location_map["region1"]
   tags                  = local.tags
 }
@@ -38,7 +38,7 @@ module "log_analytics" {
 
   prefix              = var.prefix
   name                = var.analytics_workspace_name
-  resource_group_name = module.resource_group_hub.names["HUB-OPERATIONS"]
+  resource_group_name = lookup(module.resource_group_hub.names, "HUB-OPERATIONS", null)
   location            = var.location_map["region1"]
   tags                = local.tags
   solution_plan_map   = var.solution_plan_map

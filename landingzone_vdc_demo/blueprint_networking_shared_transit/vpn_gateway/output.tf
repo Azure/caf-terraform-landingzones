@@ -1,5 +1,5 @@
 output "object" {
-  value = azurerm_virtual_network_gateway.vpn_gateway[0]
+  value = azurerm_virtual_network_gateway.vpn_gateway.*
 }
 
 output "remote_connection_object" {
