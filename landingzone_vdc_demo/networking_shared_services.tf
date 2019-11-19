@@ -2,7 +2,7 @@ module "blueprint_networking_shared_services" {
     source = "./blueprint_networking_shared_services"
   
     prefix                              = module.blueprint_tranquility.prefix
-    location                            = module.blueprint_tranquility.location_map
+    location                            = module.blueprint_tranquility.location_map["region1"]
     log_analytics_workspace             = module.blueprint_tranquility.log_analytics_workspace
     diagnostics_map                     = module.blueprint_tranquility.diagnostics_map
     tags                                = module.blueprint_tranquility.tags

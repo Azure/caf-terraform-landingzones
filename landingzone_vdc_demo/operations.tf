@@ -11,7 +11,7 @@
     asr_rg                             = lookup(module.blueprint_tranquility.resource_group_hub_names, "HUB-OPERATIONS", null)  
     auto_rg                            = lookup(module.blueprint_tranquility.resource_group_hub_names, "HUB-OPERATIONS", null)
     
-    location                           = module.blueprint_tranquility.location_map
+    location                           = module.blueprint_tranquility.location_map["region1"]
     log_analytics_workspace            = module.blueprint_tranquility.log_analytics_workspace
     diagnostics_map                    = module.blueprint_tranquility.diagnostics_map
     tags                               = module.blueprint_tranquility.tags

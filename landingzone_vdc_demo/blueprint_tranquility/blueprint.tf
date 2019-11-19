@@ -1,12 +1,18 @@
 #Create the resource groups to host the blueprint
-module "resource_group_hub" {
+module "resource_group" {
   source  = "aztfmod/caf-resource-group/azurerm"
   version = "0.1.1"
   
   prefix          = var.prefix
-  resource_groups = var.resource_groups_hub
+  resource_groups = var.resource_groups_map
   tags            = local.tags
 }
+
+locals {
+  HUB-CORE-SEC = lookup(module.resource_group.names, "HUB-CORE-SEC", null)
+  HUB-OPERATIONS = lookup(module.resource_group.names, "HUB-OPERATIONS", null)
+}
+
 
 #Specify the subscription logging repositories 
 module "activity_logs" {
@@ -14,8 +20,8 @@ module "activity_logs" {
   version = "0.1.1"
 
   prefix              = var.prefix
-  resource_group_name = lookup(module.resource_group_hub.names, "HUB-CORE-SEC", null)
-  location            = var.location_map["region1"]
+  resource_group_name = local.HUB-CORE-SEC
+  location            = var.location
   tags                = local.tags
   logs_rentention     = var.azure_activity_logs_retention
 }
@@ -26,8 +32,8 @@ module "diagnostics_logging" {
   version = "0.1.1"
 
   prefix                = var.prefix
-  resource_group_name   = lookup(module.resource_group_hub.names, "HUB-OPERATIONS", null)
-  location              = var.location_map["region1"]
+  resource_group_name   = local.HUB-OPERATIONS
+  location              = var.location
   tags                  = local.tags
 }
 
@@ -38,8 +44,8 @@ module "log_analytics" {
 
   prefix              = var.prefix
   name                = var.analytics_workspace_name
-  resource_group_name = lookup(module.resource_group_hub.names, "HUB-OPERATIONS", null)
-  location            = var.location_map["region1"]
+  resource_group_name = local.HUB-OPERATIONS
+  location            = var.location
   tags                = local.tags
   solution_plan_map   = var.solution_plan_map
 }

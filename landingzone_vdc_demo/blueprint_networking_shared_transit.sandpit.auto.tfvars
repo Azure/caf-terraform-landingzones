@@ -20,8 +20,6 @@ networking_transit = {
                 name                = "GatewaySubnet" #Must be called GateWaySubnet in order to host a Virtual Network Gateway
                 cidr                = "172.16.0.0/24"
                 service_endpoints   = []
-                nsg_inbound         = []
-                nsg_outbound        = []
             }
           }
         subnets = {

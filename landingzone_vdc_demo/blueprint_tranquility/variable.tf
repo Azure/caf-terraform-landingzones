@@ -3,7 +3,7 @@ variable "prefix" {
   description = "(Optional) Prefix to uniquely identify the deployment"  
 }
 
-variable "resource_groups_hub" {
+variable "resource_groups_map" {
   description = "(Required) Contains the resource groups object to be created for hub"
 }
 
@@ -27,16 +27,13 @@ variable "resource_groups_hub" {
 #     },
 # }
 
-variable "location_map" {
+variable "location" {
   description = "Default location to create the resources"
-  type        = map(string)
 }
 
 # Example:
-# location_map = {
-#     region1   = "southeastasia"
-#     region2   = "eastasia"
-# }
+# location = "southeastasia"
+
 
 variable "security_center" {
   description = "Attributes: [contact_email,contact_phone]"

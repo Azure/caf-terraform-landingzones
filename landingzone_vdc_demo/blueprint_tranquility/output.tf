@@ -14,10 +14,10 @@ output "activity_logs_map" {
 
 #outputs of the rg data for hub 
 output "resource_group_hub_ids" {
-  value = module.resource_group_hub.ids 
+  value = module.resource_group.ids 
 }
 output "resource_group_hub_names" {
-  value = module.resource_group_hub.names
+  value = module.resource_group.names
 }
 
 #log analytics workspace
@@ -30,8 +30,7 @@ output "log_analytics_workspace" {
 
 output "location_map" {
   value = {
-    "region1"   = var.location_map.region1
-    "region2"   = var.location_map.region2
+    "region1"   = var.location
   }
 }
 
