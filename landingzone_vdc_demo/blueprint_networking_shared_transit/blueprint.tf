@@ -40,22 +40,22 @@ module "networking_transit_public_ip" {
   diagnostics_settings             = var.ip_diags
 }
 
-module "vpn_gateway" {
-  source = "./vpn_gateway"
+# module "vpn_gateway" {
+#   source = "./vpn_gateway"
   
-  location                            = var.location
-  resource_group_name                 = local.HUB-NET-TRANSIT
-  tags                                = local.tags
-  gateway_config                      = var.gateway_config
-  remote_network                      = var.remote_network
-  remote_network_connect              = var.remote_network_connect
-  connection_name                     = var.connection_name
-  public_ip_addr                      = module.networking_transit_public_ip.id
-  gateway_subnet                      = lookup(module.networking_transit_vnet.vnet_subnets, "GatewaySubnet", null)
-  diagnostics_map                     = var.diagnostics_map
-  log_analytics_workspace             = var.log_analytics_workspace
-  gateway_diags                       = var.gateway_diags
-}
+#   location                            = var.location
+#   resource_group_name                 = local.HUB-NET-TRANSIT
+#   tags                                = local.tags
+#   gateway_config                      = var.gateway_config
+#   remote_network                      = var.remote_network
+#   remote_network_connect              = var.remote_network_connect
+#   connection_name                     = var.connection_name
+#   public_ip_addr                      = module.networking_transit_public_ip.id
+#   gateway_subnet                      = lookup(module.networking_transit_vnet.vnet_subnets, "GatewaySubnet", null)
+#   diagnostics_map                     = var.diagnostics_map
+#   log_analytics_workspace             = var.log_analytics_workspace
+#   gateway_diags                       = var.gateway_diags
+# }
 
 
 #enable network peering with hub shared network
