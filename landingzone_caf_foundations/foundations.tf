@@ -1,5 +1,5 @@
 module "blueprint_foundations" {
-    source                              = "./blueprint_foundations"
+    source                              = "github.com/aztfmod/blueprints/blueprint_foundations"
 
     prefix                              = local.prefix
 
