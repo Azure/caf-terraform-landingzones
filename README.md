@@ -55,11 +55,10 @@ git clone https://github.com/aztfmod/landingzones.git
 Open the repository you've just cloned in Visual Studio Code, click on the lower bar, green sign and in the palette opening on the top of Visual Studio Code Window, select **"Open Workspace in container"**
 ![RemoteDevelopment](./_pictures/caf_remote_dev.png)
 This should take a while, in the meantime, feel free to click on Details to see the container being downloaded from the registry and being connected to yur local environment:
-![RemoteDevelopment](./_pictures/caf_setup_container.png)
+![SetupContainer](./_pictures/caf_setup_container.png)
 You will have to accept local mapping to your filesystem when Docker prompts you, so that you can access your files from your container.
-![RemoteDevelopment](./_pictures/caf_dev_ready.png)
+![Ready](./_pictures/caf_dev_ready.png)
 After a while, your environment is ready, note on the lower left part of Visual Studio Code, that you are now in your Azure CAF rover, which is your environment to use Azure landing zones. 
-
 
 ### Deploying your first landing zone
 You must be authenticated first:
@@ -82,6 +81,15 @@ rover landingzone_caf_foundations apply
 ```bash
 rover landingzone_caf_foundations destroy
 ```
+
+## Going further
+Landing zone is a fully environment ready to use, running on Microsoft Azure. From the software prospective, the landing zone is the element doing the service composition by calling different blueprints to deploy the complete environment as in the picture below: ![landingzoneoverview](./_pictures/caf_landing_zone_overview.png)
+
+By default, the blueprints are store locally in the landing zone, for instance, the hub_spoke landing zone which has a set a below:
+![localblueprint](./_pictures/caf_local_blueprint.png)
+A blueprint can also be used directly from the GitHub public blueprints: ![RemoteDevelopment](./_pictures/caf_public_blueprint.png)
+
+More to come soon on that!
 
 Happy deployment with Azure landing zones, let us know your feedback and how you need it to evolve!
 
