@@ -19,10 +19,11 @@ Examples of landing zones:
 ### Available landing zones
 
 Currently we provide you with the following landing zones:
-Name | Purpose |  
-------- | ----------------
-landingzone_caf_foundations  | setup all the fundamentals for a subscription (logging, accounting, security.). You can find all details of the caf_foundation landing zone in its README.
-landingzone_vdc_demo  | setup a demo environment of a hub-spoke topology including shared services, as well as various DMZ (ingress, egress, transit). You can find all details of the vdc_demo landing zone in its README.
+
+| Name | Purpose |  
+| ------- | ---------------- |
+| landingzone_caf_foundations  | setup all the fundamentals for a subscription (logging, accounting, security.). You can find all details of the caf_foundation landing zone in its README.|
+| landingzone_vdc_demo  | setup a demo environment of a hub-spoke topology including shared services, as well as various DMZ (ingress, egress, transit). You can find all details of the vdc_demo landing zone in its README.|
 
 ## Getting started
 
