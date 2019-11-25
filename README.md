@@ -82,11 +82,11 @@ rover landingzone_caf_foundations apply
 rover landingzone_caf_foundations destroy
 ```
 
-## Going further
-Landing zone is a fully environment ready to use, running on Microsoft Azure. From the software prospective, the landing zone is the element doing the service composition by calling different blueprints to deploy the complete environment as in the picture below: ![landingzoneoverview](./_pictures/caf_landing_zone_overview.png)
+## Service composition
+Landing zone is a fully environment ready to use, running on Microsoft Azure. From the software prospective, the landing zone is the element doing the service composition by calling different blueprints to deploy the complete environment as in the picture below: </br> ![landingzoneoverview](./_pictures/caf_landing_zone_overview.png)
 
-By default, the blueprints are store locally in the landing zone, for instance, the hub_spoke landing zone which has a set a below:
-![localblueprint](./_pictures/caf_local_blueprint.png)
+By default, the blueprints are store locally in the landing zone, for instance, the hub_spoke landing zone which has a set a below: </br>
+![localblueprint](./_pictures/caf_local_blueprint.png) </br>
 A blueprint can also be used directly from the GitHub public blueprints: ![RemoteDevelopment](./_pictures/caf_public_blueprint.png)
 
 More to come soon on that!
