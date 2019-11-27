@@ -1,4 +1,4 @@
-# settings for the tranquility blueprint 
+# settings for the foundations blueprint 
 
 # Azure Subscription activity logs retention period
 azure_activity_logs_retention = 365
@@ -35,9 +35,10 @@ tags_hub = {
 }
 
 #Logging and monitoring 
-analytics_workspace_name = "lalogs"
+analytics_workspace_name = "lalogekhwjkljes"
 
 #Azure Security Center Configuration 
+enable_security_center = false
 security_center = {
     contact_email   = "email@email.com" 
     contact_phone   = "9293829328"

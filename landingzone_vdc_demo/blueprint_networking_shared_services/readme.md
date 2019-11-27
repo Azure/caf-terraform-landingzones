@@ -18,8 +18,9 @@ The following diagram shows the environment we are deploying in this blueprint:
         - NSG diagnostics
     - Attach NSG to subnet
     - Virtual network operations logs and auditing
- - DDoS Protection plan
+ - DDoS Protection standard plan
+ - Azure Bastion
 
 
 # Contribute
-This is a demo environement but pull requests are welcome to evolve the framework and integrate new features!
+This is a demo environment but pull requests are welcome to evolve the framework and integrate new features!

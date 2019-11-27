@@ -31,33 +31,41 @@ networking_transit = {
                 nsg_outbound        = []
             }
              }
+        diagnostics = {
+            log = [
+                    # ["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period] 
+                    ["VMProtectionAlerts", true, true, 60],
+            ]
+            metric = [
+                    #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]                 
+                    ["AllMetrics", true, true, 60],
+            ]   
+        }
 }
 
 # Settings for the public IP address to be used for egress
-# ip_address_deploy            = true
-ip_address_name              = "arnaud-pip-vpn"
-
 public_ip_addr = {
+    name   = "arnaud-pip-vpn"
     allocation_method = "Dynamic"
     sku               = "Basic"
     #For basic SKU, you can pick the zone to be deployed - if you want multi zone - pick Standard IP and pick AZ aware VPN gateway SKU
     #dns_prefix        = "arnaudvpn"
     #zones             = ["1"]
-}
-
-ip_diags = {
-    log = [
-                #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period] 
-                ["DDoSProtectionNotifications", true, true, 30],
-                ["DDoSMitigationFlowLogs", true, true, 30],
-                ["DDoSMitigationReports", true, true, 30],
+    diagnostics = {
+        log = [
+                    #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period] 
+                    ["DDoSProtectionNotifications", true, true, 30],
+                    ["DDoSMitigationFlowLogs", true, true, 30],
+                    ["DDoSMitigationReports", true, true, 30],
+            ]
+        metric = [
+                ["AllMetrics", true, true, 30],
         ]
-    metric = [
-               ["AllMetrics", true, true, 30],
-    ]
+    }
 }
 
 # Settings for the Virtual Network gateway to be created
+provision_gateway = false
 gateway_config  = {
     gateway_type                 = "VPN" 
     # Possible values are "VPN" or "ExpressRoute"
@@ -71,21 +79,21 @@ gateway_config  = {
     #and depend on the gateway_type (ER or VPN) and vpn_type arguments, ie: PolicyBased gateway only supports the Basic sku.
     vpn_gateway_type             = "RouteBased"
     #The routing type of the Virtual Network Gateway. Valid options are RouteBased or PolicyBased. Defaults to RouteBased.
+    diagnostics = {
+        log = [
+                    #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period] 
+                    ["GatewayDiagnosticLog", true, true, 30],
+                    ["TunnelDiagnosticLog", true, true, 30],
+                    ["RouteDiagnosticLog", true, true, 30],
+                    ["IKEDiagnosticLog", true, true, 30],
+                    ["P2SDiagnosticLog", true, true, 30],
+            ]
+        metric = [
+                ["AllMetrics", true, true, 30],
+        ]
+    }
 }
 
-gateway_diags = {
-    log = [
-                #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period] 
-                ["GatewayDiagnosticLog", true, true, 30],
-                ["TunnelDiagnosticLog", true, true, 30],
-                ["RouteDiagnosticLog", true, true, 30],
-                ["IKEDiagnosticLog", true, true, 30],
-                ["P2SDiagnosticLog", true, true, 30],
-        ]
-    metric = [
-               ["AllMetrics", true, true, 30],
-    ]
-}
 
 #Settings for the connection to be established
 #Settings for the local network connection 
@@ -96,4 +104,30 @@ remote_network = {
     gateway_name = "arnaudlocalnetwork"
     gateway_ip = "1.2.3.4"
     gateway_adress_space = ["1.0.0.0/8"]
+}
+
+##Settings for the Azure Key Vault
+
+akv_config = {
+    name = "techakv"
+    akv_features = {
+        enabled_for_disk_encryption = true
+        enabled_for_deployment      = true
+        enabled_for_template_deployment = true 
+    }
+    sku_name = "premium"
+    # network_acls = {
+    #     bypass = "AzureServices"
+    #     default_action = "Deny"
+    # }
+    diagnostics = {
+        log = [
+                    # ["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period] 
+                    ["AuditEvent", true, true, 60],
+            ]
+        metric = [
+                    #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]                 
+                    ["AllMetrics", true, true, 60],
+        ]
+    }
 }

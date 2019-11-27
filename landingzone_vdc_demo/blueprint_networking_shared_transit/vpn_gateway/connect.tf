@@ -1,13 +1,13 @@
 
 resource "random_string" "psk_connection" {
-    length  = 24
-    upper   = true
-    special = true
-    number  = true 
+  length  = 128
+  upper   = true
+  special = true
+  number  = true 
 }
 
 resource "azurerm_virtual_network_gateway_connection" "connection_object" {
-count = "${var.remote_network_connect == true ? 1 : 0}"   
+count = var.provision_gateway && var.remote_network_connect == true ? 1 : 0   
 depends_on = [azurerm_virtual_network_gateway.vpn_gateway, azurerm_local_network_gateway.remote_network]
 
   name                = var.connection_name
@@ -21,4 +21,13 @@ depends_on = [azurerm_virtual_network_gateway.vpn_gateway, azurerm_local_network
   shared_key = random_string.psk_connection.result
 
   tags = var.tags
+}
+
+resource "azurerm_key_vault_secret" "psk" {
+  depends_on    = [random_string.psk_connection, azurerm_key_vault_access_policy.akv_policy1, azurerm_key_vault_access_policy.akv_policy2, azurerm_key_vault_access_policy.akv_policy3]
+
+  name          = "pskconnection"
+  value         = random_string.psk_connection.result
+  key_vault_id  = var.keyvaultid
+  tags          = var.tags
 }

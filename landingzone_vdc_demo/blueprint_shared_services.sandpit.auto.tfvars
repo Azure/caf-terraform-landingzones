@@ -1,4 +1,4 @@
-# settings for the operations blueprint 
+# settings for the shared services blueprint 
 
 # #Azure Site Recovery Configuration
 asr_vault_name = "asr"

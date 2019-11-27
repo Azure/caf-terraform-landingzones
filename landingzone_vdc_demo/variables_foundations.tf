@@ -33,6 +33,11 @@ variable "location_map" {
 #     region2   = "eastasia"
 # }
 
+variable "enable_security_center" {
+  description = "Determines is Azure Security Center is deployes"
+  type = bool
+}
+
 variable "security_center" {
   description = "(Required) Attributes: [contact_email,contact_phone]"
   type        = map(string)

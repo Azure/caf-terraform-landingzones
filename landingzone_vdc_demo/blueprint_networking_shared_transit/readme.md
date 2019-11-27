@@ -20,6 +20,9 @@ The following diagram shows the environment we are deploying in this blueprint:
     - Virtual network operations logs and auditing
  - Virtual network peering object with shared_networking virtual network
  - Virtual network gateway
+    - VPN Support
+ - Azure Key Vault
+    - Store gateway preshared keys
  - Public IP address
     - Diagnostics settings
 

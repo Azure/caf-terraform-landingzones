@@ -7,7 +7,7 @@
 
 
 resource "azurerm_virtual_network_gateway" "vpn_gateway" {
-  count = "${var.gateway_config.gateway_type == "VPN" ? 1 : 0}"
+  count = var.gateway_config.gateway_type == "VPN" && var.provision_gateway ? 1 : 0
 
   name                = var.gateway_config.vpn_gateway_name
   location            = var.location

@@ -16,3 +16,10 @@ variable "resource_groups_shared_services" {
   description = "resource group for networking shared services resources"
 }
 
+variable "bastion_config" {
+  description = "(Required) Configuration object for the Azure Bastion service."
+}
+
+variable "enable_bastion" {
+  description = "Switch to enable Azure Bastion // reserved for future use"
+}
