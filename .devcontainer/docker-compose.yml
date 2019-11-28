@@ -6,21 +6,18 @@
 version: '3.7'
 services:
   rover:
-    image: aztfmod/rover:1911.2814
-  
-    labels:
-      - "caf=Azure CAF"
+    image: aztfmod/rover:1911.1217
  
     volumes:
       # This is where VS Code should expect to find your project's source code
       # and the value of "workspaceFolder" in .devcontainer/devcontainer.json
-      - ..:/tf/caf
-      - volume-caf-ssh:/home/vscode/.ssh
-      - volume-caf-cache-azure:/home/vscode/.azure
-      - volume-caf-cache-terraform:/home/vscode/.terraform.cache
-      - volume-caf-vscode-server:/home/vscode/.vscode-server
-      - volume-caf-vscode-server-insiders:/home/vscode/.vscode-server-insiders
-      - ~/.ssh:/home/vscode/.ssh-localhost:ro
+      - ..:/tf/private
+      - volume-caf-ssh:/root/.shh
+      - volume-caf-cache:/root/.azure
+      - volume-caf-cache1:/root/.terraform.d
+      - volume-caf-vscode-server:/root/.vscode-server
+      - volume-caf-vscode-server-insiders:/.vscode-server-insiders
+      - ~/.ssh:/root/.ssh-localhost:ro
  
       # Uncomment the next line to use Docker from inside the container. See https://aka.ms/vscode-remote/samples/docker-in-docker-compose for details.
       # - /var/run/docker.sock:/var/run/docker.sock 
@@ -30,17 +27,7 @@ services:
  
 volumes:
   volume-caf-ssh:
-    labels:
-      - "caf=Azure CAF"
-  volume-caf-cache-azure:
-    labels:
-      - "caf=Azure CAF"
-  volume-caf-cache-terraform:
-    labels:
-      - "caf=Azure CAF"
+  volume-caf-cache:
+  volume-caf-cache1:
   volume-caf-vscode-server:
-    labels:
-      - "caf=Azure CAF"
   volume-caf-vscode-server-insiders:
-    labels:
-      - "caf=Azure CAF"
