@@ -10,6 +10,7 @@ variable "name" {
   
 }
 
+
 variable "rg" {
   
 }
