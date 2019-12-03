@@ -1,4 +1,5 @@
 resource "azurerm_local_network_gateway" "remote_network" {
+  
   name                = var.remote_network.gateway_name
   resource_group_name = var.resource_group_name
   location            = var.location

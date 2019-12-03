@@ -1,34 +1,38 @@
-# Introduction 
-Welcome to Azure Terraform VDC demo.
+# Introduction to hub and spoke demo landing zone
 
-The VDC landing zone demo is a simplified Virtual Datacenter Prototype for you to use in demo/POC, feel free to use/reuse/hack and contribute.
+Welcome to Azure Terraform hub and spoke topology architecture demo.
 
-# Overall architecture
-The following diagram shows the environment we are deploying for this POC: 
-![Overall VDC Demo Diagram](https://github.com/aztfmod/landingzones/blob/master/landingzone_vdc_demo/docs/diagram-overall.png)
+This landing zone demo is a simplified hub and spoke architecture for you to use in demo/POC.
 
+The choice of multiple blueprints and virtual networks might not fit all customer scenario but should illustrate how to compose an environnement and provide a code base to create your desired topology.
 
-# Getting Started
-To deploy a landingzone, install the rover on your machine as described in the Readme of the rover git repository
+## Overall architecture
 
-https://github.com/aztfmod/rover
+The following diagram shows the environment we are deploying for this POC:
 
-## Deploy your first landingzone (vdc_demo) 
+![Overall hub spoke demo diagram](../_pictures/hub_spoke/hubspoke_overall.png)
+
+## Getting Started
+
+To deploy a landing zone, use the execution environnement as described at the root of the landing zone repository.
+
+## Deploying this landing zone
 
 ```
-./rover.sh landingzones/landingzone_vdc_demo plan
+./rover landingzones/landingzone_vdc_demo plan
 ```
-Review the configuration and if you are ok with it, deploy it by running: 
+Review the configuration and if you are ok with it, deploy it by running:
 ```
-./rover.sh landingzones/landingzone_vdc_demo apply
+./rover landingzones/landingzone_vdc_demo apply
 ```
-Have fun playing with the landing zone an once you are done, you can simply delete the deployment using: 
+Have fun playing with the landing zone an once you are done, you can simply delete the deployment using:
 ```
-./rover.sh landingzones/landingzone_vdc_demo destroy
+./rover landingzones/landingzone_vdc_demo destroy
 ```
-More details about the landing zone can be found in the landing zone folder ./landingzone_vdc_demo and its blueprints subfolders
 
-<br/>
+More details about this landing zone can also be found in the landing zone folder and its blueprints subfolders.
 
-# Contribute
+
+## Contribute
+
 Pull requests are welcome to evolve the framework and integrate new features.

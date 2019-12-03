@@ -1,10 +1,5 @@
 #### blueprint_networking_shared_transit
 
-
-variable "ip_address_name" {
-    description = "(Required) name of the public IP address used for virtual network gateway"
-}
-
 variable "public_ip_addr" {
     description = "(Required) configuration for the public IP address"  
 }
@@ -15,14 +10,6 @@ variable "gateway_config" {
 
 variable "resource_groups_shared_transit" {
     description = "(Required) resource group for objects in networking transit"
-}
-
-variable "ip_diags" {
-    description = "(Required) configuration object for the public IP address diagnostics"
-}
-
-variable "gateway_diags" {
-    description = "(Required) configuration object for the virtual network gateway diagnostics"  
 }
 
 variable "networking_transit" {
@@ -38,5 +25,14 @@ variable "connection_name" {
 }
 variable "remote_network" {
     description = "(Required) name of the network to connect to" 
+}
+
+variable "provision_gateway" {
+    description = "(Required) determines to deploy the remote network gateway"
+    type = bool
+}
+
+variable "akv_config" {
+    description = "(Required) Configuration object for Azure Key Vault"
 }
 

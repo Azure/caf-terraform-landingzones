@@ -14,7 +14,7 @@ locals {
 
 module "networking_shared_egress_vnet" {
   source  = "aztfmod/caf-virtual-network/azurerm"
-  version = "0.1.0"
+  version = "0.2.0"
     
   virtual_network_rg                = local.HUB-EGRESS-NET
   prefix                            = var.prefix
@@ -23,27 +23,28 @@ module "networking_shared_egress_vnet" {
   tags                              = local.tags
   diagnostics_map                   = var.diagnostics_map
   log_analytics_workspace           = var.log_analytics_workspace
+  diagnostics_settings              = var.networking_object.diagnostics
 }
 
 module "networking_shared_public_ip" {
   source  = "aztfmod/caf-public-ip/azurerm"
-  version = "0.1.2"
+  version = "0.1.3"
 
-  name                             = var.ip_name
+  name                             = var.ip_addr_config.ip_name
   location                         = var.location
   rg                               = local.HUB-EGRESS-NET
-  ip_addr                          = var.ip_addr
+  ip_addr                          = var.ip_addr_config
   tags                             = local.tags
   diagnostics_map                  = var.diagnostics_map
   log_analytics_workspace_id       = var.log_analytics_workspace.id
-  diagnostics_settings             = var.ip_diags
+  diagnostics_settings             = var.ip_addr_config.diagnostics
 }
 
 module "networking_shared_egress_azfirewall" {
   source  = "aztfmod/caf-azure-firewall/azurerm"
   version = "0.1.2"
 
-  az_fw_name                        = var.az_fw_name
+  az_fw_name                        = var.az_fw_config.name
   az_fw_rg                          = local.HUB-EGRESS-NET
   subnet_id                         = lookup(module.networking_shared_egress_vnet.vnet_subnets, "AzureFirewallSubnet", null)
   public_ip_id                      = module.networking_shared_public_ip.id
@@ -51,7 +52,7 @@ module "networking_shared_egress_azfirewall" {
   tags                              = local.tags
   diagnostics_map                   = var.diagnostics_map
   log_analytics_workspace_id        = var.log_analytics_workspace.id
-  diagnostics_settings              = var.fw_diags
+  diagnostics_settings              = var.az_fw_config.diagnostics
 }
 
 module "firewall_rules" {
@@ -60,14 +61,25 @@ module "firewall_rules" {
   az_firewall_settings                 = module.networking_shared_egress_azfirewall.az_firewall_config
 }
 
+module "egress_dashboard" {
+  source = "./dashboard"
+
+  fw_id       = module.networking_shared_egress_azfirewall.id
+  pip_id      = module.networking_shared_public_ip.id
+  location    = var.location
+  rg          = local.HUB-EGRESS-NET
+  name        = basename(abspath(path.module))
+  tags        = local.tags
+}
+
 module "user_route_egress_to_az_firewall" {
   source = "git://github.com/aztfmod/route_table.git?ref=v0.2"
 
-  route_name                        = var.udr_route_name
+  route_name                        = var.udr_object.route_name
   route_resource_group              = local.HUB-EGRESS-NET
   location                          = var.location
-  route_prefix                      = var.udr_prefix
-  route_nexthop_type                = var.udr_nexthop_type
+  route_prefix                      = var.udr_object.prefix
+  route_nexthop_type                = var.udr_object.nexthop_type
   route_nexthop_ip                  = module.networking_shared_egress_azfirewall.az_firewall_config.az_ipconfig[0].private_ip_address
   tags                              = local.tags
 }

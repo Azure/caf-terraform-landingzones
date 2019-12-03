@@ -41,15 +41,14 @@ variable "log_analytics_workspace" {
   
 }
 
-# variable "opslogs_retention_period" {
-#   description = "Retention period for the operations log"
-#   default = 60
-# }
-
-# variable "resource_groups_shared_transit" {
+variable "diagnostics_settings" {
   
-# }
+}
 
-variable "gateway_diags" {
+variable "provision_gateway" {
+  
+}
+
+variable "keyvaultid" {
   
 }

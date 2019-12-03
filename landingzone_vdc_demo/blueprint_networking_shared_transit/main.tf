@@ -5,11 +5,12 @@ terraform {
 }
 
 provider "azurerm" {
-  version = "<= 1.35.0"
+  version = "<= 1.37"
 }
 
 data "azurerm_subscription" "current" {
 }
+
 
 locals {
   blueprint_tag          = {

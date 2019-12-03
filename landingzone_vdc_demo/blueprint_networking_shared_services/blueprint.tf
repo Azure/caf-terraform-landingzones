@@ -14,7 +14,7 @@ locals {
 
 module "networking_shared_services" {
   source  = "aztfmod/caf-virtual-network/azurerm"
-  version = "0.1.0"
+  version = "0.2.0"
 
   virtual_network_rg                = local.HUB-CORE-NET
   prefix                            = var.prefix
@@ -23,6 +23,7 @@ module "networking_shared_services" {
   tags                              = local.tags
   diagnostics_map                   = var.diagnostics_map
   log_analytics_workspace           = var.log_analytics_workspace
+  diagnostics_settings              = var.shared_services_vnet.diagnostics
 }
 
 module "ddos_protection_std" {
@@ -34,3 +35,22 @@ module "ddos_protection_std" {
   location                          = var.location
   tags                              = local.tags
 }
+
+# # Azure Bastion is only available GA in few regions for 1911 release, 
+# # please check https://azure.microsoft.com/en-us/global-infrastructure/services/?products=azure-bastion 
+# module "bastion_host" {
+#   source = "./bastion"
+
+#   enable_bastion                    = var.enable_bastion
+#   name                              = var.bastion_config.name
+#   rg                                = local.HUB-CORE-NET
+#   subnet_id                         = module.networking_shared_services.vnet_subnets["AzureBastionSubnet"]
+#   location                          = var.location 
+#   tags                              = local.tags
+#   diagnostics_map                   = var.diagnostics_map
+#   log_analytics_workspace_id        = var.log_analytics_workspace.id
+#   ip_name                           = var.bastion_config.ip_name
+#   ip_addr                           = var.bastion_config.ip_addr
+#   ip_diags                          = var.bastion_config.ip_diags
+#   diagnostics_settings              = var.bastion_config.diagnostics
+# }

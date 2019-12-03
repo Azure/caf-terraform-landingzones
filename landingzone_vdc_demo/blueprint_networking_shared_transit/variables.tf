@@ -12,11 +12,7 @@ variable "tags" {
   description = "Tags for the deployment"
 }
 
-variable "ip_name" {
-  description = "(Required) name of the IP address"
-}
-
-variable "ip_addr" {
+variable "ip_addr_config" {
   description = "(Required) IP address configuration object"
 }
 
@@ -61,13 +57,6 @@ variable "prefix" {
   description = "(Optional) Prefix to uniquely identify the deployment"    
 }
 
-variable "ip_diags" {
-  
-}
-
-variable "gateway_diags" {
-  
-}
 
 variable "shared_services_vnet_object" {
   
@@ -75,4 +64,12 @@ variable "shared_services_vnet_object" {
 
 variable "virtual_network_rg" {
   description = "(Required) Map of the resource groups to create"
+}
+
+variable "provision_gateway" {
+  
+}
+
+variable "akv_config" {
+  
 }

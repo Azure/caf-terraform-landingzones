@@ -1,4 +1,4 @@
-# Sample Cloud Adoption Framework Landing Zone
+# Sample Cloud Adoption Framework landing zone
 
 # Azure Subscription activity logs retention period
 azure_activity_logs_retention = 365
@@ -18,7 +18,7 @@ resource_groups_hub = {
     }
 }
 
-#Primary location picked is region1, region2 is picked as backup whenever applicable
+#specifies the set of location you are going to use in this landing zone
 location_map = {
     region1   = "southeastasia"
     region2   = "eastasia"
