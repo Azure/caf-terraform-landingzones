@@ -61,7 +61,7 @@ module "vpn_gateway" {
 
 module "keyvault" {
   source  = "aztfmod/caf-keyvault/azurerm"
-  version = "0.1.0"
+  version = "0.1.1"
   
   rg                                = local.HUB-NET-TRANSIT
   akv_config                        = var.akv_config
