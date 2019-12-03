@@ -10,11 +10,11 @@ The choice of multiple blueprints and virtual networks might not fit all custome
 
 The following diagram shows the environment we are deploying for this POC:
 
-![Overall hub spoke demo diagram](https://github.com/aztfmod/landingzones/blob/master/landingzone_vdc_demo/docs/diagram-overall.png)
+![Overall hub spoke demo diagram](../_pictures/hub_spoke/hubspoke_overall.png)
 
 ## Getting Started
 
-To deploy a landing zone, use the execution environement as described at the root of the landing zone repository.
+To deploy a landing zone, use the execution environnement as described at the root of the landing zone repository.
 
 ## Deploying this landing zone
 
@@ -32,7 +32,7 @@ Have fun playing with the landing zone an once you are done, you can simply dele
 
 More details about this landing zone can also be found in the landing zone folder and its blueprints subfolders.
 
-<br/>
 
-# Contribute
+## Contribute
+
 Pull requests are welcome to evolve the framework and integrate new features.
