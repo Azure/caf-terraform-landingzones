@@ -6,12 +6,14 @@
   version: '3.7'
   services:
     rover:
-      image: aztfmod/rover:1912.0412
+      image: aztfmod/rover:1912.1312
     
       labels:
         - "caf=Azure CAF"
    
       volumes:
+        # This is where VS Code should expect to find your project's source code
+        # and the value of "workspaceFolder" in .devcontainer/devcontainer.json
         - ..:/tf/caf
         - volume-caf-ssh:/home/vscode/.ssh
         - volume-caf-cache-azure:/home/vscode/.azure
@@ -20,8 +22,8 @@
         - volume-caf-vscode-server-insiders:/home/vscode/.vscode-server-insiders
         - ~/.ssh:/home/vscode/.ssh-localhost:ro
    
-        # Uncomment the next line to use Docker from inside the container. See https://aka.ms/vscode-remote/samples/docker-in-docker-compose for details.
-        # - /var/run/docker.sock:/var/run/docker.sock 
+        # Uncomment the next line to use Docker from inside the container.
+        - /var/run/docker.sock:/var/run/docker.sock 
    
       # Overrides default command so things don't shut down after the process ends.
       command: /bin/sh -c "while sleep 1000; do :; done" 
