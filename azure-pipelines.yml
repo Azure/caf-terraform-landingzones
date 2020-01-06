@@ -9,10 +9,18 @@ trigger:
 variables:
   azureSubscription: MSDN_nicolasyuen
 
+resources:
+  containers:
+  - container: rover
+    image: aztfmod/rover:1912.2716
+    options: --user 0:0
+
 pool:
   vmImage: 'ubuntu-latest'
 
-container: aztfmod/rover:1912.2716
+container: rover
+
+
 
 steps:
 - task: AzureCLI@2
