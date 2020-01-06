@@ -6,14 +6,27 @@
 trigger:
 - azuredevops_pipeline
 
+variables:
+  azureSubscription: "MSDN_nicolasyuen"
+
 pool:
   vmImage: 'ubuntu-latest'
 
+container: aztfmod/rover:1912.2716
+
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+- task: AzureCLI@2
+  displayName: Azure CLI
+  inputs:
+    azureSubscription: ${MSDN_nicolasyuen}
+    scriptType: bash
+    scriptLocation: inlineScript
+    inlineScript: |
+        az --version
+        az account show
 
 - script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+    echo "Deploying the launchpad level 0 sing Rover"
+    echo "See https://github.com/aztfmod/rover"
+    rover
+  displayName: 'Initialize the Level0 launchpad'
