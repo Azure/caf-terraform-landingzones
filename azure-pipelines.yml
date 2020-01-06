@@ -46,4 +46,5 @@ steps:
            exit 1
         else
            echo "Remote state Initialized with storage account $id"
+        fi
   displayName: 'Verifying launchpad results'
