@@ -1,0 +1,60 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- azuredevops_pipeline
+
+variables:
+  azureSubscription: MSDN_nicolasyuen
+
+resources:
+  containers:
+  - container: rover
+    image: aztfmod/rover:1912.2716
+    options: --user 0:0
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+container: rover
+
+steps:
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: "MSDN_nicolasyuen"
+    scriptType: bash
+    scriptLocation: inlineScript
+    inlineScript: |
+        echo "Deploying the launchpad level 0 using Rover"
+        echo "See https://github.com/aztfmod/rover"
+        ls /tf
+        /tf/rover/launchpad.sh $(Build.SourcesDirectory)/landingzone_caf_foundations init
+  displayName: 'CAF Foundation Plan'
+
+ - task: AzureCLI@2
+  enabled: false #TASK is currently disabled
+  inputs:
+    azureSubscription: "MSDN_nicolasyuen"
+    scriptType: bash
+    scriptLocation: inlineScript
+    inlineScript: |
+        echo "Deploying the launchpad level 0 using Rover"
+        echo "See https://github.com/aztfmod/rover"
+        ls /tf
+        /tf/rover/launchpad.sh $(Build.SourcesDirectory)/landingzone_caf_foundations apply
+  displayName: 'CAF Foundation apply'
+
+   - task: AzureCLI@2
+  enabled: false #TASK is currently disabled
+  inputs:
+    azureSubscription: "MSDN_nicolasyuen"
+    scriptType: bash
+    scriptLocation: inlineScript
+    inlineScript: |
+        echo "Deploying the launchpad level 0 using Rover"
+        echo "See https://github.com/aztfmod/rover"
+        ls /tf
+        /tf/rover/launchpad.sh $(Build.SourcesDirectory)/landingzone_caf_foundations destroy
+  displayName: 'CAF Foundation destroy'
