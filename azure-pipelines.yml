@@ -32,3 +32,18 @@ steps:
         ls /tf
         /tf/rover/launchpad.sh
   displayName: 'Initialize the Level0 launchpad'
+
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: "MSDN_nicolasyuen"
+    scriptType: bash
+    scriptLocation: inlineScript
+    inlineScript: |
+        id=$(az resource list --tag stgtfstate=level0 | jq -r .[0].id)
+        if [ -z "$id" ]
+        then
+           echo "Remote state not properly Initialized"
+           exit 1
+        else
+           echo "Remote state Initialized with storage account $id"
+  displayName: 'Verifying launchpad results'
