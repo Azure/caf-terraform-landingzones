@@ -22,18 +22,13 @@ container: rover
 
 steps:
 - task: AzureCLI@2
-  displayName: Azure CLI
   inputs:
     azureSubscription: "MSDN_nicolasyuen"
     scriptType: bash
     scriptLocation: inlineScript
     inlineScript: |
-        az --version
-        az account show
-
-- script: |
-    echo "Deploying the launchpad level 0 using Rover"
-    echo "See https://github.com/aztfmod/rover"
-    ls /tf
-    /tf/rover/launchpad.sh
+        echo "Deploying the launchpad level 0 using Rover"
+        echo "See https://github.com/aztfmod/rover"
+        ls /tf
+        /tf/rover/launchpad.sh
   displayName: 'Initialize the Level0 launchpad'
