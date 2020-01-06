@@ -20,8 +20,6 @@ pool:
 
 container: rover
 
-
-
 steps:
 - task: AzureCLI@2
   displayName: Azure CLI
@@ -34,7 +32,8 @@ steps:
         az account show
 
 - script: |
-    echo "Deploying the launchpad level 0 sing Rover"
+    echo "Deploying the launchpad level 0 using Rover"
     echo "See https://github.com/aztfmod/rover"
+    ls /tf
     rover
   displayName: 'Initialize the Level0 launchpad'
