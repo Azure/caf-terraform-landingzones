@@ -13,7 +13,7 @@ resources:
   containers:
   - container: rover
     image: aztfmod/rover:1912.2716
-    options: --user 1000:0
+    options: --user 0:0
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -35,5 +35,5 @@ steps:
     echo "Deploying the launchpad level 0 using Rover"
     echo "See https://github.com/aztfmod/rover"
     ls /tf
-    rover
+    /tf/rover/launchpad.sh
   displayName: 'Initialize the Level0 launchpad'
