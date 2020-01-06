@@ -7,7 +7,7 @@ trigger:
 - azuredevops_pipeline
 
 variables:
-  azureSubscription: "MSDN_nicolasyuen"
+  azureSubscription: MSDN_nicolasyuen
 
 pool:
   vmImage: 'ubuntu-latest'
