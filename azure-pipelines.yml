@@ -13,7 +13,7 @@ resources:
   containers:
   - container: rover
     image: aztfmod/rover:1912.2716
-    options: --user 0:0
+    options: --user 1000:0
 
 pool:
   vmImage: 'ubuntu-latest'
