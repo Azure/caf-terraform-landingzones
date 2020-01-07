@@ -12,7 +12,7 @@ variables:
 resources:
   containers:
   - container: rover
-    image: aztfmod/rover:1912.2716
+    image: aztfmod/rover:2001.0622
     options: --user 0:0 #temporary workaround, Azure Pipelines requires USERADD
 
 pool:
