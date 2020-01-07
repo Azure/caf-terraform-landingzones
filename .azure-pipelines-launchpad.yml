@@ -13,7 +13,7 @@ resources:
   containers:
   - container: rover
     image: aztfmod/rover:1912.2716
-    options: --user 0:0
+    options: --user 0:0 #temporary workaround, Azure Pipelines requires USERADD
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -23,7 +23,7 @@ container: rover
 steps:
 - task: AzureCLI@2
   inputs:
-    azureSubscription: "MSDN_nicolasyuen"
+    azureSubscription: ${{azureSubscription}}
     scriptType: bash
     scriptLocation: inlineScript
     inlineScript: |
@@ -35,7 +35,7 @@ steps:
 
 - task: AzureCLI@2
   inputs:
-    azureSubscription: "MSDN_nicolasyuen"
+    azureSubscription:${{azureSubscription}}
     scriptType: bash
     scriptLocation: inlineScript
     inlineScript: |
