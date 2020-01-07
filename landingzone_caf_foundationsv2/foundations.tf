@@ -22,13 +22,11 @@ module "blueprint_foundations_security" {
     security_settings                   = var.security_settings
 }
 
-# module "blueprint_foundations_governance" {
-#     source                              = "../blueprint_foundations_governance/"
+module "blueprint_foundations_governance" {
+    source                              = "./blueprint_foundations_governance/"
 
-#     prefix                              = var.prefix
-
-#     location                            = var.location_map["region1"]
-#     enable_security_center              = var.enable_security_center
-#     security_center                     = var.security_center
-#     analytics_workspace_name            = var.analytics_workspace_name
-# }
+    tags_hub                            = var.global_settings.tags_hub
+    location                            = var.global_settings.location_map.region1
+    log_analytics                       = module.blueprint_foundations_accounting.log_analytics_workspace
+    governance_settings                 = var.governance_settings
+}

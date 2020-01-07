@@ -14,13 +14,13 @@ output "blueprint_foundations_security" {
   description = "Full output of the foundations logging blueprint"
 }
 
-# output "blueprint_foundations_governance" {
-#   depends_on  = [module.blueprint_foundations_governance]
+output "blueprint_foundations_governance" {
+  depends_on  = [module.blueprint_foundations_governance]
 
-#   sensitive   = true                      # to hide content from logs
-#   value       = module.blueprint_foundations_governance
-#   description = "Full output of the foundations logging blueprint"
-# }
+  sensitive   = false                      # to hide content from logs
+  value       = module.blueprint_foundations_governance
+  description = "Full output of the foundations logging blueprint"
+}
 
 output "prefix" {
   value = local.prefix

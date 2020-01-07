@@ -9,7 +9,7 @@ global_settings = {
     }
 
     #naming convention to be used as defined in naming convention module, accepted values are cafclassic, cafrandom, random, passthrough
-    convention = "cafrandom"
+    convention = "random"
 
     #Set of tags for core operations
     tags_hub = {
@@ -83,7 +83,43 @@ accounting_settings = {
 
 ## governance
 governance_settings = {
+    #current code supports only two levels of managemenr groups and one root
+    management_groups = {
+        root = {
+            name = "arnaud-rootmgmtgroup"
+            subscriptions = []
+            #list your subscriptions ID in this field as ["GUID1", "GUID2"]
+            children = {
+                child1 = {
+                    name = "tree1child1"
+                    subscriptions = []
+                }
+                child2 = {
+                    name = "tree1child2"
+                    subscriptions = []
+                }
+                child3 = {
+                    name = "tree1child3"
+                    subscriptions = []
+                }
+            }
+        }
+    }
+    
+    policy_matrix = {
+    #autoenroll_asc          = true - to be implemented via builtin policies
+    autoenroll_monitor_vm   = false
+    autoenroll_netwatcher   = false
 
+    no_public_ip_spoke      = false
+    cant_create_ip_spoke    = false 
+    managed_disks_only      = true
+    restrict_locations      = false
+    list_of_allowed_locs    = ["southeastasia", "eastasia"]
+    restrict_supported_svc  = false
+    list_of_supported_svc   = ["Microsoft.Network/publicIPAddresses", "Microsoft.Compute/disks"]
+    msi_location            = "southeastasia"
+    }
 }
 
 ## security 
@@ -94,6 +130,6 @@ security_settings = {
         contact_email   = "email@email.com" 
         contact_phone   = "9293829328"
     }
-
+    #Enables Azure Sentinel on the Log Analaytics repo
     enable_sentinel = true
 }
