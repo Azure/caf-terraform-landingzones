@@ -47,7 +47,7 @@ stages:
     container: rover
     steps:
     - task: AzureCLI@2
-      enabled: ${deploymentEnabled}
+      enabled: ${{variables.deploymentEnabled}}
       condition: succeeded()
       inputs:
         azureSubscription: ${{variables.azureSubscription}}
