@@ -69,24 +69,25 @@ stages:
     container: rover
     strategy: 
       runOnce:
-        steps:
-        - task: AzureCLI@2
-          inputs:
-            azureSubscription: ${{variables.azureSubscription}}
-            scriptType: bash
-            scriptLocation: inlineScript
-            inlineScript: |
-                echo "Applying landing zone deployment"
-                /tf/rover/launchpad.sh $(Build.SourcesDirectory)/${landingZoneName} apply
-          displayName: 'Landing Zone Apply'
-        - task: AzureCLI@2 #TODO <-- LEVERAGE the Azure Resource Graph to confirm, an option is to add the query / script alongside some test variable files to make it more generic"
-          inputs:
-            azureSubscription: ${{variables.azureSubscription}}
-            scriptType: bash
-            scriptLocation: inlineScript
-            inlineScript: |
-                echo "Validating resources on Azure" 
-          displayName: 'Azure resources validation'
+        deploy:
+          steps:
+          - task: AzureCLI@2
+            inputs:
+              azureSubscription: ${{variables.azureSubscription}}
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |
+                  echo "Applying landing zone deployment"
+                  /tf/rover/launchpad.sh $(Build.SourcesDirectory)/${landingZoneName} apply
+            displayName: 'Landing Zone Apply'
+          - task: AzureCLI@2 #TODO <-- LEVERAGE the Azure Resource Graph to confirm, an option is to add the query / script alongside some test variable files to make it more generic"
+            inputs:
+              azureSubscription: ${{variables.azureSubscription}}
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |
+                  echo "Validating resources on Azure" 
+            displayName: 'Azure resources validation'
 
 - stage: Destroy
   displayName: "Terraform Plan"
