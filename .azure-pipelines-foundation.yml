@@ -35,7 +35,7 @@ stages:
         scriptLocation: inlineScript
         inlineScript: |
             echo "Validating landing zone TF files"
-            /tf/rover/launchpad.sh $(Build.SourcesDirectory)/${landingZoneName}s validate
+            /tf/rover/launchpad.sh $(System.DefaultWorkingDirectory)/${landingZoneName} validate
       displayName: 'Rover validation'
 
 - stage: Plan
