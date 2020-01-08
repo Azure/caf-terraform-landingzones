@@ -17,7 +17,7 @@ resources:
   containers:
   - container: rover
     image: aztfmod/rover:2001.0622
-    options: --user 0:0 #temporary workaround as the user needs USERADD rights
+    options: --user 0:0 -v $(System.DefaultWorkingDirectory)/:/tmp/terraform -e TF_PLUGIN_CACHE_DIR="/tmp/terraform" #temporary workaround as the user needs USERADD rights
 
 stages:
 - stage: Rover
@@ -59,7 +59,7 @@ stages:
       displayName: 'Landing Zone Plan'
 
 - stage: Apply
-  displayName: "Terraform Plan"
+  displayName: "Terraform Apply"
   condition: and(succeeded(), eq(variables['deployementEnabled'], true))
   jobs:
   - deployment: Apply #This is a deployment job and can support multiple strategies https://docs.microsoft.com/en-us/azure/devops/pipelines/process/deployment-jobs?view=azure-devops
