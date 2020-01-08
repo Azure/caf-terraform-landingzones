@@ -30,7 +30,7 @@ stages:
     steps:
     - task: AzureCLI@2
       inputs:
-        azureSubscription: ${{azureSubscription}}
+        azureSubscription: ${{variables.azureSubscription}}
         scriptType: bash
         scriptLocation: inlineScript
         inlineScript: |
@@ -50,7 +50,7 @@ stages:
       enabled: ${deploymentEnabled}
       condition: succeeded()
       inputs:
-        azureSubscription: ${{azureSubscription}}
+        azureSubscription: ${{variables.azureSubscription}}
         scriptType: bash
         scriptLocation: inlineScript
         inlineScript: |
@@ -63,7 +63,7 @@ stages:
   condition: and(succeeded(), ${deployementEnabled})
   jobs:
   - deployment: Apply #This is a deployment job and can support multiple strategies https://docs.microsoft.com/en-us/azure/devops/pipelines/process/deployment-jobs?view=azure-devops
-    environment: ${{environment}}
+    environment: ${{variables.environment}}
     pool:
       vmImage: 'ubuntu-latest'
     container: rover
@@ -72,7 +72,7 @@ stages:
         steps:
         - task: AzureCLI@2
           inputs:
-            azureSubscription: ${{azureSubscription}}
+            azureSubscription: ${{variables.azureSubscription}}
             scriptType: bash
             scriptLocation: inlineScript
             inlineScript: |
@@ -81,7 +81,7 @@ stages:
           displayName: 'Landing Zone Apply'
         - task: AzureCLI@2 #TODO <-- LEVERAGE the Azure Resource Graph to confirm, an option is to add the query / script alongside some test variable files to make it more generic"
           inputs:
-            azureSubscription: ${{azureSubscription}}
+            azureSubscription: ${{variables.azureSubscription}}
             scriptType: bash
             scriptLocation: inlineScript
             inlineScript: |
@@ -99,7 +99,7 @@ stages:
     steps:
     - task: AzureCLI@2
       inputs:
-        azureSubscription: ${{azureSubscription}}
+        azureSubscription: ${{variables.azureSubscription}}
         scriptType: bash
         scriptLocation: inlineScript
         inlineScript: |
@@ -108,7 +108,7 @@ stages:
       displayName: 'Landing Zone Apply'
     - task: AzureCLI@2 #TODO <-- LEVERAGE the Azure Resource Graph to confirm, an option is to add the query / script alongside some test variable files to make it more generic"
       inputs:
-        azureSubscription: ${{azureSubscription}}
+        azureSubscription: ${{variables.azureSubscription}}
         scriptType: bash
         scriptLocation: inlineScript
         inlineScript: |
