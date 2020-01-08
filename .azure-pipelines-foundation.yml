@@ -38,14 +38,6 @@ stages:
             echo "Validating landing zone TF files"
             /tf/rover/launchpad.sh $(Build.SourcesDirectory)/${landingZoneName}s validate
       displayName: 'Rover validation'
-    - task: AzureCLI@2
-      inputs:
-        azureSubscription: ${{azureSubscription}}
-        scriptType: bash
-        scriptLocation: inlineScript
-        inlineScript: |
-            tflint $(Build.SourcesDirectory)/${landingZoneName}
-      displayName: 'Running TFLint'
 
 - stage: Plan
   displayName: "Terraform Plan"
