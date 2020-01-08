@@ -93,7 +93,7 @@ stages:
   condition: and(or(succeeded(), failed()), ${destroytEnabled})
   jobs:
   - job: Destroy
-     pool:
+    pool:
       vmImage: 'ubuntu-latest'
     container: rover
     steps:
