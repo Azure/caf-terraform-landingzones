@@ -10,7 +10,7 @@ variables:
   azureSubscription: MSDN_nicolasyuen
   deploymentEnabled: false
   destroyEnabled: true
-  landingZoneName: "landingzone_caf_foundations"
+  landingZoneName: "landingzone_caf_foundationsv2"
 
 resources:
   containers:
