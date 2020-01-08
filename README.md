@@ -40,7 +40,7 @@ You can deploy it easily on Windows and MacOS with the following software manage
 
 MacOS | Windows |  
 ------- | ----------------
-```brew cask install visual-studio-code``` </br> ```brew install git docker ``` | Install Chocolatey (https://chocolatey.org/docs/installation) </br> ``` choco install git vscode docker-desktop ```
+```brew cask install visual-studio-code docker``` </br> ```brew install git ``` | Install Chocolatey (https://chocolatey.org/docs/installation) </br> ``` choco install git vscode docker-desktop ```
 
 Once installed, open **Visual Studio Code** and install "**Remote Development**" extension as follow: ![RemoteDevelopment](./_pictures/caf_setup_remotedev.png)
 
