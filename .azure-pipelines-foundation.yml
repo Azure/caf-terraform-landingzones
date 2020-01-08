@@ -91,7 +91,7 @@ stages:
 
 - stage: Destroy
   displayName: "Terraform Plan"
-  condition: and(or(succeeded(), failed()),, eq(variables['destroyEnabled'], true))
+  condition: and(or(succeeded(), failed()), eq(variables['destroyEnabled'], true))
   jobs:
   - job: Destroy
     pool:
