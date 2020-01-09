@@ -55,7 +55,9 @@ stages:
         inlineScript: |
             echo "Planning landing zone deployment"
             export TF_DATA_DIR="$(System.DefaultWorkingDirectory)" 
-            /tf/rover/launchpad.sh $(Build.SourcesDirectory)/$(landingZoneName) plan -out $(Build.ArtifactStagingDirectory)/$(landingZoneName).tfplan
+            /tf/rover/launchpad.sh $(Build.SourcesDirectory)/$(landingZoneName) plan
+            cp *.tfplan $(Build.ArtifactStagingDirectory)/
+            ls
       displayName: 'Landing Zone Plan'
     - task: PublishBuildArtifacts@1
       inputs:
@@ -80,8 +82,10 @@ stages:
         scriptLocation: inlineScript
         inlineScript: |
             echo "Planning landing zone deployment"
-            export TF_DATA_DIR="$(System.DefaultWorkingDirectory)" 
-            /tf/rover/launchpad.sh $(Build.SourcesDirectory)/$(landingZoneName) apply $(Build.ArtifactStagingDirectory)/$(landingZoneName).tfplan
+            export TF_DATA_DIR="$(System.DefaultWorkingDirectory)"
+            ls $(Build.ArtifactStagingDirectory)
+            cp $(Build.ArtifactStagingDirectory)/*.tfplan .
+            /tf/rover/launchpad.sh $(Build.SourcesDirectory)/$(landingZoneName) apply
       displayName: 'Landing Zone Plan'
 
 
