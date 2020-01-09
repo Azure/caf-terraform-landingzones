@@ -60,35 +60,25 @@ stages:
 
 - stage: Apply
   displayName: "Terraform Apply"
-  condition: succeeded()
-  dependsOn: Plan
   jobs:
-  - deployment: Apply #This is a deployment job and can support multiple strategies https://docs.microsoft.com/en-us/azure/devops/pipelines/process/deployment-jobs?view=azure-devops
-    environment: ${{variables.environment}}
+  - job: Apply
     pool:
       vmImage: 'ubuntu-latest'
     container: rover
-    strategy: 
-      runOnce:
-        deploy:
-          steps:
-          - task: AzureCLI@2
-            inputs:
-              azureSubscription: ${{variables.azureSubscription}}
-              scriptType: bash
-              scriptLocation: inlineScript
-              inlineScript: |
-                  echo "Applying landing zone deployment"
-                  /tf/rover/launchpad.sh $(Build.SourcesDirectory)/$(landingZoneName) apply
-            displayName: 'Landing Zone Apply'
-          - task: AzureCLI@2 #TODO <-- LEVERAGE the Azure Resource Graph to confirm, an option is to add the query / script alongside some test variable files to make it more generic"
-            inputs:
-              azureSubscription: ${{variables.azureSubscription}}
-              scriptType: bash
-              scriptLocation: inlineScript
-              inlineScript: |
-                  echo "Validating resources on Azure" 
-            displayName: 'Azure resources validation'
+    steps:
+    - task: AzureCLI@2
+      enabled: ${{variables.deploymentEnabled}}
+      condition: succeeded()
+      inputs:
+        azureSubscription: ${{variables.azureSubscription}}
+        scriptType: bash
+        scriptLocation: inlineScript
+        inlineScript: |
+            echo "Planning landing zone deployment"
+            export TF_DATA_DIR="$(System.DefaultWorkingDirectory)" 
+            /tf/rover/launchpad.sh $(Build.SourcesDirectory)/$(landingZoneName) apply
+      displayName: 'Landing Zone Plan'
+
 
 - stage: Destroy
   displayName: "Terraform Destroy"
