@@ -60,7 +60,8 @@ stages:
 
 - stage: Apply
   displayName: "Terraform Apply"
-  condition: and(succeeded(), eq(variables['deployementEnabled'], true))
+  condition: succeeded()
+  dependsOn: Plan
   jobs:
   - deployment: Apply #This is a deployment job and can support multiple strategies https://docs.microsoft.com/en-us/azure/devops/pipelines/process/deployment-jobs?view=azure-devops
     environment: ${{variables.environment}}
