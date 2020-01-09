@@ -8,7 +8,7 @@ trigger:
 
 variables:
   azureSubscription: MSDN_nicolasyuen
-  deploymentEnabled: false
+  deploymentEnabled: true
   destroyEnabled: true
   landingZoneName: "landingzone_caf_foundationsv2"
   environment: "MSDN_nicolasyuen"
