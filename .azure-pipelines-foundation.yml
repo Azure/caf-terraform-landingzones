@@ -58,10 +58,10 @@ stages:
             /tf/rover/launchpad.sh $(Build.SourcesDirectory)/$(landingZoneName) plan -out $(Build.ArtifactStagingDirectory)/$(landingZoneName).tfplan
       displayName: 'Landing Zone Plan'
     - task: PublishBuildArtifacts@1
-        inputs:
-          pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
-          artifactName: 'tfplan' 
-          publishLocation: 'Container' 
+      inputs:
+        pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
+        artifactName: 'tfplan' 
+        publishLocation: 'Container' 
 
 - stage: Apply
   displayName: "Terraform Apply"
