@@ -55,7 +55,7 @@ stages:
         inlineScript: |
             echo "Planning landing zone deployment"
             export TF_DATA_DIR="$(System.DefaultWorkingDirectory)" 
-            /tf/rover/launchpad.sh $(Build.SourcesDirectory)/$(landingZoneName) plan
+            /tf/rover/launchpad.sh $(Build.SourcesDirectory)/$(landingZoneName) plan -input=false -no-color
       displayName: 'Landing Zone Plan'
 
 - stage: Apply
@@ -76,7 +76,7 @@ stages:
         inlineScript: |
             echo "Planning landing zone deployment"
             export TF_DATA_DIR="$(System.DefaultWorkingDirectory)"
-            /tf/rover/launchpad.sh $(Build.SourcesDirectory)/$(landingZoneName) apply
+            /tf/rover/launchpad.sh $(Build.SourcesDirectory)/$(landingZoneName) apply -input=false  -no-color
       displayName: 'Landing Zone Plan'
 
 
@@ -97,8 +97,8 @@ stages:
         inlineScript: |
             echo "Applying landing zone deployment"
             export TF_DATA_DIR="$(System.DefaultWorkingDirectory)" 
-            /tf/rover/launchpad.sh $(Build.SourcesDirectory)/$(landingZoneName) destroy
-      displayName: 'Landing Zone Apply'
+            /tf/rover/launchpad.sh $(Build.SourcesDirectory)/$(landingZoneName) destroy -auto-approve -no-color
+      displayName: 'Landing Zone Destroy'
     - task: AzureCLI@2 #TODO <-- LEVERAGE the Azure Resource Graph to confirm, an option is to add the query / script alongside some test variable files to make it more generic"
       inputs:
         azureSubscription: ${{variables.azureSubscription}}
