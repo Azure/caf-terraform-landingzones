@@ -22,8 +22,7 @@ stages:
   displayName: "Validating Terraform Code"
   jobs:
   - job: Validation
-    pool:
-      vmImage: 'ubuntu-latest'
+    pool: "self-hosted-level0"
     container: rover
     steps:
     - task: AzureCLI@2
@@ -41,8 +40,7 @@ stages:
   displayName: "Terraform Plan"
   jobs:
   - job: Plan
-    pool:
-      vmImage: 'ubuntu-latest'
+    pool: "self-hosted-level0"
     container: rover
     steps:
     - task: AzureCLI@2
@@ -62,8 +60,7 @@ stages:
   displayName: "Terraform Apply"
   jobs:
   - job: Apply
-    pool:
-      vmImage: 'ubuntu-latest'
+    pool: "self-hosted-level0"
     container: rover
     steps:
     - task: AzureCLI@2
@@ -85,8 +82,7 @@ stages:
   condition: and(or(succeeded(), failed()), eq(variables['destroyEnabled'], true))
   jobs:
   - job: Destroy
-    pool:
-      vmImage: 'ubuntu-latest'
+    pool: "self-hosted-level0"
     container: rover
     steps:
     - task: AzureCLI@2
