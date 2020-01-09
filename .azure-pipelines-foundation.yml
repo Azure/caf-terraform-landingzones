@@ -15,7 +15,7 @@ resources:
   containers:
   - container: rover
     image: aztfmod/rover:2001.0622
-    options: --user 0:0 -v /tmp:/tmp -e TF_PLUGIN_CACHE_DIR="/tmp/tf-plugin-cache" -#temporary workaround as the user needs USERADD rights
+    options: --user 0:0 -v /tmp:/tmp -e TF_PLUGIN_CACHE_DIR="/tmp/tf-plugin-cache" #temporary workaround as the user needs USERADD rights
 
 stages:
 - stage: Rover
