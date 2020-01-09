@@ -17,7 +17,7 @@ resources:
   containers:
   - container: rover
     image: aztfmod/rover:2001.0622
-    options: --user 0:0 -v ${{ variables.System.DefaultWorkingDirectory }}/:/tmp/terraform -e TF_PLUGIN_CACHE_DIR="/tmp/terraform" #temporary workaround as the user needs USERADD rights
+    options: --user 0:0 -v $/tmp:/tmp -e TF_PLUGIN_CACHE_DIR="/tmp" #temporary workaround as the user needs USERADD rights
 
 stages:
 - stage: Rover
