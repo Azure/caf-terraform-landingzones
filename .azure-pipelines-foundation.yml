@@ -17,7 +17,7 @@ resources:
   containers:
   - container: rover
     image: aztfmod/rover:2001.0622
-    options: --user 0:0 -v /tmp:/tmp -e TF_PLUGIN_CACHE_DIR="/tmp" #temporary workaround as the user needs USERADD rights
+    options: --user 1000 --group-add 0 -v /tmp:/tmp -e TF_PLUGIN_CACHE_DIR="/tmp" #temporary workaround as the user needs USERADD rights
 
 stages:
 - stage: Rover
@@ -35,6 +35,7 @@ stages:
         scriptLocation: inlineScript
         inlineScript: |
             echo "Validating landing zone TF files"
+            export TF_PLUGIN_CACHE_DIR="/tmp" 
             /tf/rover/launchpad.sh $(System.DefaultWorkingDirectory)/$(landingZoneName) validate
       displayName: 'Rover validation'
 
