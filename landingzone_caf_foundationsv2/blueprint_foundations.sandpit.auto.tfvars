@@ -9,7 +9,7 @@ global_settings = {
     }
 
     #naming convention to be used as defined in naming convention module, accepted values are cafclassic, cafrandom, random, passthrough
-    convention = "random"
+    convention = "cafrandom"
 
     #Set of tags for core operations
     tags_hub = {

@@ -1,8 +1,7 @@
 #Create the Azure Security Center workspace
 module "security_center" {
-  # source  = "aztfmod/caf-security-center/azurerm"
-  # version = "0.2.1"
-  source = "github.com/aztfmod/terraform-azurerm-caf-security-center.git?ref=1912-Refresh"
+  source  = "aztfmod/caf-security-center/azurerm"
+  version = "1.0.0"
   
   enable_security_center  = var.security_settings.enable_security_center
   contact_email           = var.security_settings.security_center.contact_email

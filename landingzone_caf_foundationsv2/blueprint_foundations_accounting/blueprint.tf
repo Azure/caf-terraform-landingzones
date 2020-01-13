@@ -10,11 +10,10 @@ module "resource_group_hub" {
 
 #Specify the subscription logging repositories 
 module "activity_logs" {
-  # source  = "aztfmod/caf-activity-logs/azurerm"
-  # version = "0.2.1"
-  source = "github.com/aztfmod/terraform-azurerm-caf-activity-logs.git?ref=1912-Refresh"
+  source  = "aztfmod/caf-activity-logs/azurerm"
+  version = "1.0.0"
+  
   convention          = var.convention
-
   name                = var.accounting_settings.azure_activity_logs_name
   logs_rentention     = var.accounting_settings.azure_activity_logs_retention
   enable_event_hub    = var.accounting_settings.azure_activity_logs_event_hub
@@ -26,11 +25,10 @@ module "activity_logs" {
 
 #Specify the operations diagnostic logging repositories 
 module "diagnostics_logging" {
-  # source  = "aztfmod/caf-diagnostics-logging/azurerm"
-  # version = "0.1.2"
-  source = "github.com/aztfmod/terraform-azurerm-caf-diagnostics-logging.git?ref=1912-Refresh"
-  convention            = var.convention
+  source  = "aztfmod/caf-diagnostics-logging/azurerm"
+  version = "1.0.0"
 
+  convention            = var.convention
   name                  = var.accounting_settings.azure_diagnostics_logs_name
   enable_event_hub      = var.accounting_settings.azure_diagnostics_logs_event_hub
   prefix                = var.prefix
@@ -41,11 +39,10 @@ module "diagnostics_logging" {
 
 #Create the Azure Monitor - Log Analytics workspace
 module "log_analytics" {
-  # source  = "aztfmod/caf-log-analytics/azurerm"
-  # version = "0.1"
-  source = "github.com/aztfmod/terraform-azurerm-caf-log-analytics.git?ref=1912-Refresh"
-  convention          = var.convention
+  source  = "aztfmod/caf-log-analytics/azurerm"
+  version = "1.0.0"
 
+  convention          = var.convention
   prefix              = var.prefix
   name                = var.accounting_settings.analytics_workspace_name
   solution_plan_map   = var.accounting_settings.solution_plan_map
