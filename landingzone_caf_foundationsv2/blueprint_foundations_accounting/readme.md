@@ -20,7 +20,7 @@ Foundations deploys the following components:
     - Stores all the operations logs
     - Solutions management
 
-![Foundations blueprint overview](../_pictures/caf_foundations_blueprint.png)
+![Foundations blueprint overview](../_pictures/caf_foundations/foundations_accounting.png)
 
 ## Customization
 
