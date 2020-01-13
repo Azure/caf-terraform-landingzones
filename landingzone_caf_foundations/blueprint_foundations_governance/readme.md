@@ -11,7 +11,7 @@ Foundations deploys the following components:
  - Azure Policies
     - Defines a set of custom or built-in policies
 
-![Foundations blueprint overview](../_pictures/caf_foundations/foundations_governance.png)
+![Foundations blueprint overview](../../_pictures/caf_foundations/foundations_governance.png)
 
 ## Customization
 

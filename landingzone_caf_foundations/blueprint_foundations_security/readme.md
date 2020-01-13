@@ -10,7 +10,7 @@ Foundations security deploys the following components:
 - Azure Security Center
     - Security hygiene metrics and alerts
 
-![Foundations blueprint overview](../_pictures/caf_foundations/foundations_security.png)
+![Foundations blueprint overview](../../_pictures/caf_foundations/foundations_security.png)
 
 ## Customization
 

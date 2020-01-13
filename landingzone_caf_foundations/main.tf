@@ -1,7 +1,6 @@
 provider "azurerm" {
-  version = "<=1.39"
+  version = "<=1.40"
 }
-
 
 terraform {
     backend "azurerm" {
