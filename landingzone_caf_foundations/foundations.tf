@@ -1,15 +1,32 @@
-module "blueprint_foundations" {
-    source                              = "github.com/aztfmod/blueprints?ref=1911/blueprint_foundations"
+module "blueprint_foundations_accounting" {
+    source                              = "./blueprint_foundations_accounting/"
 
     prefix                              = local.prefix
 
-    location                            = var.location_map["region1"]
-    enable_security_center              = var.enable_security_center
-    security_center                     = var.security_center
-    azure_activity_logs_retention       = var.azure_activity_logs_retention
-    azure_diagnostics_logs_retention    = var.azure_diagnostics_logs_retention
-    resource_groups_hub                 = var.resource_groups_hub
-    tags_hub                            = var.tags_hub
-    solution_plan_map                   = var.solution_plan_map
-    analytics_workspace_name            = var.analytics_workspace_name
+    location                            = var.global_settings.location_map.region1
+    tags_hub                            = var.global_settings.tags_hub
+    resource_groups_hub                 = var.global_settings.resource_groups_hub
+    convention                          = var.global_settings.convention
+    
+    accounting_settings                 = var.accounting_settings
+}
+
+module "blueprint_foundations_security" {
+    source                              = "./blueprint_foundations_security/"
+
+    location                            = var.global_settings.location_map.region1
+    tags_hub                            = var.global_settings.tags_hub
+    resource_groups_hub                 = module.blueprint_foundations_accounting.resource_group_hub_names
+    log_analytics                       = module.blueprint_foundations_accounting.log_analytics_workspace
+
+    security_settings                   = var.security_settings
+}
+
+module "blueprint_foundations_governance" {
+    source                              = "./blueprint_foundations_governance/"
+
+    tags_hub                            = var.global_settings.tags_hub
+    location                            = var.global_settings.location_map.region1
+    log_analytics                       = module.blueprint_foundations_accounting.log_analytics_workspace
+    governance_settings                 = var.governance_settings
 }

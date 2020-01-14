@@ -1,16 +1,16 @@
 # blueprint foundations security
 
-Blueprint_foundations sets the basics of auditing, and logging as described below.
+The foundations security is part of the foundations blueprints which help you setting the minimal controls for a subscription/deployment.
 
 ## Capabilities
 
-Foundations deploys the following components:
+Foundations security deploys the following components:
 
 - Azure Sentinel
 - Azure Security Center
     - Security hygiene metrics and alerts
 
-![Foundations blueprint overview](../_pictures/caf_foundations_blueprint.png)
+![Foundations blueprint overview](../../_pictures/caf_foundations/foundations_security.png)
 
 ## Customization
 

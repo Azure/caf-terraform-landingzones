@@ -2,7 +2,7 @@ data "azurerm_client_config" "current" {
 }
 
 provider "azurerm" {
-  version = "<= 1.39"
+  version = "<= 1.40"
 }
 
 provider "azuread" {
