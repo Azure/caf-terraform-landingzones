@@ -7,7 +7,7 @@ output "diagnostics_map" {
 #outputs the sec log repositories 
 output "activity_logs_map" {
   value = module.activity_logs.seclogs_map
-  description = "outputs subscroption activity logs map as desribed in the activity logging module doc"
+  description = "outputs subscription activity logs map as desribed in the activity logging module doc"
 }
 
 #outputs of the rg data for hub 

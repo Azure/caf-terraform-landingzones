@@ -14,7 +14,7 @@ global_settings = {
     #Set of tags for core operations
     tags_hub = {
         environment     = "DEV"
-        owner           = "Arnaud"
+        owner           = "CAF"
         deploymentType  = "Terraform"
         costCenter      = "1664"
         BusinessUnit    = "SHARED"
