@@ -68,12 +68,13 @@ For that we will rely on Azure authentication as completed by Azure Cli, via bro
 rover login
 ```
 
-When you are authenticated you need to deploy the launchpad. The launchpad centralize all Terraform states and enable multiple developers to collaborate to build and deploy the landing zones from the rover.
+When you are running rover for the fist time, it will prompt your for the location of the launchpad foundations. 
 
 ```bash
-# To deploy the launchpad in southeastasia run
-launchpad /tf/launchpads/launchpad_opensource apply -var location=southeastasia
+# To deploy the environment
+rover
 ```
+Then enter the location choosen for deployment, for instance type southeastasia or westeurope.
 
 You can then launch your first landing zone as follow:
 
