@@ -1,4 +1,4 @@
-## v2.0.2001 (January 2020)
+## v1.1.1912 (January 2020)
 FEATURES:
 * **landingzone_caf_foundations :** Added support for accouting blueprints to set up diagnostics logging, activity logs and log analytics foundations.
 * **landingzone_caf_foundations :** Added support for governance blueprints to support Azure Policies and Azure Management groups structure creation.
