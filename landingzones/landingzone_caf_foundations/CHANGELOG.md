@@ -7,4 +7,4 @@ FEATURES:
 
 IMPROVEMENTS:
 * **landingzone_caf_foundations :** Support for Cloud Adoption Framework naming convention module (https://github.com/aztfmod/terraform-azurerm-caf-naming) 
-* **landingzone_caf_foundations :** Support for Event Hub for Azure Security Logs and Diasgnostics Logs is now optional (https://github.com/aztfmod/terraform-azurerm-caf-activity-logs)
+* **landingzone_caf_foundations :** Support for Event Hub for Azure Security Logs and Diagnostics Logs is now optional (https://github.com/aztfmod/terraform-azurerm-caf-activity-logs)
