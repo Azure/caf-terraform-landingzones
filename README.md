@@ -40,7 +40,7 @@ You can deploy it easily on Windows and MacOS with the following software manage
 
 MacOS | Windows |  
 ------- | ----------------
-```brew cask install visual-studio-code``` </br> ```brew install git docker ``` | Install Chocolatey (https://chocolatey.org/docs/installation) </br> ``` choco install git vscode docker-desktop ```
+```brew cask install visual-studio-code docker``` </br> ```brew install git ``` | Install Chocolatey (https://chocolatey.org/docs/installation) </br> ``` choco install git vscode docker-desktop ```
 
 Once installed, open **Visual Studio Code** and install "**Remote Development**" extension as follow: ![RemoteDevelopment](./_pictures/caf_setup_remotedev.png)
 
@@ -68,18 +68,51 @@ For that we will rely on Azure authentication as completed by Azure Cli, via bro
 rover login
 ```
 
+When you are running rover for the fist time, it will prompt your for the location of the launchpad foundations. 
+
+```bash
+# To deploy the environment
+rover
+```
+Then enter the location choosen for deployment, for instance type southeastasia or westeurope.
+
 You can then launch your first landing zone as follow:
 
 ```bash
-rover landingzone_caf_foundations plan
+rover /tf/caf/landingzones/landingzone_caf_foundations plan
 ```
 
 ```bash
-rover landingzone_caf_foundations apply
+rover /tf/caf/landingzones/landingzone_caf_foundations apply
 ```
 
 ```bash
-rover landingzone_caf_foundations destroy
+rover /tf/caf/landingzones/landingzone_caf_foundations destroy
+```
+
+## Updating your development environment
+
+If you are using previous version of Azure landing zones (v1.0.1912), since we migrated to use new version of the rover, which uses non-root containers, you will have to re-create your volumes.
+You can achieve that running the following commands: 
+
+```bash
+# To list all Dev Container volumes
+docker volume ls -f label=caf
+
+# To cleanup de Dev Container volumes make sure there is not running or stopped containers
+docker ps
+docker ps -a
+
+# To cleanup a specific Dev Container
+docker volume rm -f $(docker volume ls -f label=com.docker.compose.project=landingzones_devcontainer)
+
+# To cleanup all Dev Containers
+docker volume rm -f $(docker volume ls -f label=caf)
+```
+
+You can also purge Docker cache running the following command:
+```bash
+docker system prune -a
 ```
 
 ## Service composition
