@@ -1,4 +1,4 @@
-## v2.0.2001 (January 2020)
+## v1.1.1912 (January 2020)
 FEATURES:
 * **landingzone_caf_foundations :** Major refactoring to support governance, security and accounting. 
 
