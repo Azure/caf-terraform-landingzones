@@ -101,6 +101,7 @@ stages:
             curl -sL https://rpm.nodesource.com/setup_10.x | sudo bash -
             sudo yum -y install nodejs
             sudo npm install tap-xunit -g
+            az extension add --name resource-graph
         displayName: 'Install Bats and Node'
     - task: AzureCLI@2
       enabled: ${{variables.deploymentEnabled}}
@@ -113,7 +114,7 @@ stages:
             echo "Running integration Tests"
             export TF_DATA_DIR="$(System.DefaultWorkingDirectory)"
             bats $(Build.SourcesDirectory)/test/$(landingZoneName)/$(landingZoneName).bats | tee TEST-$(landingZoneName).bats
-            more TEST-$(landingZoneName).bats | tap-xunit | tee $(Build.StagingDirectory)/TEST-$(landingZoneName).xml
+            cat TEST-$(landingZoneName).bats | tap-xunit | tee $(Build.StagingDirectory)/TEST-$(landingZoneName).xml
             echo "validating output"
             cat $(Build.StagingDirectory)/TEST-$(landingZoneName).xml
       displayName: 'Landing Zone integration tests'
