@@ -112,7 +112,7 @@ stages:
         inlineScript: |
             echo "Running integration Tests"
             export TF_DATA_DIR="$(System.DefaultWorkingDirectory)"
-            bats $(Build.SourcesDirectory)/test/$(landingZoneName)/$(landingZoneName).bats | taps-xunit > $(Build.StagingDirectory)/TEST-$(landingZoneName).xml
+            bats $(Build.SourcesDirectory)/test/$(landingZoneName)/$(landingZoneName).bats | tap-xunit > $(Build.StagingDirectory)/TEST-$(landingZoneName).xml
       displayName: 'Landing Zone integration tests'
     - task: PublishTestResults@2
       inputs:
