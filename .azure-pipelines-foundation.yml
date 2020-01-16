@@ -98,7 +98,8 @@ stages:
             echo "Installing BATS"
             git clone https://github.com/sstephenson/bats.git /tmp/bats
             sudo /tmp/bats/install.sh /usr/local
-            sudo yum install nodejs
+            curl -sL https://rpm.nodesource.com/setup_10.x | sudo bash -
+            sudo yum -y install nodejs
             sudo npm install tap-xunit -g
         displayName: 'Install Bats and Node'
     - task: AzureCLI@2
