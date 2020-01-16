@@ -14,7 +14,7 @@ variables:
 resources:
   containers:
   - container: rover
-    image: aztfmod/rover:2001.0622
+    image: aztfmod/rover:2001.1110
     options: --user 0:0 -v /tmp:/tmp -e TF_PLUGIN_CACHE_DIR="/tmp/tf-plugin-cache" #temporary workaround as the user needs USERADD rights
 
 stages:
@@ -22,7 +22,8 @@ stages:
   displayName: "Validating Terraform Code"
   jobs:
   - job: Validation
-    pool: "self-hosted-level0"
+    pool:
+      vmImage: 'ubuntu-latest'
     container: rover
     steps:
     - task: AzureCLI@2
@@ -40,7 +41,8 @@ stages:
   displayName: "Terraform Plan"
   jobs:
   - job: Plan
-    pool: "self-hosted-level0"
+    pool: 
+      vmImage: 'ubuntu-latest'
     container: rover
     steps:
     - task: AzureCLI@2
@@ -60,7 +62,8 @@ stages:
   displayName: "Terraform Apply"
   jobs:
   - job: Apply
-    pool: "self-hosted-level0"
+    pool: 
+      vmImage: 'ubuntu-latest'
     container: rover
     steps:
     - task: AzureCLI@2
@@ -73,16 +76,58 @@ stages:
         inlineScript: |
             echo "Planning landing zone deployment"
             export TF_DATA_DIR="$(System.DefaultWorkingDirectory)"
-            /tf/rover/launchpad.sh $(Build.SourcesDirectory)/$(landingZoneName) apply -input=false  -no-color
+            /tf/rover/launchpad.sh $(Build.SourcesDirectory)/$(landingZoneName) apply -var-file="$(Build.SourcesDirectory)/test/$(landingZoneName).test.tfvars"-input=false  -no-color
       displayName: 'Landing Zone Plan'
 
+- stage: Test
+  displayName: "Unit Tests"
+  jobs:
+  - job: UnitTest
+    pool: 
+      vmImage: 'ubuntu-latest'
+    container: rover
+    steps:
+    - task: AzureCLI@2
+      enabled: ${{variables.deploymentEnabled}}
+      condition: succeeded()
+      inputs:
+        azureSubscription: ${{variables.azureSubscription}}
+        scriptType: bash
+        scriptLocation: inlineScript
+        inlineScript: |
+            echo "Installing BATS"
+            git clone https://github.com/sstephenson/bats.git /tmp/bats
+            sudo /tmp/bats/install.sh /usr/local
+            sudo yum install nodejs
+            npm install tap-xunit -g
+        displayName: 'Install Bats and Node'
+    - task: AzureCLI@2
+      enabled: ${{variables.deploymentEnabled}}
+      condition: succeeded()
+      inputs:
+        azureSubscription: ${{variables.azureSubscription}}
+        scriptType: bash
+        scriptLocation: inlineScript
+        inlineScript: |
+            echo "Running integration Tests"
+            export TF_DATA_DIR="$(System.DefaultWorkingDirectory)"
+            bats $(Build.SourcesDirectory)/test/$(landingZoneName)/$(landingZoneName).bats | taps-xunit > $(Build.StagingDirectory)/TEST-$(landingZoneName).xml
+      displayName: 'Landing Zone integration tests'
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFormat: 'xUnit'
+        testResultsFiles: '**/TEST-*.xml' 
+        searchFolder: '$(Build.StagingDirectory)' # Optional
+        failTaskOnFailedTests: false # Optional
+        testRunTitle: "Integration Test"
 
 - stage: Destroy
   displayName: "Terraform Destroy"
   condition: and(or(succeeded(), failed()), eq(variables['destroyEnabled'], true))
   jobs:
   - job: Destroy
-    pool: "self-hosted-level0"
+    pool: 
+      vmImage: 'ubuntu-latest'
     container: rover
     steps:
     - task: AzureCLI@2

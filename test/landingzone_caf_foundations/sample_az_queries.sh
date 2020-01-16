@@ -1,14 +1,9 @@
-resource_groups_hub_ids = terraform output -json resource_group_hub_ids | jq 
-log_analytics_worskpace_name = terraform output -json  log_analytics_workspace
 
-#todo -> compare the terraform output with the resource graph or use static 
-
-#validate that the resource group defined have been created for the accounting module 
-echo "validation accounting resource group cont"
+echo "validation accounting resource group"
 blueprint_foundations_accounting_rg_count = az graph query -q "ResourceContainers | where type =~ 'microsoft.resources/subscriptions/resourcegroups' | where tags['blueprint'] =~ 'blueprint_foundations_accounting'" | jq 'length'
 
 echo "testing HUB-CORE-SEC"
-hub_core_sec_storage_account_count =  az graph query -q "Resources | where resourceGroup contains 'HUB-CORE-SEC' and type =~ 'microsoft.storage/storageaccounts' | count" | jq .[].C
+hub_core_sec_storage_account_count =  az graph query -q "Resources | where resourceGroup contains 'HUB-CORE-SEC' and type =~ 'microsoft.storage/storageaccounts' | count" | jq .[].Count
 
 hub_core_sec_storage_account_tag_terraform = az graph query -q "Resources | where resourceGroup contains 'HUB-CORE-SEC' and type =~ 'microsoft.storage/storageaccounts' " | jq '.[0] | .tags["deploymentType"]'
 hub_core_sec_storage_account_primary_location = az graph query -q "Resources | where resourceGroup contains 'HUB-CORE-SEC' and type =~ 'microsoft.storage/storageaccounts' " | jq '.[0] | .properties.primaryLocation'
