@@ -6,7 +6,7 @@
 
 variables:
   azureSubscription: MSDN_nicolasyuen
-  deploymentEnabled: true
+  deploymentEnabled: false
   destroyEnabled: false
   landingZoneName: "landingzone_caf_foundations"
   environment: "MSDN_nicolasyuen"
@@ -88,7 +88,7 @@ stages:
     container: rover
     steps:
     - task: AzureCLI@2
-      enabled: ${{variables.deploymentEnabled}}
+      #enabled: ${{variables.deploymentEnabled}}
       condition: succeeded()
       inputs:
         azureSubscription: ${{variables.azureSubscription}}
@@ -104,7 +104,7 @@ stages:
             az extension add --name resource-graph
         displayName: 'Install Bats and Node'
     - task: AzureCLI@2
-      enabled: ${{variables.deploymentEnabled}}
+      #enabled: ${{variables.deploymentEnabled}}
       condition: succeeded()
       inputs:
         azureSubscription: ${{variables.azureSubscription}}
@@ -114,15 +114,15 @@ stages:
             echo "Running integration Tests"
             export TF_DATA_DIR="$(System.DefaultWorkingDirectory)"
             bats $(Build.SourcesDirectory)/test/$(landingZoneName)/$(landingZoneName).bats | tee TEST-$(landingZoneName).bats
-            cat TEST-$(landingZoneName).bats | tap-xunit | tee $(Build.StagingDirectory)/TEST-$(landingZoneName).xml
+            cat TEST-$(landingZoneName).bats | tap-xunit | tee $(System.DefaultWorkingDirectory)/TEST-$(landingZoneName).xml
             echo "validating output"
-            cat $(Build.StagingDirectory)/TEST-$(landingZoneName).xml
+            cat $(System.DefaultWorkingDirectory)/TEST-$(landingZoneName).xml
       displayName: 'Landing Zone integration tests'
     - task: PublishTestResults@2
       inputs:
         testResultsFormat: 'xUnit'
         testResultsFiles: '**/TEST-*.xml' 
-        searchFolder: '$(Build.StagingDirectory)' # Optional
+        searchFolder: '$(System.DefaultWorkingDirectory)' # Optional
         failTaskOnFailedTests: false # Optional
         testRunTitle: "Integration Test"
 
