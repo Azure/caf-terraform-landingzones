@@ -55,7 +55,7 @@ stages:
         inlineScript: |
             echo "Planning landing zone deployment"
             export TF_DATA_DIR="$(System.DefaultWorkingDirectory)" 
-            /tf/rover/launchpad.sh $(Build.SourcesDirectory)/$(landingZoneName) plan -input=false -no-color
+            /tf/rover/launchpad.sh $(Build.SourcesDirectory)/$(landingZoneName) plan -var-file="$(Build.SourcesDirectory)/test/$(landingZoneName)/$(landingZoneName).test.tfvars" -input=false -no-color
       displayName: 'Landing Zone Plan'
 
 - stage: Apply
@@ -76,7 +76,7 @@ stages:
         inlineScript: |
             echo "Planning landing zone deployment"
             export TF_DATA_DIR="$(System.DefaultWorkingDirectory)"
-            /tf/rover/launchpad.sh $(Build.SourcesDirectory)/$(landingZoneName) apply -var-file="$(Build.SourcesDirectory)/test/$(landingZoneName).test.tfvars" -input=false  -no-color
+            /tf/rover/launchpad.sh $(Build.SourcesDirectory)/$(landingZoneName) apply -var-file="$(Build.SourcesDirectory)/test/$(landingZoneName)/$(landingZoneName).test.tfvars" -input=false  -no-color
       displayName: 'Landing Zone Plan'
 
 - stage: Test
