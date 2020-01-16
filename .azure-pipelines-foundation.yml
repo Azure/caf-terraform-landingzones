@@ -99,7 +99,7 @@ stages:
             git clone https://github.com/sstephenson/bats.git /tmp/bats
             sudo /tmp/bats/install.sh /usr/local
             sudo yum install nodejs
-            npm install tap-xunit -g
+            sudo npm install tap-xunit -g
         displayName: 'Install Bats and Node'
     - task: AzureCLI@2
       enabled: ${{variables.deploymentEnabled}}
