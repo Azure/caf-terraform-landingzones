@@ -43,7 +43,7 @@ accounting_settings = {
 
     # Azure diagnostics logs retention period
     azure_diagnostics_logs_name = "diaglogs"
-    azure_diagnostics_logs_event_hub = false
+    azure_diagnostics_logs_event_hub = true
 
     #Logging and monitoring 
     analytics_workspace_name = "lalogs"
