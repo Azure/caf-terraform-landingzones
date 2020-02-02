@@ -3,6 +3,7 @@
 Welcome to Azure Terraform hub and spoke topology architecture demo.
 
 This landing zone demo is a simplified hub and spoke architecture for you to use in demo/POC.
+** This landing zone does not represent Microsoft best practices for hub and spoke topology and is here to illustrate service composition and components reuse within a landing zone.
 
 The choice of multiple blueprints and virtual networks might not fit all customer scenario but should illustrate how to compose an environnement and provide a code base to create your desired topology.
 
@@ -31,7 +32,6 @@ rover /tf/caf/landingzones/landingzone_vdc_demo destroy
 ```
 
 More details about this landing zone can also be found in the landing zone folder and its blueprints subfolders.
-
 
 ## Contribute
 

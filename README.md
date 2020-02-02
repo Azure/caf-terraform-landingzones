@@ -1,8 +1,8 @@
-[![Board Status](https://dev.azure.com/azure-terraform/5c5eb3a0-90ba-4109-967d-554526ddbbaf/0a51b0f0-73a7-4373-81d5-216c0602ea3b/_apis/work/boardbadge/bafe98df-3170-4ab3-9fb5-7eb1166a128d)](https://dev.azure.com/azure-terraform/5c5eb3a0-90ba-4109-967d-554526ddbbaf/_boards/board/t/0a51b0f0-73a7-4373-81d5-216c0602ea3b/Microsoft.EpicCategory)
-
 # Introduction to Azure Cloud Adoption Framework landing zones for Terraform
 
 Microsoft Cloud Adoption Framework for Azure provides you with guidance to adopt Azure. When deploying resources in a new environment, you can leverage landing zones and blueprints to accelerate your deployment. A landing zone is a set of infrastructure components that assembled together deploys a complete environment ready to host an application.
+
+Feel free to reach out to us on tf-landingzones at microsoft dot com.
 
 ## Overview
 
@@ -22,14 +22,15 @@ Currently we provide you with the following landing zones:
 
 | Name | Purpose |  
 | ------- | ---------------- |
-| landingzone_caf_foundations  | setup all the fundamentals for a subscription (logging, accounting, security.). You can find all details of the caf_foundation landing zone in its README.|
-| landingzone_vdc_demo  | setup a demo environment of a hub-spoke topology including shared services, as well as various DMZ (ingress, egress, transit). You can find all details of the vdc_demo landing zone in its README.|
+| landingzone_caf_foundations  | setup all the fundamentals for a subscription (logging, accounting, security.). You can find all details of the caf_foundations landing zone [Here](./landingzones/landingzone_caf_foundations/readme.md) |
+| landingzone_vdc_demo  | setup a demo environment of a hub-spoke topology including shared services, as well as various DMZ (ingress, egress, transit). You can find all details of the vdc_demo landing zone [Here](./landingzones/landingzone_vdc_demo/readme.md)|
 
 ## Getting started
 
-We recommend developing and deploying landing zones using Visual Studio Code, leveraging VS Code Development Containers allows a smooth transition from your dev machine to your the exection environement (the rover).
+We recommend developing and deploying landing zones using Visual Studio Code, leveraging VS Code Development Containers allows a smooth transition from your dev machine to your the execution environnement (the rover).
 
 ### Prerequisites
+
 In order to start deploying your with CAF landing zones, you need the following components installed in your environment:
 
 - Visual Studio Code
@@ -45,7 +46,9 @@ MacOS | Windows |
 Once installed, open **Visual Studio Code** and install "**Remote Development**" extension as follow: ![RemoteDevelopment](./_pictures/caf_setup_remotedev.png)
 
 ### Cloning the repository
+
 Cloning your first repository:
+
 ```bash
 git clone https://github.com/aztfmod/landingzones.git 
 ```
@@ -58,9 +61,10 @@ This should take a while, in the meantime, feel free to click on Details to see 
 ![SetupContainer](./_pictures/caf_setup_container.png)
 You will have to accept local mapping to your filesystem when Docker prompts you, so that you can access your files from your container.
 ![Ready](./_pictures/caf_dev_ready.png)
-After a while, your environment is ready, note on the lower left part of Visual Studio Code, that you are now in your Azure CAF rover, which is your environment to use Azure landing zones. 
+After a while, your environment is ready, note on the lower left part of Visual Studio Code, that you are now in your Azure CAF rover, which is your environment to use Azure landing zones.
 
 ### Deploying your first landing zone
+
 You must be authenticated first:
 For that we will rely on Azure authentication as completed by Azure Cli, via browser method:
 
@@ -68,13 +72,14 @@ For that we will rely on Azure authentication as completed by Azure Cli, via bro
 rover login
 ```
 
-When you are running rover for the fist time, it will prompt your for the location of the launchpad foundations. 
+When you are running rover for the fist time, it will prompt your for the location of the launchpad foundations.
 
 ```bash
 # To deploy the environment
 rover
 ```
-Then enter the location choosen for deployment, for instance type southeastasia or westeurope.
+
+Then enter the location chosen for deployment, for instance type southeastasia or westeurope.
 
 You can then launch your first landing zone as follow:
 
@@ -93,7 +98,7 @@ rover /tf/caf/landingzones/landingzone_caf_foundations destroy
 ## Updating your development environment
 
 If you are using previous version of Azure landing zones (v1.0.1912), since we migrated to use new version of the rover, which uses non-root containers, you will have to re-create your volumes.
-You can achieve that running the following commands: 
+You can achieve that running the following commands:
 
 ```bash
 # To list all Dev Container volumes
@@ -111,20 +116,16 @@ docker volume rm -f $(docker volume ls -f label=caf)
 ```
 
 You can also purge Docker cache running the following command:
+
 ```bash
 docker system prune -a
 ```
 
-## Service composition
-Landing zone is a fully environment ready to use, running on Microsoft Azure. From the software prospective, the landing zone is the element doing the service composition by calling different blueprints to deploy the complete environment as in the picture below: </br> ![landingzoneoverview](./_pictures/caf_landing_zone_overview.png)
-
-By default, the blueprints are store locally in the landing zone, for instance, the hub_spoke landing zone which has a set a below: </br>
-![localblueprint](./_pictures/caf_local_blueprint.png) </br>
-A blueprint can also be used directly from the GitHub public blueprints: ![RemoteDevelopment](./_pictures/caf_public_blueprint.png)
-
-More to come soon on that!
-
 Happy deployment with Azure landing zones, let us know your feedback and how you need it to evolve!
+
+## Reference materials
+
+More details on how to develop, deploy and operate with landing zones can be found in the reference section [here](./documentation/README.md)
 
 ## Contribute
 
