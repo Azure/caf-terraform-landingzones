@@ -5,7 +5,7 @@ terraform {
 }
 
 provider "azurerm" {
-  version = "<= 1.37"
+  version = "<= 1.42"
 }
 
 data "azurerm_subscription" "current" {

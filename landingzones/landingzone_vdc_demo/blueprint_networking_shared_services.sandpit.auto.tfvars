@@ -85,13 +85,13 @@ enable_bastion = true
 bastion_config = {
     name = "azurebastion"
     diagnostics = {
-    log = [
-                #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period] 
-                ["BastionAuditLogs", true, true, 30],
+        log = [
+            #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period] 
+            ["BastionAuditLogs", true, true, 30],
         ]
-    metric = [
+        metric = [
             #    ["AllMetrics", true, true, 30],
-    ]
+        ]
     }
     ip_name = "arnaud-pip-bastion"
     ip_addr = {
