@@ -1,8 +1,8 @@
 # Introduction to Azure Cloud Adoption Framework landing zones for Terraform
 
-Microsoft Cloud Adoption Framework for Azure provides you with guidance to adopt Azure. When deploying resources in a new environment, you can leverage landing zones and blueprints to accelerate your deployment. A landing zone is a set of infrastructure components that assembled together deploys a complete environment ready to host an application.
+Microsoft Cloud Adoption Framework for Azure provides you with guidance to adopt Azure. When deploying resources in a new environment, you can leverage landing zones and blueprints to accelerate your deployment. A landing zone is a set of infrastructure components that assembled together will deploy a complete environment ready to host an application.
 
-Feel free to reach out to us on tf-landingzones at microsoft dot com.
+For full details on Cloud Adoption Framework, refer to http://aka.ms/caf. For any idea, bug, please fill in an issue. You can also reach out to us on tf-landingzones at microsoft dot com.
 
 ## Overview
 
@@ -72,16 +72,31 @@ For that we will rely on Azure authentication as completed by Azure Cli, via bro
 rover login
 ```
 
-When you are running rover for the fist time, it will prompt your for the location of the launchpad foundations.
+We recommend that you verify the output of the login and make sure the subscription selected by default is the one you want to work on. If not, you can use the following switch: 
 
 ```bash
-# To deploy the environment
-rover
+az account set --subscription <subscription_GUID>
 ```
 
-Then enter the location chosen for deployment, for instance type southeastasia or westeurope.
+On the first run, you need to use the launchpad to create the foundations for Terraform environment, the launchpad_opensource is the current way to set those foundations.
 
-You can then launch your first landing zone as follow:
+Running the following command: 
+
+```bash
+launchpad /tf/launchpads/launchpad_opensource_light apply
+```
+
+This command will interactively prompt you for *var.location*, asking for the name of a supported Azure region **where you want to deploy the Terraform state and dependencies**. You can specify that in the argument as in the following example:  
+
+```bash
+launchpad /tf/launchpads/launchpad_opensource_light apply -var 'location=westus'
+```
+
+You can then launch your first landing zone!
+
+Please note that each landing zone come with its own deployment settings, which may deploy resources in different region than where you set the foundations.  
+
+You are ready to start:
 
 ```bash
 rover /tf/caf/landingzones/landingzone_caf_foundations plan
