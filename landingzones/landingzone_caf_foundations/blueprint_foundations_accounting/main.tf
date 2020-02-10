@@ -2,11 +2,11 @@ data "azurerm_client_config" "current" {
 }
 
 provider "azurerm" {
-  version = "<= 1.40"
+  version = "<= 1.42"
 }
 
 provider "azuread" {
-    version = "<=0.6.0"
+    version = "<=0.7.0"
 }
 
 terraform {
