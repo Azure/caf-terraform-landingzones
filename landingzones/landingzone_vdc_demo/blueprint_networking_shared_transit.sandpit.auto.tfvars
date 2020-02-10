@@ -11,7 +11,7 @@ resource_groups_shared_transit = {
 # Settings for the shared services egress vnet
 networking_transit = {
         vnet = {
-            name                = "_Shared_Transit"
+            name                = "Shared-Transit"
             address_space       = ["172.16.0.0/23"]   
             dns                 = ["192.168.0.16", "192.168.0.64"]
         }

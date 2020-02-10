@@ -1,6 +1,7 @@
 module "blueprint_networking_shared_services" {
     source = "./blueprint_networking_shared_services"
   
+    global_settings                     = local.global_settings
     prefix                              = local.prefix
     location                            = local.global_settings.location_map["region1"]
     log_analytics_workspace             = local.caf_foundations_accounting.log_analytics_workspace
@@ -20,6 +21,7 @@ module "blueprint_networking_shared_services" {
 module "blueprint_networking_shared_egress" {
     source = "./blueprint_networking_shared_egress"
   
+    global_settings                     = local.global_settings
     prefix                              = local.prefix
     location                            = local.global_settings.location_map["region1"]
     log_analytics_workspace             = local.caf_foundations_accounting.log_analytics_workspace
@@ -39,6 +41,7 @@ module "blueprint_networking_shared_egress" {
 module "blueprint_networking_shared_transit" {
     source = "./blueprint_networking_shared_transit"
   
+    global_settings                     = local.global_settings
     prefix                              = local.prefix
     location                            = local.global_settings.location_map["region1"]
     log_analytics_workspace             = local.caf_foundations_accounting.log_analytics_workspace

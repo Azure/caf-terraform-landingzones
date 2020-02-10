@@ -73,3 +73,7 @@ variable "provision_gateway" {
 variable "akv_config" {
   
 }
+
+variable "global_settings" {
+  description = "global settings"
+}

@@ -9,7 +9,7 @@ resource_groups_shared_egress = {
 # Settings for the shared services egress vnet - note that Azure Firewall subnet must be at least /26 
 networking_egress = {
     vnet = {
-        name                = "-Shared-Egress"
+        name                = "Shared-Egress"
         address_space       = ["10.0.0.0/25"]     
         dns                 = ["192.168.0.16", "192.168.0.64"]
     }

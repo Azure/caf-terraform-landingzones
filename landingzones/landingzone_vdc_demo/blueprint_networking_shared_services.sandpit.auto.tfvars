@@ -11,7 +11,7 @@ ddos_name            = "ddos_protection_plan"
 
 shared_services_vnet = {
         vnet = {
-            name                = "_Shared_Services"
+            name                = "Shared-Services"
             address_space       = ["10.101.4.0/22"]
             dns                 = []
         }

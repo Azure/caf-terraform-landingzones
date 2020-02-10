@@ -11,11 +11,11 @@ locals {
   HUB-CORE-NET = lookup(module.resource_group.names, "HUB-CORE-NET", null)
 }
 
-
 module "networking_shared_services" {
   source  = "aztfmod/caf-virtual-network/azurerm"
-  version = "0.2.0"
+  version = "1.0.0"
 
+  convention                        = var.global_settings.convention
   virtual_network_rg                = local.HUB-CORE-NET
   prefix                            = var.prefix
   location                          = var.location
