@@ -1,3 +1,11 @@
+## v2.1.2002 (UNRELEASED February 2020)
+FEATURES:
+* **landingzone_vdc_demo :** refactor to use landingzone_caf_foundations as lower level [#12](
+https://github.com/aztfmod/landingzones/issues/12)
+* **landingzone_vdc_demo :** refresh of module versions to latest [#12](
+https://github.com/aztfmod/landingzones/issues/12)
+* **landingzone_vdc_demo :** use Azure Virtual WAN to mesh virtual networks 
+
 ## v2.0.2002 (February 2020)
 FEATURES:
 * **landingzone_caf_foundations :** adding support for azurerm 1.42 provider, azuread provider 0.7
