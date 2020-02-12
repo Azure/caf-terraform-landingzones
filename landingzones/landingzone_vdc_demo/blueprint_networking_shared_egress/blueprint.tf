@@ -44,7 +44,7 @@ module "networking_shared_public_ip" {
 
 module "networking_shared_egress_azfirewall" {
   source  = "aztfmod/caf-azure-firewall/azurerm"
-  version = "1.0.0"
+  version = "1.1.0"
 
   convention                        = var.global_settings.convention 
   name                              = var.az_fw_config.name
