@@ -54,7 +54,7 @@ module "networking_shared_egress_azfirewall" {
   location                          = var.location
   tags                              = local.tags
   diagnostics_map                   = var.diagnostics_map
-  log_analytics_workspace_id        = var.log_analytics_workspace.id
+  la_workspace_id                   = var.log_analytics_workspace.id
   diagnostics_settings              = var.az_fw_config.diagnostics
 }
 
