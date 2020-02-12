@@ -10,7 +10,7 @@ The choice of multiple blueprints and virtual networks might not fit all custome
 
 ## Prerequisites
 
-This landing zone is a "level 2" type of landing zone, which requires you have a set the foundations. The supported lower level landing zone is "landingzone_caf_foundations" which can be found in the same release and must have been applied successfulling before applying this one. 
+This landing zone is a "level 2" type of landing zone, which **requires** you have deployed  the foundations. The supported lower level landing zone is **landingzone_caf_foundations** which can be found in the same release and must have been applied successfulling **before** applying this one. 
 
 ## Overall architecture
 
