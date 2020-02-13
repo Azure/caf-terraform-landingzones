@@ -4,6 +4,7 @@ FEATURES:
 https://github.com/aztfmod/landingzones/issues/12)
 * **landingzone_vdc_demo :** refresh of module versions to latest [#12](
 https://github.com/aztfmod/landingzones/issues/12)
+* **overall :** upgrade to latest azurerm provider [1.44](https://github.com/terraform-providers/terraform-provider-azurerm/blob/v1.44.0/CHANGELOG.md) 
 
 BUGFIXES:
 * **rover :** launchpad opensource light fails to deploy successfully [#18](
