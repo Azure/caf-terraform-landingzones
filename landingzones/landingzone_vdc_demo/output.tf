@@ -1,8 +1,3 @@
-output "blueprint_foundations" {
-  sensitive   = true                      # to hide content from logs
-  value       = module.blueprint_foundations
-}
-
 output "blueprint_operations" {
   sensitive   = true                      # to hide content from logs
   value       = module.blueprint_operations
@@ -23,10 +18,17 @@ output "blueprint_networking_shared_egress" {
   value       = module.blueprint_networking_shared_egress
 }
 
+## re-exporting level1 settings (caf_foundations) for level 3 consumption
 output "prefix" {
   value = local.prefix
 }
 
-output "tags" {
-  value = var.tags_hub
+output "landingzone_caf_foundations_accounting" {
+  sensitive   = false                      # to hide content from logs
+  value       = local.caf_foundations_accounting
+}
+
+output "landingzone_caf_foundations_global_settings" {
+  sensitive   = false                      # to hide content from logs
+  value       = local.global_settings
 }

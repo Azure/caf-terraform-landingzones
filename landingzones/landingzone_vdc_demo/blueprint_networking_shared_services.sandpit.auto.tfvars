@@ -1,5 +1,4 @@
 # settings for the shared network blueprint 
-
 resource_groups_shared_services = {
     HUB-CORE-NET    = {
         name = "-hub-network-shared"  
@@ -12,7 +11,7 @@ ddos_name            = "ddos_protection_plan"
 
 shared_services_vnet = {
         vnet = {
-            name                = "_Shared_Services"
+            name                = "Shared-Services"
             address_space       = ["10.101.4.0/22"]
             dns                 = []
         }
@@ -32,7 +31,7 @@ shared_services_vnet = {
                 service_endpoints   = []
                 nsg_inbound         = [
                     # {"Name", "Priority", "Direction", "Action", "Protocol", "source_port_range", "destination_port_range", "source_address_prefix", "destination_address_prefix" }, 
-                    ["LDAP-t", "100", "Inbound", "Allow", "*", "*", "389", "*", "*"],
+                    ["LDAP", "100", "Inbound", "Allow", "*", "*", "389", "*", "*"],
                     ["RPC-EPM", "102", "Inbound", "Allow", "tcp", "*", "135", "*", "*"],
                     ["SMB-In", "103", "Inbound", "Allow", "tcp", "*", "445", "*", "*"],
                 ]
@@ -93,7 +92,7 @@ bastion_config = {
             #    ["AllMetrics", true, true, 30],
         ]
     }
-    ip_name = "arnaud-pip-bastion"
+    ip_name = "caf-pip-bastion"
     ip_addr = {
             allocation_method   = "Static"
             #Dynamic Public IP Addresses aren't allocated until they're assigned to a resource (such as a Virtual Machine or a Load Balancer) by design within Azure 

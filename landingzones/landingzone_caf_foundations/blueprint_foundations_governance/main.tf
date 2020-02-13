@@ -5,7 +5,7 @@ data "azurerm_subscription" "current" {}
 
 
 provider "azurerm" {
-  version = "<= 1.42"
+  version = "<= 1.44"
 }
 
 provider "azuread" {

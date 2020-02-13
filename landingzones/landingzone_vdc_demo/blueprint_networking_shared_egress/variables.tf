@@ -41,3 +41,7 @@ variable "diagnostics_map" {
 
 variable "resource_groups_shared_egress" {
 }
+
+variable "global_settings" {
+  description = "global settings"
+}

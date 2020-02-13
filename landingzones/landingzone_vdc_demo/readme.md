@@ -8,6 +8,10 @@ This landing zone demo is a simplified hub and spoke architecture for you to use
 
 The choice of multiple blueprints and virtual networks might not fit all customer scenario but should illustrate how to compose an environnement and provide a code base to create your desired topology.
 
+## Prerequisites
+
+This landing zone is a "level 2" type of landing zone, which **requires** you have deployed  the foundations. The supported lower level landing zone is **landingzone_caf_foundations** which can be found in the same release and must have been applied successfulling **before** applying this one. 
+
 ## Overall architecture
 
 The following diagram shows the environment we are deploying for this POC:

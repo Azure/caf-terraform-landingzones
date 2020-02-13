@@ -1,11 +1,11 @@
-# settings for the shared services blueprint 
-
+# settings for the operations blueprint 
+ 
 # #Azure Site Recovery Configuration
-asr_vault_name = "asr"
-
-asr_diags = {
-    log_analytics_destination_type = "Dedicated"
-    log = [
+asr_config = {
+    asr_vault_name = "asr"
+    asr_diags = {
+        log_analytics_destination_type = "Dedicated"
+        log = [
                 # ["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period] 
                 ["AzureBackupReport", true, true, 30],
                 ["CoreAzureBackup", true, true, 30],
@@ -22,24 +22,26 @@ asr_diags = {
                 ["AzureSiteRecoveryReplicationDataUploadRate", true, true, 30],
                 ["AzureSiteRecoveryProtectedDiskDataChurn", true, true, 30],
         ]
-    metric = [
-               #["AllMetrics", 60, True],
-    ]
+        metric = [
+                #["AllMetrics", 60, True],
+        ]
+}
 }
 
 
 #Azure Automation account name
-auto_account = "azauto"
-
-auto_diags = {
-    log = [
-                # ["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period] 
-                ["JobLogs", true, true, 30],
-                ["JobStreams", true, true, 30],
-                ["DscNodeStatus", true, true, 30],
+auto_config = {
+    auto_account = "azauto"
+    auto_diags = {
+        log = [
+                    # ["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period] 
+                    ["JobLogs", true, true, 30],
+                    ["JobStreams", true, true, 30],
+                    ["DscNodeStatus", true, true, 30],
+            ]
+        metric = [
+                    # ["Category name",  "Metric Enabled(true/false)", "Retention Enabled(true/false)", Retention_period] 
+                    ["AllMetrics", true, true, 30],
         ]
-    metric = [
-                # ["Category name",  "Metric Enabled(true/false)", "Retention Enabled(true/false)", Retention_period] 
-                ["AllMetrics", true, true, 30],
-    ]
+    }
 }

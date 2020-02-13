@@ -1,5 +1,4 @@
 # settings for the shared egress blueprint 
-
 resource_groups_shared_egress = {
     HUB-EGRESS-NET    = {
         name = "-hub-network-egress"
@@ -10,7 +9,7 @@ resource_groups_shared_egress = {
 # Settings for the shared services egress vnet - note that Azure Firewall subnet must be at least /26 
 networking_egress = {
     vnet = {
-        name                = "_Shared_Egress"
+        name                = "Shared-Egress"
         address_space       = ["10.0.0.0/25"]     
         dns                 = ["192.168.0.16", "192.168.0.64"]
     }
@@ -45,7 +44,7 @@ networking_egress = {
 # Settings for the public IP address to be used for egress
 # Must be standard and static for Azure Firewall 
 ip_addr_config = {
-    ip_name = "arnaud-pip-egress"    
+    ip_name = "caf-pip-egress"    
     allocation_method   = "Static"
     #Dynamic Public IP Addresses aren't allocated until they're assigned to a resource (such as a Virtual Machine or a Load Balancer) by design within Azure 
     
@@ -73,7 +72,7 @@ ip_addr_config = {
 
 # Settings for the Azure Firewall settings
 az_fw_config = {
-    name = "az-fw-arnaud"
+    name = "az-fw-caf"
     diagnostics = {
         log = [
                     #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period] 
