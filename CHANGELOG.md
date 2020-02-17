@@ -1,10 +1,15 @@
+## v2.2.2002 (February 2020) - UNREL
+FEATURES:
+* **landingzone_starter :** introducing landingzone_starter as a level 2 landing zone for development on top of caf_foundations.
+
+
 ## v2.1.2002 (February 2020)
 FEATURES:
 * **landingzone_vdc_demo :** refactor to use landingzone_caf_foundations as lower level [#12](
 https://github.com/aztfmod/landingzones/issues/12)
 * **landingzone_vdc_demo :** refresh of module versions to latest [#12](
 https://github.com/aztfmod/landingzones/issues/12)
-* **overall :** upgrade to latest azurerm provider [1.44](https://github.com/terraform-providers/terraform-provider-azurerm/blob/v1.44.0/CHANGELOG.md) 
+* **overall :** upgrade to latest azurerm provider [1.44](https://github.com/terraform-providers/terraform-provider-azurerm/blob/v1.44.0/CHANGELOG.md)
 
 BUGFIXES:
 * **rover :** launchpad opensource light fails to deploy successfully [#18](
