@@ -1,3 +1,5 @@
+[![Gitter](https://badges.gitter.im/aztfmod/community.svg)](https://gitter.im/aztfmod/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+
 # Introduction to Azure Cloud Adoption Framework landing zones for Terraform
 
 Microsoft Cloud Adoption Framework for Azure provides you with guidance to adopt Azure. When deploying resources in a new environment, you can leverage landing zones and blueprints to accelerate your deployment. A landing zone is a set of infrastructure components that assembled together will deploy a complete environment ready to host an application.
@@ -24,6 +26,7 @@ Currently we provide you with the following landing zones:
 | ------- | ---------------- | -- | -- |
 | landingzone_caf_foundations  | setup all the fundamentals for a subscription (logging, accounting, security.). You can find all details of the caf_foundations landing zone [Here](./landingzones/landingzone_caf_foundations/readme.md) | N/A | launchpad_opensource_light |
 | landingzone_vdc_demo  | setup a demo environment of a hub-spoke topology including shared services, as well as various DMZ (ingress, egress, transit). You can find all details of the vdc_demo landing zone [Here](./landingzones/landingzone_vdc_demo/readme.md)| landingzone_caf_foundations | launchpad_opensource_light |
+| landingzone_secure_vnet_dmz  | (preview) this is an early implementation of the reference architecture [secure_vnet_dmz](https://docs.microsoft.com/en-gb/azure/architecture/reference-architectures/dmz/secure-vnet-dmz). This is a work in progress used to illustrate landing zone creation process as described [here](./documentation/code_architecture/how_to_code_a_landingzone.md) . You can find all details of the starter landing zone [Here](./landingzones/landingzone_secure_vnet_dmz/readme.md)| landingzone_caf_foundations | launchpad_opensource_light |
 | landingzone_starter  | this is an empty landing zones to use as a template to develop a level 2 landing zone. You can find all details of the starter landing zone [Here](./landingzones/landingzone_starter/readme.md)| landingzone_caf_foundations | launchpad_opensource_light |
 
 ## Getting started

@@ -8,11 +8,13 @@ In this series of articles, we describe the development, code architecture, the 
 
 [Introduction to service composition inside landing zones](./code_architecture/service_composition.md)
 
+[Create your first landing zone in 10 easy steps](./code_architecture/how_to_code_a_landingzone.md)
+
+[Unit and integration testing modules](./test/unit_test.md)
+
 Soon - [CAF landing zones hierarchy model]()
 
 Soon - [Developing landing zones, modules, blueprints]()
-
-Soon - [Create your first landing zone in 10 easy steps]()
 
 ## Delivery of landing zones
 
@@ -28,6 +30,6 @@ Soon - [Deep-dive on launchpad]()
 
 Soon - [IaC vs regular code, the similarities and the differences]()
 
-Soon - [Introduction to GitOps]()
+Soon - [Introduction to GitOps for landing zones]()
 
 Soon - [The people, procedures and policies]()
