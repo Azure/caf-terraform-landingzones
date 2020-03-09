@@ -1,4 +1,4 @@
-## v2.2.2002 (February 2020) - UNREL
+## v2.2.2002 (February 2020)
 
 FEATURES:
 
