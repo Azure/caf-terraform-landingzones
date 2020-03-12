@@ -54,7 +54,7 @@ Once installed, open **Visual Studio Code** and install "**Remote Development**"
 Cloning your first repository:
 
 ```bash
-git clone https://github.com/aztfmod/landingzones.git 
+git clone https://github.com/Azure/caf-terraform-landingzones.git
 ```
 
 ### Open the repository in Visual Studio Code
