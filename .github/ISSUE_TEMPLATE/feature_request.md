@@ -2,7 +2,7 @@
 name: Feature request
 about: Suggest an idea for a landing zone or a landing zone feature
 title: "[feature]"
-labels: ''
+labels: enhancement
 assignees: ''
 
 ---
