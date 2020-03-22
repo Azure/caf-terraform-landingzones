@@ -10,16 +10,16 @@ output "activity_logs_map" {
   description = "outputs subscription activity logs map as desribed in the activity logging module doc"
 }
 
-#outputs of the rg data for hub 
-output "resource_group_hub_ids" {
-  value = module.resource_group_hub.ids 
-  description = "outputs a map with RG Terraform names as keys and value is the Azure object ID"
-}
+# #outputs of the rg data for hub 
+# output "resource_group_hub_ids" {
+#   value = module.resource_group_hub.ids 
+#   description = "outputs a map with RG Terraform names as keys and value is the Azure object ID"
+# }
 
-output "resource_group_hub_names" {
-  value = module.resource_group_hub.names
-  description = "outputs a map with RG Terraform names as keys and value is the RG name (as created)"
-}
+# output "resource_group_hub_names" {
+#   value = module.resource_group_hub.names
+#   description = "outputs a map with RG Terraform names as keys and value is the RG name (as created)"
+# }
 
 #log analytics workspace
 output "log_analytics_workspace" {
@@ -40,4 +40,9 @@ output "tags" {
 output "prefix" {
   value = var.prefix
   description = "exports the prefix as generated in level0"
+}
+
+output "resource_group_operations" {
+  value = azurerm_resource_group.rg_operations
+  description = "rg_group_operations"
 }

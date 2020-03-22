@@ -1,3 +1,7 @@
+## vx.y.2003 (March 2020)
+* **landingzone_caf_foundations :** Added toggle feature for management group deployment control (disabled by default)
+
+
 ## v1.1.1912 (January 2020)
 FEATURES:
 * **landingzone_caf_foundations :** Added support for accouting blueprints to set up diagnostics logging, activity logs and log analytics foundations.
