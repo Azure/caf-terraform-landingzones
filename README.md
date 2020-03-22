@@ -63,7 +63,7 @@ Open the repository you've just cloned in Visual Studio Code, click on the lower
 ![RemoteDevelopment](./_pictures/caf_remote_dev.png)
 This should take a while, in the meantime, feel free to click on Details to see the container being downloaded from the registry and being connected to yur local environment:
 ![SetupContainer](./_pictures/caf_setup_container.png)
-You will have to accept local mapping to your filesystem when Docker prompts you, so that you can access your files from your container.
+You will have to accept local mapping to your filesystem when Docker prompts you (here's [how you reconfigure Docker Desktop to allow fileshares](./_pictures/caf_setup_docker_fileshares.png) ), so that you can access your files from your container.
 ![Ready](./_pictures/caf_dev_ready.png)
 After a while, your environment is ready, note on the lower left part of Visual Studio Code, that you are now in your Azure CAF rover, which is your environment to use Azure landing zones.
 
