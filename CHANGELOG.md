@@ -1,4 +1,15 @@
-## v2.2.2002 (February 2020) - UNREL
+## UNRELEASED.2003 (March 2020)
+
+FEATURES:
+
+* **landingzone_caf_foundations :** Added toggle feature for management group deployment control (disabled by default)
+* **landingzone_caf_foundations :** Added support for azurerm 2.x [#23](
+https://github.com/Azure/caf-terraform-landingzones/issues/23)
+* **landingzone_vdc_demo:** Added support for azurerm 2.x [#23](
+https://github.com/Azure/caf-terraform-landingzones/issues/23)
+
+
+## v2.2.2002 (February 2020)
 
 FEATURES:
 
