@@ -1,13 +1,13 @@
 # definition of variables for the virtual network
 rg_network = {
     CORE-NET    = {
-        name = "-network-core" 
+        name = "network-core" 
     }
     TRANSIT-NET = {
-        name = "-network-transit"
+        name = "network-transit"
     }
     EDGE-NET = {
-        name = "-network-edge"
+        name = "network-edge"
     }
 }
 
@@ -92,6 +92,22 @@ core_networking = {
                     #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]                 
                     ["AllMetrics", true, true, 60],
             ]   
+        }
+        netwatcher = {
+            create = true
+            #create the network watcher for a subscription and for the location of the vnet
+            name   = "arnaud-nw-test"
+            #name of the network watcher to be created
+
+            flow_logs_settings = {
+                enabled = true
+                retention = true
+                period = 7
+            }
+
+            traffic_analytics_settings = {
+                enabled = true
+            }
         }
 }
 
