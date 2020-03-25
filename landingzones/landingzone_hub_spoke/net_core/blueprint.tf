@@ -59,8 +59,9 @@ module "core_network" {
 
 ## Azure Firewall configuration
 module "az_firewall_ip" {
-  source  = "aztfmod/caf-public-ip/azurerm"
-  version = "1.0.0"
+  # source  = "aztfmod/caf-public-ip/azurerm"
+  # version = "1.0.0"
+  source = "git://github.com/aztfmod/terraform-azurerm-caf-public-ip?ref=2003-refresh"
 
   convention                       = var.global_settings.convention 
   name                             = var.core_networking.ip_addr_config.ip_name
@@ -74,8 +75,9 @@ module "az_firewall_ip" {
 }
 
 module "az_firewall" {
-  source  = "aztfmod/caf-azure-firewall/azurerm"
-  version = "1.1.0"
+  # source  = "aztfmod/caf-azure-firewall/azurerm"
+  # version = "1.1.0"
+  source = "git://github.com/aztfmod/terraform-azurerm-caf-azure-firewall?ref=2003-refresh"
 
   convention                        = var.global_settings.convention 
   name                              = var.core_networking.az_fw_config.name
@@ -136,8 +138,10 @@ module "bastion_host" {
 
 ## Azure Site-to-Site Gateway
 module "vpn_pip" {
-  source  = "aztfmod/caf-public-ip/azurerm"
-  version = "1.0.0"
+  # source  = "aztfmod/caf-public-ip/azurerm"
+  # version = "1.0.0"
+  source = "git://github.com/aztfmod/terraform-azurerm-caf-public-ip?ref=2003-refresh"
+
 
   convention                       = var.global_settings.convention 
   name                             = var.core_networking.gateway_config.pip.name
@@ -169,8 +173,9 @@ module "vpn_gateway" {
 }
 
 module "keyvault_vpn" {
-  source  = "aztfmod/caf-keyvault/azurerm"
-  version = "1.0.0"
+  # source  = "aztfmod/caf-keyvault/azurerm"
+  # version = "1.0.0"
+  source = "git://github.com/aztfmod/terraform-azurerm-caf-keyvault?ref=2003-refresh"
   
   convention                        = var.global_settings.convention 
   rg                                = azurerm_resource_group.rg_transit.name

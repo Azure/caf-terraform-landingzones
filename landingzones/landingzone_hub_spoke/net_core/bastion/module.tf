@@ -1,6 +1,8 @@
 module "bastion_pip" {
-  source  = "aztfmod/caf-public-ip/azurerm"
-  version = "1.0.0"
+  # source  = "aztfmod/caf-public-ip/azurerm"
+  # version = "1.0.0"
+  source = "git://github.com/aztfmod/terraform-azurerm-caf-public-ip?ref=2003-refresh"
+
 
   convention                       = var.global_settings.convention 
   name                             = var.bastion_config.ip_name
