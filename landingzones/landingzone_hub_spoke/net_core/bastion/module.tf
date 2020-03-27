@@ -1,13 +1,13 @@
 module "bastion_pip" {
-  # source  = "aztfmod/caf-public-ip/azurerm"
-  # version = "1.0.0"
-  source = "git://github.com/aztfmod/terraform-azurerm-caf-public-ip?ref=2003-refresh"
+  source  = "aztfmod/caf-public-ip/azurerm"
+  version = "2.0.0"
+  # source = "git://github.com/aztfmod/terraform-azurerm-caf-public-ip?ref=2003-refresh"
 
 
   convention                       = var.global_settings.convention 
   name                             = var.bastion_config.ip_name
   location                         = var.location
-  rg                               = var.rg
+  resource_group_name              = var.rg
   ip_addr                          = var.bastion_config.ip_addr
   tags                             = var.tags
   diagnostics_map                  = var.caf_foundations_accounting.diagnostics_map

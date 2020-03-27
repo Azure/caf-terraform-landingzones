@@ -46,7 +46,7 @@ accounting_settings = {
     azure_diagnostics_logs_event_hub = false
 
     #Logging and monitoring 
-    analytics_workspace_name = "lalogs"
+    analytics_workspace_name = "caflalogs"
 
     ##Log analytics solutions to be deployed 
     solution_plan_map = {

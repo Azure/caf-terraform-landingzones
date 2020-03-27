@@ -42,3 +42,10 @@ module "virtual_hub_firewall" {
 #   tags        = var.global_settings.tags_hub
 # }
 
+# need to implement a logic to search for the ID of the vnets in the peer list and then use the followign >2.2
+# https://www.terraform.io/docs/providers/azurerm/r/virtual_hub_connection.html 
+# resource "azurerm_virtual_hub_connection" "example" {
+#   name                      = "example-vhub"
+#   virtual_hub_id            = azurerm_virtual_hub.example.id
+#   remote_virtual_network_id = azurerm_virtual_network.example.id
+# }

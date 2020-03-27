@@ -7,6 +7,8 @@ FEATURES:
 https://github.com/Azure/caf-terraform-landingzones/issues/23)
 * **landingzone_vdc_demo:** Added support for azurerm 2.x [#23](
 https://github.com/Azure/caf-terraform-landingzones/issues/23)
+* **landingzone_secure_vnet_dmz:** Added support for azurerm 2.x [#23](
+https://github.com/Azure/caf-terraform-landingzones/issues/23)
 
 
 ## v2.2.2002 (February 2020)

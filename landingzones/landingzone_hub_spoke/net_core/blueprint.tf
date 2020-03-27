@@ -40,12 +40,12 @@ resource "azurerm_resource_group" "rg_edge" {
 
 ## Shared service virtual network
 module "core_network" {
-  # source  = "aztfmod/caf-virtual-network/azurerm"
-  # version = "1.1.0"
-  source = "git://github.com/aztfmod/terraform-azurerm-caf-virtual-network?ref=2003-refresh"
+  source  = "aztfmod/caf-virtual-network/azurerm"
+  version = "2.0.0"
+  # source = "git://github.com/aztfmod/terraform-azurerm-caf-virtual-network?ref=2003-refresh"
 
   convention                        = var.global_settings.convention
-  virtual_network_rg                = azurerm_resource_group.rg_network.name
+  resource_group_name               = azurerm_resource_group.rg_network.name
   prefix                            = var.prefix
   location                          = var.global_settings.location_map.region1
   networking_object                 = var.core_networking.shared_services_vnet
@@ -59,14 +59,14 @@ module "core_network" {
 
 ## Azure Firewall configuration
 module "az_firewall_ip" {
-  # source  = "aztfmod/caf-public-ip/azurerm"
-  # version = "1.0.0"
-  source = "git://github.com/aztfmod/terraform-azurerm-caf-public-ip?ref=2003-refresh"
+  source  = "aztfmod/caf-public-ip/azurerm"
+  version = "2.0.0"
+  # source = "git://github.com/aztfmod/terraform-azurerm-caf-public-ip?ref=2003-refresh"
 
   convention                       = var.global_settings.convention 
   name                             = var.core_networking.ip_addr_config.ip_name
   location                         = var.location
-  rg                               = azurerm_resource_group.rg_edge.name
+  resource_group_name              = azurerm_resource_group.rg_edge.name
   ip_addr                          = var.core_networking.ip_addr_config
   tags                             = var.global_settings.tags_hub
   diagnostics_map                  = var.caf_foundations_accounting.diagnostics_map
@@ -75,13 +75,13 @@ module "az_firewall_ip" {
 }
 
 module "az_firewall" {
-  # source  = "aztfmod/caf-azure-firewall/azurerm"
-  # version = "1.1.0"
-  source = "git://github.com/aztfmod/terraform-azurerm-caf-azure-firewall?ref=2003-refresh"
+  source  = "aztfmod/caf-azure-firewall/azurerm"
+  version = "2.0.0"
+  # source = "git://github.com/aztfmod/terraform-azurerm-caf-azure-firewall?ref=2003-refresh"
 
   convention                        = var.global_settings.convention 
   name                              = var.core_networking.az_fw_config.name
-  rg                                = azurerm_resource_group.rg_network.name
+  resource_group_name               = azurerm_resource_group.rg_network.name
   subnet_id                         = lookup(module.core_network.vnet_subnets, "AzureFirewallSubnet", null)
   public_ip_id                      = module.az_firewall_ip.id
   location                          = var.global_settings.location_map.region1
@@ -138,15 +138,15 @@ module "bastion_host" {
 
 ## Azure Site-to-Site Gateway
 module "vpn_pip" {
-  # source  = "aztfmod/caf-public-ip/azurerm"
-  # version = "1.0.0"
-  source = "git://github.com/aztfmod/terraform-azurerm-caf-public-ip?ref=2003-refresh"
+  source  = "aztfmod/caf-public-ip/azurerm"
+  version = "2.0.0"
+  # source = "git://github.com/aztfmod/terraform-azurerm-caf-public-ip?ref=2003-refresh"
 
 
   convention                       = var.global_settings.convention 
   name                             = var.core_networking.gateway_config.pip.name
   location                         = var.location
-  rg                               = azurerm_resource_group.rg_transit.name
+  resource_group_name              = azurerm_resource_group.rg_transit.name
   ip_addr                          = var.core_networking.gateway_config.pip
   tags                             = var.global_settings.tags_hub
   diagnostics_map                  = var.caf_foundations_accounting.diagnostics_map
@@ -174,11 +174,11 @@ module "vpn_gateway" {
 
 module "keyvault_vpn" {
   # source  = "aztfmod/caf-keyvault/azurerm"
-  # version = "1.0.0"
+  # version = "2.0.0"
   source = "git://github.com/aztfmod/terraform-azurerm-caf-keyvault?ref=2003-refresh"
   
   convention                        = var.global_settings.convention 
-  rg                                = azurerm_resource_group.rg_transit.name
+  resource_group_name               = azurerm_resource_group.rg_transit.name
   akv_config                        = var.core_networking.akv_config
   prefix                            = var.prefix
   location                          = var.location
