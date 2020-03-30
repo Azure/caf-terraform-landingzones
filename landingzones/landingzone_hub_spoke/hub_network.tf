@@ -1,5 +1,5 @@
-module "net_core" {
-    source = "./net_core"
+module "hub_network" {
+    source = "./hub_network"
   
     global_settings                     = local.global_settings
     prefix                              = local.prefix

@@ -1,6 +1,6 @@
-output "net_core" {
+output "hub_network" {
   sensitive   = false                      # to hide content from logs
-  value       = module.net_core
+  value       = module.hub_network
 }
 
 # output "blueprint_networking_shared_services" {

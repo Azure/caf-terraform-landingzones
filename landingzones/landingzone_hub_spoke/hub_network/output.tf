@@ -1,5 +1,10 @@
 output "core_network" {
-  value = module.core_network
+  sensitive = true
+  value     = module.core_network
+}
+
+output "hub_network_id" {
+  value = module.core_network.vnet_obj.id
 }
 
 # output "shared_services_nsg_table" {

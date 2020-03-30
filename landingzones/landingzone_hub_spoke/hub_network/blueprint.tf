@@ -188,6 +188,24 @@ module "keyvault_vpn" {
   diagnostics_map                   = var.caf_foundations_accounting.diagnostics_map
 }
 
+# adding keyvault permissions
+resource "azurerm_key_vault_access_policy" "developer" {
+  key_vault_id = module.keyvault_vpn.id
+
+  tenant_id = data.azurerm_client_config.current.tenant_id
+  object_id = data.azurerm_client_config.current.client_id
+  #object_id = azuread_service_principal.launchpad.object_id
+
+  key_permissions = []
+
+  secret_permissions = [
+    "set",
+    "get",
+    "list",
+    "delete",
+  ]
+}
+
 # Create the UDR object for routing back VPN to Azure Firewall
 
 # module "user_route_transit_to_az_firewall" {
