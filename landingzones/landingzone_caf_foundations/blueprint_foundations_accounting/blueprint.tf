@@ -27,12 +27,10 @@ resource "azurerm_resource_group" "rg_operations" {
   tags     = local.tags
 }
 
-
 #Specify the subscription logging repositories 
 module "activity_logs" {
   source  = "aztfmod/caf-activity-logs/azurerm"
   version = "2.0.0"
-  # source = "git://github.com/aztfmod/terraform-azurerm-caf-activity-logs?ref=2003-refresh"
   
   convention          = var.convention
   name                = var.accounting_settings.azure_activity_logs_name
@@ -47,8 +45,7 @@ module "activity_logs" {
 #Specify the operations diagnostic logging repositories 
 module "diagnostics_logging" {
   source  = "aztfmod/caf-diagnostics-logging/azurerm"
-  version = "2.0.0"
-  # source = "git://github.com/aztfmod/terraform-azurerm-caf-diagnostics-logging?ref=2003-refresh"
+  version = "2.0.1"
 
   convention            = var.convention
   name                  = var.accounting_settings.azure_diagnostics_logs_name
@@ -62,8 +59,7 @@ module "diagnostics_logging" {
 #Create the Azure Monitor - Log Analytics workspace
 module "log_analytics" {
   source  = "aztfmod/caf-log-analytics/azurerm"
-  version = "2.0.0"
-  # source = "git://github.com/aztfmod/terraform-azurerm-caf-log-analytics?ref=2003-refresh"
+  version = "2.0.1"
 
   convention          = var.convention
   prefix              = var.prefix
