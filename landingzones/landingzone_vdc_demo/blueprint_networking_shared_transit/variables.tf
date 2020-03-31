@@ -77,3 +77,7 @@ variable "akv_config" {
 variable "global_settings" {
   description = "global settings"
 }
+
+variable "logged_user_objectId" {
+  
+}

@@ -52,3 +52,5 @@ variable "provision_gateway" {
 variable "keyvaultid" {
   
 }
+
+variable "logged_user_objectId" {}

@@ -25,7 +25,6 @@ virtual_hub_config = {
             }
             deploy_er  = false
             er_config = {} 
-            
         }
         hub2 = {
             hub_name    = "DUB-HUB"

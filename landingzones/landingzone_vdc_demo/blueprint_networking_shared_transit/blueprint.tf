@@ -59,6 +59,7 @@ module "vpn_gateway" {
   log_analytics_workspace             = var.log_analytics_workspace
   diagnostics_settings                = var.gateway_config.diagnostics
   keyvaultid                          = module.keyvault.id
+  logged_user_objectId                = var.logged_user_objectId
 }
 
 module "keyvault" {

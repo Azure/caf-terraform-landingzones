@@ -4,3 +4,5 @@ variable "lowerlevel_container_name" {}
 variable "lowerlevel_key" {}                  # Keeping the key for the lower level0 access
 variable "lowerlevel_resource_group_name" {}
 variable "workspace" {}
+
+variable "logged_user_objectId" {}
