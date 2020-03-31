@@ -164,6 +164,7 @@ module "vpn_gateway" {
   diagnostics_map                     = var.core_networking.gateway_config.diagnostics
   caf_foundations_accounting          = var.caf_foundations_accounting
   keyvaultid                          = module.keyvault_vpn.id
+  logged_user_objectId                = var.logged_user_objectId
 }
 
 module "keyvault_vpn" {
