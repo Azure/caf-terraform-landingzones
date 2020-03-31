@@ -42,7 +42,6 @@ resource "azurerm_resource_group" "rg_edge" {
 module "core_network" {
   source  = "aztfmod/caf-virtual-network/azurerm"
   version = "2.0.0"
-  # source = "git://github.com/aztfmod/terraform-azurerm-caf-virtual-network?ref=2003-refresh"
 
   convention                        = var.global_settings.convention
   resource_group_name               = azurerm_resource_group.rg_network.name
@@ -61,7 +60,6 @@ module "core_network" {
 module "az_firewall_ip" {
   source  = "aztfmod/caf-public-ip/azurerm"
   version = "2.0.0"
-  # source = "git://github.com/aztfmod/terraform-azurerm-caf-public-ip?ref=2003-refresh"
 
   convention                       = var.global_settings.convention 
   name                             = var.core_networking.ip_addr_config.ip_name
@@ -77,7 +75,6 @@ module "az_firewall_ip" {
 module "az_firewall" {
   source  = "aztfmod/caf-azure-firewall/azurerm"
   version = "2.0.0"
-  # source = "git://github.com/aztfmod/terraform-azurerm-caf-azure-firewall?ref=2003-refresh"
 
   convention                        = var.global_settings.convention 
   name                              = var.core_networking.az_fw_config.name
@@ -137,11 +134,10 @@ module "bastion_host" {
 
 
 ## Azure Site-to-Site Gateway
+# public IP address for VPN gateway
 module "vpn_pip" {
   source  = "aztfmod/caf-public-ip/azurerm"
   version = "2.0.0"
-  # source = "git://github.com/aztfmod/terraform-azurerm-caf-public-ip?ref=2003-refresh"
-
 
   convention                       = var.global_settings.convention 
   name                             = var.core_networking.gateway_config.pip.name
@@ -154,6 +150,7 @@ module "vpn_pip" {
   diagnostics_settings             = var.core_networking.gateway_config.pip.diagnostics
 }
 
+# VPN gateway is deployed only if var.core_networking.provision_gateway is set to true
 module "vpn_gateway" {
   source = "./vpn_gateway"
   
@@ -170,12 +167,13 @@ module "vpn_gateway" {
   diagnostics_map                     = var.core_networking.gateway_config.diagnostics
   caf_foundations_accounting          = var.caf_foundations_accounting
   keyvaultid                          = module.keyvault_vpn.id
+  logged_user_objectId              = var.logged_user_objectId
 }
 
+# deploying a Keyvault to store the PSK of the S2S VPN
 module "keyvault_vpn" {
-  # source  = "aztfmod/caf-keyvault/azurerm"
-  # version = "2.0.0"
-  source = "git://github.com/aztfmod/terraform-azurerm-caf-keyvault?ref=2003-refresh"
+  source  = "aztfmod/caf-keyvault/azurerm"
+  version = "2.0.0"
   
   convention                        = var.global_settings.convention 
   resource_group_name               = azurerm_resource_group.rg_transit.name
@@ -188,23 +186,6 @@ module "keyvault_vpn" {
   diagnostics_map                   = var.caf_foundations_accounting.diagnostics_map
 }
 
-# adding keyvault permissions
-resource "azurerm_key_vault_access_policy" "developer" {
-  key_vault_id = module.keyvault_vpn.id
-
-  tenant_id = data.azurerm_client_config.current.tenant_id
-  object_id = data.azurerm_client_config.current.client_id
-  #object_id = azuread_service_principal.launchpad.object_id
-
-  key_permissions = []
-
-  secret_permissions = [
-    "set",
-    "get",
-    "list",
-    "delete",
-  ]
-}
 
 # Create the UDR object for routing back VPN to Azure Firewall
 
@@ -222,7 +203,7 @@ resource "azurerm_key_vault_access_policy" "developer" {
 # }
 
 ## Azure Application Gateway
-# module "vpn_pip" {
+# module "agw_pip" {
 #   source  = "aztfmod/caf-public-ip/azurerm"
 #   version = "1.0.0"
 
@@ -237,8 +218,8 @@ resource "azurerm_key_vault_access_policy" "developer" {
 #   diagnostics_settings             = var.core_networking.gateway_config.pip.diagnostics
 # }
 
-# module "vpn_gateway" {
-#   source = "./vpn_gateway"
+# module "application_gateway" {
+#   source = "./application_gateway"
   
 #   provision_gateway                   = var.core_networking.provision_gateway
 #   location                            = var.location

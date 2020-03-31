@@ -71,4 +71,8 @@ variable "core_networking" {
 variable "location" {
 }
 
-variable "rg_network" {}
+variable "rg_network" {
+}
+
+variable "logged_user_objectId" {
+}

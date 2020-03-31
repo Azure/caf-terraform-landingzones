@@ -7,4 +7,5 @@ module "hub_network" {
     caf_foundations_accounting          = local.caf_foundations_accounting
     core_networking                     = var.core_networking
     rg_network                          = var.rg_network
+    logged_user_objectId                = var.logged_user_objectId
 }

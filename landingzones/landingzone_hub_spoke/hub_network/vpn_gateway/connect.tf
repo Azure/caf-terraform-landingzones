@@ -1,4 +1,3 @@
-
 resource "random_string" "psk_connection" {
   length  = 128
   upper   = true
@@ -24,7 +23,7 @@ depends_on = [azurerm_virtual_network_gateway.vpn_gateway, azurerm_local_network
 }
 
 resource "azurerm_key_vault_secret" "psk" {
-  depends_on    = [random_string.psk_connection, azurerm_key_vault_access_policy.akv_policy1]
+  depends_on    = [random_string.psk_connection, azurerm_key_vault_access_policy.vpn_akv_rover, azurerm_key_vault_access_policy.vpn_akv_current_user]
 
   name          = "pskconnection"
   value         = random_string.psk_connection.result

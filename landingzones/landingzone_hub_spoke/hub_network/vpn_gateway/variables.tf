@@ -48,3 +48,5 @@ variable "keyvaultid" {
 variable "caf_foundations_accounting" {
 
 }
+
+variable "logged_user_objectId" {}
