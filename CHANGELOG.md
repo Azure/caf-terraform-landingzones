@@ -4,6 +4,8 @@ FEATURES:
 
 * **rover :** upgrade to rover 2003.2503 - added support for Terraform v0.12.24
 * **added support for azurecaf provider :** Overall usage of new [azurecaf provider](https://github.com/aztfmod/terraform-provider-azurecaf) for naming convention
+* **landingzone_hub_spoke :** introducing landingzone_hub_spoke as a sample of hub and spoke topology [#13](
+https://github.com/Azure/caf-terraform-landingzones/issues/13)
 * **landingzone_caf_foundations :** Added toggle feature for management group deployment control (disabled by default)
 * **landingzone_caf_foundations :** Added support for azurerm 2.x [#23](
 https://github.com/Azure/caf-terraform-landingzones/issues/23)
