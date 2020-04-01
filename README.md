@@ -25,8 +25,9 @@ Currently we provide you with the following landing zones:
 | Name | Purpose | Depends on | Tested with launchpad
 | ------- | ---------------- | -- | -- |
 | landingzone_caf_foundations  | setup all the fundamentals for a subscription (logging, accounting, security.). You can find all details of the caf_foundations landing zone [Here](./landingzones/landingzone_caf_foundations/readme.md) | N/A | launchpad_opensource_light |
+| landingzone_hub_spoke | example of [hub and spoke environment](https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/hybrid-networking/hub-spoke) documentation [here]((./landingzones/landingzone_hub_spoke/readme.md)) | landingzone_caf_foundations | launchpad_opensource_light |
 | landingzone_vdc_demo  | setup a demo environment of a hub-spoke topology including shared services, as well as various DMZ (ingress, egress, transit). You can find all details of the vdc_demo landing zone [Here](./landingzones/landingzone_vdc_demo/readme.md)| landingzone_caf_foundations | launchpad_opensource_light |
-| landingzone_secure_vnet_dmz  | (preview) this is an early implementation of the reference architecture [secure_vnet_dmz](https://docs.microsoft.com/en-gb/azure/architecture/reference-architectures/dmz/secure-vnet-dmz). This is a work in progress used to illustrate landing zone creation process as described [here](./documentation/code_architecture/how_to_code_a_landingzone.md) . You can find all details of the starter landing zone [Here](./landingzones/landingzone_secure_vnet_dmz/readme.md)| landingzone_caf_foundations | launchpad_opensource_light |
+| landingzone_secure_vnet_dmz  | (preview) this is an early implementation of the reference architecture [secure_vnet_dmz](https://docs.microsoft.com/en-gb/azure/architecture/reference-architectures/dmz/secure-vnet-dmz). This is a work in progress used to illustrate landing zone creation process as described [here](./documentation/code_architecture/how_to_code_a_landingzone.md) . You can find all details of the secure vnet dmz landing zone [Here](./landingzones/landingzone_secure_vnet_dmz/readme.md)| landingzone_caf_foundations | launchpad_opensource_light |
 | landingzone_starter  | this is an empty landing zones to use as a template to develop a level 2 landing zone. You can find all details of the starter landing zone [Here](./landingzones/landingzone_starter/readme.md)| landingzone_caf_foundations | launchpad_opensource_light |
 
 ## Getting started
@@ -37,9 +38,9 @@ We recommend developing and deploying landing zones using Visual Studio Code, le
 
 In order to start deploying your with CAF landing zones, you need the following components installed in your environment:
 
-- Visual Studio Code
-- Docker
-- Git
+- [Visual Studio Code](https://code.visualstudio.com/)
+- [Docker](https://docs.docker.com/docker-for-windows/install/)
+- [Git](https://git-scm.com/downloads)
 
 You can deploy it easily on Windows and MacOS with the following software managers:
 
@@ -60,11 +61,17 @@ git clone https://github.com/aztfmod/landingzones.git
 ### Open the repository in Visual Studio Code
 
 Open the repository you've just cloned in Visual Studio Code, click on the lower bar, green sign and in the palette opening on the top of Visual Studio Code Window, select **"Open Workspace in container"**
+
 ![RemoteDevelopment](./_pictures/caf_remote_dev.png)
+
 This should take a while, in the meantime, feel free to click on Details to see the container being downloaded from the registry and being connected to yur local environment:
+
 ![SetupContainer](./_pictures/caf_setup_container.png)
-You will have to accept local mapping to your filesystem when Docker prompts you, so that you can access your files from your container.
+
+**You will have to accept local mapping to your filesystem when Docker prompts you, so that you can access your files from your container.**
+
 ![Ready](./_pictures/caf_dev_ready.png)
+
 After a while, your environment is ready, note on the lower left part of Visual Studio Code, that you are now in your Azure CAF rover, which is your environment to use Azure landing zones.
 
 ### Deploying your first landing zone
@@ -142,7 +149,7 @@ docker system prune -a
 
 Happy deployment with Azure landing zones, let us know your feedback and how you need it to evolve!
 
-## Reference materials
+## Documentation
 
 More details on how to develop, deploy and operate with landing zones can be found in the reference section [here](./documentation/README.md)
 
