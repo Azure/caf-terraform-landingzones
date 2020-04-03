@@ -1,1 +1,0 @@
-# check https://github.com/terraform-providers/terraform-provider-azurerm/commit/6b498367ecda8edeee6fd7222d128469a1c07811 
