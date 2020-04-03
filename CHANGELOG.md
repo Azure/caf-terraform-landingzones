@@ -15,7 +15,6 @@ https://github.com/Azure/caf-terraform-landingzones/issues/23)
 https://github.com/Azure/caf-terraform-landingzones/issues/23)
 
 
-
 ## v2.2.2002 (February 2020)
 
 FEATURES:
