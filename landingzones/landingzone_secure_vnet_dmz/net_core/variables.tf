@@ -72,3 +72,5 @@ variable "location" {
 }
 
 variable "rg_network" {}
+
+variable "logged_user_objectId" {}

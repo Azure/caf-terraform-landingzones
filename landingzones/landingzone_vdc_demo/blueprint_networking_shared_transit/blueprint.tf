@@ -14,10 +14,10 @@ locals {
 
 module "networking_transit_vnet" {
   source  = "aztfmod/caf-virtual-network/azurerm"
-  version = "1.0.0"
+  version = "2.0.0"
 
   convention                        = var.global_settings.convention  
-  virtual_network_rg                = local.HUB-NET-TRANSIT
+  resource_group_name               = local.HUB-NET-TRANSIT
   prefix                            = var.prefix
   location                          = var.location
   networking_object                 = var.networking_object
@@ -29,12 +29,12 @@ module "networking_transit_vnet" {
 
 module "networking_transit_public_ip" {
   source  = "aztfmod/caf-public-ip/azurerm"
-  version = "1.0.0"
+  version = "2.0.0"
 
   convention                       = var.global_settings.convention 
   name                             = var.ip_addr_config.name
   location                         = var.location
-  rg                               = local.HUB-NET-TRANSIT
+  resource_group_name              = local.HUB-NET-TRANSIT
   ip_addr                          = var.ip_addr_config
   tags                             = local.tags
   diagnostics_map                  = var.diagnostics_map
@@ -59,6 +59,7 @@ module "vpn_gateway" {
   log_analytics_workspace             = var.log_analytics_workspace
   diagnostics_settings                = var.gateway_config.diagnostics
   keyvaultid                          = module.keyvault.id
+  logged_user_objectId                = var.logged_user_objectId
 }
 
 module "keyvault" {
@@ -77,7 +78,6 @@ module "keyvault" {
 }
 
 #enable network peering with hub shared network
-
 resource "azurerm_virtual_network_peering" "peering_shared_services_to_transit" {
   depends_on                    = [ module.networking_transit_vnet ]
 

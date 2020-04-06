@@ -16,6 +16,6 @@ module "sentinel" {
   
   enable_sentinel         = var.security_settings.enable_sentinel
   log_analytics           = var.log_analytics
-  rg                      = var.resource_groups_hub["HUB-OPERATIONS"]
+  rg                      = var.resource_groups_hub.name
   location                = var.location
 }

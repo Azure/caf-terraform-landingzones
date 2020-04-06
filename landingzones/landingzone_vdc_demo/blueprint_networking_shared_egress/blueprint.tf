@@ -14,10 +14,10 @@ locals {
 
 module "networking_shared_egress_vnet" {
   source  = "aztfmod/caf-virtual-network/azurerm"
-  version = "1.0.0"
+  version = "2.0.0"
 
   convention                        = var.global_settings.convention  
-  virtual_network_rg                = local.HUB-EGRESS-NET
+  resource_group_name               = local.HUB-EGRESS-NET
   prefix                            = var.prefix
   location                          = var.location
   networking_object                 = var.networking_object
@@ -29,12 +29,12 @@ module "networking_shared_egress_vnet" {
 
 module "networking_shared_public_ip" {
   source  = "aztfmod/caf-public-ip/azurerm"
-  version = "1.0.0"
+  version = "2.0.0"
 
   convention                       = var.global_settings.convention 
   name                             = var.ip_addr_config.ip_name
   location                         = var.location
-  rg                               = local.HUB-EGRESS-NET
+  resource_group_name              = local.HUB-EGRESS-NET
   ip_addr                          = var.ip_addr_config
   tags                             = local.tags
   diagnostics_map                  = var.diagnostics_map
@@ -44,11 +44,11 @@ module "networking_shared_public_ip" {
 
 module "networking_shared_egress_azfirewall" {
   source  = "aztfmod/caf-azure-firewall/azurerm"
-  version = "1.1.0"
+  version = "2.0.0"
 
   convention                        = var.global_settings.convention 
   name                              = var.az_fw_config.name
-  rg                                = local.HUB-EGRESS-NET
+  resource_group_name               = local.HUB-EGRESS-NET
   subnet_id                         = lookup(module.networking_shared_egress_vnet.vnet_subnets, "AzureFirewallSubnet", null)
   public_ip_id                      = module.networking_shared_public_ip.id
   location                          = var.location

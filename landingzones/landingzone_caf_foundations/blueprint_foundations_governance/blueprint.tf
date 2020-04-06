@@ -3,7 +3,9 @@ module "management_groups" {
   source = "./management_group"
 
     management_groups   = var.governance_settings.management_groups
+    deploy_mgmt_groups  = var.governance_settings.deploy_mgmt_groups
     tags                = var.tags_hub
+
 }
 
 # azure policies

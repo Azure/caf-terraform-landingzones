@@ -4,3 +4,7 @@ variable "management_groups" {
 }
 
 variable "tags" {}
+
+variable "deploy_mgmt_groups" {
+  description = "(Required) toggle to enable management group deployment"
+}

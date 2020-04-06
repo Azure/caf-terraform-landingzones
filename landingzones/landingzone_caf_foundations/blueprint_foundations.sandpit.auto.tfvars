@@ -24,11 +24,11 @@ global_settings = {
     # Set of resource groups to land the blueprint
     resource_groups_hub = {
         HUB-CORE-SEC    = {
-            name = "-hub-core-sec"
+            name = "hub-core-sec"
             location = "southeastasia"
         }
         HUB-OPERATIONS  = {
-            name = "-hub-operations"
+            name = "hub-operations"
             location = "southeastasia"
         }
     }
@@ -38,15 +38,15 @@ global_settings = {
 accounting_settings = {
     # Azure Subscription activity logs retention period 
     azure_activity_logs_name = "actlogs"
-    azure_activity_logs_event_hub = true
+    azure_activity_logs_event_hub = false
     azure_activity_logs_retention = 365
 
     # Azure diagnostics logs retention period
     azure_diagnostics_logs_name = "diaglogs"
-    azure_diagnostics_logs_event_hub = true
+    azure_diagnostics_logs_event_hub = false
 
     #Logging and monitoring 
-    analytics_workspace_name = "lalogs"
+    analytics_workspace_name = "caflalogs"
 
     ##Log analytics solutions to be deployed 
     solution_plan_map = {
@@ -84,9 +84,10 @@ accounting_settings = {
 ## governance
 governance_settings = {
     #current code supports only two levels of managemenr groups and one root
-    management_groups = {
+    deploy_mgmt_groups  = false
+    management_groups   = {
         root = {
-            name = "arnaud-rootmgmtgroup"
+            name = "caf-rootmgmtgroup"
             subscriptions = []
             #list your subscriptions ID in this field as ["GUID1", "GUID2"]
             children = {
@@ -108,7 +109,7 @@ governance_settings = {
     
     policy_matrix = {
     #autoenroll_asc          = true - to be implemented via builtin policies
-    autoenroll_monitor_vm   = false
+    autoenroll_monitor_vm   = true
     autoenroll_netwatcher   = false
 
     no_public_ip_spoke      = false

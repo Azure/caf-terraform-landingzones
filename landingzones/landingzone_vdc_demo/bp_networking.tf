@@ -58,6 +58,7 @@ module "blueprint_networking_shared_transit" {
     gateway_config                      = var.gateway_config
     provision_gateway                   = var.provision_gateway
     akv_config                          = var.akv_config
+    logged_user_objectId                = var.logged_user_objectId
     
     shared_services_vnet_object         = module.blueprint_networking_shared_services.shared_services_vnet_object
     virtual_network_rg                  = module.blueprint_networking_shared_services.resource_group_shared_services
