@@ -2,6 +2,12 @@
 
 Coding a landing zone can be a bit intimidating, the white page syndrome can kick-in and you might feel there are too much things to do, so here is my process in creating a landing zone.
 
+**Warning:** This document is about the process of creating the landing zone and is not about Terraform objects and syntax. If you need to get started with Terraform, please refer to the following great documents:
+
+1. Azure Citadel: https://azurecitadel.com/automation/terraform-new/ 
+2. Hashicorp Learning: https://learn.hashicorp.com/terraform?track=azure#azure 
+3. Terraform on Azure documenation: https://docs.microsoft.com/en-us/azure/terraform/ 
+
 ## Step 1. Start with the diagram
 
 First thing to know: what are you trying to achieve?
