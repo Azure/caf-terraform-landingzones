@@ -34,3 +34,5 @@ variable "global_settings" {
 variable "caf_foundations_accounting" {
   description = "caf_foundations_accounting settings"
 }
+
+variable "tags" {}

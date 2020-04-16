@@ -83,63 +83,45 @@ jobs:
   
       - name: deploy caf_foundations
         run: |
-          /tf/rover/rover.sh /tf/caf/landingzones/landingzone_caf_foundations apply \
-              '-var location=${{ env.region }}' \
-              '-var tags={testing-job-id="${{ github.run_id }}"}' 
+          /tf/rover/rover.sh /tf/caf/landingzones/landingzone_caf_foundations apply
 
       - name: deploy vdc_demo
         run: |
           /tf/rover/rover.sh /tf/caf/landingzones/landingzone_vdc_demo apply \
-              '-var location=${{ env.region }}' \
               '-var tags={testing-job-id="${{ github.run_id }}"}' 
 
       - name: destroy vdc_demo
         run: |
           /tf/rover/rover.sh /tf/caf/landingzones/landingzone_vdc_demo destroy \
-            '-var location=${{ env.region }}' \
             '-var tags={testing-job-id="${{ github.run_id }}"}' 
 
       - name: deploy hub_spoke
         run: |
-          /tf/rover/rover.sh /tf/caf/landingzones/landingzone_hub_spoke apply \
-              '-var location=${{ env.region }}' \
-              '-var tags={testing-job-id="${{ github.run_id }}"}' 
+          /tf/rover/rover.sh /tf/caf/landingzones/landingzone_hub_spoke apply 
 
       - name: destroy hub_spoke
         run: |
-          /tf/rover/rover.sh /tf/caf/landingzones/landingzone_hub_spoke destroy \
-            '-var location=${{ env.region }}' \
-            '-var tags={testing-job-id="${{ github.run_id }}"}' 
+          /tf/rover/rover.sh /tf/caf/landingzones/landingzone_hub_spoke destroy 
 
       - name: deploy secure_vnet_dmz
         run: |
-          /tf/rover/rover.sh /tf/caf/landingzones/landingzone_secure_vnet_dmz apply \
-              '-var location=${{ env.region }}' \
-              '-var tags={testing-job-id="${{ github.run_id }}"}' 
+          /tf/rover/rover.sh /tf/caf/landingzones/landingzone_secure_vnet_dmz apply 
 
       - name: destroy secure_vnet_dmz
         run: |
-          /tf/rover/rover.sh /tf/caf/landingzones/landingzone_secure_vnet_dmz destroy \
-            '-var location=${{ env.region }}' \
-            '-var tags={testing-job-id="${{ github.run_id }}"}' 
+          /tf/rover/rover.sh /tf/caf/landingzones/landingzone_secure_vnet_dmz destroy 
 
       - name: deploy starter
         run: |
-          /tf/rover/rover.sh /tf/caf/landingzones/landingzone_starter apply \
-              '-var location=${{ env.region }}' \
-              '-var tags={testing-job-id="${{ github.run_id }}"}' 
+          /tf/rover/rover.sh /tf/caf/landingzones/landingzone_starter apply 
 
       - name: destroy starter
         run: |
-          /tf/rover/rover.sh /tf/caf/landingzones/landingzone_starter destroy \
-            '-var location=${{ env.region }}' \
-            '-var tags={testing-job-id="${{ github.run_id }}"}' 
+          /tf/rover/rover.sh /tf/caf/landingzones/landingzone_starter destroy 
 
       - name: destroy caf_foundations
         run: |
-          /tf/rover/rover.sh /tf/caf/landingzones/landingzone_caf_foundations destroy \
-            '-var location=${{ env.region }}' \
-            '-var tags={testing-job-id="${{ github.run_id }}"}' 
+          /tf/rover/rover.sh /tf/caf/landingzones/landingzone_caf_foundations destroy 
 
       - name: cleanup
         run: |
