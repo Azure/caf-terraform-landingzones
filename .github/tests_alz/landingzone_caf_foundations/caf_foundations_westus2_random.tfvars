@@ -25,11 +25,11 @@ global_settings = {
     resource_groups_hub = {
         HUB-CORE-SEC    = {
             name = "hub-core-sec"
-            location = "southeastasia"
+            location = "westus2"
         }
         HUB-OPERATIONS  = {
             name = "hub-operations"
-            location = "southeastasia"
+            location = "westus2"
         }
     }
 }
