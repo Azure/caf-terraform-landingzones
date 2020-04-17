@@ -208,7 +208,7 @@ jobs:
       matrix:
           landingzone: ["landingzone_hub_spoke"]
           region: ["westus2"]
-          convention: ["cafrandom", "random"]
+          convention: ["cafrandom"]
           environment: ["integration-tests"]
     
     container:
@@ -342,7 +342,7 @@ jobs:
         run: |
           /tf/rover/rover.sh /tf/caf/landingzones/landingzone_caf_foundations destroy \
             '-var tags={testing-job-id="${{ github.run_id }}"}' \
-            '-var-file /tf/caf/.github/tests_alz/landingzone_caf_foundations/caf_foundations_westus2_cafrandom.tfvars'
+            '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}_${{ matrix.region }}_${{ matrix.convention }}.tfvars'
 
       - name: cleanup
         run: |
