@@ -1,17 +1,38 @@
+resource "azurecaf_naming_convention" "rg_network_name" {  
+  name             = var.rg_network.CORE-NET.name
+  prefix           = var.prefix != "" ? var.prefix : null
+  resource_type    = "azurerm_resource_group"
+  convention       = var.global_settings.convention
+}
+
+resource "azurecaf_naming_convention" "rg_transit_name" {  
+  name             = var.rg_network.TRANSIT-NET.name
+  prefix           = var.prefix != "" ? var.prefix : null
+  resource_type    = "azurerm_resource_group"
+  convention       = var.global_settings.convention
+}
+
+resource "azurecaf_naming_convention" "rg_edge_name" {  
+  name             = var.rg_network.EDGE-NET.name
+  prefix           = var.prefix != "" ? var.prefix : null
+  resource_type    = "azurerm_resource_group"
+  convention       = var.global_settings.convention
+}
+
 resource "azurerm_resource_group" "rg_network" {
-  name     = "${var.prefix}${var.rg_network.CORE-NET.name}"
+  name     = azurecaf_naming_convention.rg_network_name.result
   location = var.global_settings.location_map.region1
   tags     = var.global_settings.tags_hub
 }
 
 resource "azurerm_resource_group" "rg_transit" {
-  name     = "${var.prefix}${var.rg_network.TRANSIT-NET.name}"
+  name     = azurecaf_naming_convention.rg_transit_name.result
   location = var.global_settings.location_map.region1
   tags     = var.global_settings.tags_hub
 }
 
 resource "azurerm_resource_group" "rg_edge" {
-  name     = "${var.prefix}${var.rg_network.EDGE-NET.name}"
+  name     = azurecaf_naming_convention.rg_edge_name.result
   location = var.global_settings.location_map.region1
   tags     = var.global_settings.tags_hub
 }

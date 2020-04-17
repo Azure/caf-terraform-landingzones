@@ -7,6 +7,8 @@ variable "tags" {
     type = map
     default = {}
 }
-
+variable "prefix" {
+  description = "(Optional) Prefix to uniquely identify the deployment"  
+}
 variable "workspace" {}
 variable "logged_user_objectId" {}

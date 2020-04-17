@@ -161,7 +161,7 @@ core_networking = {
 ## not enabled, uncomment the code in the networking shared services blueprint.
     enable_bastion = true
     bastion_config = {
-        name = "azurebastion"
+        name = "azurebastionalz"
         diagnostics = {
             log = [
                 #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period] 
