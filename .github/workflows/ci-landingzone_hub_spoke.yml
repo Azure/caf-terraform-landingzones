@@ -239,7 +239,7 @@ jobs:
             
       - name: workspace      
         run: |
-          /tf/rover/launchpad.sh workspace set ${TF_VAR_workspace}
+          /tf/rover/launchpad.sh workspace create ${TF_VAR_workspace}
 
       - name: deploy hub_spoke
         run: |
@@ -253,7 +253,7 @@ jobs:
         run: |
           /tf/rover/rover.sh /tf/caf/landingzones/landingzone_hub_spoke destroy \
             '-var tags={testing-job-id="${{ github.run_id }}"}' \
-            '-var-file=/tf/caf/.github/tests_alz/landingzone_hub_spoke/hup_spoke_no_netwatcher.tfvars'
+            '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}_no_netwatcher.tfvars'
 
   # landingzone_secure_vnet_dmz:
   #   name: landingzone_secure_vnet_dmz
