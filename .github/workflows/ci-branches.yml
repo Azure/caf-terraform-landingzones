@@ -84,37 +84,52 @@ jobs:
       - name: deploy caf_foundations
         run: |
           /tf/rover/rover.sh /tf/caf/landingzones/landingzone_caf_foundations apply \
-              '-var tags={testing-job-id="${{ github.run_id }}"}'
+              '-var tags={testing-job-id="${{ github.run_id }}"}' \
+              '-var-file /tf/caf/.github/tests_alz/landingzone_caf_foundations/caf_foundations_westus2_cafrandom.tfvars'
 
       - name: deploy vdc_demo
         run: |
           /tf/rover/rover.sh /tf/caf/landingzones/landingzone_vdc_demo apply \
-              '-var tags={testing-job-id="${{ github.run_id }}"}' 
+              '-var tags={testing-job-id="${{ github.run_id }}"}' \
+              '-var-file=/tf/caf/.github/tests_alz/landingzone_vdc_demo/vdc_demo_blueprint_networking_shared_egress.sandpit.tfvars' \
+              '-var-file=/tf/caf/.github/tests_alz/landingzone_vdc_demo/vdc_demo_blueprint_networking_shared_services.sandpit.tfvars' \
+              '-var-file=/tf/caf/.github/tests_alz/landingzone_vdc_demo/vdc_demo_blueprint_networking_shared_transit.sandpit.tfvars' \
+              '-var-file=/tf/caf/.github/tests_alz/landingzone_vdc_demo/vdc_demo_blueprint_operations.tfvars'
 
       - name: destroy vdc_demo
         run: |
           /tf/rover/rover.sh /tf/caf/landingzones/landingzone_vdc_demo destroy \
-            '-var tags={testing-job-id="${{ github.run_id }}"}' 
+            '-var tags={testing-job-id="${{ github.run_id }}"}' \
+            '-var-file=/tf/caf/.github/tests_alz/landingzone_vdc_demo/vdc_demo_blueprint_networking_shared_egress.sandpit.tfvars' \
+            '-var-file=/tf/caf/.github/tests_alz/landingzone_vdc_demo/vdc_demo_blueprint_networking_shared_services.sandpit.tfvars' \
+            '-var-file=/tf/caf/.github/tests_alz/landingzone_vdc_demo/vdc_demo_blueprint_networking_shared_transit.sandpit.tfvars' \
+            '-var-file=/tf/caf/.github/tests_alz/landingzone_vdc_demo/vdc_demo_blueprint_operations.tfvars'
 
       - name: deploy hub_spoke
         run: |
           /tf/rover/rover.sh /tf/caf/landingzones/landingzone_hub_spoke apply \
-            '-var tags={testing-job-id="${{ github.run_id }}"}' 
+            '-var tags={testing-job-id="${{ github.run_id }}"}' \
+            '-var-file=/tf/caf/.github/tests_alz/landingzone_hub_spoke/hup_spoke_no_netwatcher.tfvars'
 
       - name: destroy hub_spoke
         run: |
           /tf/rover/rover.sh /tf/caf/landingzones/landingzone_hub_spoke destroy \
-            '-var tags={testing-job-id="${{ github.run_id }}"}' 
+            '-var tags={testing-job-id="${{ github.run_id }}"}' \
+            '-var-file=/tf/caf/.github/tests_alz/landingzone_hub_spoke/hup_spoke_no_netwatcher.tfvars'
 
       - name: deploy secure_vnet_dmz
         run: |
           /tf/rover/rover.sh /tf/caf/landingzones/landingzone_secure_vnet_dmz apply \
-            '-var tags={testing-job-id="${{ github.run_id }}"}' 
+            '-var tags={testing-job-id="${{ github.run_id }}"}' \
+            '-var-file=/tf/caf/.github/tests_alz/landingzone_secure_vnet_dmz/secure_vnet_dmz_network_core_no_netwatcher.tfvars' \
+            '-var-file=/tf/caf/.github/tests_alz/landingzone_secure_vnet_dmz/secure_vnet_dmz_app_tiers.tfvars'
 
       - name: destroy secure_vnet_dmz
         run: |
           /tf/rover/rover.sh /tf/caf/landingzones/landingzone_secure_vnet_dmz destroy \
-            '-var tags={testing-job-id="${{ github.run_id }}"}' 
+            '-var tags={testing-job-id="${{ github.run_id }}"}' \
+            '-var-file=/tf/caf/.github/tests_alz/landingzone_secure_vnet_dmz/secure_vnet_dmz_network_core_no_netwatcher.tfvars' \
+            '-var-file=/tf/caf/.github/tests_alz/landingzone_secure_vnet_dmz/secure_vnet_dmz_app_tiers.tfvars'
 
       - name: deploy starter
         run: |
@@ -129,7 +144,8 @@ jobs:
       - name: destroy caf_foundations
         run: |
           /tf/rover/rover.sh /tf/caf/landingzones/landingzone_caf_foundations destroy \
-            '-var tags={testing-job-id="${{ github.run_id }}"}'
+            '-var tags={testing-job-id="${{ github.run_id }}"}' \
+            '-var-file /tf/caf/.github/tests_alz/landingzone_caf_foundations/caf_foundations_westus2_cafrandom.tfvars'
 
       - name: cleanup
         run: |
