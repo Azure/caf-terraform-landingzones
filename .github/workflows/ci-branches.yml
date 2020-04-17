@@ -97,6 +97,7 @@ jobs:
               '-var-file=/tf/caf/.github/tests_alz/landingzone_vdc_demo/vdc_demo_blueprint_operations.tfvars'
 
       - name: destroy vdc_demo
+        if: always()
         run: |
           /tf/rover/rover.sh /tf/caf/landingzones/landingzone_vdc_demo destroy \
             '-var tags={testing-job-id="${{ github.run_id }}"}' \
@@ -112,6 +113,7 @@ jobs:
             '-var-file=/tf/caf/.github/tests_alz/landingzone_hub_spoke/hup_spoke_no_netwatcher.tfvars'
 
       - name: destroy hub_spoke
+        if: always()
         run: |
           /tf/rover/rover.sh /tf/caf/landingzones/landingzone_hub_spoke destroy \
             '-var tags={testing-job-id="${{ github.run_id }}"}' \
@@ -123,6 +125,7 @@ jobs:
             '-var tags={testing-job-id="${{ github.run_id }}"}' 
 
       - name: destroy starter
+        if: always()
         run: |
           /tf/rover/rover.sh /tf/caf/landingzones/landingzone_starter destroy \
             '-var tags={testing-job-id="${{ github.run_id }}"}' 
@@ -135,6 +138,7 @@ jobs:
             '-var-file=/tf/caf/.github/tests_alz/landingzone_secure_vnet_dmz/secure_vnet_dmz_app_tiers.tfvars'
 
       - name: destroy secure_vnet_dmz
+        if: always()
         run: |
           /tf/rover/rover.sh /tf/caf/landingzones/landingzone_secure_vnet_dmz destroy \
             '-var tags={testing-job-id="${{ github.run_id }}"}' \
@@ -142,6 +146,7 @@ jobs:
             '-var-file=/tf/caf/.github/tests_alz/landingzone_secure_vnet_dmz/secure_vnet_dmz_app_tiers.tfvars'
 
       - name: destroy caf_foundations
+        if: always()
         run: |
           /tf/rover/rover.sh /tf/caf/landingzones/landingzone_caf_foundations destroy \
             '-var tags={testing-job-id="${{ github.run_id }}"}' \
