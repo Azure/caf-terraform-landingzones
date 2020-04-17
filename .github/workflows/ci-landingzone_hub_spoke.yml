@@ -10,7 +10,7 @@ on:
     paths:
     - 'landingzones/landingzone_hub_spoke/**'
     - 'environments/**/landingzone_hub_spoke/**'
-    - '.github/workflows/ci-branches.yml'
+    - '.github/workflows/ci-landingzone_hub_spoke.yml'
     branches-ignore:
         - master
 
