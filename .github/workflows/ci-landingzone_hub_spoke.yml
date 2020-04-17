@@ -78,7 +78,7 @@ jobs:
           echo "ls /tf/caf" && ls -lsa /tf/caf
           ls -lsa /tmp
 
-          workspace='caf_foundations_ci'
+          workspace='caffoundationsci'
           echo ::set-env name=TF_VAR_workspace::${workspace}
 
       - name: Login azure
@@ -327,7 +327,7 @@ jobs:
           ls -lsa /tmp
 
           job_id=${{ job.container.id }}
-          workspace='caf_foundations_ci'
+          workspace='caffoundationsci'
           echo ::set-env name=TF_VAR_workspace::${workspace}
 
       - name: Login azure
