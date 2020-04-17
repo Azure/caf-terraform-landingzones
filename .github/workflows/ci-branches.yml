@@ -8,6 +8,10 @@ name: landingzones
 
 on:
   push:
+    paths:
+    - '!landingzones/landingzone_hub_spoke/**'
+    - '!environments/**/landingzone_hub_spoke/**'
+    - '.github/workflows/ci-branches.yml'
     branches-ignore:
         - master
 
