@@ -19,7 +19,6 @@ env:
   ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
   TF_VAR_azure_devops_pat_token: ${{ secrets.TF_VAR_azure_devops_pat_token }}
   TF_VAR_azure_devops_url_organization: ${{ secrets.TF_VAR_azure_devops_url_organization }}
-  location: westus2
 
 jobs:
   level0:
