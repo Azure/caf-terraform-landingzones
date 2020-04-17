@@ -245,7 +245,6 @@ jobs:
         run: |
           /tf/rover/rover.sh /tf/caf/landingzones/landingzone_hub_spoke apply \
             '-var tags={testing-job-id="${{ github.run_id }}"}' \
-            '-var-file=/tf/caf/.github/tests_alz/landingzone_hub_spoke/hup_spoke_no_netwatcher.tfvars'
             '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}_no_netwatcher.tfvars'
 
       - name: destroy hub_spoke
@@ -310,7 +309,7 @@ jobs:
     name: cleanup_caf_foundations
     runs-on: ubuntu-latest
     
-    needs: [level0, caf_foundations]
+    needs: [level0, caf_foundations, landingzone_hub_spoke]
 
     strategy:
       fail-fast: false
