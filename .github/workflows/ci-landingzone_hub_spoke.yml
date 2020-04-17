@@ -312,6 +312,14 @@ jobs:
     
     needs: [level0, caf_foundations]
 
+    strategy:
+      fail-fast: false
+      matrix:
+          landingzone: ["landingzone_caf_foundations"]
+          region: ["westus2"]
+          convention: ["random"]
+          environment: ["integration-tests"]
+
     container:
       image: aztfmod/rover:2004.1606
       options: --user 0
