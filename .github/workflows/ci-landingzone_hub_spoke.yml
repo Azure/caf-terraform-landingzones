@@ -61,7 +61,7 @@ jobs:
       matrix:
           landingzone: ["landingzone_caf_foundations"]
           region: ["westus2"]
-          convention: ["cafrandom", "random"]
+          convention: ["random"]
           environment: ["integration-tests"]
 
     container:
