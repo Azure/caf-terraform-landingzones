@@ -83,7 +83,7 @@ jobs:
   
       - name: deploy caf_foundations
         run: |
-          /tf/rover/rover.sh /tf/caf/landingzones/landingzone_caf_foundations apply
+          /tf/rover/rover.sh /tf/caf/landingzones/landingzone_caf_foundations apply \
               '-var tags={testing-job-id="${{ github.run_id }}"}'
 
       - name: deploy vdc_demo
@@ -128,7 +128,7 @@ jobs:
 
       - name: destroy caf_foundations
         run: |
-          /tf/rover/rover.sh /tf/caf/landingzones/landingzone_caf_foundations destroy 
+          /tf/rover/rover.sh /tf/caf/landingzones/landingzone_caf_foundations destroy \
             '-var tags={testing-job-id="${{ github.run_id }}"}'
 
       - name: cleanup
