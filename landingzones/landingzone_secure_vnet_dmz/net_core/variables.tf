@@ -10,9 +10,9 @@ variable "prefix" {
 #   description = "(Required) Define the region where the resource groups will be created"
 # }
 
-# variable "tags" {
-#   description = "tags for the deployment"
-# }
+variable "tags" {
+  description = "tags for the deployment"
+}
 
 # variable "shared_services_vnet" {
 #   description = "Network configuration"

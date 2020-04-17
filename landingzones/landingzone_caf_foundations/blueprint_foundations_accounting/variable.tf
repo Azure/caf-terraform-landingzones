@@ -39,6 +39,7 @@ variable "tags_hub" {
   description = "map of the tags to be applied"
   type    = map(string)
 }
+variable "tags" {}
 
 variable "convention" {
 

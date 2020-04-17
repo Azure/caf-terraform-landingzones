@@ -12,3 +12,4 @@ variable "log_analytics" {
 }
 
 variable "tags_hub" {}
+variable "tags" {}

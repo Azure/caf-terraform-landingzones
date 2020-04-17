@@ -12,6 +12,13 @@ terraform {
     }
 }
 
+locals {
+  landingzone_tag = {
+    "landingzone" = basename(abspath(path.module))
+  }
+  tags                = merge(var.tags, local.landingzone_tag)
+}
+
 data "terraform_remote_state" "level0_launchpad" {
   backend = "azurerm"
   config = {

@@ -1,6 +1,7 @@
 module "net_core" {
     source = "./net_core"
-  
+
+    tags                                = var.tags
     global_settings                     = local.global_settings
     prefix                              = local.prefix
     location                            = local.global_settings.location_map["region1"]

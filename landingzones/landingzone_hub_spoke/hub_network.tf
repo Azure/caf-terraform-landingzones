@@ -1,6 +1,7 @@
 module "hub_network" {
     source = "./hub_network"
   
+    tags                                = var.tags
     global_settings                     = local.global_settings
     prefix                              = local.prefix
     location                            = local.global_settings.location_map["region1"]

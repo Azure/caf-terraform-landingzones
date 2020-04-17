@@ -15,5 +15,5 @@ locals {
   blueprint_tag          = {
     "blueprint" = basename(abspath(path.module))
   }
-  tags                = merge(var.global_settings.tags_hub,local.blueprint_tag)
+  tags                = merge(var.tags, var.global_settings.tags_hub,local.blueprint_tag)
 }
