@@ -9,7 +9,7 @@ on:
   push:
     paths:
     - 'landingzones/landingzone_hub_spoke/**'
-    - 'environments/***/landingzone_hub_spoke/**'
+    - 'environments/**/landingzone_hub_spoke/**'
     branches-ignore:
         - master
 
