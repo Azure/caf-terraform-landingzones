@@ -162,7 +162,6 @@ jobs:
             '-var-file=${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/vdc_demo_blueprint_networking_shared_transit.sandpit.tfvars' \
             '-var-file=${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/vdc_demo_blueprint_operations.tfvars' \
             '-var workspace=caffoundationsci'
-                  - name: cleanup
 
       - name: cleanup workspace
         if: always()
