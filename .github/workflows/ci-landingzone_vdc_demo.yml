@@ -167,7 +167,7 @@ jobs:
     name: cleanup_caf_foundations
     runs-on: ubuntu-latest
     
-    needs: [level0, caf_foundations, landingzone_hub_spoke]
+    needs: [level0, caf_foundations, landingzone_vdc_demo]
 
     strategy:
       fail-fast: false
