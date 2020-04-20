@@ -149,7 +149,7 @@ jobs:
             '-var tags={testing-job-id="${{ github.run_id }}"}' \
             '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/secure_vnet_dmz_network_core_no_netwatcher.tfvars' \
             '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/secure_vnet_dmz_app_tiers.tfvars' \
-            '-var workspace=caffoundationsci'
+            '-var workspace=caffoundationsci' 
 
       - name: destroy secure_vnet_dmz
         if: always()
