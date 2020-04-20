@@ -157,54 +157,61 @@ jobs:
             '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}_no_netwatcher.tfvars' \
             '-var workspace=caffoundationsci'
 
-  cleanup_env:
-    name: cleanup_caf_foundations
-    runs-on: ubuntu-latest
-    
-    needs: [level0, caf_foundations, landingzone_hub_spoke]
-
-    strategy:
-      fail-fast: false
-      matrix:
-          landingzone: ["landingzone_caf_foundations"]
-          region: ["westus2"]
-          convention: ["random"]
-          environment: ["integration-tests"]
-
-    container:
-      image: aztfmod/rover:2004.1606
-      options: --user 0
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name:  setup context
-        id: context
-        run: |
-          ln -s ${GITHUB_WORKSPACE} /tf/caf
-          echo "ls /tf/caf" && ls -lsa /tf/caf
-          ls -lsa /tmp
-
-          job_id=${{ job.container.id }}
-          workspace='caffoundationsci'
-          echo ::set-env name=TF_VAR_workspace::${workspace}
-
-      - name: Login azure
-        run: |
-          az login --service-principal -u '${{ env.ARM_CLIENT_ID }}' -p '${{ env.ARM_CLIENT_SECRET }}' --tenant '${{ env.ARM_TENANT_ID }}'
-          az account set -s  ${{ env.ARM_SUBSCRIPTION_ID }}
-
-          echo "local user: $(whoami)"
-                         
-      - name: destroy caf_foundations
+      - name: cleanup workspace
         if: always()
-        run: |
-          /tf/rover/rover.sh /tf/caf/landingzones/landingzone_caf_foundations destroy \
-            '-var tags={testing-job-id="${{ github.run_id }}"}' \
-            '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}_${{ matrix.region }}_${{ matrix.convention }}.tfvars'
-
-      - name: cleanup
         run: |
           stg_name=$(az storage account list --query "[?tags.tfstate=='level0']" -o json | jq -r .[0].name)
           az storage container delete --account-name ${stg_name} --name ${TF_VAR_workspace} --auth-mode login
+  
+
+  # cleanup_env:
+  #   name: cleanup_caf_foundations
+  #   runs-on: ubuntu-latest
+    
+  #   needs: [level0, caf_foundations, landingzone_hub_spoke]
+
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #         landingzone: ["landingzone_caf_foundations"]
+  #         region: ["westus2"]
+  #         convention: ["random"]
+  #         environment: ["integration-tests"]
+
+  #   container:
+  #     image: aztfmod/rover:2004.1606
+  #     options: --user 0
+
+  #   steps:
+  #     - uses: actions/checkout@v2
+
+  #     - name:  setup context
+  #       id: context
+  #       run: |
+  #         ln -s ${GITHUB_WORKSPACE} /tf/caf
+  #         echo "ls /tf/caf" && ls -lsa /tf/caf
+  #         ls -lsa /tmp
+
+  #         job_id=${{ job.container.id }}
+  #         workspace='caffoundationsci'
+  #         echo ::set-env name=TF_VAR_workspace::${workspace}
+
+  #     - name: Login azure
+  #       run: |
+  #         az login --service-principal -u '${{ env.ARM_CLIENT_ID }}' -p '${{ env.ARM_CLIENT_SECRET }}' --tenant '${{ env.ARM_TENANT_ID }}'
+  #         az account set -s  ${{ env.ARM_SUBSCRIPTION_ID }}
+
+  #         echo "local user: $(whoami)"
+                         
+  #     - name: destroy caf_foundations
+  #       if: always()
+  #       run: |
+  #         /tf/rover/rover.sh /tf/caf/landingzones/landingzone_caf_foundations destroy \
+  #           '-var tags={testing-job-id="${{ github.run_id }}"}' \
+  #           '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}_${{ matrix.region }}_${{ matrix.convention }}.tfvars'
+
+  #     - name: cleanup
+  #       run: |
+  #         stg_name=$(az storage account list --query "[?tags.tfstate=='level0']" -o json | jq -r .[0].name)
+  #         az storage container delete --account-name ${stg_name} --name ${TF_VAR_workspace} --auth-mode login
   
