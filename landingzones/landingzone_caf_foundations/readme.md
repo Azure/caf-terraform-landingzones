@@ -5,6 +5,8 @@ The foundation landing zone sets the basics of operations, accounting and auditi
 ## Foundations architecture diagram
 ![Foundations blueprint overview](../../_pictures/caf_foundations/foundations_overall.png)
 
+For an explanation on the purposes of the components in this foundational landing zone, please have a look at this specific Cloud Adoption Framework documentation: [Use Terraform to build your landing zones](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/terraform-landing-zone).
+
 ## Getting Started
 To deploy a landingzone, refer to the setup instructions here: https://github.com/aztfmod/landingzones
 
