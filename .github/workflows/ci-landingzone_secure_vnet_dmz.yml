@@ -147,8 +147,7 @@ jobs:
         run: |
           /tf/rover/rover.sh /tf/caf/landingzones/landingzone_secure_vnet_dmz apply \
             '-var tags={testing-job-id="${{ github.run_id }}"}' \
-            '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/secure_vnet_dmz_network_core_no_netwatcher.tfvars' \
-            '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/secure_vnet_dmz_app_tiers.tfvars' \
+            '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}.tfvars' \
             '-var workspace=caffoundationsci' 
 
       - name: destroy secure_vnet_dmz
@@ -156,8 +155,7 @@ jobs:
         run: |
           /tf/rover/rover.sh /tf/caf/landingzones/landingzone_secure_vnet_dmz destroy \
             '-var tags={testing-job-id="${{ github.run_id }}"}' \
-            '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/secure_vnet_dmz_network_core_no_netwatcher.tfvars' \
-            '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/secure_vnet_dmz_app_tiers.tfvars' \
+            '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}.tfvars' \
             '-var workspace=caffoundationsci'
 
       - name: cleanup workspace
