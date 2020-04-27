@@ -85,12 +85,12 @@ governance_settings = {
     
     policy_matrix = {
     #autoenroll_asc          = true - to be implemented via builtin policies
-    autoenroll_monitor_vm   = true
+    autoenroll_monitor_vm   = false
     autoenroll_netwatcher   = false
 
     no_public_ip_spoke      = false
     cant_create_ip_spoke    = false 
-    managed_disks_only      = true
+    managed_disks_only      = false
     restrict_locations      = false
     list_of_allowed_locs    = ["southeastasia", "eastasia"]
     restrict_supported_svc  = false
