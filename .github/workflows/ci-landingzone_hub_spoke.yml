@@ -146,7 +146,7 @@ jobs:
         run: |
           /tf/rover/rover.sh /tf/caf/landingzones/landingzone_hub_spoke apply \
             '-var tags={testing-job-id="${{ github.run_id }}"}' \
-            '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}_no_netwatcher.tfvars' \
+            '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}.tfvars' \
             '-var workspace=caffoundationsci'
 
       - name: destroy hub_spoke
@@ -154,7 +154,7 @@ jobs:
         run: |
           /tf/rover/rover.sh /tf/caf/landingzones/landingzone_hub_spoke destroy \
             '-var tags={testing-job-id="${{ github.run_id }}"}' \
-            '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}_no_netwatcher.tfvars' \
+            '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}.tfvars' \
             '-var workspace=caffoundationsci'
 
       - name: cleanup workspace
