@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     
     container:
-      image: aztfmod/rover:2004.1606
+      image: aztfmod/roverdev:2005.060304
       options: --user 0
 
     steps:
@@ -61,7 +61,7 @@ jobs:
           environment: ["integration-tests"]
 
     container:
-      image: aztfmod/roverdev:2005.051317
+      image: aztfmod/roverdev:2005.060304
       options: --user 0
 
     steps:
@@ -112,7 +112,7 @@ jobs:
           environment: ["integration-tests"]
     
     container:
-      image: aztfmod/roverdev:2005.051317
+      image: aztfmod/roverdev:2005.060304
       options: --user 0
     
     steps:

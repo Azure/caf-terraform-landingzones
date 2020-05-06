@@ -37,7 +37,7 @@ jobs:
           convention: ["random"]
 
     container:
-      image: aztfmod/roverdev:2005.051317
+      image: aztfmod/roverdev:2005.060304
       options: --user 0
 
     steps:
@@ -123,7 +123,7 @@ jobs:
 
 
     container:
-      image: aztfmod/roverdev:2005.051317
+      image: aztfmod/roverdev:2005.060304
       options: --user 0
 
     steps:
