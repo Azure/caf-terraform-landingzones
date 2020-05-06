@@ -30,6 +30,12 @@ jobs:
     name: level0
     runs-on: ubuntu-latest
     
+    strategy:
+      fail-fast: false
+      matrix:
+          region: ["westus2"]
+          convention: ["random"]
+
     container:
       image: aztfmod/roverdev:2005.051317
       options: --user 0

@@ -61,7 +61,7 @@ jobs:
           environment: ["integration-tests"]
 
     container:
-      image: aztfmod/rover:2004.1606
+      image: aztfmod/roverdev:2005.051317
       options: --user 0
 
     steps:
@@ -90,10 +90,12 @@ jobs:
   
       - name: deploy caf_foundations
         run: |
-          /tf/rover/rover.sh /tf/caf/landingzones/${{ matrix.landingzone }} apply \
-              '-var tags={testing-job-id="${{ github.run_id }}"}' \
-              '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}_${{ matrix.region }}_${{ matrix.convention }}.tfvars'
-  
+         id=$(az storage account list --query "[?tags.tfstate=='level0']" -o json | jq -r .[0].id)
+          if [ "${id}" == "null" ]; then
+            /tf/rover/rover.sh /tf/caf/landingzones/${{ matrix.landingzone }} apply \
+                '-var tags={testing-job-id="${{ github.run_id }}"}' \
+                '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}_${{ matrix.region }}_${{ matrix.convention }}.tfvars'
+          fi
                 
   landingzones:
     name: landingzones
@@ -110,7 +112,7 @@ jobs:
           environment: ["integration-tests"]
     
     container:
-      image: aztfmod/rover:2004.1606
+      image: aztfmod/roverdev:2005.051317
       options: --user 0
     
     steps:

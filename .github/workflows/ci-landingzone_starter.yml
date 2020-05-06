@@ -24,15 +24,21 @@ env:
   TF_VAR_azure_devops_pat_token: ${{ secrets.TF_VAR_azure_devops_pat_token }}
   TF_VAR_azure_devops_url_organization: ${{ secrets.TF_VAR_azure_devops_url_organization }}
   TFVARS_PATH: '/tf/caf/environments'
-  ROVER_VERSION: 'aztfmod/rover:2004.1606'
+
 
 jobs:
   level0:
     name: level0
     runs-on: ubuntu-latest
     
+    strategy:
+      fail-fast: false
+      matrix:
+          region: ["westus2"]
+          convention: ["random"]
+          
     container:
-      image: ${{ env.ROVER_VERSION }}
+      image: aztfmod/roverdev:2005.051317
       options: --user 0
 
     steps:
@@ -66,7 +72,7 @@ jobs:
           environment: ["integration-tests"]
 
     container:
-      image: ${{ env.ROVER_VERSION }}
+      image: aztfmod/roverdev:2005.051317
       options: --user 0
 
     steps:
@@ -117,7 +123,7 @@ jobs:
           environment: ["integration-tests"]
 
     container:
-      image: ${{ env.ROVER_VERSION }}
+      image: aztfmod/roverdev:2005.051317
       options: --user 0
 
     steps:
