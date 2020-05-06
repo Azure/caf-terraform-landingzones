@@ -24,6 +24,7 @@ env:
   TF_VAR_azure_devops_pat_token: ${{ secrets.TF_VAR_azure_devops_pat_token }}
   TF_VAR_azure_devops_url_organization: ${{ secrets.TF_VAR_azure_devops_url_organization }}
   TFVARS_PATH: '/tf/caf/environments'
+  ROVER_VERSION: 'aztfmod/rover:2004.1606'
 
 jobs:
   level0:
@@ -31,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     
     container:
-      image: aztfmod/rover:2004.1606
+      image: ${{ env.ROVER_VERSION }}
       options: --user 0
 
     steps:
@@ -65,7 +66,7 @@ jobs:
           environment: ["integration-tests"]
 
     container:
-      image: aztfmod/rover:2004.1606
+      image: ${{ env.ROVER_VERSION }}
       options: --user 0
 
     steps:
@@ -94,9 +95,12 @@ jobs:
   
       - name: deploy caf_foundations
         run: |
-          /tf/rover/rover.sh /tf/caf/landingzones/landingzone_caf_foundations apply \
-              '-var tags={testing-job-id="${{ github.run_id }}"}' \
-              '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}_${{ matrix.region }}_${{ matrix.convention }}.tfvars'
+         id=$(az storage account list --query "[?tags.launchpad=='launchpad_opensource']" -o json | jq -r .[0].id)
+          if [ "${id}" == "null" ]; then
+            /tf/rover/rover.sh /tf/caf/landingzones/landingzone_caf_foundations apply \
+                '-var tags={testing-job-id="${{ github.run_id }}"}' \
+                '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}_${{ matrix.region }}_${{ matrix.convention }}.tfvars'
+          fi
 
   landingzone_starter:
     name: landingzone_starter
@@ -113,7 +117,7 @@ jobs:
           environment: ["integration-tests"]
 
     container:
-      image: aztfmod/rover:2004.1606
+      image: ${{ env.ROVER_VERSION }}
       options: --user 0
 
     steps:
