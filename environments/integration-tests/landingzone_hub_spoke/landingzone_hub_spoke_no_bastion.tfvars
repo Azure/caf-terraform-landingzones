@@ -73,22 +73,6 @@ core_networking = {
                     ["AllMetrics", true, true, 60],
             ]   
         }
-        netwatcher = {
-            create = true
-            #create the network watcher for a subscription and for the location of the vnet
-            name   = "arnaud-nw-test"
-            #name of the network watcher to be created
-
-            flow_logs_settings = {
-                enabled = true
-                retention = true
-                period = 7
-            }
-
-            traffic_analytics_settings = {
-                enabled = true
-            }
-        }
 }
 
 # Settings for the public IP address to be used for Azure Firewall 

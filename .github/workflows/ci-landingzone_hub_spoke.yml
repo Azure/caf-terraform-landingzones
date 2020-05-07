@@ -115,7 +115,7 @@ jobs:
 
     strategy:
       fail-fast: false
-      max-parallel: 1
+      #max-parallel: 1
       matrix:
           landingzone: ["landingzone_hub_spoke"]
           region: ["westus2"]
@@ -165,7 +165,7 @@ jobs:
         run: |
           /tf/rover/rover.sh /tf/caf/landingzones/landingzone_hub_spoke destroy \
             '-var tags={testing-job-id="${{ github.run_id }}"}' \
-            '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}${{ matrix.scenario }}.tfvars' \
+            '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}_${{ matrix.scenario }}.tfvars' \
             '-var workspace=caffoundationsci'
 
       - name: cleanup workspace
