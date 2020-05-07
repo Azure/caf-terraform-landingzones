@@ -48,28 +48,7 @@ core_networking = {
                     ["SMB", "110", "Inbound", "Allow", "tcp", "*", "445", "*", "*"],
                 ]
             }
-            # subnet1                 = {
-            #     name                = "Business_tier"
-            #     cidr                = "10.0.2.0/24"
-            #     nsg_inbound         = [
-            #         # {"Name", "Priority", "Direction", "Action", "Protocol", "source_port_range", "destination_port_range", "source_address_prefix", "destination_address_prefix" }, 
-            #         ["HTTP-In", "100", "Inbound", "Allow", "tcp", "*", "80", "*", "*"],
-            #         ["HTTPS-In", "101", "Inbound", "Allow", "tcp", "*", "443", "*", "*"],
-            #     ]
-            #     nsg_outbound        = [
-            #         ["HTTP-Out", "100", "Outbound", "Allow", "tcp", "*", "80", "*", "*"],
-            #         ["HTTPS-Out", "101", "Outbound", "Allow", "tcp", "*", "443", "*", "*"],
-            #     ]
-            # }
-            # subnet2                 = {
-            #     name                = "Data_tier"
-            #     cidr                = "10.0.3.0/24"
-            #     nsg_inbound         = [
-            #         # {"Name", "Priority", "Direction", "Action", "Protocol", "source_port_range", "destination_port_range", "source_address_prefix", "destination_address_prefix" }, 
-            #         ["TDS-In", "100", "Inbound", "Allow", "tcp", "*", "1433", "*", "*"],
-            #     ]
-            # }
-            subnet3                 = {
+            subnet1                 = {
                 name                = "AzureBastionSubnet" #Must be called AzureBastionSubnet 
                 cidr                = "10.0.0.128/25"
                 nsg_inbound         = [
@@ -114,7 +93,7 @@ core_networking = {
 
 # Settings for the public IP address to be used for Azure Firewall 
 # Must be standard and static for 
-    ip_addr_config = {
+    firewall_ip_addr_config = {
         ip_name = "firewall"    
         allocation_method   = "Static"
         sku                 = "Standard"                        #defaults to Basic
@@ -164,23 +143,13 @@ core_networking = {
     }
 
 ## DDoS standard configuration
-    enable_ddos_standard = true
+    enable_ddos_standard = false
     ddos_name            = "ddos_protection_plan"
 
 ## settings for Azure bastion configuration
 ## not enabled, uncomment the code in the networking shared services blueprint.
-    enable_bastion = true
-    bastion_config = {
-        name = "azurebastion"
-        diagnostics = {
-            log = [
-                #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period] 
-                ["BastionAuditLogs", true, true, 30],
-            ]
-            metric = [
-                #    ["AllMetrics", true, true, 30],
-            ]
-        }
+    enable_bastion = false
+    bastion_ip_addr_config = {
         ip_name = "bastion"
         ip_addr = {
                 allocation_method   = "Static"
@@ -196,7 +165,7 @@ core_networking = {
                 #public_ip_prefix_id = "/subscriptions/00000000-00000-0000-0000-000000000000/resourceGroups/uqvh-hub-ingress-net/providers/Microsoft.Network/publicIPPrefixes/myprefix"
                 #refer to the prefix and check sku types are same in IP and prefix 
         }
-        ip_diags = {
+        diagnostics = {
             log = [
                         #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period] 
                         ["DDoSProtectionNotifications", true, true, 30],
@@ -205,6 +174,18 @@ core_networking = {
                 ]
             metric = [
                     ["AllMetrics", true, true, 30],
+            ]
+        }
+    }
+    bastion_config = {
+        name = "azurebastion"
+        diagnostics = {
+            log = [
+                #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period] 
+                ["BastionAuditLogs", true, true, 30],
+            ]
+            metric = [
+                #    ["AllMetrics", true, true, 30],
             ]
         }
     }

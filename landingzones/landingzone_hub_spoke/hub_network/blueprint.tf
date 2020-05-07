@@ -48,7 +48,7 @@ module "core_network" {
   prefix                            = var.prefix
   location                          = var.global_settings.location_map.region1
   networking_object                 = var.core_networking.shared_services_vnet
-  tags                              = var.global_settings.tags_hub
+  tags                              = local.tags
   diagnostics_map                   = var.caf_foundations_accounting.diagnostics_map
   log_analytics_workspace           = var.caf_foundations_accounting.log_analytics_workspace
   diagnostics_settings              = var.core_networking.shared_services_vnet.diagnostics
@@ -62,14 +62,14 @@ module "az_firewall_ip" {
   version = "2.0.0"
 
   convention                       = var.global_settings.convention 
-  name                             = var.core_networking.ip_addr_config.ip_name
+  name                             = var.core_networking.firewall_ip_addr_config.ip_name
   location                         = var.location
   resource_group_name              = azurerm_resource_group.rg_edge.name
-  ip_addr                          = var.core_networking.ip_addr_config
-  tags                             = var.global_settings.tags_hub
+  ip_addr                          = var.core_networking.firewall_ip_addr_config
+  tags                             = local.tags
   diagnostics_map                  = var.caf_foundations_accounting.diagnostics_map
   log_analytics_workspace_id       = var.caf_foundations_accounting.log_analytics_workspace.id
-  diagnostics_settings             = var.core_networking.ip_addr_config.diagnostics
+  diagnostics_settings             = var.core_networking.firewall_ip_addr_config.diagnostics
 }
 
 module "az_firewall" {
@@ -82,7 +82,7 @@ module "az_firewall" {
   subnet_id                         = lookup(module.core_network.vnet_subnets, "AzureFirewallSubnet", null)
   public_ip_id                      = module.az_firewall_ip.id
   location                          = var.global_settings.location_map.region1
-  tags                              = var.global_settings.tags_hub
+  tags                              = local.tags
   diagnostics_map                   = var.caf_foundations_accounting.diagnostics_map
   la_workspace_id                   = var.caf_foundations_accounting.log_analytics_workspace.id
   diagnostics_settings              = var.core_networking.az_fw_config.diagnostics
@@ -96,7 +96,7 @@ module "firewall_dashboard" {
   location    = var.location
   rg          = azurerm_resource_group.rg_network.name
   name        = basename(abspath(path.module))
-  tags        = var.global_settings.tags_hub
+  tags        = local.tags
 }
 
 module "firewall_rules" {
@@ -113,23 +113,44 @@ module "ddos_protection_std" {
   name                              = var.core_networking.ddos_name
   rg                                = azurerm_resource_group.rg_edge.name
   location                          = var.location
-  tags                              = var.global_settings.tags_hub
+  tags                              = local.tags
 }
 
 # Azure Bastion Configuration
 # Please check Azure Bastion availability in the target region: https://azure.microsoft.com/en-us/global-infrastructure/services/?products=azure-bastion 
-module "bastion_host" {
-  source = "./bastion"
+module "bastion_ip" {
+  source  = "aztfmod/caf-public-ip/azurerm"
+  version = "2.0.0"
 
-  enable_bastion                    = var.core_networking.enable_bastion
-  name                              = var.core_networking.bastion_config.name
-  rg                                = azurerm_resource_group.rg_edge.name
-  subnet_id                         = lookup(module.core_network.vnet_subnets, "AzureBastionSubnet", null)
-  location                          = var.location 
-  tags                              = local.tags
-  caf_foundations_accounting        = var.caf_foundations_accounting
-  bastion_config                    = var.core_networking.bastion_config
-  global_settings                   = var.global_settings
+  convention                       = var.global_settings.convention 
+  name                             = var.core_networking.bastion_ip_addr_config.ip_name
+  location                         = var.location
+  resource_group_name              = azurerm_resource_group.rg_edge.name
+  ip_addr                          = var.core_networking.bastion_ip_addr_config.ip_addr
+  tags                             = local.tags
+  diagnostics_map                  = var.caf_foundations_accounting.diagnostics_map
+  log_analytics_workspace_id       = var.caf_foundations_accounting.log_analytics_workspace.id
+  diagnostics_settings             = var.core_networking.bastion_ip_addr_config.diagnostics
+}
+
+module "bastion" {
+  source  = "aztfmod/caf-azure-bastion/azurerm"
+  version = "0.1.0"
+
+  enable_bastion                   = var.core_networking.enable_bastion
+  bastion_config                   = var.core_networking.bastion_config
+  
+  name                             = var.core_networking.bastion_config.name
+  resource_group_name              = azurerm_resource_group.rg_edge.name
+  subnet_id                        = lookup(module.core_network.vnet_subnets, "AzureBastionSubnet", null)
+  public_ip_address_id             = module.bastion_ip.id
+  location                         = var.global_settings.location_map.region1 
+  tags                             = local.tags
+  
+  convention                       = var.global_settings.convention 
+  diagnostics_map                  = var.caf_foundations_accounting.diagnostics_map
+  log_analytics_workspace          = var.caf_foundations_accounting.log_analytics_workspace
+  diagnostics_settings             = var.core_networking.bastion_config.diagnostics
 }
 
 

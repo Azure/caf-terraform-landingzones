@@ -1,13 +1,14 @@
+# Configuration sample for a hub and spoke environment
 # definition of variables for the virtual network
 rg_network = {
     CORE-NET    = {
-        name = "-network-core" 
+        name = "network-core" 
     }
     TRANSIT-NET = {
-        name = "-network-transit"
+        name = "network-transit"
     }
     EDGE-NET = {
-        name = "-network-edge"
+        name = "network-edge"
     }
 }
 
@@ -30,36 +31,24 @@ core_networking = {
         }
         subnets = {
             subnet0                 = {
-                name                = "Web_tier"
+                name                = "Active_Directory"
                 cidr                = "10.0.1.0/24"
                 nsg_inbound         = [
                     # {"Name", "Priority", "Direction", "Action", "Protocol", "source_port_range", "destination_port_range", "source_address_prefix", "destination_address_prefix" }, 
-                    ["HTTP-In", "100", "Inbound", "Allow", "tcp", "*", "80", "*", "*"],
-                    ["HTTPS-In", "101", "Inbound", "Allow", "tcp", "*", "443", "*", "*"],
+                    ["W32Time", "100", "Inbound", "Allow", "udp", "*", "123", "*", "*"],
+                    ["RPC-Endpoint-Mapper", "101", "Inbound", "Allow", "tcp", "*", "135", "*", "*"],
+                    ["Kerberos-password-change", "102", "Inbound", "Allow", "*", "*", "464", "*", "*"],
+                    ["RPC-Dynamic-range", "103", "Inbound", "Allow", "tcp", "*", "49152-65535", "*", "*"],
+                    ["LDAP", "104", "Inbound", "Allow", "*", "*", "389", "*", "*"],
+                    ["LDAP-SSL", "105", "Inbound", "Allow", "tcp", "*", "636", "*", "*"],
+                    ["LDAP-GC", "106", "Inbound", "Allow", "tcp", "*", "3268", "*", "*"],
+                    ["LDAP-GC-SSL", "107", "Inbound", "Allow", "tcp", "*", "3269", "*", "*"],
+                    ["DNS", "108", "Inbound", "Allow", "*", "*", "53", "*", "*"],
+                    ["Kerberos", "109", "Inbound", "Allow", "*", "*", "88", "*", "*"],
+                    ["SMB", "110", "Inbound", "Allow", "tcp", "*", "445", "*", "*"],
                 ]
             }
             subnet1                 = {
-                name                = "Business_tier"
-                cidr                = "10.0.2.0/24"
-                nsg_inbound         = [
-                    # {"Name", "Priority", "Direction", "Action", "Protocol", "source_port_range", "destination_port_range", "source_address_prefix", "destination_address_prefix" }, 
-                    ["HTTP-In", "100", "Inbound", "Allow", "tcp", "*", "80", "*", "*"],
-                    ["HTTPS-In", "101", "Inbound", "Allow", "tcp", "*", "443", "*", "*"],
-                ]
-                nsg_outbound        = [
-                    ["HTTP-Out", "100", "Outbound", "Allow", "tcp", "*", "80", "*", "*"],
-                    ["HTTPS-Out", "101", "Outbound", "Allow", "tcp", "*", "443", "*", "*"],
-                ]
-            }
-            subnet2                 = {
-                name                = "Data_tier"
-                cidr                = "10.0.3.0/24"
-                nsg_inbound         = [
-                    # {"Name", "Priority", "Direction", "Action", "Protocol", "source_port_range", "destination_port_range", "source_address_prefix", "destination_address_prefix" }, 
-                    ["TDS-In", "100", "Inbound", "Allow", "tcp", "*", "1433", "*", "*"],
-                ]
-            }
-            subnet3                 = {
                 name                = "AzureBastionSubnet" #Must be called AzureBastionSubnet 
                 cidr                = "10.0.0.128/25"
                 nsg_inbound         = [
@@ -84,27 +73,11 @@ core_networking = {
                     ["AllMetrics", true, true, 60],
             ]   
         }
-        netwatcher = {
-            create = true
-            #create the network watcher for a subscription and for the location of the vnet
-            name   = "arnaud-nw-test"
-            #name of the network watcher to be created
-
-            flow_logs_settings = {
-                enabled = true
-                retention = true
-                period = 7
-            }
-
-            traffic_analytics_settings = {
-                enabled = true
-            }
-        }
 }
 
 # Settings for the public IP address to be used for Azure Firewall 
 # Must be standard and static for 
-    ip_addr_config = {
+    firewall_ip_addr_config = {
         ip_name = "firewall"    
         allocation_method   = "Static"
         sku                 = "Standard"                        #defaults to Basic
@@ -154,12 +127,12 @@ core_networking = {
     }
 
 ## DDoS standard configuration
-    enable_ddos_standard = false
+    enable_ddos_standard = true
     ddos_name            = "ddos_protection_plan"
 
 ## settings for Azure bastion configuration
 ## not enabled, uncomment the code in the networking shared services blueprint.
-    enable_bastion = true
+    enable_bastion = false
     bastion_ip_addr_config = {
         ip_name = "bastion"
         ip_addr = {
@@ -176,7 +149,7 @@ core_networking = {
                 #public_ip_prefix_id = "/subscriptions/00000000-00000-0000-0000-000000000000/resourceGroups/uqvh-hub-ingress-net/providers/Microsoft.Network/publicIPPrefixes/myprefix"
                 #refer to the prefix and check sku types are same in IP and prefix 
         }
-        diagnostics = {
+        ip_diags = {
             log = [
                         #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period] 
                         ["DDoSProtectionNotifications", true, true, 30],
@@ -189,7 +162,7 @@ core_networking = {
         }
     }
     bastion_config = {
-        name = "azurebastionalz"
+        name = "azurebastion"
         diagnostics = {
             log = [
                 #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period] 
@@ -199,7 +172,6 @@ core_networking = {
                 #    ["AllMetrics", true, true, 30],
             ]
         }
-        
     }
 
 

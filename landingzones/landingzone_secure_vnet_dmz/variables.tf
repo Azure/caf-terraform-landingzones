@@ -8,7 +8,8 @@ variable "tags" {
     default = {}
 }
 variable "prefix" {
-  description = "(Optional) Prefix to uniquely identify the deployment"  
+  description = "(Optional) Prefix to uniquely identify the deployment"
+  default = ""
 }
 variable "workspace" {}
 variable "logged_user_objectId" {}

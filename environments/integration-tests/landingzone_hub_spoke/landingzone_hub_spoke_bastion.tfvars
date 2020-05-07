@@ -48,7 +48,7 @@ core_networking = {
                     ["SMB", "110", "Inbound", "Allow", "tcp", "*", "445", "*", "*"],
                 ]
             }
-            subnet3                 = {
+            subnet1                 = {
                 name                = "AzureBastionSubnet" #Must be called AzureBastionSubnet 
                 cidr                = "10.0.0.128/25"
                 nsg_inbound         = [
@@ -77,7 +77,7 @@ core_networking = {
 
 # Settings for the public IP address to be used for Azure Firewall 
 # Must be standard and static for 
-    ip_addr_config = {
+    firewall_ip_addr_config = {
         ip_name = "firewall"    
         allocation_method   = "Static"
         sku                 = "Standard"                        #defaults to Basic
@@ -133,17 +133,7 @@ core_networking = {
 ## settings for Azure bastion configuration
 ## not enabled, uncomment the code in the networking shared services blueprint.
     enable_bastion = true
-    bastion_config = {
-        name = "azurebastion"
-        diagnostics = {
-            log = [
-                #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period] 
-                ["BastionAuditLogs", true, true, 30],
-            ]
-            metric = [
-                #    ["AllMetrics", true, true, 30],
-            ]
-        }
+    bastion_ip_addr_config = {
         ip_name = "bastion"
         ip_addr = {
                 allocation_method   = "Static"
@@ -168,6 +158,18 @@ core_networking = {
                 ]
             metric = [
                     ["AllMetrics", true, true, 30],
+            ]
+        }
+    }
+    bastion_config = {
+        name = "azurebastion"
+        diagnostics = {
+            log = [
+                #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period] 
+                ["BastionAuditLogs", true, true, 30],
+            ]
+            metric = [
+                #    ["AllMetrics", true, true, 30],
             ]
         }
     }
