@@ -143,18 +143,8 @@ core_networking = {
 
 ## settings for Azure bastion configuration
 ## not enabled, uncomment the code in the networking shared services blueprint.
-    enable_bastion = true
-    bastion_config = {
-        name = "azurebastion"
-        diagnostics = {
-            log = [
-                #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period] 
-                ["BastionAuditLogs", true, true, 30],
-            ]
-            metric = [
-                #    ["AllMetrics", true, true, 30],
-            ]
-        }
+    enable_bastion = false
+    bastion_ip_addr_config = {
         ip_name = "bastion"
         ip_addr = {
                 allocation_method   = "Static"
@@ -170,7 +160,7 @@ core_networking = {
                 #public_ip_prefix_id = "/subscriptions/00000000-00000-0000-0000-000000000000/resourceGroups/uqvh-hub-ingress-net/providers/Microsoft.Network/publicIPPrefixes/myprefix"
                 #refer to the prefix and check sku types are same in IP and prefix 
         }
-        ip_diags = {
+        diagnostics = {
             log = [
                         #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period] 
                         ["DDoSProtectionNotifications", true, true, 30],
@@ -182,7 +172,18 @@ core_networking = {
             ]
         }
     }
-
+    bastion_config = {
+        name = "azurebastion"
+        diagnostics = {
+            log = [
+                #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period] 
+                ["BastionAuditLogs", true, true, 30],
+            ]
+            metric = [
+                #    ["AllMetrics", true, true, 30],
+            ]
+        }
+    }
 
 # Settings for the Virtual Network gateway to be created
     provision_gateway = false

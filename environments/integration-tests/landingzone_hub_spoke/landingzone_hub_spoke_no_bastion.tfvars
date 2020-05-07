@@ -73,6 +73,22 @@ core_networking = {
                     ["AllMetrics", true, true, 60],
             ]   
         }
+        netwatcher = {
+            create = true
+            #create the network watcher for a subscription and for the location of the vnet
+            name   = "arnaud-nw-test"
+            #name of the network watcher to be created
+
+            flow_logs_settings = {
+                enabled = true
+                retention = true
+                period = 7
+            }
+
+            traffic_analytics_settings = {
+                enabled = true
+            }
+        }
 }
 
 # Settings for the public IP address to be used for Azure Firewall 
@@ -127,7 +143,7 @@ core_networking = {
     }
 
 ## DDoS standard configuration
-    enable_ddos_standard = true
+    enable_ddos_standard = false
     ddos_name            = "ddos_protection_plan"
 
 ## settings for Azure bastion configuration
@@ -149,7 +165,7 @@ core_networking = {
                 #public_ip_prefix_id = "/subscriptions/00000000-00000-0000-0000-000000000000/resourceGroups/uqvh-hub-ingress-net/providers/Microsoft.Network/publicIPPrefixes/myprefix"
                 #refer to the prefix and check sku types are same in IP and prefix 
         }
-        ip_diags = {
+        diagnostics = {
             log = [
                         #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period] 
                         ["DDoSProtectionNotifications", true, true, 30],
