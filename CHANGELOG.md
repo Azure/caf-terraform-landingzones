@@ -1,3 +1,9 @@
+## v5.0.2005 (May 2020) UNREL
+BUGFIXES:
+
+* **rover :** launchpad opensource light fails to deploy successfully [#18](
+https://github.com/aztfmod/landingzones/issues/18)
+
 ## v3.0.2003 (March 2020)
 
 FEATURES:
