@@ -1,6 +1,12 @@
 ## v5.0.2005 (May 2020) UNREL
-BUGFIXES:
+FEATURES:
+* **rover :** upgrade to rover 2005.0211 - added support for Azure DevOps
+* **documentation :** added guidance and documentation on LZ hierarchy and delivery [#32](https://github.com/Azure/caf-terraform-landingzones/pull/32)
+* **devops :** added GitHub actions workflows to implement integration tests on public repository [25](https://github.com/Azure/caf-terraform-landingzones/issues/25)
 
+BUGFIXES:
+* **landingzone_caf_foundations :** Avoid creating unnecessary policy definitions [#33](https://github.com/Azure/caf-terraform-landingzones/pull/33)
+* **landingzone_hub_spoke :** Setting "enable_bastion = false" not working [#34](https://github.com/Azure/caf-terraform-landingzones/issues/34)
 * **rover :** launchpad opensource light fails to deploy successfully [#18](
 https://github.com/aztfmod/landingzones/issues/18)
 
