@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     
     container:
-      image: aztfmod/roverdev:2005.060350
+      image: aztfmod/roverdev:2005.120859
       options: --user 0
 
     steps:
@@ -40,7 +40,7 @@ jobs:
       
       - name: Locate launchpad
         run: |
-         id=$(az storage account list --query "[?tags.tfstate=='level0']" -o json | jq -r .[0].id)
+         id=$(az storage account list --query "[?tags.tfstate=='level0' && tags.workspace=='level0']" -o json | jq -r .[0].id)
           if [ "${id}" == "null" ]; then
             /tf/rover/launchpad.sh /tf/launchpads/launchpad_opensource plan -var location=${{ matrix.region }}
             /tf/rover/launchpad.sh /tf/launchpads/launchpad_opensource apply -var location=${{ matrix.region }}
@@ -61,7 +61,7 @@ jobs:
           environment: ["integration-tests"]
 
     container:
-      image: aztfmod/roverdev:2005.060350
+      image: aztfmod/roverdev:2005.120859
       options: --user 0
 
     steps:
@@ -90,7 +90,7 @@ jobs:
   
       - name: deploy caf_foundations
         run: |
-         id=$(az storage account list --query "[?tags.tfstate=='level0']" -o json | jq -r .[0].id)
+         id=$(az storage account list --query "[?tags.launchpad=='launchpad_opensource' && tags.workspace=='level0']" -o json | jq -r .[0].id)
           if [ "${id}" == "null" ]; then
             /tf/rover/rover.sh /tf/caf/landingzones/${{ matrix.landingzone }} apply \
                 '-var tags={testing-job-id="${{ github.run_id }}"}' \
@@ -112,7 +112,7 @@ jobs:
           environment: ["integration-tests"]
     
     container:
-      image: aztfmod/roverdev:2005.060350
+      image: aztfmod/roverdev:2005.120859
       options: --user 0
     
     steps:
