@@ -163,3 +163,85 @@ jobs:
         run: |
           stg_name=$(az storage account list --query "[?tags.tfstate=='level0']" -o json | jq -r .[0].name)
           az storage container delete --account-name ${stg_name} --name ${TF_VAR_workspace} --auth-mode login
+
+  caf_foundations_destroy:
+    name: caf_foundations_destroy
+    runs-on: ubuntu-latest
+    
+    needs: landingzones
+
+    strategy:
+      fail-fast: false
+      matrix:
+          landingzone: ["landingzone_caf_foundations"]
+          region: ["westus2"]
+          convention: ["random"]
+          environment: ["integration-tests"]
+
+    container:
+      image: aztfmod/roverdev:2005.121302
+      options: --user 0
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name:  setup context
+        id: context
+        run: |
+          ln -s ${GITHUB_WORKSPACE} /tf/caf
+          echo "ls /tf/caf" && ls -lsa /tf/caf
+          ls -lsa /tmp
+
+          workspace='caffoundationsci'
+          echo ::set-env name=TF_VAR_workspace::${workspace}
+
+      - name: Login azure
+        run: |
+          az login --service-principal -u '${{ env.ARM_CLIENT_ID }}' -p '${{ env.ARM_CLIENT_SECRET }}' --tenant '${{ env.ARM_TENANT_ID }}'
+          az account set -s  ${{ env.ARM_SUBSCRIPTION_ID }}
+
+          echo "local user: $(whoami)"
+            
+      - name: workspace      
+        run: |
+          /tf/rover/launchpad.sh workspace create ${TF_VAR_workspace}
+  
+      - name: deploy caf_foundations
+        run: |
+            /tf/rover/rover.sh /tf/caf/landingzones/${{ matrix.landingzone }} destroy \
+                '-var tags={testing-job-id="${{ github.run_id }}"}' \
+                '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}_${{ matrix.region }}_${{ matrix.convention }}.tfvars' \
+                '-auto-approve'
+
+  level0_destroy:
+    name: level0_destroy
+    runs-on: ubuntu-latest
+
+    needs: caf_foundations_destroy
+
+    strategy:
+      fail-fast: false
+      matrix:
+          region: ["westus2"]
+          convention: ["random"]
+
+    container:
+      image: aztfmod/roverdev:2005.121302
+      options: --user 0
+
+    steps:
+      - name: Login azure
+        run: |
+          az login --service-principal -u '${{ env.ARM_CLIENT_ID }}' -p '${{ env.ARM_CLIENT_SECRET }}' --tenant '${{ env.ARM_TENANT_ID }}'
+          az account set -s  ${{ env.ARM_SUBSCRIPTION_ID }}
+
+          echo "local user: $(whoami)"
+      
+      - name: Remove launchpad
+        run: |
+            /tf/rover/launchpad.sh /tf/launchpads/launchpad_opensource destroy -var location=${{ matrix.region }} -auto-approve
+          
+      - name: Complete purge
+        run: |
+            for i in `az group list -o tsv --query '[].name'`; do az group delete -n $i -y --no-wait; done
+            for i in `az monitor log-profiles list -o tsv --query '[].name'`; do az monitor log-profiles delete --name $i -y; done
