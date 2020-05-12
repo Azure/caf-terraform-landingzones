@@ -31,7 +31,7 @@ jobs:
       matrix:
           region: ["westus2"]
           convention: ["random"]
-          
+
     container:
       image: aztfmod/roverdev:2005.120859
       options: --user 0
@@ -96,12 +96,9 @@ jobs:
   
       - name: deploy caf_foundations
         run: |
-         id=$(az storage account list --query "[?tags.launchpad=='launchpad_opensource' && tags.workspace=='level0']" -o json | jq -r .[0].id)
-          if [ "${id}" == "null" ]; then
             /tf/rover/rover.sh /tf/caf/landingzones/${{ matrix.landingzone }} apply \
                 '-var tags={testing-job-id="${{ github.run_id }}"}' \
                 '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}_${{ matrix.region }}_${{ matrix.convention }}.tfvars'
-          fi
                 
   landingzones:
     name: landingzones
