@@ -1,6 +1,7 @@
-## v5.0.2005 (May 2020) UNREL
+## v5.0.2005 (May 2020) 
 FEATURES:
-* **rover :** upgrade to rover 2005.0211 - added support for Azure DevOps
+* **rover :** upgrade to rover 2005.1314 - improved support for Azure DevOps and GitHub Actions
+* **added support for azurerm 2.9 :** On all sample landing zones [azurerm provider](https://github.com/terraform-providers/terraform-provider-azurerm/releases/tag/v2.9.0) 
 * **documentation :** added guidance and documentation on LZ hierarchy and delivery [#32](https://github.com/Azure/caf-terraform-landingzones/pull/32)
 * **devops :** added GitHub actions workflows to implement integration tests on public repository [25](https://github.com/Azure/caf-terraform-landingzones/issues/25)
 
