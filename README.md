@@ -4,7 +4,7 @@
 
 Microsoft Cloud Adoption Framework for Azure provides you with guidance to adopt Azure. When deploying resources in a new environment, you can leverage landing zones and blueprints to accelerate your deployment. A landing zone is a set of infrastructure components that assembled together will deploy a complete environment ready to host an application.
 
-For full details on Cloud Adoption Framework, refer to http://aka.ms/caf. For any idea, bug, please fill in an issue. You can also reach out to us on tf-landingzones at microsoft dot com.
+For full details on Cloud Adoption Framework, refer to <https://aka.ms/caf.> For any idea, bug, please fill in an issue. You can also reach out to us on tf-landingzones at microsoft dot com.
 
 ## Overview
 
@@ -20,15 +20,15 @@ Examples of landing zones:
 
 ### Available landing zones
 
-Currently we provide you with the following landing zones:
+Currently we provide you with the following sample landing zones:
 
-| Name | Purpose | Depends on | Tested with launchpad
-| ------- | ---------------- | -- | -- |
-| [landingzone_caf_foundations](./landingzones/landingzone_caf_foundations)  | setup all the fundamentals for a subscription (logging, accounting, security.). You can find all details of the caf_foundations landing zone [Here](./landingzones/landingzone_caf_foundations/readme.md) | N/A | launchpad_opensource_light |
-| [landingzone_hub_spoke](./landingzones/landingzone_hub_spoke) | example of [hub and spoke environment](https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/hybrid-networking/hub-spoke) documentation [here](./landingzones/landingzone_hub_spoke/readme.md) | landingzone_caf_foundations | launchpad_opensource_light |
-| [landingzone_vdc_demo](./landingzones/landingzone_vdc_demo)  | setup a demo environment of a hub-spoke topology including shared services, as well as various DMZ (ingress, egress, transit). You can find all details of the vdc_demo landing zone [Here](./landingzones/landingzone_vdc_demo/readme.md)| landingzone_caf_foundations | launchpad_opensource_light |
-| [landingzone_secure_vnet_dmz](./landingzones/landingzone_secure_vnet_dmz)  | (preview) this is an early implementation of the reference architecture [secure_vnet_dmz](https://docs.microsoft.com/en-gb/azure/architecture/reference-architectures/dmz/secure-vnet-dmz). This is a work in progress used to illustrate landing zone creation process as described [here](./documentation/code_architecture/how_to_code_a_landingzone.md) . You can find all details of the secure vnet dmz landing zone [Here](./landingzones/landingzone_secure_vnet_dmz/readme.md)| landingzone_caf_foundations | launchpad_opensource_light |
-| [landingzone_starter](./landingzones/landingzone_starter)  | this is an empty landing zones to use as a template to develop a level 2 landing zone. You can find all details of the starter landing zone [Here](./landingzones/landingzone_starter/readme.md)| landingzone_caf_foundations | launchpad_opensource_light |
+| Name                                                                       | Purpose | Depends on | Tested with launchpad
+| -------------------------------------------------------------------------- | ---------------- | -- | -- |
+| [landingzone_caf_foundations](./landingzones/landingzone_caf_foundations)  | setup all the fundamentals for a subscription (logging, accounting, security.). You can find all details of the caf_foundations landing zone [Here](./landingzones/landingzone_caf_foundations/readme.md) | N/A | launchpad_opensource_light, launchpad_opensource |
+| [landingzone_hub_spoke](./landingzones/landingzone_hub_spoke)              | example of [hub and spoke environment](https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/hybrid-networking/hub-spoke) documentation [here](./landingzones/landingzone_hub_spoke/readme.md) | landingzone_caf_foundations | launchpad_opensource_light, launchpad_opensource |
+| [landingzone_vdc_demo](./landingzones/landingzone_vdc_demo)                | setup a demo environment of a hub-spoke topology including shared services, as well as various DMZ (ingress, egress, transit). You can find all details of the vdc_demo landing zone [Here](./landingzones/landingzone_vdc_demo/readme.md)| landingzone_caf_foundations | launchpad_opensource_light, launchpad_opensource |
+| [landingzone_secure_vnet_dmz](./landingzones/landingzone_secure_vnet_dmz)  | (preview) this is an early implementation of the reference architecture [secure_vnet_dmz](https://docs.microsoft.com/en-gb/azure/architecture/reference-architectures/dmz/secure-vnet-dmz). This is a work in progress used to illustrate landing zone creation process as described [here](./documentation/code_architecture/how_to_code_a_landingzone.md) . You can find all details of the secure vnet dmz landing zone [Here](./landingzones/landingzone_secure_vnet_dmz/readme.md)| landingzone_caf_foundations | launchpad_opensource_light, launchpad_opensource |
+| [landingzone_starter](./landingzones/landingzone_starter)                  | this is an empty landing zones to use as a template to develop a level 2 landing zone. You can find all details of the starter landing zone [Here](./landingzones/landingzone_starter/readme.md)| landingzone_caf_foundations | launchpad_opensource_light, launchpad_opensource |
 
 ## Getting started
 
@@ -44,9 +44,9 @@ In order to start deploying your with CAF landing zones, you need the following 
 
 You can deploy it easily on Windows and MacOS with the following software managers:
 
-MacOS | Windows |  
-------- | ----------------
-```brew cask install visual-studio-code docker``` </br> ```brew install git ``` | Install Chocolatey (https://chocolatey.org/docs/installation) </br> ``` choco install git vscode docker-desktop ```
+| MacOS  | Windows |  
+| ------ | ------- |
+|```brew cask install visual-studio-code docker``` </br> ```brew install git ``` | Install Chocolatey (https://chocolatey.org/docs/installation) </br> ``` choco install git vscode docker-desktop ``` |
 
 Once installed, open **Visual Studio Code** and install "**Remote Development**" extension as follow: ![RemoteDevelopment](./_pictures/caf_setup_remotedev.png)
 

@@ -1,21 +1,41 @@
+resource "azurecaf_naming_convention" "rg_appweb" {  
+  name             = var.rg_app.web_tier.name
+  prefix           = var.prefix != "" ? var.prefix : null
+  resource_type    = "azurerm_resource_group"
+  convention       = local.global_settings.convention
+}
+
+resource "azurecaf_naming_convention" "rg_appapp" {  
+  name             = var.rg_app.app_tier.name
+  prefix           = var.prefix != "" ? var.prefix : null
+  resource_type    = "azurerm_resource_group"
+  convention       = local.global_settings.convention
+}
+
+resource "azurecaf_naming_convention" "rg_appdb" {  
+  name             = var.rg_app.db_tier.name
+  prefix           = var.prefix != "" ? var.prefix : null
+  resource_type    = "azurerm_resource_group"
+  convention       = local.global_settings.convention
+}
+
 resource "azurerm_resource_group" "rg_appweb" {
-  name     = "${local.prefix}${var.rg_app.web_tier.name}"
+  name     = azurecaf_naming_convention.rg_appweb.result
   location = local.global_settings.location_map.region1
   tags     = local.global_settings.tags_hub
 }
 
 resource "azurerm_resource_group" "rg_appapp" {
-  name     = "${local.prefix}${var.rg_app.app_tier.name}"
+  name     = azurecaf_naming_convention.rg_appapp.result
   location = local.global_settings.location_map.region1
   tags     = local.global_settings.tags_hub
 }
 
 resource "azurerm_resource_group" "rg_appdb" {
-  name     = "${local.prefix}${var.rg_app.db_tier.name}"
+  name     = azurecaf_naming_convention.rg_appdb.result
   location = local.global_settings.location_map.region1
   tags     = local.global_settings.tags_hub
 }
-
 
 resource "azurerm_availability_set" "as_web" {
   name                = var.web_tier.as.name

@@ -1,5 +1,5 @@
 provider "azurerm" {
-  version = "~>2.4.0"
+  version = "~>2.9.0"
   features {}
 }
 
@@ -10,6 +10,13 @@ provider "azurecaf" {
 terraform {
     backend "azurerm" {
     }
+}
+
+locals {
+  landingzone_tag = {
+    "landingzone" = basename(abspath(path.module))
+  }
+  tags                = merge(var.tags, local.landingzone_tag)
 }
 
 data "terraform_remote_state" "level0_launchpad" {

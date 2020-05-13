@@ -1,6 +1,7 @@
  module "blueprint_operations" {
      source = "./blueprint_operations"
   
+    tags                               = local.tags
     prefix                             = local.prefix
     location                           = local.global_settings.location_map["region1"]
     caf_foundations_accounting         = local.caf_foundations_accounting

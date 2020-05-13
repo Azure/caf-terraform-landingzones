@@ -1,17 +1,38 @@
+resource "azurecaf_naming_convention" "rg_network_name" {  
+  name             = var.rg_network.CORE-NET.name
+  prefix           = var.prefix != "" ? var.prefix : null
+  resource_type    = "azurerm_resource_group"
+  convention       = var.global_settings.convention
+}
+
+resource "azurecaf_naming_convention" "rg_transit_name" {  
+  name             = var.rg_network.TRANSIT-NET.name
+  prefix           = var.prefix != "" ? var.prefix : null
+  resource_type    = "azurerm_resource_group"
+  convention       = var.global_settings.convention
+}
+
+resource "azurecaf_naming_convention" "rg_edge_name" {  
+  name             = var.rg_network.EDGE-NET.name
+  prefix           = var.prefix != "" ? var.prefix : null
+  resource_type    = "azurerm_resource_group"
+  convention       = var.global_settings.convention
+}
+
 resource "azurerm_resource_group" "rg_network" {
-  name     = "${var.prefix}${var.rg_network.CORE-NET.name}"
+  name     = azurecaf_naming_convention.rg_network_name.result
   location = var.global_settings.location_map.region1
   tags     = var.global_settings.tags_hub
 }
 
 resource "azurerm_resource_group" "rg_transit" {
-  name     = "${var.prefix}${var.rg_network.TRANSIT-NET.name}"
+  name     = azurecaf_naming_convention.rg_transit_name.result
   location = var.global_settings.location_map.region1
   tags     = var.global_settings.tags_hub
 }
 
 resource "azurerm_resource_group" "rg_edge" {
-  name     = "${var.prefix}${var.rg_network.EDGE-NET.name}"
+  name     = azurecaf_naming_convention.rg_edge_name.result
   location = var.global_settings.location_map.region1
   tags     = var.global_settings.tags_hub
 }
@@ -91,19 +112,41 @@ module "ddos_protection_std" {
 }
 
 # Please check Azure Bastion availability in the target region: https://azure.microsoft.com/en-us/global-infrastructure/services/?products=azure-bastion 
-module "bastion_host" {
-  source = "./bastion"
+module "bastion_ip" {
+  source  = "aztfmod/caf-public-ip/azurerm"
+  version = "2.0.0"
 
-  enable_bastion                    = var.core_networking.enable_bastion
-  name                              = var.core_networking.bastion_config.name
-  rg                                = azurerm_resource_group.rg_edge.name
-  subnet_id                         = lookup(module.core_network.vnet_subnets, "AzureBastionSubnet", null)
-  location                          = var.location 
-  tags                              = local.tags
-  caf_foundations_accounting        = var.caf_foundations_accounting
-  bastion_config                    = var.core_networking.bastion_config
-  global_settings                   = var.global_settings
+  convention                       = var.global_settings.convention 
+  name                             = var.core_networking.bastion_ip_addr_config.ip_name
+  location                         = var.location
+  resource_group_name              = azurerm_resource_group.rg_edge.name
+  ip_addr                          = var.core_networking.bastion_ip_addr_config.ip_addr
+  tags                             = local.tags
+  diagnostics_map                  = var.caf_foundations_accounting.diagnostics_map
+  log_analytics_workspace_id       = var.caf_foundations_accounting.log_analytics_workspace.id
+  diagnostics_settings             = var.core_networking.bastion_ip_addr_config.diagnostics
 }
+
+module "bastion" {
+  source  = "aztfmod/caf-azure-bastion/azurerm"
+  version = "0.1.0"
+
+  enable_bastion                   = var.core_networking.enable_bastion
+  bastion_config                   = var.core_networking.bastion_config
+  
+  name                             = var.core_networking.bastion_config.name
+  resource_group_name              = azurerm_resource_group.rg_edge.name
+  subnet_id                        = lookup(module.core_network.vnet_subnets, "AzureBastionSubnet", null)
+  public_ip_address_id             = module.bastion_ip.id
+  location                         = var.global_settings.location_map.region1 
+  tags                             = local.tags
+  
+  convention                       = var.global_settings.convention 
+  diagnostics_map                  = var.caf_foundations_accounting.diagnostics_map
+  log_analytics_workspace          = var.caf_foundations_accounting.log_analytics_workspace
+  diagnostics_settings             = var.core_networking.bastion_config.diagnostics
+}
+
 
 # create the UDR object
 module "user_route_web_to_az_firewall" {
