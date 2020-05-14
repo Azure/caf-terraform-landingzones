@@ -4,7 +4,7 @@
 
 Microsoft Cloud Adoption Framework for Azure provides you with guidance to adopt Azure. When deploying resources in a new environment, you can leverage landing zones and blueprints to accelerate your deployment. A landing zone is a set of infrastructure components that assembled together will deploy a complete environment ready to host an application.
 
-For full details on Cloud Adoption Framework, refer to <https://aka.ms/caf.> For any idea, bug, please fill in an issue. You can also reach out to us on tf-landingzones at microsoft dot com.
+For full details on Cloud Adoption Framework, refer to [https://aka.ms/caf](https://aka.ms/caf). For any idea, bug, please fill in an issue. You can also reach out to us on tf-landingzones at microsoft dot com.
 
 ## Overview
 
