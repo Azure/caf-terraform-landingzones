@@ -60,3 +60,5 @@ As a convention we will use the following minimal module outputs:
 | object | returns the full resource object |
 
 Any other resource specific outputs.
+
+[Back to summary](../README.md)
