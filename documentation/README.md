@@ -26,6 +26,8 @@ Soon - [Developing landing zones, modules, blueprints]()
 
 [Deploying landing zones with GitHub Actions](./delivery/intro_ci_gha.md)
 
+[Deploying landing zones with Azure DevOps](./delivery/intro_ci_ado.md)
+
 Soon - [Deployment guide for Azure CAF landing zones]()
 
 ## Operating an environment with landing zones
