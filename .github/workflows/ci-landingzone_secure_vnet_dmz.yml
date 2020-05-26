@@ -100,12 +100,9 @@ jobs:
   
       - name: deploy caf_foundations
         run: |
-         id=$(az storage account list --query "[?tags.launchpad=='launchpad_opensource' && tags.workspace=='level0']" -o json | jq -r .[0].id)
-          if [ "${id}" == "null" ]; then
             /tf/rover/rover.sh /tf/caf/landingzones/landingzone_caf_foundations apply \
                 '-var tags={testing-job-id="${{ github.run_id }}"}' \
                 '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}_${{ matrix.region }}_${{ matrix.convention }}.tfvars'
-          fi
 
   landingzone_secure_vnet_dmz:
     name: landingzone_secure_vnet_dmz
