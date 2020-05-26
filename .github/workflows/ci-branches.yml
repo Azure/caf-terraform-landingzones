@@ -169,7 +169,7 @@ jobs:
   caf_foundations_destroy:
     name: caf_foundations_destroy
     runs-on: ubuntu-latest
-    
+    if: always() 
     needs: landingzones
 
     strategy:
@@ -218,7 +218,7 @@ jobs:
   level0_destroy:
     name: level0_destroy
     runs-on: ubuntu-latest
-
+    if: always()
     needs: caf_foundations_destroy
 
     strategy:
