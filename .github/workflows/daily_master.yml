@@ -3,12 +3,11 @@
 # Licensed under the MIT License.
 #
 
-name: landingzones
+name: daily_landingzones
 
 on:
-  pull_request:
-    branches:
-      - master
+  schedule:
+    - cron:  '* 2 * * *'
 
 env:
   TF_CLI_ARGS: '-no-color'
