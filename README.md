@@ -2,7 +2,9 @@
 
 # Azure Cloud Adoption Framework landing zones for Terraform
 
-Microsoft [Cloud Adoption Framework for Azure](https://aka.ms/caf) provides you with guidance to adopt Azure. When deploying resources in an Azure environment, you can leverage landing zones to accelerate your deployment. A landing zone is a set of infrastructure components that assembled together deliver an application or complex environment.
+Microsoft [Cloud Adoption Framework for Azure](https://aka.ms/caf) provides you with guidance and best practices to adopt Azure.
+
+A landing zone is a segment of a cloud environment, that has been preprovisioned through code, and is dedicated to the support of one or more workloads. Landing zones provide access to foundational tools and controls to establish a compliant place to innovate and build new workloads in the cloud, or to migrate existing workloads to the cloud. Landing zones use defined sets of cloud services and best practices to set you up for success.
 
 Components parts of the Cloud Adoption Framework for Azure Terraform landing zones:
 
@@ -12,7 +14,8 @@ Components parts of the Cloud Adoption Framework for Azure Terraform landing zon
 
 Cloud Adoption Framework for Azure Terraform landing zones is an Open Source project with the following objectives:
 
-* Enable the community with a set of sample highly reusable landing zones.
+* Enable the community with a set of sample reusable landing zones.
+* Standardize deployments using battlefield-proven modules.
 * Accelerate the setup of complex environments on Azure.
 * Propose an enterprise-grade approach to adopting Terraform on Microsoft Azure using Cloud Adoption Framework.
 * Propose a prescriptive guidance on how to enable DevOps for infrastructure as code on Microsoft Azure.
