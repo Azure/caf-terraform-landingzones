@@ -37,7 +37,7 @@ jobs:
           convention: ["random"]
 
     container:
-      image: aztfmod/roverdev:2005.110010
+      image: aztfmod/rover:2005.1510
       options: --user 0
 
     steps:
@@ -71,7 +71,7 @@ jobs:
           environment: ["integration-tests"]
 
     container:
-      image: aztfmod/roverdev:2005.110010
+      image: aztfmod/rover:2005.1510
       options: --user 0
 
     steps:
@@ -118,11 +118,11 @@ jobs:
       matrix:
           landingzone: ["landingzone_vdc_demo"]
           region: ["westus2"]
-          convention: ["random"]
+          convention: ["random", "cafrandom"]
           environment: ["integration-tests"]
 
     container:
-      image: aztfmod/roverdev:2005.110010
+      image: aztfmod/rover:2005.1510
       options: --user 0
 
     steps:

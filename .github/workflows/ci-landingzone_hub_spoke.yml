@@ -37,7 +37,7 @@ jobs:
           convention: ["random"]
 
     container:
-      image: aztfmod/roverdev:2005.110010
+      image: aztfmod/rover:2005.1510
       options: --user 0
 
     steps:
@@ -71,7 +71,7 @@ jobs:
           environment: ["integration-tests"]
 
     container:
-      image: aztfmod/roverdev:2005.110010
+      image: aztfmod/rover:2005.1510
       options: --user 0
 
     steps:
@@ -124,7 +124,7 @@ jobs:
           scenario: ["bastion","no_bastion" ]
     
     container:
-      image: aztfmod/roverdev:2005.110010
+      image: aztfmod/rover:2005.1510
       options: --user 0
     
 
