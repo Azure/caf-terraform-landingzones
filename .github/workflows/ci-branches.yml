@@ -9,6 +9,8 @@ on:
   pull_request:
     branches:
       - master
+  schedule:
+    - cron:  '0 2 * * *'
 
 env:
   TF_CLI_ARGS: '-no-color'
