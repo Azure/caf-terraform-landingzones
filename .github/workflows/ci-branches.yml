@@ -34,7 +34,7 @@ jobs:
       matrix:
           region: ["westus2"]
           convention: ["random"]
-          launchpad: ["launchpad_opensource", "launchpad_opensource_light"]
+          launchpad: ["launchpad_opensource"]
 
     container:
       image: aztfmod/rover:2005.1510
