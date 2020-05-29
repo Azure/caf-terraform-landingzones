@@ -206,10 +206,6 @@ jobs:
 
           echo "local user: $(whoami)"
             
-      - name: workspace      
-        run: |
-          /tf/rover/launchpad.sh workspace create ${TF_VAR_workspace}
-  
       - name: destroy caf_foundations
         run: |
             /tf/rover/rover.sh /tf/caf/landingzones/${{ matrix.landingzone }} destroy \
