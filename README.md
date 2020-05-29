@@ -15,7 +15,7 @@ Components parts of the Cloud Adoption Framework for Azure Terraform landing zon
 Cloud Adoption Framework for Azure Terraform landing zones is an Open Source project with the following objectives:
 
 * Enable the community with a set of sample reusable landing zones.
-* Standardize deployments using battlefield-proven modules.
+* Standardize deployments using battlefield-proven components.
 * Accelerate the setup of complex environments on Azure.
 * Propose an enterprise-grade approach to adopting Terraform on Microsoft Azure using Cloud Adoption Framework.
 * Propose a prescriptive guidance on how to enable DevOps for infrastructure as code on Microsoft Azure.
