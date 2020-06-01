@@ -51,3 +51,5 @@ For a given "level" in the environment, each Agent VM will be assigned a managed
 - The Terraform state file: will be Read and Write permissions for the current level, will be Read only permissions for a "lower" level type of landing zone, avoiding alterations on more privileged environments.
 
 In the example above, each pipeline will have its lifecycle management (typically, level 0 and 1 will be initiated at every new subscription creation, while level 4 could be initiated as many times a day you deploy code in your application environment).
+
+[Back to summary](../README.md)

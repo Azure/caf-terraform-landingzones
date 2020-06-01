@@ -60,3 +60,5 @@ Changes in the different environments introduced and promoted following GitOps c
 - Operations are promoted from one environment to another via Git operations (Git commit, push, pull request).
 - Changes are promoted only once they have reached quality gates (provided by automation, CI mechanisms and test suites executions) to promote higher quality changes.
 - Changes are promoted only once they also have been validated by service owners in the environment (that can be declared in the DevOps configuration of the platform).
+
+[Back to summary](../README.md)
