@@ -3,7 +3,7 @@
 # Licensed under the MIT License.
 #
 
-name: landingzones
+name: landingzones-vnext
 
 on:
   pull_request:
