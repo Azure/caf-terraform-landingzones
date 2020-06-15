@@ -4,14 +4,6 @@ data "azurerm_client_config" "current" {
 data "azurerm_subscription" "current" {}
 
 
-# provider "azurerm" {
-#   version = "<= 1.44"
-# }
-
-provider "azuread" {
-    version = "<=0.7.0"
-}
-
 terraform {
     backend "azurerm" {
     }
