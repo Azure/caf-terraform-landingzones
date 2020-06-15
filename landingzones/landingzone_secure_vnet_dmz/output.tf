@@ -1,6 +1,6 @@
 output "net_core" {
-  sensitive   = false                      # to hide content from logs
-  value       = module.net_core
+  sensitive = false # to hide content from logs
+  value     = module.net_core
 }
 
 # output "blueprint_networking_shared_services" {
@@ -19,11 +19,11 @@ output "prefix" {
 }
 
 output "landingzone_caf_foundations_accounting" {
-  sensitive   = true                      # to hide content from logs
-  value       = local.caf_foundations_accounting
+  sensitive = true # to hide content from logs
+  value     = local.caf_foundations_accounting
 }
 
 output "landingzone_caf_foundations_global_settings" {
-  sensitive   = false                      # to hide content from logs
-  value       = local.global_settings
+  sensitive = false # to hide content from logs
+  value     = local.global_settings
 }

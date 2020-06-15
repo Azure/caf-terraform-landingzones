@@ -21,15 +21,19 @@ To deploy a landing zone, use the execution environnement as described at the ro
 
 ## Deploying this landing zone
 
-```
+```bash
 rover /tf/caf/landingzones/landingzone_hub_spoke plan
 ```
+
 Review the configuration and if you are ok with it, deploy it by running:
-```
+
+```bash
 rover /tf/caf/landingzones/landingzone_hub_spoke apply
 ```
+
 Have fun playing with the landing zone an once you are done, you can simply delete the deployment using:
-```
+
+```bash
 rover /tf/caf/landingzones/landingzone_hub_spoke destroy
 ```
 

@@ -13,7 +13,7 @@ locals {
 
 module "networking_shared_services" {
   source  = "aztfmod/caf-virtual-network/azurerm"
-  version = "2.0.0"
+  version = "2.0.1"
 
   convention                        = var.global_settings.convention
   resource_group_name               = local.HUB-CORE-NET

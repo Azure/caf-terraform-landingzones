@@ -40,6 +40,19 @@ accounting_settings = {
     azure_activity_logs_name = "actlogs"
     azure_activity_logs_event_hub = false
     azure_activity_logs_retention = 365
+    azure_activity_audit = {
+        log = [
+            # ["Audit category name",  "Audit enabled)"] 
+            ["Administrative", true],
+            ["Security", true],
+            ["ServiceHealth", true],
+            ["Alert", true],
+            ["Recommendation", true],
+            ["Policy", true],
+            ["Autoscale", true],
+            ["ResourceHealth", true],
+        ]
+    }
 
     # Azure diagnostics logs retention period
     azure_diagnostics_logs_name = "diaglogs"

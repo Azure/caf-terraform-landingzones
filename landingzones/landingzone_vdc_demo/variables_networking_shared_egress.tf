@@ -1,7 +1,7 @@
 #### blueprint_networking_egress
 
 variable "networking_egress" {
-    description = "Networking object for the egress"
+  description = "Networking object for the egress"
 }
 
 variable "az_fw_config" {
@@ -17,7 +17,7 @@ variable "ip_addr_config" {
 }
 
 variable "resource_groups_shared_egress" {
-    description = "(Required) name of the resource group where to deploy the egress objects"  
+  description = "(Required) name of the resource group where to deploy the egress objects"
 }
 
 
