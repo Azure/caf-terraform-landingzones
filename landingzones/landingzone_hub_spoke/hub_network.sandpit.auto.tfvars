@@ -22,44 +22,213 @@ core_networking = {
     specialsubnets = {
       AzureFirewallSubnet = {
         name = "AzureFirewallSubnet" #Must be called AzureFirewallSubnet 
-        cidr = "10.0.4.0/24"
+        cidr = ["10.0.4.0/24"]
       }
       GatewaySubnet = {
         name = "GatewaySubnet" #Must be called GateWaySubnet in order to host a Virtual Network Gateway
-        cidr = "10.0.255.224/27"
+        cidr = ["10.0.255.224/27"]
       }
     }
     subnets = {
       subnet0 = {
-        name = "Active_Directory"
-        cidr = "10.0.1.0/24"
-        nsg_inbound = [
-          # {"Name", "Priority", "Direction", "Action", "Protocol", "source_port_range", "destination_port_range", "source_address_prefix", "destination_address_prefix" }, 
-          ["W32Time", "100", "Inbound", "Allow", "udp", "*", "123", "*", "*"],
-          ["RPC-Endpoint-Mapper", "101", "Inbound", "Allow", "tcp", "*", "135", "*", "*"],
-          ["Kerberos-password-change", "102", "Inbound", "Allow", "*", "*", "464", "*", "*"],
-          ["RPC-Dynamic-range", "103", "Inbound", "Allow", "tcp", "*", "49152-65535", "*", "*"],
-          ["LDAP", "104", "Inbound", "Allow", "*", "*", "389", "*", "*"],
-          ["LDAP-SSL", "105", "Inbound", "Allow", "tcp", "*", "636", "*", "*"],
-          ["LDAP-GC", "106", "Inbound", "Allow", "tcp", "*", "3268", "*", "*"],
-          ["LDAP-GC-SSL", "107", "Inbound", "Allow", "tcp", "*", "3269", "*", "*"],
-          ["DNS", "108", "Inbound", "Allow", "*", "*", "53", "*", "*"],
-          ["Kerberos", "109", "Inbound", "Allow", "*", "*", "88", "*", "*"],
-          ["SMB", "110", "Inbound", "Allow", "tcp", "*", "445", "*", "*"],
+        name     = "Active_Directory"
+        cidr     = ["10.0.1.0/24"]
+        nsg_name = "Active_Directory_nsg"
+        nsg = [
+          {
+            name                       = "W32Time",
+            priority                   = "100"
+            direction                  = "Inbound"
+            access                     = "Allow"
+            protocol                   = "UDP"
+            source_port_range          = "*"
+            destination_port_range     = "123"
+            source_address_prefix      = "*"
+            destination_address_prefix = "*"
+          },
+          {
+            name                       = "RPC-Endpoint-Mapper",
+            priority                   = "101"
+            direction                  = "Inbound"
+            access                     = "Allow"
+            protocol                   = "UDP"
+            source_port_range          = "*"
+            destination_port_range     = "135"
+            source_address_prefix      = "*"
+            destination_address_prefix = "*"
+          },
+          {
+            name                       = "Kerberos-password-change",
+            priority                   = "102"
+            direction                  = "Inbound"
+            access                     = "Allow"
+            protocol                   = "*"
+            source_port_range          = "*"
+            destination_port_range     = "464"
+            source_address_prefix      = "*"
+            destination_address_prefix = "*"
+          },
+          {
+            name                       = "RPC-Dynamic-range",
+            priority                   = "103"
+            direction                  = "Inbound"
+            access                     = "Allow"
+            protocol                   = "tcp"
+            source_port_range          = "*"
+            destination_port_range     = "49152-65535"
+            source_address_prefix      = "*"
+            destination_address_prefix = "*"
+          },
+          {
+            name                       = "LDAP",
+            priority                   = "104"
+            direction                  = "Inbound"
+            access                     = "Allow"
+            protocol                   = "*"
+            source_port_range          = "*"
+            destination_port_range     = "389"
+            source_address_prefix      = "*"
+            destination_address_prefix = "*"
+          },
+          {
+            name                       = "LDAP-SSL",
+            priority                   = "105"
+            direction                  = "Inbound"
+            access                     = "Allow"
+            protocol                   = "tcp"
+            source_port_range          = "*"
+            destination_port_range     = "636"
+            source_address_prefix      = "*"
+            destination_address_prefix = "*"
+          },
+          {
+            name                       = "LDAP-GC",
+            priority                   = "106"
+            direction                  = "Inbound"
+            access                     = "Allow"
+            protocol                   = "tcp"
+            source_port_range          = "*"
+            destination_port_range     = "3268"
+            source_address_prefix      = "*"
+            destination_address_prefix = "*"
+          },
+          {
+            name                       = "LDAP-GC-SSL",
+            priority                   = "107"
+            direction                  = "Inbound"
+            access                     = "Allow"
+            protocol                   = "tcp"
+            source_port_range          = "*"
+            destination_port_range     = "3269"
+            source_address_prefix      = "*"
+            destination_address_prefix = "*"
+          },
+          {
+            name                       = "DNS",
+            priority                   = "108"
+            direction                  = "Inbound"
+            access                     = "Allow"
+            protocol                   = "*"
+            source_port_range          = "*"
+            destination_port_range     = "53"
+            source_address_prefix      = "*"
+            destination_address_prefix = "*"
+          },
+          {
+            name                       = "Kerberos",
+            priority                   = "109"
+            direction                  = "Inbound"
+            access                     = "Allow"
+            protocol                   = "*"
+            source_port_range          = "*"
+            destination_port_range     = "88"
+            source_address_prefix      = "*"
+            destination_address_prefix = "*"
+          },
+          {
+            name                       = "SMB",
+            priority                   = "110"
+            direction                  = "Inbound"
+            access                     = "Allow"
+            protocol                   = "tcp"
+            source_port_range          = "*"
+            destination_port_range     = "445"
+            source_address_prefix      = "*"
+            destination_address_prefix = "*"
+          }
         ]
       }
       subnet1 = {
-        name = "AzureBastionSubnet" #Must be called AzureBastionSubnet 
-        cidr = "10.0.0.128/25"
-        nsg_inbound = [
-          ["bastion-in-allow", "100", "Inbound", "Allow", "tcp", "*", "443", "*", "*"],
-          ["bastion-control-in-allow-443", "120", "Inbound", "Allow", "tcp", "*", "443", "GatewayManager", "*"],
-          ["bastion-control-in-allow-4443", "121", "Inbound", "Allow", "tcp", "*", "4443", "GatewayManager", "*"],
-        ]
-        nsg_outbound = [
-          ["bastion-vnet-out-allow-22", "100", "Outbound", "Allow", "tcp", "*", "22", "*", "VirtualNetwork"],
-          ["bastion-vnet-out-allow-3389", "101", "Outbound", "Allow", "tcp", "*", "3389", "*", "VirtualNetwork"],
-          ["bastion-azure-out-allow", "120", "Outbound", "Allow", "tcp", "*", "443", "*", "AzureCloud"],
+        name     = "AzureBastionSubnet" #Must be called AzureBastionSubnet 
+        cidr     = ["10.0.0.128/25"]
+        nsg_name = "AzureBastionSubnet_nsg"
+        nsg = [
+          {
+            name                       = "bastion-in-allow",
+            priority                   = "100"
+            direction                  = "Inbound"
+            access                     = "Allow"
+            protocol                   = "tcp"
+            source_port_range          = "*"
+            destination_port_range     = "443"
+            source_address_prefix      = "*"
+            destination_address_prefix = "*"
+          },
+          {
+            name                       = "bastion-control-in-allow-443",
+            priority                   = "120"
+            direction                  = "Inbound"
+            access                     = "Allow"
+            protocol                   = "tcp"
+            source_port_range          = "*"
+            destination_port_range     = "135"
+            source_address_prefix      = "GatewayManager"
+            destination_address_prefix = "*"
+          },
+          {
+            name                       = "Kerberos-password-change",
+            priority                   = "121"
+            direction                  = "Inbound"
+            access                     = "Allow"
+            protocol                   = "tcp"
+            source_port_range          = "*"
+            destination_port_range     = "4443"
+            source_address_prefix      = "GatewayManager"
+            destination_address_prefix = "*"
+          },
+          {
+            name                       = "bastion-vnet-out-allow-22",
+            priority                   = "103"
+            direction                  = "Outbound"
+            access                     = "Allow"
+            protocol                   = "tcp"
+            source_port_range          = "*"
+            destination_port_range     = "22"
+            source_address_prefix      = "*"
+            destination_address_prefix = "VirtualNetwork"
+          },
+          {
+            name                       = "bastion-vnet-out-allow-3389",
+            priority                   = "101"
+            direction                  = "Outbound"
+            access                     = "Allow"
+            protocol                   = "tcp"
+            source_port_range          = "*"
+            destination_port_range     = "3389"
+            source_address_prefix      = "*"
+            destination_address_prefix = "VirtualNetwork"
+          },
+          {
+            name                       = "bastion-azure-out-allow",
+            priority                   = "120"
+            direction                  = "Outbound"
+            access                     = "Allow"
+            protocol                   = "tcp"
+            source_port_range          = "*"
+            destination_port_range     = "443"
+            source_address_prefix      = "*"
+            destination_address_prefix = "AzureCloud"
+          }
         ]
       }
     }

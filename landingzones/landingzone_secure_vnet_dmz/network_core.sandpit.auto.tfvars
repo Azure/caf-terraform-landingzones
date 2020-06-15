@@ -21,56 +21,183 @@ core_networking = {
     specialsubnets = {
       AzureFirewallSubnet = {
         name = "AzureFirewallSubnet" #Must be called AzureFirewallSubnet 
-        cidr = "10.0.4.0/24"
+        cidr = ["10.0.4.0/24"]
       }
       GatewaySubnet = {
         name = "GatewaySubnet" #Must be called GateWaySubnet in order to host a Virtual Network Gateway
-        cidr = "10.0.255.224/27"
+        cidr = ["10.0.255.224/27"]
       }
     }
     subnets = {
       subnet0 = {
-        name = "Web_tier"
-        cidr = "10.0.1.0/24"
-        nsg_inbound = [
-          # {"Name", "Priority", "Direction", "Action", "Protocol", "source_port_range", "destination_port_range", "source_address_prefix", "destination_address_prefix" }, 
-          ["HTTP-In", "100", "Inbound", "Allow", "tcp", "*", "80", "*", "*"],
-          ["HTTPS-In", "101", "Inbound", "Allow", "tcp", "*", "443", "*", "*"],
+        name     = "Web_tier"
+        cidr     = ["10.0.1.0/24"]
+        nsg_name = "Web_tier_nsg"
+        nsg = [
+          {
+            name                       = "HTTP-In",
+            priority                   = "100"
+            direction                  = "Inbound"
+            access                     = "Allow"
+            protocol                   = "tcp"
+            source_port_range          = "*"
+            destination_port_range     = "80"
+            source_address_prefix      = "*"
+            destination_address_prefix = "*"
+          },
+          {
+            name                       = "HTTPS-In",
+            priority                   = "101"
+            direction                  = "Inbound"
+            access                     = "Allow"
+            protocol                   = "tcp"
+            source_port_range          = "*"
+            destination_port_range     = "443"
+            source_address_prefix      = "*"
+            destination_address_prefix = "*"
+          },
         ]
       }
       subnet1 = {
-        name = "Business_tier"
-        cidr = "10.0.2.0/24"
-        nsg_inbound = [
-          # {"Name", "Priority", "Direction", "Action", "Protocol", "source_port_range", "destination_port_range", "source_address_prefix", "destination_address_prefix" }, 
-          ["HTTP-In", "100", "Inbound", "Allow", "tcp", "*", "80", "*", "*"],
-          ["HTTPS-In", "101", "Inbound", "Allow", "tcp", "*", "443", "*", "*"],
-        ]
-        nsg_outbound = [
-          ["HTTP-Out", "100", "Outbound", "Allow", "tcp", "*", "80", "*", "*"],
-          ["HTTPS-Out", "101", "Outbound", "Allow", "tcp", "*", "443", "*", "*"],
+        name     = "Business_tier"
+        cidr     = ["10.0.2.0/24"]
+        nsg_name = "Business_tier_nsg"
+        nsg = [
+          {
+            name                       = "HTTP-In",
+            priority                   = "100"
+            direction                  = "Inbound"
+            access                     = "Allow"
+            protocol                   = "tcp"
+            source_port_range          = "*"
+            destination_port_range     = "80"
+            source_address_prefix      = "*"
+            destination_address_prefix = "*"
+          },
+          {
+            name                       = "HTTPS-In",
+            priority                   = "101"
+            direction                  = "Inbound"
+            access                     = "Allow"
+            protocol                   = "tcp"
+            source_port_range          = "*"
+            destination_port_range     = "443"
+            source_address_prefix      = "*"
+            destination_address_prefix = "*"
+          },
+          {
+            name                       = "HTTP-Out",
+            priority                   = "100"
+            direction                  = "Outbound"
+            access                     = "Allow"
+            protocol                   = "tcp"
+            source_port_range          = "*"
+            destination_port_range     = "80"
+            source_address_prefix      = "*"
+            destination_address_prefix = "*"
+          },
+          {
+            name                       = "HTTPS-Out",
+            priority                   = "101"
+            direction                  = "Outbound"
+            access                     = "Allow"
+            protocol                   = "tcp"
+            source_port_range          = "*"
+            destination_port_range     = "443"
+            source_address_prefix      = "*"
+            destination_address_prefix = "*"
+          },
         ]
       }
       subnet2 = {
-        name = "Data_tier"
-        cidr = "10.0.3.0/24"
-        nsg_inbound = [
-          # {"Name", "Priority", "Direction", "Action", "Protocol", "source_port_range", "destination_port_range", "source_address_prefix", "destination_address_prefix" }, 
-          ["TDS-In", "100", "Inbound", "Allow", "tcp", "*", "1433", "*", "*"],
+        name     = "Data_tier"
+        cidr     = ["10.0.3.0/24"]
+        nsg_name = "Data_tier_nsg"
+        nsg = [
+          {
+            name                       = "TDS-In",
+            priority                   = "100"
+            direction                  = "Inbound"
+            access                     = "Allow"
+            protocol                   = "UDP"
+            source_port_range          = "*"
+            destination_port_range     = "1433"
+            source_address_prefix      = "*"
+            destination_address_prefix = "*"
+          }
         ]
       }
       subnet3 = {
-        name = "AzureBastionSubnet" #Must be called AzureBastionSubnet 
-        cidr = "10.0.0.128/25"
-        nsg_inbound = [
-          ["bastion-in-allow", "100", "Inbound", "Allow", "tcp", "*", "443", "*", "*"],
-          ["bastion-control-in-allow-443", "120", "Inbound", "Allow", "tcp", "*", "443", "GatewayManager", "*"],
-          ["bastion-control-in-allow-4443", "121", "Inbound", "Allow", "tcp", "*", "4443", "GatewayManager", "*"],
-        ]
-        nsg_outbound = [
-          ["bastion-vnet-out-allow-22", "100", "Outbound", "Allow", "tcp", "*", "22", "*", "VirtualNetwork"],
-          ["bastion-vnet-out-allow-3389", "101", "Outbound", "Allow", "tcp", "*", "3389", "*", "VirtualNetwork"],
-          ["bastion-azure-out-allow", "120", "Outbound", "Allow", "tcp", "*", "443", "*", "AzureCloud"],
+        name     = "AzureBastionSubnet" #Must be called AzureBastionSubnet 
+        cidr     = ["10.0.0.128/25"]
+        nsg_name = "AzureBastionSubnet_nsg"
+        nsg = [
+          {
+            name                       = "bastion-in-allow",
+            priority                   = "100"
+            direction                  = "Inbound"
+            access                     = "Allow"
+            protocol                   = "tcp"
+            source_port_range          = "*"
+            destination_port_range     = "443"
+            source_address_prefix      = "*"
+            destination_address_prefix = "*"
+          },
+          {
+            name                       = "bastion-control-in-allow-443",
+            priority                   = "120"
+            direction                  = "Inbound"
+            access                     = "Allow"
+            protocol                   = "tcp"
+            source_port_range          = "*"
+            destination_port_range     = "135"
+            source_address_prefix      = "GatewayManager"
+            destination_address_prefix = "*"
+          },
+          {
+            name                       = "Kerberos-password-change",
+            priority                   = "121"
+            direction                  = "Inbound"
+            access                     = "Allow"
+            protocol                   = "tcp"
+            source_port_range          = "*"
+            destination_port_range     = "4443"
+            source_address_prefix      = "GatewayManager"
+            destination_address_prefix = "*"
+          },
+          {
+            name                       = "bastion-vnet-out-allow-22",
+            priority                   = "103"
+            direction                  = "Outbound"
+            access                     = "Allow"
+            protocol                   = "tcp"
+            source_port_range          = "*"
+            destination_port_range     = "22"
+            source_address_prefix      = "*"
+            destination_address_prefix = "VirtualNetwork"
+          },
+          {
+            name                       = "bastion-vnet-out-allow-3389",
+            priority                   = "101"
+            direction                  = "Outbound"
+            access                     = "Allow"
+            protocol                   = "tcp"
+            source_port_range          = "*"
+            destination_port_range     = "3389"
+            source_address_prefix      = "*"
+            destination_address_prefix = "VirtualNetwork"
+          },
+          {
+            name                       = "bastion-azure-out-allow",
+            priority                   = "120"
+            direction                  = "Outbound"
+            access                     = "Allow"
+            protocol                   = "tcp"
+            source_port_range          = "*"
+            destination_port_range     = "443"
+            source_address_prefix      = "*"
+            destination_address_prefix = "AzureCloud"
+          }
         ]
       }
     }

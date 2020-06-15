@@ -14,7 +14,7 @@ locals {
 
 module "networking_transit_vnet" {
   source  = "aztfmod/caf-virtual-network/azurerm"
-  version = "2.0.1"
+  version = "3.0.0"
 
   convention                        = var.global_settings.convention  
   resource_group_name               = local.HUB-NET-TRANSIT
@@ -64,10 +64,10 @@ module "vpn_gateway" {
 
 module "keyvault" {
   source  = "aztfmod/caf-keyvault/azurerm"
-  version = "1.0.0"
+  version = "2.0.2"
   
   convention                        = var.global_settings.convention 
-  rg                                = local.HUB-NET-TRANSIT
+  resource_group_name                = local.HUB-NET-TRANSIT
   akv_config                        = var.akv_config
   prefix                            = var.prefix
   location                          = var.location

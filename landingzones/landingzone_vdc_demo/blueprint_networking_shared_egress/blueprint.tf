@@ -14,7 +14,7 @@ locals {
 
 module "networking_shared_egress_vnet" {
   source  = "aztfmod/caf-virtual-network/azurerm"
-  version = "2.0.1"
+  version = "3.0.0"
 
   convention                        = var.global_settings.convention  
   resource_group_name               = local.HUB-EGRESS-NET

@@ -16,17 +16,15 @@ networking_egress = {
   specialsubnets = {
     AzureFirewallSubnet = {
       name              = "AzureFirewallSubnet"
-      cidr              = "10.0.0.0/26"
+      cidr              = ["10.0.0.0/26"]
       service_endpoints = []
     }
   }
   subnets = {
     subnet1 = {
-      name              = "Network_Monitoring"
-      cidr              = "10.0.0.64/26"
-      service_endpoints = []
-      nsg_inbound       = []
-      nsg_outbound      = []
+      name     = "Network_Monitoring"
+      cidr     = ["10.0.0.64/26"]
+      nsg_name = "Network_Monitoring_nsg"
     }
   }
   diagnostics = {

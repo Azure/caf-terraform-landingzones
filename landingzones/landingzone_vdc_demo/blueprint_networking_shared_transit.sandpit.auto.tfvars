@@ -18,17 +18,16 @@ networking_transit = {
   specialsubnets = {
     GatewaySubnet = {
       name              = "GatewaySubnet" #Must be called GateWaySubnet in order to host a Virtual Network Gateway
-      cidr              = "172.16.0.0/24"
+      cidr              = ["172.16.0.0/24"]
       service_endpoints = []
     }
   }
   subnets = {
     subnet1 = {
       name              = "NetworkMonitoring"
-      cidr              = "172.16.1.0/24"
+      cidr              = ["172.16.1.0/24"]
+      nsg_name          = "NetworkMonitoring_msg"
       service_endpoints = []
-      nsg_inbound       = []
-      nsg_outbound      = []
     }
   }
   diagnostics = {

@@ -10,72 +10,252 @@ enable_ddos_standard = false
 ddos_name            = "ddos_protection_plan"
 
 shared_services_vnet = {
-        vnet = {
-            name                = "Shared-Services"
-            address_space       = ["10.101.4.0/22"]
-            dns                 = []
+  vnet = {
+    name          = "Shared-Services"
+    address_space = ["10.101.4.0/22"]
+    dns           = []
+  }
+  specialsubnets = {
+  }
+  subnets = {
+    subnet0 = {
+      name              = "Critical_Applications"
+      cidr              = ["10.101.4.0/25"]
+      nsg_name          = "Critical_Applications_nsg"
+      service_endpoints = []
+    }
+    subnet1 = {
+      name              = "Active_Directory"
+      cidr              = ["10.101.4.128/27"]
+      service_endpoints = []
+      nsg_name          = "Active_Directory_nsg"
+      nsg = [
+        {
+          name                       = "W32Time",
+          priority                   = "100"
+          direction                  = "Inbound"
+          access                     = "Allow"
+          protocol                   = "UDP"
+          source_port_range          = "*"
+          destination_port_range     = "123"
+          source_address_prefix      = "*"
+          destination_address_prefix = "*"
+        },
+        {
+          name                       = "RPC-Endpoint-Mapper",
+          priority                   = "101"
+          direction                  = "Inbound"
+          access                     = "Allow"
+          protocol                   = "UDP"
+          source_port_range          = "*"
+          destination_port_range     = "135"
+          source_address_prefix      = "*"
+          destination_address_prefix = "*"
+        },
+        {
+          name                       = "Kerberos-password-change",
+          priority                   = "102"
+          direction                  = "Inbound"
+          access                     = "Allow"
+          protocol                   = "*"
+          source_port_range          = "*"
+          destination_port_range     = "464"
+          source_address_prefix      = "*"
+          destination_address_prefix = "*"
+        },
+        {
+          name                       = "RPC-Dynamic-range",
+          priority                   = "103"
+          direction                  = "Inbound"
+          access                     = "Allow"
+          protocol                   = "tcp"
+          source_port_range          = "*"
+          destination_port_range     = "49152-65535"
+          source_address_prefix      = "*"
+          destination_address_prefix = "*"
+        },
+        {
+          name                       = "LDAP",
+          priority                   = "104"
+          direction                  = "Inbound"
+          access                     = "Allow"
+          protocol                   = "*"
+          source_port_range          = "*"
+          destination_port_range     = "389"
+          source_address_prefix      = "*"
+          destination_address_prefix = "*"
+        },
+        {
+          name                       = "LDAP-SSL",
+          priority                   = "105"
+          direction                  = "Inbound"
+          access                     = "Allow"
+          protocol                   = "tcp"
+          source_port_range          = "*"
+          destination_port_range     = "636"
+          source_address_prefix      = "*"
+          destination_address_prefix = "*"
+        },
+        {
+          name                       = "LDAP-GC",
+          priority                   = "106"
+          direction                  = "Inbound"
+          access                     = "Allow"
+          protocol                   = "tcp"
+          source_port_range          = "*"
+          destination_port_range     = "3268"
+          source_address_prefix      = "*"
+          destination_address_prefix = "*"
+        },
+        {
+          name                       = "LDAP-GC-SSL",
+          priority                   = "107"
+          direction                  = "Inbound"
+          access                     = "Allow"
+          protocol                   = "tcp"
+          source_port_range          = "*"
+          destination_port_range     = "3269"
+          source_address_prefix      = "*"
+          destination_address_prefix = "*"
+        },
+        {
+          name                       = "DNS",
+          priority                   = "108"
+          direction                  = "Inbound"
+          access                     = "Allow"
+          protocol                   = "*"
+          source_port_range          = "*"
+          destination_port_range     = "53"
+          source_address_prefix      = "*"
+          destination_address_prefix = "*"
+        },
+        {
+          name                       = "Kerberos",
+          priority                   = "109"
+          direction                  = "Inbound"
+          access                     = "Allow"
+          protocol                   = "*"
+          source_port_range          = "*"
+          destination_port_range     = "88"
+          source_address_prefix      = "*"
+          destination_address_prefix = "*"
+        },
+        {
+          name                       = "SMB",
+          priority                   = "110"
+          direction                  = "Inbound"
+          access                     = "Allow"
+          protocol                   = "tcp"
+          source_port_range          = "*"
+          destination_port_range     = "445"
+          source_address_prefix      = "*"
+          destination_address_prefix = "*"
         }
-        specialsubnets     = {
-                            }
-        subnets = {
-            subnet0                 = {
-                name                = "Critical_Applications"
-                cidr                = "10.101.4.0/25"
-                service_endpoints   = []
-                nsg_inbound         = []
-                nsg_outbound        = []
-            }
-            subnet1                 = {
-                name                = "Active_Directory"
-                cidr                = "10.101.4.128/27"
-                service_endpoints   = []
-                nsg_inbound         = [
-                    # {"Name", "Priority", "Direction", "Action", "Protocol", "source_port_range", "destination_port_range", "source_address_prefix", "destination_address_prefix" }, 
-                    ["LDAP", "100", "Inbound", "Allow", "*", "*", "389", "*", "*"],
-                    ["RPC-EPM", "102", "Inbound", "Allow", "tcp", "*", "135", "*", "*"],
-                    ["SMB-In", "103", "Inbound", "Allow", "tcp", "*", "445", "*", "*"],
-                ]
-                nsg_outbound        = [
-                    ["o-LDAP-t", "100", "Outbound", "Allow", "*", "*", "389", "*", "*"],
-                    ["o-SMB-In", "103", "Outbound", "Allow", "tcp", "*", "445", "*", "*"],
-                ]
-            }
-            subnet2                 = {
-                name                = "SQL_Servers"
-                cidr                = "10.101.4.160/27"
-                service_endpoints   = []
-                nsg_inbound         = [
-                    # {"Name", "Priority", "Direction", "Action", "Protocol", "source_port_range", "destination_port_range", "source_address_prefix", "destination_address_prefix" }, 
-                    ["TDS-In", "100", "Inbound", "Allow", "tcp", "*", "1433", "*", "*"],
-                ]
-                nsg_outbound        = []
-            }
-            subnet4                 = {
-                name                = "AzureBastionSubnet"
-                cidr                = "10.101.4.192/27"
-                service_endpoints   = []
-                nsg_inbound         = [
-                    ["bastion-in-allow", "100", "Inbound", "Allow", "tcp", "*", "443", "*", "*"],
-                    ["bastion-control-in-allow-443", "120", "Inbound", "Allow", "tcp", "*", "443", "GatewayManager", "*"],
-                    ["bastion-control-in-allow-4443", "121", "Inbound", "Allow", "tcp", "*", "4443", "GatewayManager", "*"],
-                ]
-                nsg_outbound        = [
-                    ["bastion-vnet-out-allow-22", "100", "Outbound", "Allow", "tcp", "*", "22", "*", "VirtualNetwork"],
-                    ["bastion-vnet-out-allow-3389", "101", "Outbound", "Allow", "tcp", "*", "3389", "*", "VirtualNetwork"],
-                    ["bastion-azure-out-allow", "120", "Outbound", "Allow", "tcp", "*", "443", "*", "AzureCloud"],
-                ]
-            }
+      ]
+    }
+    subnet2 = {
+      name              = "SQL_Servers"
+      cidr              = ["10.101.4.160/27"]
+      service_endpoints = []
+      nsg_name          = "Data_tier_nsg"
+      nsg = [
+        {
+          name                       = "TDS-In",
+          priority                   = "100"
+          direction                  = "Inbound"
+          access                     = "Allow"
+          protocol                   = "UDP"
+          source_port_range          = "*"
+          destination_port_range     = "1433"
+          source_address_prefix      = "*"
+          destination_address_prefix = "*"
         }
-        diagnostics = {
-        log = [
-                    # ["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period] 
-                    ["VMProtectionAlerts", true, true, 60],
-            ]
-        metric = [
-                    #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]                 
-                    ["AllMetrics", true, true, 60],
-            ]   
+      ]
+    }
+    subnet4 = {
+      name     = "AzureBastionSubnet"
+      cidr     = ["10.101.4.192/27"]
+      nsg_name = "AzureBastionSubnet_nsg"
+      nsg = [
+        {
+          name                       = "bastion-in-allow",
+          priority                   = "100"
+          direction                  = "Inbound"
+          access                     = "Allow"
+          protocol                   = "tcp"
+          source_port_range          = "*"
+          destination_port_range     = "443"
+          source_address_prefix      = "*"
+          destination_address_prefix = "*"
+        },
+        {
+          name                       = "bastion-control-in-allow-443",
+          priority                   = "120"
+          direction                  = "Inbound"
+          access                     = "Allow"
+          protocol                   = "tcp"
+          source_port_range          = "*"
+          destination_port_range     = "135"
+          source_address_prefix      = "GatewayManager"
+          destination_address_prefix = "*"
+        },
+        {
+          name                       = "Kerberos-password-change",
+          priority                   = "121"
+          direction                  = "Inbound"
+          access                     = "Allow"
+          protocol                   = "tcp"
+          source_port_range          = "*"
+          destination_port_range     = "4443"
+          source_address_prefix      = "GatewayManager"
+          destination_address_prefix = "*"
+        },
+        {
+          name                       = "bastion-vnet-out-allow-22",
+          priority                   = "103"
+          direction                  = "Outbound"
+          access                     = "Allow"
+          protocol                   = "tcp"
+          source_port_range          = "*"
+          destination_port_range     = "22"
+          source_address_prefix      = "*"
+          destination_address_prefix = "VirtualNetwork"
+        },
+        {
+          name                       = "bastion-vnet-out-allow-3389",
+          priority                   = "101"
+          direction                  = "Outbound"
+          access                     = "Allow"
+          protocol                   = "tcp"
+          source_port_range          = "*"
+          destination_port_range     = "3389"
+          source_address_prefix      = "*"
+          destination_address_prefix = "VirtualNetwork"
+        },
+        {
+          name                       = "bastion-azure-out-allow",
+          priority                   = "120"
+          direction                  = "Outbound"
+          access                     = "Allow"
+          protocol                   = "tcp"
+          source_port_range          = "*"
+          destination_port_range     = "443"
+          source_address_prefix      = "*"
+          destination_address_prefix = "AzureCloud"
         }
+      ]
+    }
+  }
+  diagnostics = {
+    log = [
+      # ["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period] 
+      ["VMProtectionAlerts", true, true, 60],
+    ]
+    metric = [
+      #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]                 
+      ["AllMetrics", true, true, 60],
+    ]
+  }
 }
 
 ## settings for Azure bastion configuration
@@ -131,37 +311,35 @@ resource_groups_shared_egress = {
 
 # Settings for the shared services egress vnet - note that Azure Firewall subnet must be at least /26 
 networking_egress = {
-    vnet = {
-        name                = "Shared-Egress"
-        address_space       = ["10.0.0.0/25"]     
-        dns                 = ["192.168.0.16", "192.168.0.64"]
+  vnet = {
+    name          = "Shared-Egress"
+    address_space = ["10.0.0.0/25"]
+    dns           = ["192.168.0.16", "192.168.0.64"]
+  }
+  specialsubnets = {
+    AzureFirewallSubnet = {
+      name              = "AzureFirewallSubnet"
+      cidr              = ["10.0.0.0/26"]
+      service_endpoints = []
     }
-    specialsubnets     = {
-        AzureFirewallSubnet     = {
-            name                = "AzureFirewallSubnet"
-            cidr                = "10.0.0.0/26"
-            service_endpoints   = []
-        }
-        }
-    subnets = {
-        subnet1                 = {
-            name                = "Network_Monitoring"
-            cidr                = "10.0.0.64/26"
-            service_endpoints   = []
-            nsg_inbound         = []
-            nsg_outbound        = []
-        }
+  }
+  subnets = {
+    subnet1 = {
+      name     = "Network_Monitoring"
+      cidr     = ["10.0.0.64/26"]
+      nsg_name = "Network_Monitoring_nsg"
     }
-    diagnostics = {
-        log = [
-                # ["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period] 
-                ["VMProtectionAlerts", true, true, 60],
-        ]
-        metric = [
-                #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]                 
-                ["AllMetrics", true, true, 60],
-        ]   
-    }
+  }
+  diagnostics = {
+    log = [
+      # ["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period] 
+      ["VMProtectionAlerts", true, true, 60],
+    ]
+    metric = [
+      #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]                 
+      ["AllMetrics", true, true, 60],
+    ]
+  }
 }
 
 # Settings for the public IP address to be used for egress
@@ -229,37 +407,36 @@ resource_groups_shared_transit = {
 
 # Settings for the shared services egress vnet
 networking_transit = {
-        vnet = {
-            name                = "Shared-Transit"
-            address_space       = ["172.16.0.0/23"]   
-            dns                 = ["192.168.0.16", "192.168.0.64"]
-        }
-        specialsubnets     = {
-            GatewaySubnet           = {
-                name                = "GatewaySubnet" #Must be called GateWaySubnet in order to host a Virtual Network Gateway
-                cidr                = "172.16.0.0/24"
-                service_endpoints   = []
-            }
-          }
-        subnets = {
-            subnet1                 = {
-                name                = "NetworkMonitoring"
-                cidr                =  "172.16.1.0/24"
-                service_endpoints   = []
-                nsg_inbound         = []
-                nsg_outbound        = []
-            }
-             }
-        diagnostics = {
-            log = [
-                    # ["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period] 
-                    ["VMProtectionAlerts", true, true, 60],
-            ]
-            metric = [
-                    #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]                 
-                    ["AllMetrics", true, true, 60],
-            ]   
-        }
+  vnet = {
+    name          = "Shared-Transit"
+    address_space = ["172.16.0.0/23"]
+    dns           = ["192.168.0.16", "192.168.0.64"]
+  }
+  specialsubnets = {
+    GatewaySubnet = {
+      name              = "GatewaySubnet" #Must be called GateWaySubnet in order to host a Virtual Network Gateway
+      cidr              = ["172.16.0.0/24"]
+      service_endpoints = []
+    }
+  }
+  subnets = {
+    subnet1 = {
+      name              = "NetworkMonitoring"
+      cidr              = ["172.16.1.0/24"]
+      nsg_name          = "NetworkMonitoring_msg"
+      service_endpoints = []
+    }
+  }
+  diagnostics = {
+    log = [
+      # ["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period] 
+      ["VMProtectionAlerts", true, true, 60],
+    ]
+    metric = [
+      #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]                 
+      ["AllMetrics", true, true, 60],
+    ]
+  }
 }
 
 # Settings for the public IP address to be used for egress
