@@ -6,7 +6,7 @@ This landing zone demo is a quick hub and spoke setup in order to setup a hub-sp
 
 **WARNING! This is demo-quality and code should have major refactoring at Terraform 0.13 using iterative structure to make it more reusable.**
 
-For more reference on the Hub and Spoke topology using Azure Virtual WAN, please refer to the [Architecture Center]()
+For more reference on the Hub and Spoke topology using Azure Virtual WAN, please refer to the [Architecture Center](https://docs.microsoft.com/en-us/azure/virtual-wan)
 
 ## Capabilities
 
