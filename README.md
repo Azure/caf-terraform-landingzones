@@ -1,4 +1,6 @@
 ![landingzones](https://github.com/Azure/caf-terraform-landingzones/workflows/landingzones/badge.svg)
+![landingzones](https://github.com/Azure/caf-terraform-landingzones/workflows/landingzones-vnext/badge.svg)
+[![VScodespaces](https://img.shields.io/endpoint?url=https%3A%2F%2Faka.ms%2Fvso-badge)](https://online.visualstudio.com/environments/new?name=caf%20landing%20zones&repo=azure/caf-terraform-landingzones)
 
 # Azure Cloud Adoption Framework landing zones for Terraform
 
