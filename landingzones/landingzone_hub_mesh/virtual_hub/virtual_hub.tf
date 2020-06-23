@@ -48,4 +48,3 @@ resource "azurerm_virtual_hub" "vwan_hub" {
     delete = "180m"
   }
 }
-
