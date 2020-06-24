@@ -27,6 +27,8 @@ Cloud Adoption Framework for Azure Terraform landing zones is an Open Source pro
 
 See our [Getting Started](./documentation/getting_started/getting_started.md)
 
+See our [Getting Started Video](https://www.youtube.com/watch?v=t1exCkWft60)
+
 ## Documentation
 
 More details on how to develop, deploy and operate with landing zones can be found in the reference section [here](./documentation/README.md)
