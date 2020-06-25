@@ -1,3 +1,14 @@
+## v6.0.2006 (June 2020) - UNRELEASED
+
+FEATURES:
+
+* **feature:** Update new Azure Activity Logs capability [#39](https://github.com/Azure/caf-terraform-landingzones/issues/39)
+* **feature:** New landing_zone for networking using hub spoke with Azure Virtual WAN [#41](https://github.com/Azure/caf-terraform-landingzones/issues/41)
+* **feature:** Support for NSG naming, extended fields, and update to address-prefixes [#44](https://github.com/Azure/caf-terraform-landingzones/issues/44)
+* **rover :** upgrade to rover 2006.xxxx - added toolset for development and bootstrap process.
+* **added support for azurerm 2.15 :** On all sample landing zones [azurerm provider](https://github.com/terraform-providers/terraform-provider-azurerm/releases/tag/v2.15.0)
+* **documentation :** Iterating on documentation, adding clarifications on component roles, architecture and delivery techniques.
+
 ## v5.1.2005 (May 2020)
 
 FEATURES:
