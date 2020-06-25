@@ -61,7 +61,7 @@ module "diagnostics_logging" {
 #Create the Azure Monitor - Log Analytics workspace
 module "log_analytics" {
   source  = "aztfmod/caf-log-analytics/azurerm"
-  version = "2.1.0"
+  version = "2.2.0"
 
   convention          = var.convention
   prefix              = var.prefix
