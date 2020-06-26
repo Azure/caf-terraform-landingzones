@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-In order to start deploying your with CAF landing zones, you need the following components installed on your machine:
+In order to start deploying your with CAF landing zones, you need an Azure subscription (Trial, MSDN, etc.) and you need to install the following components on your machine:
 
 - [Visual Studio Code](https://code.visualstudio.com/)
 - [Docker Desktop](https://docs.docker.com/docker-for-windows/install/)

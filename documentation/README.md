@@ -6,7 +6,7 @@ In this series of articles, we describe the development, code architecture, the 
 
 [Getting started on your laptop](./getting_started/getting_started.md)
 
-Soon - [Getting started on Visual Studio CodeSpaces](./getting_started/getting_started_codespaces.md)
+[Getting started on Visual Studio CodeSpaces](./getting_started/getting_started_codespaces.md)
 
 ## Landing zones architecture
 
