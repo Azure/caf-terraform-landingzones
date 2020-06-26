@@ -22,19 +22,19 @@ resource "azurecaf_naming_convention" "rg_edge_name" {
 resource "azurerm_resource_group" "rg_network" {
   name     = azurecaf_naming_convention.rg_network_name.result
   location = var.global_settings.location_map.region1
-  tags     = var.global_settings.tags_hub
+  tags     = local.tags
 }
 
 resource "azurerm_resource_group" "rg_transit" {
   name     = azurecaf_naming_convention.rg_transit_name.result
   location = var.global_settings.location_map.region1
-  tags     = var.global_settings.tags_hub
+  tags     = local.tags
 }
 
 resource "azurerm_resource_group" "rg_edge" {
   name     = azurecaf_naming_convention.rg_edge_name.result
   location = var.global_settings.location_map.region1
-  tags     = var.global_settings.tags_hub
+  tags     = local.tags
 }
 
 
@@ -165,7 +165,7 @@ module "vpn_pip" {
   location                         = var.location
   resource_group_name              = azurerm_resource_group.rg_transit.name
   ip_addr                          = var.core_networking.gateway_config.pip
-  tags                             = var.global_settings.tags_hub
+  tags                             = local.tags
   diagnostics_map                  = var.caf_foundations_accounting.diagnostics_map
   log_analytics_workspace_id       = var.caf_foundations_accounting.log_analytics_workspace.id
   diagnostics_settings             = var.core_networking.gateway_config.pip.diagnostics
@@ -188,7 +188,7 @@ module "vpn_gateway" {
   diagnostics_map                     = var.core_networking.gateway_config.diagnostics
   caf_foundations_accounting          = var.caf_foundations_accounting
   keyvaultid                          = module.keyvault_vpn.id
-  logged_user_objectId              = var.logged_user_objectId
+  logged_user_objectId                = var.logged_user_objectId
 }
 
 # deploying a Keyvault to store the PSK of the S2S VPN

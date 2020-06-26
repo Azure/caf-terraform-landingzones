@@ -17,3 +17,7 @@ output "landingzone_caf_foundations_global_settings" {
   sensitive = true # to hide content from logs
   value     = local.global_settings
 }
+
+output environment {
+  value = local.environment
+}
