@@ -1,5 +1,5 @@
 {
-    "name": "Azure CAF rover",
+    "name": "Azure CAF landing zones",
  
     // Update the 'dockerComposeFile' list if you have more compose files or use different names.
     "dockerComposeFile": "docker-compose.yml",
