@@ -117,7 +117,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-          landingzone: ["landingzone_hub_spoke", "landingzone_secure_vnet_dmz", "landingzone_starter", "landingzone_vdc_demo"]
+          landingzone: ["landingzone_hub_spoke", "landingzone_secure_vnet_dmz", "landingzone_starter", "landingzone_vdc_demo", "landingzone_hub_mesh"]
           region: ["westus2"]
           convention: ["cafrandom"]
           environment: ["integration-tests"]
