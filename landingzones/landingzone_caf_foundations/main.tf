@@ -25,5 +25,7 @@ data "terraform_remote_state" "level0_launchpad" {
 }
 
 locals {
-  prefix = data.terraform_remote_state.level0_launchpad.outputs.prefix
+  prefix      = data.terraform_remote_state.level0_launchpad.outputs.prefix
+  environment = data.terraform_remote_state.level0_launchpad.outputs.environment
+  tags_hub    = merge({"environment" = local.environment}, var.global_settings.tags_hub)
 }

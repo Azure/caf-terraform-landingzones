@@ -27,6 +27,12 @@ output "prefix" {
   description = "prefix from level0"
 }
 
+output "environment" {
+  value       = local.environment
+  description = "environment from level0"
+}
+
+
 # output "tags" {
 #   value = var.global_settings.tags_hub
 #   description = "default tags for the objects in foundations blueprint"

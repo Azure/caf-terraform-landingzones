@@ -3,9 +3,9 @@ module "blueprint_foundations_accounting" {
   source = "./blueprint_foundations_accounting/"
 
   prefix              = local.prefix
-  tags                = var.tags
+  tags                = local.tags
   location            = var.global_settings.location_map.region1
-  tags_hub            = var.global_settings.tags_hub
+  tags_hub            = local.tags_hub
   resource_groups_hub = var.global_settings.resource_groups_hub
   convention          = var.global_settings.convention
 
@@ -15,9 +15,9 @@ module "blueprint_foundations_accounting" {
 module "blueprint_foundations_security" {
   source = "./blueprint_foundations_security/"
 
-  tags                = var.tags
+  tags                = local.tags
   location            = var.global_settings.location_map.region1
-  tags_hub            = var.global_settings.tags_hub
+  tags_hub            = local.tags_hub
   resource_groups_hub = module.blueprint_foundations_accounting.resource_group_operations
   log_analytics       = module.blueprint_foundations_accounting.log_analytics_workspace
 
@@ -27,8 +27,8 @@ module "blueprint_foundations_security" {
 module "blueprint_foundations_governance" {
   source = "./blueprint_foundations_governance/"
 
-  tags          = var.tags
-  tags_hub      = var.global_settings.tags_hub
+  tags          = local.tags
+  tags_hub      = local.tags_hub
   location      = var.global_settings.location_map.region1
   log_analytics = module.blueprint_foundations_accounting.log_analytics_workspace
 
