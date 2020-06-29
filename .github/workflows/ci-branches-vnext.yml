@@ -53,7 +53,7 @@ jobs:
           id=$(az storage account list --query "[?tags.tfstate=='level0' && tags.environment=='${{ github.run_id }}']" -o json | jq -r .[0].id)
 
           if [ "${id}" == "null" ]; then
-            /tf/rover/rover.sh /tf/landingzones/launchpad apply \
+            /tf/rover/rover.sh /tf/caf/landingzones/launchpad apply \
               -launchpad \
               -var location=${{ matrix.region }} \
               -var environment=${{ github.run_id }} \
@@ -231,7 +231,7 @@ jobs:
       
       - name: Remove launchpad
         run: |
-          /tf/rover/launchpad.sh /tf/launchpads/launchpad_opensource destroy \
+          /tf/rover/rover.sh /tf/caf/landingzones/launchpad destroy \
             -launchpad \
             -var location=${{ env.region }} \
             -var environment=${{ github.run_id }} \
