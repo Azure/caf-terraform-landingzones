@@ -50,6 +50,8 @@ jobs:
       
       - name: Locate launchpad
         run: |
+          ln -s ${GITHUB_WORKSPACE} /tf/caf
+
           id=$(az storage account list --query "[?tags.tfstate=='level0' && tags.environment=='${{ github.run_id }}']" -o json | jq -r .[0].id)
 
           if [ "${id}" == "null" ]; then
@@ -231,6 +233,8 @@ jobs:
       
       - name: Remove launchpad
         run: |
+          ln -s ${GITHUB_WORKSPACE} /tf/caf
+          
           /tf/rover/rover.sh /tf/caf/landingzones/launchpad destroy \
             -launchpad \
             -var location=${{ env.region }} \
