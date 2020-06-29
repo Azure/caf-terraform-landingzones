@@ -5,7 +5,7 @@ resource "azurecaf_naming_convention" "keyvault" {
   name          = each.value.name
   resource_type = "kv"
   convention    = each.value.convention
-  prefix        = local.prefix
+  prefix        = local.prefix_start_alpha
 }
 
 resource "azurerm_key_vault" "keyvault" {
