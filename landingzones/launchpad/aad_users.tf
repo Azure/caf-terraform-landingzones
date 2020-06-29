@@ -1,8 +1,5 @@
 
-locals {
-  logged_in_upn = var.aad_users == null ? "" : data.azuread_user.logged_in_user.0.user_principal_name
-  # logged_in_upn = ""
-}
+
 
 
 
@@ -22,7 +19,7 @@ resource "azuread_user" "account" {
   for_each = var.aad_users
 
   user_principal_name = "${azurecaf_naming_convention.account[each.key].result}@${each.value.tenant_name}"
-  display_name        = "${azurecaf_naming_convention.account[each.key].result} (created by ${local.logged_in_upn}) - CAF launchpad"
+  display_name        = "${azurecaf_naming_convention.account[each.key].result} (created by CAF launchpad)"
   password            = random_password.account[each.key].result
 }
 

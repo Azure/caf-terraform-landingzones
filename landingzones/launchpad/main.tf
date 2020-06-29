@@ -18,10 +18,6 @@ provider "azurerm" {
 data "azurerm_subscription" "primary" {}
 data "azurerm_client_config" "current" {}
 
-data "azuread_user" "logged_in_user" {
-  count = var.aad_users == null ? 0 : 1
-  object_id = var.logged_user_objectId
-}
 
 resource "random_string" "prefix" {
     length  = 4
