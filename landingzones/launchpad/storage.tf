@@ -19,7 +19,6 @@ resource "azurerm_storage_account" "stg" {
 
   tags = {
     tfstate     = var.level
-    workspace   = "level0"  # Kept for compatibility with 2005.1510
     environment = var.environment
     launchpad   = var.launchpad_mode
   }

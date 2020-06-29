@@ -22,7 +22,6 @@ resource "azurerm_key_vault" "keyvault" {
 
   tags = {
     tfstate     = var.level
-    workspace   = "level0"  # Kept for compatibility with 2005.1510
     environment = var.environment
   }
 
