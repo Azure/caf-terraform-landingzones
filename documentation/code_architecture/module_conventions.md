@@ -54,6 +54,7 @@ Please refer to the unit and integration testing reference article:  https://git
 ## GitHub Actions for Testing
 
 New modules must implement the automation of integration testing using GitHub actions and deploying the examples in an Azure test subscription.
+This testing must also include static security analysis as https://github.com/triat/terraform-security-scan
 
 ## Module Diagnostics
 

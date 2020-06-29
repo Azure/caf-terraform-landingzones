@@ -7,7 +7,7 @@ FEATURES:
 * **feature:** Support for NSG naming, extended fields, and update to address-prefixes [#44](https://github.com/Azure/caf-terraform-landingzones/issues/44)
 * **feature:** Added support for [Visual Studio Codespaces](https://online.visualstudio.com/environments/new?name=caf%20landing%20zones&repo=azure/caf-terraform-landingzones)
 * **workspace:** Increased command history, tab size set to 2 and eol settings.
-* **rover :** upgrade to rover 2006 - support for Terraform 0.28 - added toolset for development and bootstrap process.
+* **rover :** upgrade to rover 2006 - support for Terraform 0.28 - added toolset for development and bootstrap process, decoupling launchpad and rover.
 * **added support for azurerm 2.16 :** On all sample landing zones [azurerm provider](https://github.com/terraform-providers/terraform-provider-azurerm/releases/tag/v2.16.0)
 * **documentation :** Iterating on documentation, adding clarifications on component roles, architecture and delivery techniques.
 
@@ -16,7 +16,7 @@ FEATURES:
 FEATURES:
 
 * **rover :** upgrade to rover 2005.1510 - improved support for Azure DevOps and GitHub Actions
-* **added support for azurerm 2.11 :** On all sample landing zones [azurerm provider](https://github.com/terraform-providers/terraform-provider-azurerm/releases/tag/v2.11.0) 
+* **added support for azurerm 2.11 :** On all sample landing zones [azurerm provider](https://github.com/terraform-providers/terraform-provider-azurerm/releases/tag/v2.11.0)
 * **documentation :** revamp doc and added guidance on Azure DevOps and GitHub actions pipelines [#28](https://github.com/Azure/caf-terraform-landingzones/issues/28)
 
 ## v5.0.2005 (May 2020)
@@ -24,7 +24,7 @@ FEATURES:
 FEATURES:
 
 * **rover :** upgrade to rover 2005.1314 - improved support for Azure DevOps and GitHub Actions
-* **added support for azurerm 2.9 :** On all sample landing zones [azurerm provider](https://github.com/terraform-providers/terraform-provider-azurerm/releases/tag/v2.9.0) 
+* **added support for azurerm 2.9 :** On all sample landing zones [azurerm provider](https://github.com/terraform-providers/terraform-provider-azurerm/releases/tag/v2.9.0)
 * **documentation :** added guidance and documentation on LZ hierarchy and delivery [#32](https://github.com/Azure/caf-terraform-landingzones/pull/32)
 * **devops :** added GitHub actions workflows to implement integration tests on public repository [25](https://github.com/Azure/caf-terraform-landingzones/issues/25)
 

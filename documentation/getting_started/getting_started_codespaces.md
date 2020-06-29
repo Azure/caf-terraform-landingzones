@@ -71,18 +71,16 @@ We recommend that you verify the output of the login and make sure the subscript
 az account set --subscription <subscription_GUID>
 ```
 
-On the first run, you need to use the launchpad to create the foundations for Terraform environment, the launchpad_opensource is the current way to set those foundations.
-
-Running the following command:
+On the first run, you need to apply the launchpad as the first landing zone:
 
 ```bash
-launchpad /tf/launchpads/launchpad_opensource_light apply
+rover /tf/caf/landingzones/launchpad apply -launchpad
 ```
 
-This command will interactively prompt you for *var.location*, asking for the name of a supported Azure region **where you want to deploy the Terraform state and dependencies**. You can specify that in the argument as in the following example:  
+You can specify a location for the launchpad using the following command:
 
 ```bash
-launchpad /tf/launchpads/launchpad_opensource_light apply -var 'location=westus'
+rover /tf/caf/landingzones/launchpad apply -launchpad -var location=westus
 ```
 
 You can then launch your first landing zone!
