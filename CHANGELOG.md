@@ -7,7 +7,7 @@ FEATURES:
 * **feature:** Support for NSG naming, extended fields, and update to address-prefixes [#44](https://github.com/Azure/caf-terraform-landingzones/issues/44)
 * **feature:** Added support for [Visual Studio Codespaces](https://online.visualstudio.com/environments/new?name=caf%20landing%20zones&repo=azure/caf-terraform-landingzones)
 * **workspace:** Increased command history, tab size set to 2 and eol settings.
-* **rover :** upgrade to rover 2006.xxxx - added toolset for development and bootstrap process.
+* **rover :** upgrade to rover 2006 - support for Terraform 0.28 - added toolset for development and bootstrap process.
 * **added support for azurerm 2.16 :** On all sample landing zones [azurerm provider](https://github.com/terraform-providers/terraform-provider-azurerm/releases/tag/v2.16.0)
 * **documentation :** Iterating on documentation, adding clarifications on component roles, architecture and delivery techniques.
 
