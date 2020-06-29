@@ -24,3 +24,8 @@ variable "security_settings" {
 variable "governance_settings" {
   description = "(Required) object describing governance settings for landing zone configuration (azure policies and azure management groups)"
 }
+
+variable prefix {
+  description = "(Optional) By default CAF Foundation gets the prefix from the launchpad. You can overwride it by setting a value."
+  default = null
+}
