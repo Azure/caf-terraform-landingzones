@@ -59,8 +59,8 @@ jobs:
           if [ "${id}" == "null" ]; then
             /tf/rover/rover.sh /tf/caf/landingzones/launchpad apply \
               -launchpad \
-              -var location=${{ matrix.region }} \
               --environment ${{ github.run_id }} \
+              -var location=${{ matrix.region }} \
               '-var tags={testing_job_id="${{ github.run_id }}"}'
           fi
 
