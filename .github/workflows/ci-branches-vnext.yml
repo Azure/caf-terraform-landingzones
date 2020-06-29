@@ -60,7 +60,7 @@ jobs:
             /tf/rover/rover.sh /tf/caf/landingzones/launchpad apply \
               -launchpad \
               -var location=${{ matrix.region }} \
-              -var environment=${{ github.run_id }} \
+              --environment ${{ github.run_id }} \
               '-var tags={testing_job_id="${{ github.run_id }}"}'
           fi
 
@@ -105,7 +105,7 @@ jobs:
       - name: deploy caf_foundations
         run: |
             /tf/rover/rover.sh /tf/caf/landingzones/${{ matrix.landingzone }} apply \
-              -environment=${{ github.run_id }} \
+              --environment ${{ github.run_id }} \
               '-var tags={testing-job-id="${{ github.run_id }}"}' \
               '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}_${{ matrix.region }}_${{ matrix.convention }}.tfvars'
                 
@@ -151,7 +151,7 @@ jobs:
       - name: deploy landing_zone
         run: |
           /tf/rover/rover.sh /tf/caf/landingzones/${{ matrix.landingzone }} apply \
-            -environment=${{ github.run_id }} \
+            -env ${{ github.run_id }} \
             '-var tags={testing-job-id="${{ github.run_id }}"}' \
             '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}.tfvars'
 
@@ -159,7 +159,7 @@ jobs:
         if: always()
         run: |
           /tf/rover/rover.sh /tf/caf/landingzones/${{ matrix.landingzone }} destroy \
-            -environment=${{ github.run_id }} \
+            --environment ${{ github.run_id }} \
             '-var tags={testing-job-id="${{ github.run_id }}"}' \
             '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}.tfvars'
 
@@ -204,7 +204,7 @@ jobs:
       - name: destroy caf_foundations
         run: |
             /tf/rover/rover.sh /tf/caf/landingzones/${{ matrix.landingzone }} destroy \
-              -environment=${{ github.run_id }} \
+              --environment ${{ github.run_id }} \
               '-var tags={testing-job-id="${{ github.run_id }}"}' \
               '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}_${{ matrix.region }}_${{ matrix.convention }}.tfvars' \
               '-auto-approve'
@@ -226,6 +226,8 @@ jobs:
       options: --user 0
 
     steps:
+      - uses: actions/checkout@v2
+
       - name: Login azure
         run: |
           az login --service-principal -u '${{ env.ARM_CLIENT_ID }}' -p '${{ env.ARM_CLIENT_SECRET }}' --tenant '${{ env.ARM_TENANT_ID }}'
@@ -236,11 +238,11 @@ jobs:
       - name: Remove launchpad
         run: |
           ln -s ${GITHUB_WORKSPACE} /tf/caf
-          
+
           /tf/rover/rover.sh /tf/caf/landingzones/launchpad destroy \
             -launchpad \
+            -env ${{ github.run_id }} \
             -var location=${{ env.region }} \
-            -var environment=${{ github.run_id }} \
             '-var tags={testing_job_id="${{ github.run_id }}"}' \
             -auto-approve
         
