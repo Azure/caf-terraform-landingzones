@@ -60,6 +60,7 @@ jobs:
             /tf/rover/rover.sh /tf/caf/landingzones/launchpad apply \
               -launchpad \
               --environment ${{ github.run_id }} \
+              -var prefix=${{ matrix.region }} \
               -var location=${{ matrix.region }} \
               '-var tags={testing_job_id="${{ github.run_id }}"}'
           fi
@@ -106,6 +107,7 @@ jobs:
         run: |
             /tf/rover/rover.sh /tf/caf/landingzones/${{ matrix.landingzone }} apply \
               --environment ${{ github.run_id }} \
+              -var prefix=${{ matrix.region }} \
               '-var tags={testing-job-id="${{ github.run_id }}"}' \
               '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}_${{ matrix.region }}_${{ matrix.convention }}.tfvars'
                 
@@ -152,6 +154,7 @@ jobs:
         run: |
           /tf/rover/rover.sh /tf/caf/landingzones/${{ matrix.landingzone }} apply \
             -env ${{ github.run_id }} \
+            -var prefix=${{ matrix.region }} \
             '-var tags={testing-job-id="${{ github.run_id }}"}' \
             '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}.tfvars'
 
@@ -160,6 +163,7 @@ jobs:
         run: |
           /tf/rover/rover.sh /tf/caf/landingzones/${{ matrix.landingzone }} destroy \
             --environment ${{ github.run_id }} \
+            -var prefix=${{ matrix.region }} \
             '-var tags={testing-job-id="${{ github.run_id }}"}' \
             '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}.tfvars'
 
@@ -205,6 +209,7 @@ jobs:
         run: |
             /tf/rover/rover.sh /tf/caf/landingzones/${{ matrix.landingzone }} destroy \
               --environment ${{ github.run_id }} \
+              -var prefix=${{ matrix.region }} \
               '-var tags={testing-job-id="${{ github.run_id }}"}' \
               '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}_${{ matrix.region }}_${{ matrix.convention }}.tfvars' \
               '-auto-approve'
@@ -242,6 +247,7 @@ jobs:
           /tf/rover/rover.sh /tf/caf/landingzones/launchpad destroy \
             -launchpad \
             -env ${{ github.run_id }} \
+            -var prefix=${{ matrix.region }} \
             -var location=${{ env.region }} \
             '-var tags={testing_job_id="${{ github.run_id }}"}' \
             -auto-approve
