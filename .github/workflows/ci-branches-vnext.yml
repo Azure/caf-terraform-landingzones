@@ -162,7 +162,6 @@ jobs:
         run: |
           /tf/rover/rover.sh /tf/caf/landingzones/${{ matrix.landingzone }} destroy \
             --environment ${{ github.run_id }} \
-            -var prefix=g${{ github.run_id}} \
             '-var tags={testing-job-id="${{ github.run_id }}"}' \
             '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}.tfvars'
 
