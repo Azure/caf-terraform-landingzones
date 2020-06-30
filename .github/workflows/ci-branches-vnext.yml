@@ -62,7 +62,7 @@ jobs:
               --environment ${{ github.run_id }} \
               -var prefix=g${{ github.run_id}} \ \
               -var location=${{ matrix.region }} \
-              '-var tags={testing_job_id="${{ github.run_id }}"}'
+              '-var tags={testing-job-id="${{ github.run_id }}"}'
           fi
 
   caf_foundations:
@@ -247,7 +247,7 @@ jobs:
             -env ${{ github.run_id }} \
             -var prefix=g${{ github.run_id}} \
             -var location=${{ env.region }} \
-            '-var tags={testing_job_id="${{ github.run_id }}"}' \
+            '-var tags={testing-job-id="${{ github.run_id }}"}' \
             -auto-approve
         
           
@@ -257,6 +257,6 @@ jobs:
           for i in `az monitor log-profiles list -o tsv --query '[].name'`; do az monitor log-profiles delete --name $i; done
           for i in `az ad group list --query "[?contains(displayName, '${{ github.run_id }}')].objectId" -o tsv`; do echo "purging Azure AD group: $i" && $(az ad group delete --verbose --group $i || true); done
           for i in `az ad app list --query "[?contains(displayName, '${{ github.run_id }}')].appId" -o tsv`; do echo "purging Azure AD app: $i" && $(az ad app delete --verbose --id $i || true); done
-          for i in `az group list --query "[?tags.testing_job_id=='${{ github.run_id }}'].name" -o tsv`; do echo "purging resource group: $i" && $(az group delete -n $i -y --no-wait || true); done
+          for i in `az group list --query "[?tags.testing-job-id=='${{ github.run_id }}'].name" -o tsv`; do echo "purging resource group: $i" && $(az group delete -n $i -y --no-wait || true); done
           for i in `az role assignment list --query "[?contains(roleDefinitionName, '${{ github.run_id }}')].roleDefinitionName" -o tsv`; do echo "purging role assignment: $i" && $(az role assignment delete --role $i || true); done
           for i in `az role definition list --query "[?contains(roleName, '${{ github.run_id }}')].roleName" -o tsv`; do echo "purging custom role definition: $i" && $(az role definition delete --name $i || true); done
