@@ -27,5 +27,5 @@ data "terraform_remote_state" "level0_launchpad" {
 locals {
   prefix      = var.prefix == null ? data.terraform_remote_state.level0_launchpad.outputs.prefix : var.prefix
   environment = lookup(data.terraform_remote_state.level0_launchpad.outputs, "environment", "sandpit")
-  tags_hub    = merge({"environment" = local.environment}, var.global_settings.tags_hub)
+  tags_hub    = merge({ "environment" = local.environment }, var.global_settings.tags_hub)
 }

@@ -8,7 +8,7 @@ resource "azurecaf_naming_convention" "account" {
 
   name          = each.value.user_name
   prefix        = each.value.useprefix ? var.prefix : ""
-  resource_type = "rg"    # workaround to keep the dashes
+  resource_type = "rg" # workaround to keep the dashes
   convention    = each.value.convention
   max_length    = lookup(each.value, "max_length", null)
 }
@@ -39,11 +39,11 @@ resource "azurerm_key_vault_secret" "aad_user_name" {
     azurerm_key_vault.keyvault
   ]
 
-  for_each        = var.aad_users
+  for_each = var.aad_users
 
-  name            = "${lookup(each.value, "secret_prefix", each.value.user_name)}-name"
-  value           = azuread_user.account[each.key].user_principal_name
-  key_vault_id    = azurerm_key_vault.keyvault[each.value.keyvault_key].id
+  name         = "${lookup(each.value, "secret_prefix", each.value.user_name)}-name"
+  value        = azuread_user.account[each.key].user_principal_name
+  key_vault_id = azurerm_key_vault.keyvault[each.value.keyvault_key].id
 }
 
 resource "azurerm_key_vault_secret" "aad_user_password" {
@@ -51,9 +51,9 @@ resource "azurerm_key_vault_secret" "aad_user_password" {
     azurerm_key_vault.keyvault
   ]
 
-  for_each        = var.aad_users
+  for_each = var.aad_users
 
-  name            = "${lookup(each.value, "secret_prefix", each.value.user_name)}-password"
-  value           = random_password.account[each.key].result
-  key_vault_id    = azurerm_key_vault.keyvault[each.value.keyvault_key].id
+  name         = "${lookup(each.value, "secret_prefix", each.value.user_name)}-password"
+  value        = random_password.account[each.key].result
+  key_vault_id = azurerm_key_vault.keyvault[each.value.keyvault_key].id
 }

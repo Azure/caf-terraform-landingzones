@@ -30,7 +30,7 @@ variable "remote_network" {
 
 variable "remote_network_connect" {
   description = "Determines if the Remote Network is to be connected after creation."
-  type = bool
+  type        = bool
 }
 
 variable "connection_name" {
@@ -42,24 +42,24 @@ variable "resource_groups_shared_transit" {
 }
 
 variable "networking_transit" {
-  
+
 }
 
 variable "log_analytics_workspace" {
-  
+
 }
 
 variable "diagnostics_map" {
-  
+
 }
 
 variable "prefix" {
-  description = "(Optional) Prefix to uniquely identify the deployment"    
+  description = "(Optional) Prefix to uniquely identify the deployment"
 }
 
 
 variable "shared_services_vnet_object" {
-  
+
 }
 
 variable "virtual_network_rg" {
@@ -67,11 +67,11 @@ variable "virtual_network_rg" {
 }
 
 variable "provision_gateway" {
-  
+
 }
 
 variable "akv_config" {
-  
+
 }
 
 variable "global_settings" {
@@ -79,5 +79,5 @@ variable "global_settings" {
 }
 
 variable "logged_user_objectId" {
-  
+
 }

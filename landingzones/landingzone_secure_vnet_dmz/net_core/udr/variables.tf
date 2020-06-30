@@ -12,7 +12,7 @@ variable "tags" {
 
 variable "route_resource_group" {
   description = "(Required) resource group where to deploy the route table object"
-  
+
 }
 
 variable "subnet_id" {
@@ -21,15 +21,15 @@ variable "subnet_id" {
 }
 
 variable "route_prefix" {
-   description = "(Required) route prefix for the route table object"
- 
+  description = "(Required) route prefix for the route table object"
+
 }
 
 variable "route_nexthop_type" {
-   description = "(Required) route nexthop type for the route table object, can be VirtualNetworkGateway, VnetLocal, Internet, VirtualAppliance and None." 
+  description = "(Required) route nexthop type for the route table object, can be VirtualNetworkGateway, VnetLocal, Internet, VirtualAppliance and None."
 }
 
 variable "route_nexthop_ip" {
-   description = "(Optional) route nexthop IP for the route table object -  Next hop values are only allowed in routes where the next hop type is VirtualAppliance" 
-   default = ""
+  description = "(Optional) route nexthop IP for the route table object -  Next hop values are only allowed in routes where the next hop type is VirtualAppliance"
+  default     = ""
 }

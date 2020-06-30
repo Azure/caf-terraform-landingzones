@@ -9,10 +9,10 @@ resource "azurecaf_naming_convention" "rg_virtualhub_fw" {
 
 resource "azurerm_resource_group" "rg_virtualhub_fw" {
   depends_on = [azurerm_virtual_hub.vwan_hub] #adding explicit dependency for destroy time since we use ARM template.
-  count    = var.virtual_hub_config.deploy_firewall ? 1 : 0
-  name     = azurecaf_naming_convention.rg_virtualhub_fw.0.result
-  location = var.global_settings.location_map.region1
-  tags     = local.tags
+  count      = var.virtual_hub_config.deploy_firewall ? 1 : 0
+  name       = azurecaf_naming_convention.rg_virtualhub_fw.0.result
+  location   = var.global_settings.location_map.region1
+  tags       = local.tags
 }
 
 resource "azurecaf_naming_convention" "virtualhub_fw" {

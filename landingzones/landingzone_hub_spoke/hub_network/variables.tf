@@ -1,5 +1,5 @@
 variable "prefix" {
-  description = "(Optional) Prefix to uniquely identify the deployment"  
+  description = "(Optional) Prefix to uniquely identify the deployment"
 }
 
 # variable "virtual_network_rg" {
@@ -21,11 +21,11 @@ variable "global_settings" {
 }
 
 variable "caf_foundations_accounting" {
-    description = "caf_foundations_accounting"
+  description = "caf_foundations_accounting"
 }
 
 variable "core_networking" {
-    description = "core_networking"
+  description = "core_networking"
 }
 
 variable "location" {

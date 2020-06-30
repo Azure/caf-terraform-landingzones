@@ -4,7 +4,7 @@ variable "asr_config" {
 }
 
 variable "asr_rg" {
-  description ="Name for RG of Azure Site Recovery Vault"
+  description = "Name for RG of Azure Site Recovery Vault"
 }
 
 variable "auto_config" {
@@ -12,7 +12,7 @@ variable "auto_config" {
 }
 
 variable "auto_rg" {
-  description ="Name for RG of the automation account"
+  description = "Name for RG of the automation account"
 }
 
 variable "location" {
@@ -24,7 +24,7 @@ variable "resource_groups_operations" {
 }
 
 variable "prefix" {
-  description = "(Optional) Prefix to uniquely identify the deployment"    
+  description = "(Optional) Prefix to uniquely identify the deployment"
 }
 
 variable "global_settings" {

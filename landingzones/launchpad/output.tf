@@ -5,11 +5,11 @@ output aad_apps {
 }
 
 output prefix {
-  value     = local.prefix
+  value = local.prefix
 }
 
 output environment {
-  value     = var.environment
+  value = var.environment
 }
 
 # output azure_devops_user_admin {
@@ -42,7 +42,7 @@ output azure_subscriptions {
 
 output keyvaults {
   sensitive = true
-  value =  azurerm_key_vault.keyvault
+  value     = azurerm_key_vault.keyvault
 }
 
 # output tf_name {
@@ -55,9 +55,9 @@ output github_token_keyvault {
   sensitive = true
 
   value = {
-    keyvault_secret_name  = azurerm_key_vault_secret.github_pat.name
-    keyvault_name         = azurerm_key_vault.keyvault[var.launchpad_key_names.keyvault].name
-    keyvault_id           = azurerm_key_vault.keyvault[var.launchpad_key_names.keyvault].id
+    keyvault_secret_name = azurerm_key_vault_secret.github_pat.name
+    keyvault_name        = azurerm_key_vault.keyvault[var.launchpad_key_names.keyvault].name
+    keyvault_id          = azurerm_key_vault.keyvault[var.launchpad_key_names.keyvault].id
   }
 }
 
@@ -73,7 +73,7 @@ output github_token_keyvault {
 #     1 - Navigate to ${var.azure_devops.organization_url}/_settings/users
 #       a - Add the user to the organization and set a Basic license
 #       b - Add the user as Project Administrator for project ${var.azure_devops.project}
-    
+
 #     2 - Navigate to ${var.azure_devops.organization_url}/_settings/agentpools (Optional - if the user is in charge of creating the Agent Pools)
 #       a - Got to security and add the user to mange all pools in the organization
 #       b - Set the user as Administrator (if not possible put as reader)
@@ -83,7 +83,7 @@ output github_token_keyvault {
 #       read -sp "Github PAT: " PAT && az keyvault secret set --name ${azurerm_key_vault_secret.github_pat.name} --vault-name ${azurerm_key_vault.keyvault[var.launchpad_key_names.keyvault].name} --value $PAT > /dev/null && echo "Token uploaded to keyvault"
 
 #     4 - Execute Step2 - 
-    
+
 #       rover [path_step2_launchpad_folder] plan -w level0 -tfstate caf-launchpad-step2 -var remote_tfstate_step1=${var.tf_name} -var-file [path_configuration_file.tfvars] 
 
 

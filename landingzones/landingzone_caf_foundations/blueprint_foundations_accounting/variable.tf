@@ -1,6 +1,6 @@
 
 variable "prefix" {
-  description = "(Optional) Prefix to uniquely identify the deployment"  
+  description = "(Optional) Prefix to uniquely identify the deployment"
 }
 
 variable "resource_groups_hub" {
@@ -37,7 +37,7 @@ variable "location" {
 
 variable "tags_hub" {
   description = "map of the tags to be applied"
-  type    = map(string)
+  type        = map(string)
 }
 variable "tags" {}
 

@@ -7,8 +7,8 @@ resource "azurecaf_naming_convention" "rg" {
 }
 
 resource "azurerm_resource_group" "rg" {
-  name      = azurecaf_naming_convention.rg.result
-  location  = var.location
+  name     = azurecaf_naming_convention.rg.result
+  location = var.location
 
   tags = local.tags
 }

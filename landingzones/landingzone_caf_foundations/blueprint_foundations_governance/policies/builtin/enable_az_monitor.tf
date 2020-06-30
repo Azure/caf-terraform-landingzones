@@ -2,7 +2,7 @@
 #Name: Enable Azure Monitor for VMs
 
 resource "azurerm_policy_assignment" "vm_auto_monitor" {
-  count = var.policies_matrix.autoenroll_monitor_vm ? 1 : 0
+  count                = var.policies_matrix.autoenroll_monitor_vm ? 1 : 0
   name                 = "vm_auto_monitor"
   scope                = var.scope
   policy_definition_id = "/providers/Microsoft.Authorization/policySetDefinitions/55f3eceb-5573-4f18-9695-226972c6d74a"
@@ -10,7 +10,7 @@ resource "azurerm_policy_assignment" "vm_auto_monitor" {
   display_name         = "TF Enable Azure Monitor for VMs"
   location             = var.policies_matrix.msi_location
   identity {
-      type        = "SystemAssigned"
+    type = "SystemAssigned"
   }
   parameters = <<PARAMETERS
     {

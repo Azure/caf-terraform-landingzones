@@ -13,13 +13,13 @@ resource "azurerm_virtual_network_gateway" "vpn_gateway" {
   location            = var.location
   resource_group_name = var.resource_group_name
   type                = "Vpn"
-  
-  vpn_type            = var.gateway_config.vpn_gateway_type
 
-  active_active       = var.gateway_config.active_active
-  enable_bgp          = var.gateway_config.enable_bgp
-  sku                 = var.gateway_config.vpn_gateway_sku
-  tags                = var.tags
+  vpn_type = var.gateway_config.vpn_gateway_type
+
+  active_active = var.gateway_config.active_active
+  enable_bgp    = var.gateway_config.enable_bgp
+  sku           = var.gateway_config.vpn_gateway_sku
+  tags          = var.tags
 
   ip_configuration {
     name                          = "vnetGatewayConfig"

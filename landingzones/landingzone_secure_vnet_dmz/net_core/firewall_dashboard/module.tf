@@ -6,10 +6,10 @@ resource "azurerm_dashboard" "egress_dashboard" {
 
   dashboard_properties = templatefile("${path.module}/egress-dashboard.tpl",
     {
-      md_content = "CAF landing zones - Egress Dashboard" 
+      md_content = "CAF landing zones - Egress Dashboard"
 
-      pip_id     = var.pip_id
-      fw_id      = var.fw_id
+      pip_id = var.pip_id
+      fw_id  = var.fw_id
   })
 }
 

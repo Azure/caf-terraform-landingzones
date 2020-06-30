@@ -1,8 +1,8 @@
 locals {
-  
+
   api_permissions_for_sp = flatten(
     [
-      for key, app in var.aad_api_permissions :  [
+      for key, app in var.aad_api_permissions : [
         for resources in app : [
           for resource in resources.resource_access : {
             aad_app_key     = key
@@ -15,14 +15,14 @@ locals {
     ]
   )
 
-  api_permissions_for_user  = distinct(
+  api_permissions_for_user = distinct(
     flatten(
       [
-        for key, app in var.aad_api_permissions :  [
+        for key, app in var.aad_api_permissions : [
           for resources in app : [
             for resource in resources.resource_access : {
-              aad_app_key     = key
-            } 
+              aad_app_key = key
+            }
           ]
         ]
       ]
@@ -48,12 +48,12 @@ resource "null_resource" "grant_admin_consent" {
   }
 
   provisioner "local-exec" {
-    command = "./scripts/grant_consent.sh"
+    command     = "./scripts/grant_consent.sh"
     interpreter = ["/bin/sh"]
-    on_failure = fail
+    on_failure  = fail
 
     environment = {
-      resourceAppId = var.user_type == "user" ? null : each.value.resource_app_id      
+      resourceAppId = var.user_type == "user" ? null : each.value.resource_app_id
       appRoleId     = var.user_type == "user" ? null : each.value.id
       principalId   = var.user_type == "user" ? null : module.azure_applications.aad_apps[each.value.aad_app_key].azuread_service_principal.id
       applicationId = module.azure_applications.aad_apps[each.value.aad_app_key].azuread_application.application_id

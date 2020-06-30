@@ -1,7 +1,7 @@
 # module "diagnostics_vpn" {
 #   source  = "aztfmod/caf-diagnostics/azurerm"
 #   version = "0.1.1"
-  
+
 #     #depends_on = [azurerm_virtual_network_gateway.vpn_gateway]
 #     #count = "${var.gateway_config.gateway_type == "VPN" && var.provision_gateway ? 1 : 0}"
 

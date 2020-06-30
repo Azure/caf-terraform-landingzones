@@ -18,7 +18,7 @@ resource "azurerm_key_vault" "keyvault" {
   resource_group_name = azurerm_resource_group.rg.name
   tenant_id           = data.azurerm_client_config.current.tenant_id
 
-  sku_name            = each.value.sku_name
+  sku_name = each.value.sku_name
 
   tags = {
     tfstate     = var.level
@@ -29,8 +29,8 @@ resource "azurerm_key_vault" "keyvault" {
     tenant_id = data.azurerm_client_config.current.tenant_id
     object_id = var.logged_user_objectId
 
-    key_permissions     = []
-    secret_permissions  = ["Get", "List", "Set", "Delete"]
+    key_permissions    = []
+    secret_permissions = ["Get", "List", "Set", "Delete"]
   }
 
   lifecycle {

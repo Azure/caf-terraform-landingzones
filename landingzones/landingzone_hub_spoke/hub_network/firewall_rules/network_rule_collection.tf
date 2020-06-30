@@ -13,7 +13,7 @@ resource "azurerm_firewall_network_rule_collection" "http_https" {
     ]
 
     destination_ports = [
-      "80","443",
+      "80", "443",
     ]
 
     destination_addresses = [
