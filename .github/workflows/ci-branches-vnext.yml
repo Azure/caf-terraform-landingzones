@@ -37,7 +37,7 @@ jobs:
           convention: ["random"]
 
     container:
-      image: aztfmod/roverdev:vnext
+      image: aztfmod/rover:2007.0108
       options: --user 0
 
     steps:
@@ -80,7 +80,7 @@ jobs:
           environment: ["integration-tests"]
 
     container:
-      image: aztfmod/roverdev:vnext
+      image: aztfmod/rover:2007.0108
       options: --user 0
 
     steps:
@@ -126,7 +126,7 @@ jobs:
           environment: ["integration-tests"]
     
     container:
-      image: aztfmod/roverdev:vnext
+      image: aztfmod/rover:2007.0108
       options: --user 0
     
     steps:
@@ -180,7 +180,7 @@ jobs:
           environment: ["integration-tests"]
 
     container:
-      image: aztfmod/roverdev:vnext
+      image: aztfmod/rover:2007.0108
       options: --user 0
 
     steps:
@@ -225,7 +225,7 @@ jobs:
           convention: ["random"]
 
     container:
-      image: aztfmod/roverdev:vnext
+      image: aztfmod/rover:2007.0108
       options: --user 0
 
     steps:
