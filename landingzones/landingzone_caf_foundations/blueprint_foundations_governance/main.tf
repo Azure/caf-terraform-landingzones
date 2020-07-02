@@ -4,22 +4,14 @@ data "azurerm_client_config" "current" {
 data "azurerm_subscription" "current" {}
 
 
-# provider "azurerm" {
-#   version = "<= 1.44"
-# }
-
-provider "azuread" {
-    version = "<=0.7.0"
-}
-
 terraform {
-    backend "azurerm" {
-    }
+  backend "azurerm" {
+  }
 }
 
 locals {
-  blueprint_tag          = {
+  blueprint_tag = {
     "blueprint" = basename(abspath(path.module))
   }
-  tags                = merge(var.tags, var.tags_hub,local.blueprint_tag)
+  tags = merge(var.tags, var.tags_hub, local.blueprint_tag)
 }

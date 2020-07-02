@@ -7,11 +7,11 @@ output "prefix" {
 }
 
 output "landingzone_caf_foundations_accounting" {
-  sensitive   = false                      # to hide content from logs
-  value       = local.caf_foundations_accounting
+  sensitive = false # to hide content from logs
+  value     = local.caf_foundations_accounting
 }
 
 output "landingzone_caf_foundations_global_settings" {
-  sensitive   = false                      # to hide content from logs
-  value       = local.global_settings
+  sensitive = false # to hide content from logs
+  value     = local.global_settings
 }

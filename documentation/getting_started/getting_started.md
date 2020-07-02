@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-In order to start deploying your with CAF landing zones, you need the following components installed on your machine:
+In order to start deploying your with CAF landing zones, you need an Azure subscription (Trial, MSDN, etc.) and you need to install the following components on your machine:
 
 - [Visual Studio Code](https://code.visualstudio.com/)
 - [Docker Desktop](https://docs.docker.com/docker-for-windows/install/)
@@ -49,24 +49,22 @@ For that we will rely on Azure authentication as completed by Azure Cli, via bro
 rover login
 ```
 
-We recommend that you verify the output of the login and make sure the subscription selected by default is the one you want to work on. If not, you can use the following switch: 
+We recommend that you verify the output of the login and make sure the subscription selected by default is the one you want to work on. If not, you can use the following switch:
 
 ```bash
 az account set --subscription <subscription_GUID>
 ```
 
-On the first run, you need to use the launchpad to create the foundations for Terraform environment, the launchpad_opensource is the current way to set those foundations.
-
-Running the following command: 
+On the first run, you need to use the launchpad to create the foundations for Terraform environment:
 
 ```bash
-launchpad /tf/launchpads/launchpad_opensource_light apply
+rover /tf/caf/landingzones/launchpad apply -launchpad
 ```
 
 This command will interactively prompt you for *var.location*, asking for the name of a supported Azure region **where you want to deploy the Terraform state and dependencies**. You can specify that in the argument as in the following example:  
 
 ```bash
-launchpad /tf/launchpads/launchpad_opensource_light apply -var 'location=westus'
+rover /tf/caf/landingzones/launchpad apply -launchpad -var 'location=westus'
 ```
 
 You can then launch your first landing zone!

@@ -1,5 +1,5 @@
 variable "prefix" {
-  description = "(Optional) Prefix to uniquely identify the deployment"  
+  description = "(Optional) Prefix to uniquely identify the deployment"
 }
 
 # variable "virtual_network_rg" {
@@ -29,11 +29,11 @@ variable "tags" {
 # }
 
 # variable "log_analytics_workspace" {
-  
+
 # }
 
 # variable "diagnostics_map" {
-  
+
 # }
 
 # variable "enable_ddos_standard" {
@@ -61,11 +61,11 @@ variable "global_settings" {
 }
 
 variable "caf_foundations_accounting" {
-    description = "caf_foundations_accounting"
+  description = "caf_foundations_accounting"
 }
 
 variable "core_networking" {
-    description = "core_networking"
+  description = "core_networking"
 }
 
 variable "location" {

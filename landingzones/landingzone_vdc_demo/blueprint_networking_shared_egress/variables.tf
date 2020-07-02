@@ -1,5 +1,5 @@
 variable "prefix" {
-  description = "(Optional) Prefix to uniquely identify the deployment"    
+  description = "(Optional) Prefix to uniquely identify the deployment"
 }
 
 variable "networking_object" {

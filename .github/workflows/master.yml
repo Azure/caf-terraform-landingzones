@@ -12,8 +12,11 @@ on:
   push:
     branches:
       - master
+    paths-ignore:
+      - 'documentation/**'
+      - '_pictures/**'
   schedule:
-    - cron:  '0 2 * * *'
+    - cron:  '0 0 * * *'
 
 env:
   TF_CLI_ARGS: '-no-color'
@@ -35,13 +38,14 @@ jobs:
       matrix:
           region: ["westus2"]
           convention: ["random"]
-          launchpad: ["launchpad_opensource"]
 
     container:
-      image: aztfmod/rover:2005.1510
+      image: aztfmod/rover:2007.0108
       options: --user 0
 
     steps:
+      - uses: actions/checkout@v2
+      
       - name: Login azure
         run: |
           az login --service-principal -u '${{ env.ARM_CLIENT_ID }}' -p '${{ env.ARM_CLIENT_SECRET }}' --tenant '${{ env.ARM_TENANT_ID }}'
@@ -51,12 +55,16 @@ jobs:
       
       - name: Locate launchpad
         run: |
-          id=$(az storage account list --query "[?tags.tfstate=='level0' && tags.workspace=='level0']" -o json | jq -r .[0].id)
+          ln -s ${GITHUB_WORKSPACE} /tf/caf
+
+          id=$(az storage account list --query "[?tags.tfstate=='level0' && tags.environment=='${{ github.run_id }}']" -o json | jq -r .[0].id)
 
           if [ "${id}" == "null" ]; then
-            /tf/rover/launchpad.sh /tf/launchpads/${{ matrix.launchpad }} apply \
+            /tf/rover/rover.sh /tf/caf/landingzones/launchpad apply \
+              -launchpad \
+              --environment ${{ github.run_id }} \
+              -var prefix=g${{ github.run_id}} \ \
               -var location=${{ matrix.region }} \
-              -var environment=${{ github.run_id }} \
               '-var tags={testing_job_id="${{ github.run_id }}"}'
           fi
 
@@ -75,7 +83,7 @@ jobs:
           environment: ["integration-tests"]
 
     container:
-      image: aztfmod/rover:2005.1510
+      image: aztfmod/rover:2007.0108
       options: --user 0
 
     steps:
@@ -88,8 +96,8 @@ jobs:
           echo "ls /tf/caf" && ls -lsa /tf/caf
           ls -lsa /tmp
 
-          workspace='caffoundationsci'
-          echo ::set-env name=TF_VAR_workspace::${workspace}
+          # workspace='caffoundationsci'
+          # echo ::set-env name=TF_VAR_workspace::${workspace}
 
       - name: Login azure
         run: |
@@ -98,15 +106,13 @@ jobs:
 
           echo "local user: $(whoami)"
             
-      - name: workspace      
-        run: |
-          /tf/rover/launchpad.sh workspace create ${TF_VAR_workspace}
-  
       - name: deploy caf_foundations
         run: |
             /tf/rover/rover.sh /tf/caf/landingzones/${{ matrix.landingzone }} apply \
-                '-var tags={testing-job-id="${{ github.run_id }}"}' \
-                '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}_${{ matrix.region }}_${{ matrix.convention }}.tfvars'
+              --environment ${{ github.run_id }} \
+              -var prefix=g${{ github.run_id}} \
+              '-var tags={testing_job_id="${{ github.run_id }}"}' \
+              '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}_${{ matrix.region }}_${{ matrix.convention }}.tfvars'
                 
   landingzones:
     name: landingzones
@@ -117,13 +123,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-          landingzone: ["landingzone_hub_spoke", "landingzone_secure_vnet_dmz", "landingzone_starter", "landingzone_vdc_demo"]
+          landingzone: ["landingzone_hub_spoke", "landingzone_secure_vnet_dmz", "landingzone_starter", "landingzone_vdc_demo", "landingzone_hub_mesh"]
           region: ["westus2"]
           convention: ["cafrandom"]
           environment: ["integration-tests"]
     
     container:
-      image: aztfmod/rover:2005.1510
+      image: aztfmod/rover:2007.0108
       options: --user 0
     
     steps:
@@ -136,9 +142,9 @@ jobs:
           echo "ls /tf/caf" && ls -lsa /tf/caf
           ls -lsa /tmp
 
-          job_id=${{ job.container.id }}
-          workspace=${job_id:0:63}
-          echo ::set-env name=TF_VAR_workspace::${workspace}
+          # job_id=${{ job.container.id }}
+          # workspace=${job_id:0:63}
+          # echo ::set-env name=TF_VAR_workspace::${workspace}
 
       - name: Login azure
         run: |
@@ -147,30 +153,20 @@ jobs:
 
           echo "local user: $(whoami)"
             
-      - name: workspace      
-        run: |
-          /tf/rover/launchpad.sh workspace create ${TF_VAR_workspace}
-
       - name: deploy landing_zone
         run: |
           /tf/rover/rover.sh /tf/caf/landingzones/${{ matrix.landingzone }} apply \
-            '-var tags={testing-job-id="${{ github.run_id }}"}' \
-            '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}.tfvars' \
-            '-var workspace=caffoundationsci'
+            -env ${{ github.run_id }} \
+            '-var tags={testing_job_id="${{ github.run_id }}"}' \
+            '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}.tfvars'
 
       - name: destroy landing_zone
         if: always()
         run: |
           /tf/rover/rover.sh /tf/caf/landingzones/${{ matrix.landingzone }} destroy \
-            '-var tags={testing-job-id="${{ github.run_id }}"}' \
-            '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}.tfvars' \
-            '-var workspace=caffoundationsci'
-
-      - name: cleanup workspace
-        if: always()
-        run: |
-          stg_name=$(az storage account list --query "[?tags.tfstate=='level0' && tags.workspace=='level0']" -o json | jq -r .[0].name)
-          az storage container delete --account-name ${stg_name} --name ${TF_VAR_workspace} --auth-mode login
+            --environment ${{ github.run_id }} \
+            '-var tags={testing_job_id="${{ github.run_id }}"}' \
+            '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}.tfvars'
 
   caf_foundations_destroy:
     name: caf_foundations_destroy
@@ -187,7 +183,7 @@ jobs:
           environment: ["integration-tests"]
 
     container:
-      image: aztfmod/rover:2005.1510
+      image: aztfmod/rover:2007.0108
       options: --user 0
 
     steps:
@@ -200,8 +196,8 @@ jobs:
           echo "ls /tf/caf" && ls -lsa /tf/caf
           ls -lsa /tmp
 
-          workspace='caffoundationsci'
-          echo ::set-env name=TF_VAR_workspace::${workspace}
+          # workspace='caffoundationsci'
+          # echo ::set-env name=TF_VAR_workspace::${workspace}
 
       - name: Login azure
         run: |
@@ -213,9 +209,11 @@ jobs:
       - name: destroy caf_foundations
         run: |
             /tf/rover/rover.sh /tf/caf/landingzones/${{ matrix.landingzone }} destroy \
-                '-var tags={testing-job-id="${{ github.run_id }}"}' \
-                '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}_${{ matrix.region }}_${{ matrix.convention }}.tfvars' \
-                '-auto-approve'
+              --environment ${{ github.run_id }} \
+              -var prefix=g${{ github.run_id}} \
+              '-var tags={testing_job_id="${{ github.run_id }}"}' \
+              '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}_${{ matrix.region }}_${{ matrix.convention }}.tfvars' \
+              '-auto-approve'
 
   level0_destroy:
     name: level0_destroy
@@ -230,10 +228,12 @@ jobs:
           convention: ["random"]
 
     container:
-      image: aztfmod/rover:2005.1510
+      image: aztfmod/rover:2007.0108
       options: --user 0
 
     steps:
+      - uses: actions/checkout@v2
+      
       - name: Login azure
         run: |
           az login --service-principal -u '${{ env.ARM_CLIENT_ID }}' -p '${{ env.ARM_CLIENT_SECRET }}' --tenant '${{ env.ARM_TENANT_ID }}'
@@ -243,9 +243,13 @@ jobs:
       
       - name: Remove launchpad
         run: |
-          /tf/rover/launchpad.sh /tf/launchpads/launchpad_opensource destroy \
+          ln -s ${GITHUB_WORKSPACE} /tf/caf
+
+          /tf/rover/rover.sh /tf/caf/landingzones/launchpad destroy \
+            -launchpad \
+            -env ${{ github.run_id }} \
+            -var prefix=g${{ github.run_id}} \
             -var location=${{ env.region }} \
-            -var environment=${{ github.run_id }} \
             '-var tags={testing_job_id="${{ github.run_id }}"}' \
             -auto-approve
         

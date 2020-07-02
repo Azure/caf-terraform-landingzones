@@ -6,13 +6,13 @@ variable "location" {
 }
 
 variable "tags_hub" {
-  
+
 }
 
 variable "tags" {}
 
 variable "log_analytics" {
-  
+
 }
 
 variable "resource_groups_hub" {

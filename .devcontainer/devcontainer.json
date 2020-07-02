@@ -1,5 +1,5 @@
 {
-    "name": "Azure CAF rover",
+    "name": "Azure CAF landing zones",
  
     // Update the 'dockerComposeFile' list if you have more compose files or use different names.
     "dockerComposeFile": "docker-compose.yml",
@@ -15,8 +15,10 @@
     // Use 'settings' to set *default* container specific settings.json values on container create. 
     // You can edit these settings after create using File > Preferences > Settings > Remote.
     "settings": { 
-        // If you are using an Alpine-based image, change this to /bin/ash
-        "terminal.integrated.shell.linux": "/bin/bash"
+        "files.eol": "\n",
+        "terminal.integrated.shell.linux": "/bin/bash",
+        "editor.tabSize": 2,
+        "terminal.integrated.scrollback": 2000,
     },
  
     // Uncomment the next line if you want start specific services in your Docker Compose config.

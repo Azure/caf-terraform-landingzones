@@ -21,8 +21,8 @@ POLICY_RULE
 }
 
 resource "azurerm_policy_assignment" "deny-publicip-spoke" {
-  count               = var.policies_matrix.cant_create_ip_spoke ? 1 : 0
-  name                = "deny-publicip-spoke"
+  count                = var.policies_matrix.cant_create_ip_spoke ? 1 : 0
+  name                 = "deny-publicip-spoke"
   scope                = var.scope
   policy_definition_id = azurerm_policy_definition.deny_publicip_spoke[0].id
   description          = "Policy Assignment for deny public IP creatin in spokes"

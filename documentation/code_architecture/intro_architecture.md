@@ -1,6 +1,7 @@
 # Introduction to Azure landing zones components
 
-Azure landing zones help you deploy a complete environment. The solution as published on this repository is composed of the following  components:
+Azure landing zones help you deploy a complete environment leveraging
+the following elements:
 
 ![Overview](../../_pictures/code_architecture/components.png)
 
@@ -12,40 +13,21 @@ In order to bootstrap an environment, we provide the following minimal DevOps co
 
 [Source here](https://github.com/aztfmod/rover)
 
-The "rover" is part of the fundamental tool set of the Azure Cloud Adoption Framework landing zones, it will allow you to deploy all the landing zones in a consistent and automated way.
+The \"rover\" is part of the fundamental toolset of the Azure CAF landing zone model. The rover allows you to deploy all landing zones in a consistent and automated way:
 
-+ It is Docker container running on all platforms transparently: Windows, Linux, Mac.
-+ Allows validated **versioned** tool set
-+ Helps you preserving stability across components versions
-+ Helps you testing different versions of binaries (new version of Terraform, Azure CLI, etc.)
-+ Facilitates the transition to CI/CD
-+ Simplifies setup across DevOps teams: everyone works with the same versions of the tools
-+ Integrates standard Cloud Adoption Framework and demo landing zones
+* It is a Docker **container** running on all platforms transparently: Windows, Linux, Mac.
+* Allows a validated **versioned** tool set.
+
+Advantages of using the rover compared to running Terraform directly on your machine:
+
+* Simplifies setup and configuration across DevOps teams: everyone works with the same versions of the tools.
+* Abstracts and helps with the Terraform state management.
+* Helps preserve stability across components versions.
+* Helps testing different versions of binaries (new version of Terraform, Azure CLI, jq, tflint etc.)
+* Facilitates the identity transition to any CI/CD.
+* Allows easy transition from one DevOps environment to another (GitHub Actions, Azure DevOps, Jenkins, CircleCI etc.)
 
 ![Rover](../../_pictures/code_architecture/rover.png)
-
-### launchpad
-
-[Source here](https://github.com/aztfmod/level0)
-
-Launchpad acts as a your toolbox to deploy and manage the fundamentals of a deployment:
-
-+ It will help you manage the Terraform states
-+ Manage different environments (subscriptions, accounts, etc.)
-+ Bootstraps the initial blueprints
-
-![Launchpad](../../_pictures/code_architecture/launchpad.png)
-
-In order to manage different subscriptions and environment, the launchpad can rely on **level0 blueprints**
-
-A level0 blueprint is the foundation of account and subscription management, as such it is in charge of:
-
-+ Defining how to store and retrieve the Terraform state
-+ Defining the core of secrets protection for the Terraform state
-+ Defining the management of the principals or identities for a complex environnement
-+ Defining how to access/partition the different subscriptions
-
-Currently we support an open source version of [level0 blueprints](https://github.com/aztfmod/level0). We are currently working on a [Terraform Cloud](https://www.terraform.io/docs/cloud/index.html) edition of level0 blueprint, feel free to join the corresponding working Channel on Teams.
 
 ## Modules
 
@@ -57,24 +39,47 @@ Modules must have a strong versioning, in the CAF modules, we use semantic versi
 
 ![Modules](../../_pictures/code_architecture/modules.png)
 
-## Blueprints, or services
-
-[Source here](https://github.com/aztfmod/blueprints)
-
-A blueprint is a reusable set of infrastructure components put together to deliver a service. In its structure, it calls a set of modules, and may call directly resources in order to stich components together.
-
-![Blueprints](../../_pictures/code_architecture/blueprints.png)
-
 ## Landing zone
 
 [Source here](https://github.com/aztfmod/landginzones)
 
-A landing zone is a composition of multiple blueprints and resources to deliver a full application environment.
-
-The landing zone is **responsible** for the **Terraform state**, and will export outputs that may be reused by other landing zones.
-
-The delivery of a full landing zone might be decomposed in multiples levels in other to manage different personas and contain the blast radius that a mistake could incur in one landing zone.
+A landing zone is a composition of multiple resources (modules, blueprints/services) that deliver a full application environment.
 
 ![Landingzone](../../_pictures/code_architecture/landingzone.png)
+
+The landing zone is **responsible** for the **Terraform state** and will produce outputs that may be reused by other landing zones as follow:
+
+![Landingzone](../../_pictures/code_architecture/landingzone_state.png)
+
+A landing zone can contain subparts called blueprints, also called services, which are reusable sets of infrastructure components that have been assembled to deliver a service, for instance, an egress DMZ or a solution like Network Virtual Appliance from a third party vendor.
+
+Blueprints/Services can be stored either inside the landing zones (as a subdirectory for instance) or re-used across landing zones while stored in another directory.
+
+The delivery of a full landing zone might be decomposed in multiples levels in order to manage different personas and contain the blast radius that a mistake might incur in one landing zone.
+
+### Launchpad 
+[Source here](https://github.com/aztfmod/level0)
+
+A special landing zone is called launchpad and it acts as your toolbox to deploy the resources that in turn helps manage the fundamentals of a full landing zone deployment:
+
+* Manage the Terraform states of the deployed landing zones
+* Manage different setup (subscriptions, accounts, etc.) and environment (DEV, UAT, PROD)
+* Bootstraps the initial blueprints
+
+![Launchpad](../../_pictures/code_architecture/launchpad.png)
+
+To manage different subscriptions and environment, the launchpad relies
+on a **level0 landing zone:**
+
+A level0 landing zone is the foundation of account and subscription management. As such it defines:
+
+* Defining how to store and retrieve the Terraform state.
+* Defining the core of secrets protection for the Terraform state.
+* Defining the management of the principals or identities for a complex environment.
+* Defining how to access/partition the different subscriptions.
+
+Currently we support an open source version of [level0 blueprints](https://github.com/aztfmod/level0).
+
+We are currently working on a [Terraform Cloud](https://www.terraform.io/docs/cloud/index.html) edition of level0 blueprint.
 
 [Back to summary](../README.md)

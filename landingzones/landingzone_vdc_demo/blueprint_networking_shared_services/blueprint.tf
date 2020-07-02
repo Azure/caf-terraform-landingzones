@@ -13,27 +13,27 @@ locals {
 
 module "networking_shared_services" {
   source  = "aztfmod/caf-virtual-network/azurerm"
-  version = "2.0.0"
+  version = "3.0.0"
 
-  convention                        = var.global_settings.convention
-  resource_group_name               = local.HUB-CORE-NET
-  prefix                            = var.prefix
-  location                          = var.location
-  networking_object                 = var.shared_services_vnet
-  tags                              = local.tags
-  diagnostics_map                   = var.diagnostics_map
-  log_analytics_workspace           = var.log_analytics_workspace
-  diagnostics_settings              = var.shared_services_vnet.diagnostics
+  convention              = var.global_settings.convention
+  resource_group_name     = local.HUB-CORE-NET
+  prefix                  = var.prefix
+  location                = var.location
+  networking_object       = var.shared_services_vnet
+  tags                    = local.tags
+  diagnostics_map         = var.diagnostics_map
+  log_analytics_workspace = var.log_analytics_workspace
+  diagnostics_settings    = var.shared_services_vnet.diagnostics
 }
 
 module "ddos_protection_std" {
   source = "./ddos_protection"
 
-  enable_ddos_standard              = var.enable_ddos_standard
-  name                              = var.ddos_name
-  rg                                = local.HUB-CORE-NET
-  location                          = var.location
-  tags                              = local.tags
+  enable_ddos_standard = var.enable_ddos_standard
+  name                 = var.ddos_name
+  rg                   = local.HUB-CORE-NET
+  location             = var.location
+  tags                 = local.tags
 }
 
 # # Azure Bastion is only available GA in few regions for 1911 release, 

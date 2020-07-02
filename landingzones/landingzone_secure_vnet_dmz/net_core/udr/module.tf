@@ -6,13 +6,13 @@ resource "azurerm_route_table" "user_route" {
   resource_group_name           = var.route_resource_group
   disable_bgp_route_propagation = false
 
-  tags                          = var.tags
+  tags = var.tags
   route {
-    name                        = var.route_name
-    address_prefix              = var.route_prefix
-    next_hop_type               = var.route_nexthop_type
+    name           = var.route_name
+    address_prefix = var.route_prefix
+    next_hop_type  = var.route_nexthop_type
     //theoritcally should be: next_hop_in_ip_address      = var.route_nexthop_type == "VirtualAppliance" ? "${var.route_nexthop_ip}" : null
-    next_hop_in_ip_address      = var.route_nexthop_ip
+    next_hop_in_ip_address = var.route_nexthop_ip
   }
 }
 
