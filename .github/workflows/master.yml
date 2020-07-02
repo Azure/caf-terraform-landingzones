@@ -12,6 +12,9 @@ on:
   push:
     branches:
       - master
+    paths-ignore:
+      - 'documentation/**'
+      - '_pictures/**'
   schedule:
     - cron:  '0 0 * * *'
 

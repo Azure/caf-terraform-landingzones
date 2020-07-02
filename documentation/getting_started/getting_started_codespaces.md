@@ -33,28 +33,13 @@ Open a Terminal using ```CTRL``` + ```J``` or ```Command``` + ```J```
 
 ![Create](../../_pictures/getting_started/vs_codespaces_create4.png)
 
-Get the rover name shipped with the release you are using by typing:
+You are ready to use landing zones by launching the rover as below:
 
 ```bash
-docker ps
-```
-
-![Create](../../_pictures/getting_started/vs_codespaces_docker.png)
-
-Get inside the rover using the command based on the output of the image name:
-
-```bash
-sudo docker run -it aztfmod/rover:2005.1510
-```
-
-Once completed, you are ready to use landing zones by launching the rover as below:
-
-```bash
-rover
+/tf/rover/rover.sh
 ```
 
 ![Create](../../_pictures/getting_started/vs_codespaces_rover.png)
-
 
 ## Deploying your first landing zone
 
@@ -62,7 +47,7 @@ You must be authenticated first:
 For that we will rely on Azure authentication as completed by Azure Cli, via browser method:
 
 ```bash
-rover login
+/tf/rover/rover.sh login
 ```
 
 We recommend that you verify the output of the login and make sure the subscription selected by default is the one you want to work on. If not, you can use the following switch:
@@ -74,13 +59,13 @@ az account set --subscription <subscription_GUID>
 On the first run, you need to apply the launchpad as the first landing zone:
 
 ```bash
-rover /tf/caf/landingzones/launchpad apply -launchpad
+/tf/rover/rover.sh /tf/caf/landingzones/launchpad apply -launchpad
 ```
 
 You can specify a location for the launchpad using the following command:
 
 ```bash
-rover /tf/caf/landingzones/launchpad apply -launchpad -var location=westus
+/tf/rover/rover.sh /tf/caf/landingzones/launchpad apply -launchpad -var location=westus
 ```
 
 You can then launch your first landing zone!
@@ -90,15 +75,15 @@ Please note that each landing zone come with its own deployment settings, which 
 You are ready to start:
 
 ```bash
-rover /tf/caf/landingzones/landingzone_caf_foundations plan
+/tf/rover/rover.sh /tf/caf/landingzones/landingzone_caf_foundations plan
 ```
 
 ```bash
-rover /tf/caf/landingzones/landingzone_caf_foundations apply
+/tf/rover/rover.sh /tf/caf/landingzones/landingzone_caf_foundations apply
 ```
 
 ```bash
-rover /tf/caf/landingzones/landingzone_caf_foundations destroy
+/tf/rover/rover.sh /tf/caf/landingzones/landingzone_caf_foundations destroy
 ```
 
-Happy deployment with Azure landing zones, let us know your feedback and how you need it to evolve!
+Happy deployment with Azure landing zones, let us know your feedback and how you need it to evolve.

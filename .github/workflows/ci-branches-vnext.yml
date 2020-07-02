@@ -12,6 +12,9 @@ on:
   push:
     branches:
       - vnext
+    paths-ignore:
+      - 'documentation/**'
+      - '_pictures/**'
   schedule:
     - cron:  '0 2 * * *'
 
