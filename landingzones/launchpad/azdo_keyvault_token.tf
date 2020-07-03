@@ -1,8 +1,12 @@
-resource "azurerm_key_vault_secret" "azdo_pat" {
+locals {
+  azure_devops = var.azure_devops == {} ? {} : lookup(var.azure_devops, "pats", {})
+}
+resource "azurerm_key_vault_secret" "pat" {
+  for_each = local.azure_devops
 
-  name         = "azure-devops-management-pat"
-  value        = ""
-  key_vault_id = azurerm_key_vault.keyvault[var.launchpad_key_names.keyvault].id
+  name            = each.value.secret_name
+  value           =  ""
+  key_vault_id    = azurerm_key_vault.keyvault[each.value.keyvault_key].id
 
   lifecycle {
     ignore_changes = [
@@ -10,5 +14,4 @@ resource "azurerm_key_vault_secret" "azdo_pat" {
     ]
   }
 }
-
 
