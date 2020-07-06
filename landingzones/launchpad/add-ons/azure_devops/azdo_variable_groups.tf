@@ -5,12 +5,8 @@
 #   + vso.build_execute           (destroy)
 #
 resource "azuredevops_variable_group" "variable_group" {
-  depends_on = [
-    azurerm_role_assignment.devops,
-    azurerm_key_vault_access_policy.devops
-  ]
   for_each  = {
-    for key, variable_group in var.azure_devops.variable_groups : key => variable_group
+    for key, variable_group in lookup(var.azure_devops, "variable_groups", {}) : key => variable_group
   }
 
   project_id   = data.azuredevops_project.project.id
@@ -48,15 +44,13 @@ resource "azuredevops_variable_group" "variable_group" {
 }
 
 resource "azurerm_key_vault_access_policy" "devops" {
-  depends_on = [azuread_service_principal_password.aad_apps]
-  for_each = var.azure_devops.serviceendpoints
+  for_each = lookup(var.azure_devops, "serviceendpoints", {})
 
   key_vault_id = local.keyvaults[each.value.keyvault.keyvault_key].id
 
-  tenant_id = data.azurerm_client_config.current.tenant_id
-  object_id = azuread_service_principal.aad_apps[each.value.aad_app_key].object_id
+  tenant_id = local.aad_apps[each.value.aad_app_key].tenant_id
+  object_id = local.aad_apps[each.value.aad_app_key].azuread_service_principal.object_id
 
   key_permissions = each.value.keyvault.key_permissions
   secret_permissions = each.value.keyvault.secret_permissions
-
 }
