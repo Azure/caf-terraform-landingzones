@@ -1,6 +1,6 @@
-# blueprint foundations security
+# foundations security
 
-The foundations security is part of the foundations blueprints which help you setting the minimal controls for a subscription/deployment.
+The foundations security is part of the foundations which help you setting the minimal controls for a subscription/deployment.
 
 ## Capabilities
 
@@ -10,7 +10,7 @@ Foundations security deploys the following components:
 - Azure Security Center
     - Security hygiene metrics and alerts
 
-![Foundations blueprint overview](../../../_pictures/caf_foundations/foundations_security.png)
+![Foundations  overview](../../../_pictures/caf_foundations/foundations_security.png)
 
 ## Customization
 

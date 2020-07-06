@@ -15,9 +15,9 @@ resource "azurerm_resource_group" "rg_virtualwan_spoke" {
 
 ## Create a spoke VNET 
 module "virtual_network" {
-  # source = "github.com/aztfmod/terraform-azurerm-caf-virtual-network?ref=vnext"
-  source  = "aztfmod/caf-virtual-network/azurerm"
-  version = "3.0.0"
+  source = "github.com/aztfmod/terraform-azurerm-caf-virtual-network?ref=vnext"
+  # source  = "aztfmod/caf-virtual-network/azurerm"
+  # version = "3.0.0"
 
   convention              = local.global_settings.convention
   resource_group_name     = azurerm_resource_group.rg_virtualwan_spoke.name

@@ -1,6 +1,6 @@
-# blueprint foundations governance
+# foundations governance
 
-Blueprint_foundations sets the basics of auditing, and logging as described below.
+foundations sets the basics of auditing, and logging as described below.
 
 ## Capabilities
 
@@ -11,7 +11,7 @@ Foundations deploys the following components:
  - Azure Policies
     - Defines a set of custom or built-in policies
 
-![Foundations blueprint overview](../../../_pictures/caf_foundations/foundations_governance.png)
+![Foundations overview](../../../_pictures/caf_foundations/foundations_governance.png)
 
 ## Customization
 

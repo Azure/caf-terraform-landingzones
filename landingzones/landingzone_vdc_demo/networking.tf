@@ -1,5 +1,5 @@
-module "blueprint_networking_shared_services" {
-  source = "./blueprint_networking_shared_services"
+module "networking_shared_services" {
+  source = "./networking_shared_services"
 
   global_settings         = local.global_settings
   prefix                  = local.prefix
@@ -18,8 +18,8 @@ module "blueprint_networking_shared_services" {
   bastion_config       = var.bastion_config
 }
 
-module "blueprint_networking_shared_egress" {
-  source = "./blueprint_networking_shared_egress"
+module "networking_shared_egress" {
+  source = "./networking_shared_egress"
 
   global_settings         = local.global_settings
   prefix                  = local.prefix
@@ -34,12 +34,12 @@ module "blueprint_networking_shared_egress" {
   az_fw_config                  = var.az_fw_config
   udr_object                    = var.udr_object
 
-  shared_services_vnet_object = module.blueprint_networking_shared_services.shared_services_vnet_object
-  virtual_network_rg          = module.blueprint_networking_shared_services.resource_group_shared_services
+  shared_services_vnet_object = module.networking_shared_services.shared_services_vnet_object
+  virtual_network_rg          = module.networking_shared_services.resource_group_shared_services
 }
 
-module "blueprint_networking_shared_transit" {
-  source = "./blueprint_networking_shared_transit"
+module "networking_shared_transit" {
+  source = "./networking_shared_transit"
 
   global_settings         = local.global_settings
   prefix                  = local.prefix
@@ -60,6 +60,6 @@ module "blueprint_networking_shared_transit" {
   akv_config                     = var.akv_config
   logged_user_objectId           = var.logged_user_objectId
 
-  shared_services_vnet_object = module.blueprint_networking_shared_services.shared_services_vnet_object
-  virtual_network_rg          = module.blueprint_networking_shared_services.resource_group_shared_services
+  shared_services_vnet_object = module.networking_shared_services.shared_services_vnet_object
+  virtual_network_rg          = module.networking_shared_services.resource_group_shared_services
 }

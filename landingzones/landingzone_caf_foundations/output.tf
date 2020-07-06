@@ -1,25 +1,25 @@
-output "blueprint_foundations_accounting" {
-  depends_on = [module.blueprint_foundations_accounting]
+output "foundations_accounting" {
+  depends_on = [module.foundations_accounting]
 
   sensitive   = true # to hide content from logs
-  value       = module.blueprint_foundations_accounting
-  description = "Full output of the foundations logging blueprint"
+  value       = module.foundations_accounting
+  description = "Full output of the foundations logging addon"
 }
 
-output "blueprint_foundations_security" {
-  depends_on = [module.blueprint_foundations_security]
+output "foundations_security" {
+  depends_on = [module.foundations_security]
 
   sensitive   = true # to hide content from logs
-  value       = module.blueprint_foundations_security
-  description = "Full output of the foundations logging blueprint"
+  value       = module.foundations_security
+  description = "Full output of the foundations logging addon"
 }
 
-output "blueprint_foundations_governance" {
-  depends_on = [module.blueprint_foundations_governance]
+output "foundations_governance" {
+  depends_on = [module.foundations_governance]
 
   sensitive   = false # to hide content from logs
-  value       = module.blueprint_foundations_governance
-  description = "Full output of the foundations logging blueprint"
+  value       = module.foundations_governance
+  description = "Full output of the foundations logging addon"
 }
 
 output "prefix" {
@@ -35,7 +35,7 @@ output "environment" {
 
 # output "tags" {
 #   value = var.global_settings.tags_hub
-#   description = "default tags for the objects in foundations blueprint"
+#   description = "default tags for the objects in foundations addon"
 # }
 
 output "global_settings" {
