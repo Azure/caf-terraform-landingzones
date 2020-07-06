@@ -1,6 +1,6 @@
-# blueprint foundations accounting
+# foundations accounting
 
-Blueprint_foundations sets the basics of auditing, and logging as described below.
+foundations sets the basics of auditing, and logging as described below.
 
 ## Capabilities
 
@@ -20,7 +20,7 @@ Foundations deploys the following components:
     - Stores all the operations logs
     - Solutions management
 
-![Foundations blueprint overview](../../../_pictures/caf_foundations/foundations_accounting.png)
+![Foundations  overview](../../../_pictures/caf_foundations/foundations_accounting.png)
 
 ## Customization
 

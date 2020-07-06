@@ -1,22 +1,23 @@
-module "resource_group" {
-  source  = "aztfmod/caf-resource-group/azurerm"
-  version = "0.1.1"
-
-  prefix          = var.prefix
-  resource_groups = var.resource_groups_shared_services
-  tags            = local.tags
+resource "azurecaf_naming_convention" "rg_network_shared" {
+  name          = var.resource_groups_shared_services.HUB-CORE-NET.name
+  prefix        = var.prefix != "" ? var.prefix : null
+  resource_type = "azurerm_resource_group"
+  convention    = var.global_settings.convention
 }
 
-locals {
-  HUB-CORE-NET = lookup(module.resource_group.names, "HUB-CORE-NET", null)
+resource "azurerm_resource_group" "rg_network_shared" {
+  name     = azurecaf_naming_convention.rg_network_shared.result
+  location = var.resource_groups_shared_services.HUB-CORE-NET.location
+  tags     = local.tags
 }
 
 module "networking_shared_services" {
-  source  = "aztfmod/caf-virtual-network/azurerm"
-  version = "3.0.0"
+  source = "github.com/aztfmod/terraform-azurerm-caf-virtual-network?ref=vnext"
+  # source  = "aztfmod/caf-virtual-network/azurerm"
+  # version = "3.0.0"
 
   convention              = var.global_settings.convention
-  resource_group_name     = local.HUB-CORE-NET
+  resource_group_name     = azurerm_resource_group.rg_network_shared.name
   prefix                  = var.prefix
   location                = var.location
   networking_object       = var.shared_services_vnet
@@ -31,7 +32,7 @@ module "ddos_protection_std" {
 
   enable_ddos_standard = var.enable_ddos_standard
   name                 = var.ddos_name
-  rg                   = local.HUB-CORE-NET
+  rg                   = azurerm_resource_group.rg_network_shared.name
   location             = var.location
   tags                 = local.tags
 }

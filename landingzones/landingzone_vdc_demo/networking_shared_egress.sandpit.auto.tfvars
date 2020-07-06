@@ -1,7 +1,7 @@
 # settings for the shared egress blueprint 
 resource_groups_shared_egress = {
   HUB-EGRESS-NET = {
-    name     = "-hub-network-egress"
+    name     = "hub-network-egress"
     location = "southeastasia"
   }
 }

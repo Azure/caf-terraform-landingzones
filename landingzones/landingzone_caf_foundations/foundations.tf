@@ -1,6 +1,6 @@
-## calling the blueprints
-module "blueprint_foundations_accounting" {
-  source = "./blueprint_foundations_accounting/"
+# calling the addons
+module "foundations_accounting" {
+  source = "./foundations_accounting/"
 
   prefix              = local.prefix
   tags                = local.tags
@@ -12,25 +12,25 @@ module "blueprint_foundations_accounting" {
   accounting_settings = var.accounting_settings
 }
 
-module "blueprint_foundations_security" {
-  source = "./blueprint_foundations_security/"
+module "foundations_security" {
+  source = "./foundations_security/"
 
   tags                = local.tags
   location            = var.global_settings.location_map.region1
   tags_hub            = local.tags_hub
-  resource_groups_hub = module.blueprint_foundations_accounting.resource_group_operations
-  log_analytics       = module.blueprint_foundations_accounting.log_analytics_workspace
+  resource_groups_hub = module.foundations_accounting.resource_group_operations
+  log_analytics       = module.foundations_accounting.log_analytics_workspace
 
   security_settings = var.security_settings
 }
 
-module "blueprint_foundations_governance" {
-  source = "./blueprint_foundations_governance/"
+module "foundations_governance" {
+  source = "./foundations_governance/"
 
   tags          = local.tags
   tags_hub      = local.tags_hub
   location      = var.global_settings.location_map.region1
-  log_analytics = module.blueprint_foundations_accounting.log_analytics_workspace
+  log_analytics = module.foundations_accounting.log_analytics_workspace
 
   governance_settings = var.governance_settings
 }

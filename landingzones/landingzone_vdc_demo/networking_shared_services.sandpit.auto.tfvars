@@ -1,7 +1,7 @@
 # settings for the shared network blueprint 
 resource_groups_shared_services = {
   HUB-CORE-NET = {
-    name     = "-hub-network-shared"
+    name     = "hub-network-shared"
     location = "southeastasia"
   }
 }

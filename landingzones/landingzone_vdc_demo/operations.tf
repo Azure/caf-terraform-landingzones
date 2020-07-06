@@ -1,5 +1,5 @@
-module "blueprint_operations" {
-  source = "./blueprint_operations"
+module "operations" {
+  source = "./operations"
 
   tags                       = local.tags
   prefix                     = local.prefix

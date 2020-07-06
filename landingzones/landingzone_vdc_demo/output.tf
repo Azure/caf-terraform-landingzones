@@ -1,21 +1,21 @@
-output "blueprint_operations" {
+output "operations" {
   sensitive = true # to hide content from logs
-  value     = module.blueprint_operations
+  value     = module.operations
 }
 
-output "blueprint_networking_shared_transit" {
+output "networking_shared_transit" {
   sensitive = true # to hide content from logs
-  value     = module.blueprint_networking_shared_transit
+  value     = module.networking_shared_transit
 }
 
-output "blueprint_networking_shared_services" {
+output "networking_shared_services" {
   sensitive = true # to hide content from logs
-  value     = module.blueprint_networking_shared_services
+  value     = module.networking_shared_services
 }
 
-output "blueprint_networking_shared_egress" {
+output "networking_shared_egress" {
   sensitive = true # to hide content from logs
-  value     = module.blueprint_networking_shared_egress
+  value     = module.networking_shared_egress
 }
 
 ## re-exporting level1 settings (caf_foundations) for level 3 consumption

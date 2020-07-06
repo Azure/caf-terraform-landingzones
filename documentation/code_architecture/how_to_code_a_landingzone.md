@@ -33,7 +33,7 @@ In the development of the landing zone, my next step is to do the inventory of c
 - route objects
 - azure firewall
 - virtual network
-- nsg 
+- nsg
 - subnets
 - internal load balancer
 - VM
@@ -44,24 +44,24 @@ I can source those components from:
 
 - From my private repo of components (on my GitHub repo, Azure DevOps, or any other git solution)
 - From the [Terraform Registry](https://registry.terraform.io/modules/aztfmod)
-- From a [blueprint I previously developped](https://github.com/aztfmod/blueprints) 
+- From a landing zone I previously developed
 - Directly from the azurerm [Terraform provider](https://www.terraform.io/docs/providers/azurerm/index.html)
 
 Then I build the following matrix:
 
-| Component | Source | Notes |
-| -- | -- | -- |
-| public ip | [module](https://registry.terraform.io/modules/aztfmod/caf-public-ip/azurerm/1.0.0) | Standard CAF module | 
-| site-to-site gateway | [Blueprint](https://github.com/aztfmod/landingzones/tree/master/landingzones/landingzone_vdc_demo) | I might want to reuse the private blueprint I created in another landing zone. |
-| route objects | azurem provider | I dont seem to have a module ready to use, so will implement it from provider
-| azure firewall | [module](https://registry.terraform.io/modules/aztfmod/caf-azure-firewall/azurerm/1.1.0) | Standard CAF module  | 
-| virtual network | [module](https://registry.terraform.io/modules/aztfmod/caf-virtual-network/azurerm/1.0.0) | using this module allows me to setup Vnet, v-subnets, nsg and diasgnostics / network watcher. |
-| nsg | [module](https://registry.terraform.io/modules/aztfmod/caf-virtual-network/azurerm/1.0.0) | using this module allows me to setup Vnet, v-subnets, nsg and diasgnostics / network watcher. |
-| subnets | [module](https://registry.terraform.io/modules/aztfmod/caf-virtual-network/azurerm/1.0.0) | using this module allows me to setup Vnet, v-subnets, nsg and diasgnostics / network watcher. |
-| internal load balancer | azurem provider | no module in registry
-| VM | azurem provider or [module](https://registry.terraform.io/modules/aztfmod/caf-vm/azurerm/0.1.0) | not yet decided |
-| azure bastion | [Blueprint](https://github.com/aztfmod/landingzones/tree/master/landingzones/landingzone_vdc_demo) | I might want to reuse the private blueprint I created in another landing zone. |
-| resource groups | azurem provider | elementary component |
+| Component              | Source                                                                                               | Notes                                                                                         |
+|------------------------|------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
+| public ip              | [module](https://registry.terraform.io/modules/aztfmod/caf-public-ip/azurerm/1.0.0)                  | Standard CAF module                                                                           |
+| site-to-site gateway   | [Landingzone](https://github.com/aztfmod/landingzones/tree/master/landingzones/landingzone_vdc_demo) | I might want to reuse the code I created in another landing zone.                             |
+| route objects          | azurem provider                                                                                      | I dont seem to have a module ready to use, so will implement it from provider                 |
+| azure firewall         | [module](https://registry.terraform.io/modules/aztfmod/caf-azure-firewall/azurerm/1.1.0)             | Standard CAF module                                                                           |
+| virtual network        | [module](https://registry.terraform.io/modules/aztfmod/caf-virtual-network/azurerm/1.0.0)            | using this module allows me to setup Vnet, v-subnets, nsg and diasgnostics / network watcher. |
+| nsg                    | [module](https://registry.terraform.io/modules/aztfmod/caf-virtual-network/azurerm/1.0.0)            | using this module allows me to setup Vnet, v-subnets, nsg and diasgnostics / network watcher. |
+| subnets                | [module](https://registry.terraform.io/modules/aztfmod/caf-virtual-network/azurerm/1.0.0)            | using this module allows me to setup Vnet, v-subnets, nsg and diasgnostics / network watcher. |
+| internal load balancer | azurem provider                                                                                      | no module in registry                                                                         |
+| VM                     | azurem provider or [module](https://registry.terraform.io/modules/aztfmod/caf-vm/azurerm/0.1.0)      | not yet decided                                                                               |
+| azure bastion          | [Landingzone](https://github.com/aztfmod/landingzones/tree/master/landingzones/landingzone_vdc_demo) | I might want to reuse the code I created in another landing zone.                             |
+| resource groups        | azurem provider                                                                                      | elementary component                                                                          |
 
 This list might not be exhaustive yet, but at least I know where to sort components for my first prototype.
 
@@ -115,8 +115,7 @@ Importantly at this stage I want to test:
 1. The deployment is working as expected.
 2. The life cycle is correct: I must be able to PLAN -> APPLY -> DESTROY. If any of those steps work, your code is not good enough and you must refactor.  
 
-At the end of this stage, I should have most of my components as a flat file on my environment, allowing me to check the components are deploying corretly, as expected, I can now work on my first refactoring.
-
+At the end of this stage, I should have most of my components as a flat file on my environment, allowing me to check the components are deploying correctly, as expected, I can now work on my first refactoring.
 
 ### Standardizing with the lower levels
 
@@ -174,7 +173,7 @@ resource "azurerm_resource_group" "rg_network" {
 
 ```
 
-We observed that many people stay at this stage, a very descriptive code, which is OK for one time usage, but is not very maintanable and not very DevOps friendly, so in the next step, we will move from something that works, to something that is usable in entreprise context 
+We observed that many people stay at this stage, a very descriptive code, which is OK for one time usage, but is not very maintainable and not very DevOps friendly, so in the next step, we will move from something that works, to something that is usable in enterprise context.
 
 ## Step 5. Structure your code and variables
 
@@ -182,7 +181,7 @@ Now that we have more experience on the components, we can see the reuse pattern
 
 ### The variables
 
-At this stage, we will remove all hard-coded values and put in variables anything that must change. 
+At this stage, we will remove all hard-coded values and put in variables anything that must change.
 One of the very good aspects of Terraform 0.12 type of syntax is that you can create quite complex objects to describe configuration variables. When you are creating those objects, you haves multiple ways aggregate objects them:
 
 - Group by components: create a variable that describes your resource groups, your availability sets, etc. The advantage of this approach is that its easy to iterate on the modules with a ```for_each``` instruction:
@@ -237,7 +236,7 @@ For now, we don't know which one is better, I will take the second approach for 
 
 ### The code
 
-Every time we suspect there is a bit of code we can reuse, we can create either a module (low complexity) or a blueprint (a bit more complex and composite). Most of time, you want those module to be developed and stored locally, and once you are more sure of the re-usability and the code quality, then you might want to generalize them in your repositories.
+Every time we suspect there is a bit of code we can reuse, we can create either a module. Most of time, you want those module to be developed and stored locally, and once you are more sure of the re-usability and the code quality, then you might want to generalize them in your repositories.
 
 ```hcl
 resource "azurerm_resource_group" "rg_network" {
@@ -267,9 +266,7 @@ resource "azurerm_lb" "ilb_web" {
 }
 ```
 
-My code is functional, but a bit flat, I will now regroup it's features and my criteria will be the reusability of the components: a core network plus a VPN transit together should be a common pattern - so lets put it together and try to have a blueprint.
-
-My directory structure looks like this:
+My code is functional, but a bit flat, I will now regroup it's features and my criteria will be the reusability of the components: a core network plus a VPN transit together should be a common pattern - so lets put it together and try to have a local module. In the end I have a structure  like this:
 
 ```
 landingzone_secure_vnet_dmz
