@@ -3,7 +3,7 @@
 #resource group creation
 resource_groups_shared_transit = {
   HUB-NET-TRANSIT = {
-    name     = "-hub-network-transit"
+    name     = "hub-network-transit"
     location = "southeastasia"
   }
 }
