@@ -42,15 +42,3 @@ resource "azuredevops_variable_group" "variable_group" {
   }
 
 }
-
-resource "azurerm_key_vault_access_policy" "devops" {
-  for_each = lookup(var.azure_devops, "serviceendpoints", {})
-
-  key_vault_id = local.keyvaults[each.value.keyvault.keyvault_key].id
-
-  tenant_id = local.aad_apps[each.value.aad_app_key].tenant_id
-  object_id = local.aad_apps[each.value.aad_app_key].azuread_service_principal.object_id
-
-  key_permissions = each.value.keyvault.key_permissions
-  secret_permissions = each.value.keyvault.secret_permissions
-}
