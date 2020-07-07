@@ -16,6 +16,7 @@ resource "azurerm_resource_group" "rg_virtualwan_spoke" {
 ## Create a spoke VNET 
 module "virtual_network" {
   source = "github.com/aztfmod/terraform-azurerm-caf-virtual-network?ref=vnext"
+  for_each = var.spokes
   # source  = "aztfmod/caf-virtual-network/azurerm"
   # version = "3.0.0"
 
@@ -23,12 +24,11 @@ module "virtual_network" {
   resource_group_name     = azurerm_resource_group.rg_virtualwan_spoke.name
   prefix                  = local.prefix
   location                = local.global_settings.location_map.region1
-  networking_object       = var.spokes.spoke1.network
+  networking_object       = each.value.network
   tags                    = local.tags
   diagnostics_map         = local.caf_foundations_accounting.diagnostics_map
   log_analytics_workspace = local.caf_foundations_accounting.log_analytics_workspace
-  diagnostics_settings    = var.spokes.spoke1.network.diagnostics
-  max_length              = 25
+  diagnostics_settings    = each.value.network.diagnostics
 }
 
 # TODO TF13: iterate on hubs and spokes
