@@ -26,7 +26,7 @@ Soon - [Deployment guide for Azure CAF landing zones]()
 
 ## Development and code
 
-[Modules development conventions](./code_architecture/module_conventions.md)
+[Modules development guidelines](./code_architecture/module_conventions.md)
 
 [Modules Unit and integration testing](./test/unit_test.md)
 
