@@ -16,12 +16,23 @@ variable level {
   }
 }
 
+variable global_settings {
+  default = {
+    default_location  = "southeastasia"
+    convention        = "cafrandom"
+  }
 
-variable location {
-  type        = string
-  default     = "southeastasia"
-  description = "Location of the launchpad landing zone"
+  validation {
+    condition     = contains(["cafrandom", "random", "passthrough", "cafclassic"], var.global_settings.convention)
+    error_message = "Convention allowed values are cafrandom, random, passthrough or cafclassic."
+  }
 }
+
+# variable location {
+#   type        = string
+#   default     = "southeastasia"
+#   description = "Location of the launchpad landing zone"
+# }
 
 # Do not change the default value to be able to upgrade to the standard launchpad
 variable "tf_name" {
@@ -29,19 +40,32 @@ variable "tf_name" {
   default     = "launchpad"
 }
 
-variable convention {
-  type    = string
-  default = "cafrandom"
+# variable convention {
+#   type    = string
+#   default = "cafrandom"
 
-  validation {
-    condition     = contains(["cafrandom", "random", "passthrough", "cafclassic"], var.convention)
-    error_message = "Allowed values are cafrandom, random, passthrough or cafclassic."
+#   validation {
+#     condition     = contains(["cafrandom", "random", "passthrough", "cafclassic"], var.convention)
+#     error_message = "Allowed values are cafrandom, random, passthrough or cafclassic."
+#   }
+# }
+
+variable resource_groups {
+  default = {
+      tfstate     = {
+        name      = "launchpad-tfstates"
+        location  = "southeastasia"
+      }
+      security    = {
+        name      = "launchpad-security"
+      }
+      gitops      = {
+        name      = "launchpad-devops-agents"
+      }
+      networking  = {
+        name      = "launchpad-networking"
+      }
   }
-}
-
-variable resource_group_name {
-  type    = string
-  default = "launchpad"
 }
 
 variable storage_account_name {
@@ -49,10 +73,10 @@ variable storage_account_name {
   default = "level0"
 }
 
-variable "prefix" {
-  description = "(Optional) (Default = null) Generate a prefix that will be used to prepend all resources names"
-  default     = null
-}
+# variable "prefix" {
+#   description = "(Optional) (Default = null) Generate a prefix that will be used to prepend all resources names"
+#   default     = null
+# }
 
 
 variable keyvaults {
@@ -60,7 +84,7 @@ variable keyvaults {
     # Do not rename the key "launchpad" to be able to upgrade to the standard launchpad
     launchpad = {
       name                = "launchpad"
-      resource_group_name = "caf-foundations"
+      resource_group_key  = "security"
       region              = "southeastasia"
       convention          = "cafrandom"
       sku_name            = "standard"
@@ -143,4 +167,33 @@ variable environment {
   type        = string
   description = "This variable is set by the rover during the deployment based on the -env or -environment flags. Default to sandpit"
   default     = "Sandpit"
+}
+
+variable blueprint_networking {
+  default = {}
+}
+
+variable diagnostics_settings {
+  default = {
+    resource_diagnostics_name         = "diag"
+    azure_diagnostics_logs_event_hub  = false
+    resource_group_key                = "gitops"
+  }
+}
+
+variable log_analytics {
+  default = {
+    resource_log_analytics_name       = "logs"
+    resource_group_key                = "gitops"
+    solutions_maps = {
+      KeyVaultAnalytics = {
+        "publisher" = "Microsoft"
+        "product"   = "OMSGallery/KeyVaultAnalytics"
+      }
+    }
+  }
+}
+
+variable networking {
+  default = {}
 }

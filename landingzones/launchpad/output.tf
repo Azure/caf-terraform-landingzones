@@ -4,12 +4,29 @@ output aad_apps {
   value     = module.azure_applications.aad_apps
 }
 
-output prefix {
-  value = local.prefix
+output global_settings {
+  sensitive = true
+  value = {
+    default_location  = var.global_settings.default_location
+    convention        = var.global_settings.convention
+    prefix            = local.prefix
+    environment       = var.environment
+  }
 }
 
-output environment {
-  value = var.environment
+output resource_groups {
+  sensitive = true
+  value     = var.resource_groups
+}
+
+output log_analytics {
+  sensitive = true
+  value = module.log_analytics.object
+}
+
+output diagnostics_map {
+  sensitive = true
+  value = module.diagnostics.diagnostics_map
 }
 
 # output azure_devops_user_admin {
@@ -32,24 +49,15 @@ output azure_subscriptions {
   value     = var.subscriptions
 }
 
-# output launchpad_storage {
-#   sensitive = true
-
-#   value = {
-#     account_name = azurerm_storage_account.stg.name
-#   }
-# }
-
 output keyvaults {
   sensitive = true
   value     = azurerm_key_vault.keyvault
 }
 
-# output tf_name {
-#   sensitive = true
-
-#   value = var.tf_name
-# }
+output networking {
+  sensitive = true
+  value = module.virtual_network
+}
 
 output github_token_keyvault {
   sensitive = true

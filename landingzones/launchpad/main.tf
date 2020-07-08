@@ -2,7 +2,7 @@ terraform {
   experiments = [variable_validation]
 
   required_providers {
-    azurerm = "~> 2.15.0"
+    azurerm = "~> 2.17.0"
     azuread = "~> 0.10.0"
     random  = "~> 2.2.1"
     null    = "~> 2.1.0"
@@ -39,7 +39,7 @@ locals {
   }
   tags = merge(var.tags, local.landingzone_tag, { "level" = var.level }, { "environment" = var.environment }, { "rover_version" = var.rover_version })
 
-  prefix             = var.prefix == null ? random_string.prefix.result : var.prefix
+  prefix             = lookup(var.global_settings, "prefix", random_string.prefix.result)
   prefix_with_hyphen = local.prefix == "" ? "" : "${local.prefix}-"
   prefix_start_alpha = local.prefix == "" ? "" : "${random_string.alpha1.result}${local.prefix}"
 }
