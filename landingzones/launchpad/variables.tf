@@ -28,27 +28,11 @@ variable global_settings {
   }
 }
 
-# variable location {
-#   type        = string
-#   default     = "southeastasia"
-#   description = "Location of the launchpad landing zone"
-# }
-
 # Do not change the default value to be able to upgrade to the standard launchpad
 variable "tf_name" {
   description = "Name of the terraform state in the blob storage (Does not include the extension .tfstate)"
   default     = "launchpad"
 }
-
-# variable convention {
-#   type    = string
-#   default = "cafrandom"
-
-#   validation {
-#     condition     = contains(["cafrandom", "random", "passthrough", "cafclassic"], var.convention)
-#     error_message = "Allowed values are cafrandom, random, passthrough or cafclassic."
-#   }
-# }
 
 variable resource_groups {
   default = {
@@ -123,8 +107,9 @@ variable aad_apps {
 
 variable launchpad_key_names {
   default = {
-    keyvault = "launchpad"
-    aad_app  = "caf_launchpad_level0"
+    keyvault    = "launchpad"
+    aad_app     = "caf_launchpad_level0"
+    networking  = "networking_gitops"
   }
 }
 
@@ -195,5 +180,42 @@ variable log_analytics {
 }
 
 variable networking {
-  default = {}
+  default = {
+    networking_gitops = {
+      resource_group_key  = "networking"
+
+      vnet = {
+        name                = "gitops-vnet"
+        address_space       = ["192.168.100.0/24"] 
+        dns                 = []
+      }
+
+      specialsubnets     = {}
+
+      subnets = {
+        level0        = {
+          name                = "level0"
+          cidr                = "192.168.100.16/29"
+          service_endpoints   = []
+          nsg_inbound         = [
+            # {"Name", "Priority", "Direction", "Action", "Protocol", "source_port_range", "destination_port_range", "source_address_prefix", "destination_address_prefix" }, 
+            ["ssh_internet", "150", "Inbound", "Allow", "*", "*", "22", "*", "*"],       # Temp until bastion + vwan in place.
+            ["ssh", "200", "Inbound", "Allow", "*", "*", "22", "192.168.200.8/29", "*"],
+          ]
+          nsg_outbound        = []
+        }
+      }
+
+      diags = {
+        log = [
+          # ["Category name", "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period] 
+          ["VMProtectionAlerts", true, true, 5],
+        ]
+        metric = [
+          #["Category name", "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period] 
+          ["AllMetrics", true, true, 2],
+        ]
+      }
+    }
+  }
 }
