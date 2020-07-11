@@ -20,6 +20,7 @@ variable global_settings {
   default = {
     default_location  = "southeastasia"
     convention        = "cafrandom"
+    prefix            = null          # null = generate random 4 char, "" disable the prefix, "dfre" set a prefix value
   }
 
   validation {

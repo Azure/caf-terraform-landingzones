@@ -39,7 +39,7 @@ locals {
   }
   tags = merge(var.tags, local.landingzone_tag, { "level" = var.level }, { "environment" = var.environment }, { "rover_version" = var.rover_version })
 
-  prefix             = lookup(var.global_settings, "prefix", random_string.prefix.result)
+  prefix             = lookup(var.global_settings, "prefix", null) == null ? random_string.prefix.result : var.global_settings.prefix
   prefix_with_hyphen = local.prefix == "" ? "" : "${local.prefix}-"
   prefix_start_alpha = local.prefix == "" ? "" : "${random_string.alpha1.result}${local.prefix}"
 }
