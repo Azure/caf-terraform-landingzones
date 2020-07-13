@@ -1,7 +1,8 @@
 
 module "virtual_network" {
-  source  = "aztfmod/caf-virtual-network/azurerm"
-  version = "~> 2.0.1"
+  source = "github.com/aztfmod/terraform-azurerm-caf-virtual-network?ref=vnext"
+  # source  = "aztfmod/caf-virtual-network/azurerm"
+  # version = "~> 2.0.1"
 
   prefix                    = local.global_settings.prefix
   convention                = lookup( var.diagnostics_settings, "convention", local.global_settings.convention)

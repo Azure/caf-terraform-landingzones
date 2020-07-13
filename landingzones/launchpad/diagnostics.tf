@@ -1,8 +1,8 @@
 
 module "diagnostics" {
-
-  source  = "aztfmod/caf-diagnostics-logging/azurerm"
-  version = "~> 2.0.1"
+  source = "github.com/aztfmod/terraform-azurerm-caf-diagnostics-logging?ref=vnext"
+  # source  = "aztfmod/caf-diagnostics-logging/azurerm"
+  # version = "~> 2.0.1"
 
   name                  = var.diagnostics_settings.resource_diagnostics_name
   convention            = lookup( var.diagnostics_settings, "convention", local.global_settings.convention)
