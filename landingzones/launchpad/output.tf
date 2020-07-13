@@ -6,12 +6,7 @@ output aad_apps {
 
 output global_settings {
   sensitive = true
-  value = {
-    default_location  = var.global_settings.default_location
-    convention        = var.global_settings.convention
-    prefix            = local.prefix
-    environment       = var.environment
-  }
+  value = local.global_settings
 }
 
 output resource_groups {

@@ -3,8 +3,8 @@ module "virtual_network" {
   source  = "aztfmod/caf-virtual-network/azurerm"
   version = "~> 2.0.1"
 
-  prefix                    = local.prefix
-  convention                = lookup( var.diagnostics_settings, "convention", var.global_settings.convention)
+  prefix                    = local.global_settings.prefix
+  convention                = lookup( var.diagnostics_settings, "convention", local.global_settings.convention)
   location                  = azurerm_resource_group.rg[var.networking[var.launchpad_key_names.networking].resource_group_key].location
   resource_group_name       = azurerm_resource_group.rg[var.networking[var.launchpad_key_names.networking].resource_group_key].name
   networking_object         = var.networking[var.launchpad_key_names.networking]

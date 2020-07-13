@@ -4,7 +4,7 @@ module "log_analytics" {
     version = "~> 2.2.0"
 
     name                              = var.log_analytics.resource_log_analytics_name
-    convention                        = lookup( var.log_analytics, "convention", var.global_settings.convention)
+    convention                        = lookup( var.log_analytics, "convention", local.global_settings.convention)
     solution_plan_map                 = var.log_analytics.solutions_maps
     resource_group_name               = azurerm_resource_group.rg[var.log_analytics.resource_group_key].name
     prefix                            = local.prefix_start_alpha

@@ -3,7 +3,7 @@ resource "azurecaf_naming_convention" "stg" {
 
   name          = var.storage_account_name
   resource_type = "azurerm_storage_account"
-  convention    = var.global_settings.convention
+  convention    = local.global_settings.convention
   prefix        = local.prefix
 }
 
@@ -19,7 +19,7 @@ resource "azurerm_storage_account" "stg" {
 
   tags = {
     tfstate     = var.level
-    environment = var.environment
+    environment = local.global_settings.environment
     launchpad   = var.launchpad_mode
   }
 
