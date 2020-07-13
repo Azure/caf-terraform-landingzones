@@ -12,7 +12,6 @@ tf_name = "launchpad"
 launchpad_key_names = {
   keyvault    = "launchpad"
   aad_app     = "caf_launchpad_level0"
-  networking  = "networking_gitops"
 }
 
 resource_groups = {
@@ -29,11 +28,6 @@ resource_groups = {
   }
   gitops      = {
     name        = "launchpad-devops-agents"
-    useprefix   = true
-    max_length  = 40
-  }
-  networking  = {
-    name        = "launchpad-networking"
     useprefix   = true
     max_length  = 40
   }
@@ -94,60 +88,4 @@ log_analytics = {
   }
 }
 
-networking = {
-  networking_gitops = {
-    resource_group_key  = "networking"
-
-    vnet = {
-      name                = "gitops-vnet"
-      address_space       = ["192.168.100.0/24"] 
-      dns                 = []
-    }
-
-    specialsubnets     = {}
-
-    subnets = {
-      level0        = {
-        name                = "level0"
-        cidr                = ["192.168.100.16/29"]
-        service_endpoints   = []
-        nsg_name            = "level0_nsg"
-        nsg                 = [
-          {
-              name                       = "ssh_internet",
-              priority                   = "100"
-              direction                  = "Inbound"
-              access                     = "Allow"
-              protocol                   = "tcp"
-              source_port_range          = "*"
-              destination_port_range     = "22"
-              source_address_prefix      = "*"
-              destination_address_prefix = "*"
-            },
-            {
-              name                       = "HTTPS-In",
-              priority                   = "101"
-              direction                  = "Inbound"
-              access                     = "Allow"
-              protocol                   = "tcp"
-              source_port_range          = "*"
-              destination_port_range     = "22"
-              source_address_prefix      = "192.168.200.8/29"
-              destination_address_prefix = "*"
-            },
-        ]
-      }
-    }
-
-    diags = {
-      log = [
-        # ["Category name", "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period] 
-        ["VMProtectionAlerts", true, true, 5],
-      ]
-      metric = [
-        #["Category name", "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period] 
-        ["AllMetrics", true, true, 2],
-      ]
-    }
-  }
-}
+networking = {}
