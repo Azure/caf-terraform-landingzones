@@ -18,17 +18,21 @@ variable level {
   }
 }
 
-variable global_settings {
-  default = {
-    default_location  = "southeastasia"
-    convention        = "cafrandom"
-    prefix            = null          # null = generate random 4 char, "" disable the prefix, "dfre" set a prefix value
-  }
+variable convention {
+  default = "cafrandom"
 
   validation {
-    condition     = contains(["cafrandom", "random", "passthrough", "cafclassic"], var.global_settings.convention)
+    condition     = contains(["cafrandom", "random", "passthrough", "cafclassic"], var.convention)
     error_message = "Convention allowed values are cafrandom, random, passthrough or cafclassic."
   }
+}
+
+variable location {
+  default = "southeastasia"
+}
+
+variable prefix {
+  default = null
 }
 
 # Do not change the default value to be able to upgrade to the standard launchpad
