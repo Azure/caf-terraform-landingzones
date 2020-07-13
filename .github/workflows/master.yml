@@ -63,8 +63,7 @@ jobs:
             /tf/rover/rover.sh /tf/caf/landingzones/launchpad apply \
               -launchpad \
               --environment ${{ github.run_id }} \
-              -var global_settings.prefix=g${{ github.run_id}} \ \
-              -var global_settings.default_location=${{ matrix.region }} \
+              '-var global_settings={prefix="g${{ github.run_id}}", default_location="${{ env.region }}"}' \
               '-var tags={testing_job_id="${{ github.run_id }}"}'
           fi
 
@@ -248,8 +247,7 @@ jobs:
           /tf/rover/rover.sh /tf/caf/landingzones/launchpad destroy \
             -launchpad \
             -env ${{ github.run_id }} \
-            -var global_settings.prefix=g${{ github.run_id}} \
-            -var global_settings.default_location=${{ env.region }} \
+            '-var global_settings={prefix="g${{ github.run_id}}", default_location="${{ env.region }}"}' \
             '-var tags={testing_job_id="${{ github.run_id }}"}' \
             -auto-approve
         
