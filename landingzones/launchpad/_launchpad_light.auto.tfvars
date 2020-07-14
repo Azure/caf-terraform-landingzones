@@ -1,13 +1,10 @@
 level           = "level0"
-environment     = "sandpit"
 
 global_settings = {
     default_location  = "southeastasia"
     convention        = "cafrandom"
     prefix            = null
 }
-
-tf_name = "launchpad"
 
 launchpad_key_names = {
   keyvault    = "launchpad"
