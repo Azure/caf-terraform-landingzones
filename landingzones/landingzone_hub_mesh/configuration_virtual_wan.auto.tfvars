@@ -101,6 +101,7 @@ spokes = {
       location = "eastasia"
     }
     peering_name = "spoke1-hub-hk-link"
+    hub_key = "hub2"
     network = {
       vnet = {
         name          = "Core-Network"

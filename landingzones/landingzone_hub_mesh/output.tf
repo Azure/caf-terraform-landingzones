@@ -5,11 +5,16 @@ output "virtual_wan" {
 }
 
 output "hubs" {
-  description = "Output the full object for Virtual Hub 1"
+  description = "Output the full object for Virtual Hubs"
   sensitive   = false # to hide content from logs
   value       = module.virtual_hub.*
 }
 
+output "vnets" {
+  description = "Output the full object for virtual networks in spokes"
+  sensitive   = false # to hide content from logs
+  value       = module.virtual_network.*
+}
 
 ## re-exporting level1 settings (caf_foundations) for level 3 consumption
 output "prefix" {
