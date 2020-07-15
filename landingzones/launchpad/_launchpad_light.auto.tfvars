@@ -1,11 +1,5 @@
 level           = "level0"
 
-global_settings = {
-    default_location  = "southeastasia"
-    convention        = "cafrandom"
-    prefix            = null
-}
-
 launchpad_key_names = {
   keyvault    = "launchpad"
   aad_app     = "caf_launchpad_level0"
