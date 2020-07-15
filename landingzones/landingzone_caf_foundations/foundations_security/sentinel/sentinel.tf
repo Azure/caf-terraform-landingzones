@@ -1,5 +1,4 @@
 resource "azurerm_log_analytics_solution" "sentinel" {
-  count = var.enable_sentinel ? 1 : 0
 
   solution_name         = "SecurityInsights"
   location              = var.location
