@@ -14,6 +14,11 @@ variable vnets {
   description = "Map of vnet objects"
 }
 
+variable peerings {
+  description = "Map of peering objects"
+  default     = {}
+}
+
 variable resource_groups {}
 
 variable diagnostics {
