@@ -27,6 +27,7 @@ resource "azurerm_resource_group" "rg_operations" {
 
 #Specify the subscription logging repositories 
 module "activity_logs" {
+  count = var.accounting_settings.azure_activity_log_enabled ? 1 : 0
   source = "github.com/aztfmod/terraform-azurerm-caf-activity-logs?ref=vnext"
   # source  = "aztfmod/caf-activity-logs/azurerm"
   # version = "3.0.0"

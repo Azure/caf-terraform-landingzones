@@ -6,7 +6,7 @@ output "diagnostics_map" {
 
 #outputs the sec log repositories 
 output "activity_logs_map" {
-  value       = module.activity_logs.seclogs_map
+  value       = var.accounting_settings.azure_activity_log_enabled ? module.activity_logs.0.seclogs_map : null
   description = "outputs subscription activity logs map as desribed in the activity logging module doc"
 }
 
