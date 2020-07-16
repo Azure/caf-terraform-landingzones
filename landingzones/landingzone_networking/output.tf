@@ -9,3 +9,4 @@ output firewalls {
   sensitive   = true
   description = "Map of the firewalls"
 }
+

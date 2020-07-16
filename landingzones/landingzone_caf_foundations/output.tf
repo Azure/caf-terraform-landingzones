@@ -39,6 +39,6 @@ output "environment" {
 # }
 
 output "global_settings" {
-  value       = var.global_settings
+  value       = merge(var.global_settings, local.global_settings)
   description = "global settings of the landing zone"
 }

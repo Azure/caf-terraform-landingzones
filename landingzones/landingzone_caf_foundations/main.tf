@@ -25,8 +25,9 @@ data "terraform_remote_state" "launchpad" {
 }
 
 locals {
-  global_settings = data.terraform_remote_state.launchpad.outputs.global_settings
-  prefix          = var.prefix == null ? local.global_settings.prefix : var.prefix
-  environment     = local.global_settings.environment
-  tags_hub        = merge({ "environment" = local.environment }, var.global_settings.tags_hub)
+  global_settings     = data.terraform_remote_state.launchpad.outputs.global_settings
+  prefix              = var.prefix == null ? local.global_settings.prefix : var.prefix
+  environment         = local.global_settings.environment
+  tags_hub            = merge({ "environment" = local.environment }, var.global_settings.tags_hub)
+  azure_subscriptions = data.terraform_remote_state.launchpad.outputs.azure_subscriptions
 }
