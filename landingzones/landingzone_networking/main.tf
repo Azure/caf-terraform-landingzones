@@ -42,6 +42,7 @@ data "terraform_remote_state" "landingzone_caf_foundations" {
 
 locals {
   prefix                     = data.terraform_remote_state.landingzone_caf_foundations.outputs.prefix
+  prefix_with_hyphen         = local.prefix == "" ? "" : "${local.prefix}-"
   caf_foundations_accounting = data.terraform_remote_state.landingzone_caf_foundations.outputs.foundations_accounting
   caf_foundations_security   = data.terraform_remote_state.landingzone_caf_foundations.outputs.foundations_security
   global_settings            = data.terraform_remote_state.landingzone_caf_foundations.outputs.global_settings

@@ -135,7 +135,7 @@ vnets = {
       }
       aks_nodepool_user1 = {
         name     = "aks_nodepool_user1"
-        cidr     = ["10.10.101.32/27"]
+        cidr     = ["10.10.101.32/27"] # 62 IP
         nsg_name = "aks_nodepool_user1_nsg"
         nsg      = []
       }
