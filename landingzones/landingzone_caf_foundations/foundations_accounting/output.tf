@@ -10,17 +10,6 @@ output "activity_logs_map" {
   description = "outputs subscription activity logs map as desribed in the activity logging module doc"
 }
 
-# #outputs of the rg data for hub 
-# output "resource_group_hub_ids" {
-#   value = module.resource_group_hub.ids 
-#   description = "outputs a map with RG Terraform names as keys and value is the Azure object ID"
-# }
-
-# output "resource_group_hub_names" {
-#   value = module.resource_group_hub.names
-#   description = "outputs a map with RG Terraform names as keys and value is the RG name (as created)"
-# }
-
 #log analytics workspace
 output "log_analytics_workspace" {
   value       = module.log_analytics

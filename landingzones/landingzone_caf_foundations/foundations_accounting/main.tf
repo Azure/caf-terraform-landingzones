@@ -1,11 +1,6 @@
 data "azurerm_client_config" "current" {
 }
 
-terraform {
-  backend "azurerm" {
-  }
-}
-
 locals {
   blueprint_tag = {
     "blueprint" = basename(abspath(path.module))
@@ -17,9 +12,6 @@ terraform {
   required_providers {
     azurecaf = {
       source = "aztfmod/azurecaf"
-    }
-    azurerm = {
-      source = "hashicorp/azurerm"
     }
   }
 }
