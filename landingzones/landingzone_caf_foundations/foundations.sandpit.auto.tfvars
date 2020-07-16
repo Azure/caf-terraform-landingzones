@@ -141,9 +141,9 @@ security_settings = {
   #Azure Security Center Configuration 
   enable_security_center = false
   security_center = {
-    contact_email = "email@email.com"
-    contact_phone = "9293829328"
-    alerts_to_admins = true
+    contact_email       = "email@email.com"
+    contact_phone       = "9293829328"
+    alerts_to_admins    = true
     alert_notifications = true
   }
   #Enables Azure Sentinel on the Log Analaytics repo
