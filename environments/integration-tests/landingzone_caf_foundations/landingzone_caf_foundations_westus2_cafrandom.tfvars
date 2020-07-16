@@ -35,7 +35,8 @@ global_settings = {
 
 ## accounting settings
 accounting_settings = {
-  # Azure Subscription activity logs retention period 
+  # Azure Subscription activity logs retention period
+  azure_activity_log_enabled    = true
   azure_activity_logs_name      = "actlogs"
   azure_activity_logs_event_hub = false
   azure_activity_logs_retention = 365
