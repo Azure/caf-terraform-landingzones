@@ -10,7 +10,7 @@ terraform {
 terraform {
   required_providers {
     azurecaf = {
-      source = "aztfmod/azurecaf"
+      source  = "aztfmod/azurecaf"
       version = "~> 0.4.3"
     }
     azurerm = {
@@ -27,7 +27,7 @@ locals {
   landingzone_tag = {
     "landingzone" = basename(abspath(path.module))
   }
-  tags = merge(var.tags, local.landingzone_tag, {"environment" = local.global_settings.environment})
+  tags = merge(var.tags, local.landingzone_tag, { "environment" = local.global_settings.environment })
 }
 
 data "terraform_remote_state" "landingzone_caf_foundations" {

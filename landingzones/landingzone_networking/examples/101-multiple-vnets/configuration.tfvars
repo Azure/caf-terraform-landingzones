@@ -1,16 +1,16 @@
 resource_groups = {
-  vnet_sg     = {
-    name        = "vnet-hub-sg"
-    location    = "southeastasia"
-    useprefix   = true
-    max_length  = 40
+  vnet_sg = {
+    name       = "vnet-hub-sg"
+    location   = "southeastasia"
+    useprefix  = true
+    max_length = 40
   }
 }
 
 vnets = {
   hub_sg = {
-    resource_group_key  = "vnet_sg"
-    location            = "southeastasia"
+    resource_group_key = "vnet_sg"
+    location           = "southeastasia"
     vnet = {
       name          = "hub"
       address_space = ["10.10.100.0/24"]
@@ -36,7 +36,7 @@ vnets = {
         name     = "AzureBastionSubnet" #Must be called AzureBastionSubnet 
         cidr     = ["10.10.100.160/27"]
         nsg_name = "AzureBastionSubnet_nsg"
-        nsg      = [
+        nsg = [
           {
             name                       = "bastion-in-allow",
             priority                   = "100"
@@ -120,7 +120,7 @@ vnets = {
   }
 
   spoke_aks_sg = {
-    resource_group_key  = "vnet_sg"
+    resource_group_key = "vnet_sg"
     vnet = {
       name          = "aks"
       address_space = ["10.10.101.0/24"]
