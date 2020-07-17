@@ -15,7 +15,12 @@ variable vnets {
 }
 
 variable peerings {
-  description = "Map of peering objects"
+  description = "(Optional) Map of peering objects"
+  default     = {}
+}
+
+variable firewalls {
+  description = "(Optional) Map of firewall objects"
   default     = {}
 }
 
