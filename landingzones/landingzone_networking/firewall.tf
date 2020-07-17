@@ -13,8 +13,8 @@ module "az_firewall_ip" {
   resource_group_name        = azurerm_resource_group.rg[each.value.resource_group_key].name
   ip_addr                    = each.value.firewall_ip_addr_config
   tags                       = local.tags
-  diagnostics_map            = local.caf_foundations_accounting.diagnostics_map
-  log_analytics_workspace_id = local.caf_foundations_accounting.log_analytics_workspace.id
+  diagnostics_map            = local.caf_foundations_accounting[each.value.location].diagnostics_map
+  log_analytics_workspace_id = local.caf_foundations_accounting[each.value.location].log_analytics_workspace.id
   diagnostics_settings       = each.value.firewall_ip_addr_config.diagnostics
 }
 
@@ -32,8 +32,8 @@ module "az_firewall" {
   public_ip_id         = module.az_firewall_ip[each.key].id
   location             = each.value.location
   tags                 = local.tags
-  diagnostics_map      = local.caf_foundations_accounting.diagnostics_map
-  la_workspace_id      = local.caf_foundations_accounting.log_analytics_workspace.id
+  diagnostics_map      = local.caf_foundations_accounting[each.value.location].diagnostics_map
+  la_workspace_id      = local.caf_foundations_accounting[each.value.location].log_analytics_workspace.id
   diagnostics_settings = each.value.az_fw_config.diagnostics
 }
 
