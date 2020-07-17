@@ -21,8 +21,6 @@ terraform {
   required_version = ">= 0.13"
 }
 
-
-
 locals {
   landingzone_tag = {
     "landingzone" = basename(abspath(path.module))
