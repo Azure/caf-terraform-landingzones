@@ -1,5 +1,6 @@
 
 module "diagnostics" {
+  depends_on = [azurerm_resource_group.rg]
   source = "github.com/aztfmod/terraform-azurerm-caf-diagnostics-logging?ref=vnext"
   # source  = "aztfmod/caf-diagnostics-logging/azurerm"
   # version = "~> 2.0.1"

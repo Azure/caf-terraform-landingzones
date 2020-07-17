@@ -1,15 +1,15 @@
-variable "governance_settings" {
+variable governance_settings {
 
 }
 
-variable "location" {
+variable location {
   description = "Azure region to create the resources"
   type        = string
 }
 
-variable "log_analytics" {
+variable log_analytics {
 
 }
 
-variable "tags_hub" {}
-variable "tags" {}
+variable tags_hub {}
+variable tags {}
