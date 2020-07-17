@@ -11,8 +11,8 @@ module "vnets" {
   location                = lookup(each.value, "location", azurerm_resource_group.rg[each.value.resource_group_key].location)
   networking_object       = each.value
   tags                    = local.tags
-  diagnostics_map         = local.caf_foundations_accounting.diagnostics_map
-  log_analytics_workspace = local.caf_foundations_accounting.log_analytics_workspace
+  diagnostics_map         = local.caf_foundations_accounting[each.value.location].diagnostics_map
+  log_analytics_workspace = local.caf_foundations_accounting[each.value.location].log_analytics_workspace
   diagnostics_settings    = lookup(each.value, "diagnostics", var.diagnostics.vnet)
   ddos_id                 = ""
 }
