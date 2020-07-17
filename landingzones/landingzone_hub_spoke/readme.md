@@ -22,19 +22,19 @@ To deploy a landing zone, use the execution environnement as described at the ro
 ## Deploying this landing zone
 
 ```bash
-rover /tf/caf/landingzones/landingzone_hub_spoke plan
+rover -lz /tf/caf/landingzones/landingzone_hub_spoke -a plan
 ```
 
 Review the configuration and if you are ok with it, deploy it by running:
 
 ```bash
-rover /tf/caf/landingzones/landingzone_hub_spoke apply
+rover -lz /tf/caf/landingzones/landingzone_hub_spoke -a apply
 ```
 
 Have fun playing with the landing zone an once you are done, you can simply delete the deployment using:
 
 ```bash
-rover /tf/caf/landingzones/landingzone_hub_spoke destroy
+rover -lz /tf/caf/landingzones/landingzone_hub_spoke -a destroy
 ```
 
 More details about this landing zone can also be found in the landing zone folder and its blueprints sub-folders.
