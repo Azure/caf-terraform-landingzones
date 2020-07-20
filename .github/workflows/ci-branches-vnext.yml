@@ -62,7 +62,7 @@ jobs:
           if [ "${id}" == "null" ]; then
 
             ##### Temp solution to support the transition of the launchpad into the landingzones folder
-            /tf/rover/rover.sh --clone-launchpad --clone-branch vnext
+            # /tf/rover/rover.sh --clone-launchpad --clone-branch vnext
             #####
 
             /tf/rover/rover.sh -lz /tf/caf/landingzones/launchpad -a apply \
