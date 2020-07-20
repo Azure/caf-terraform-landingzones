@@ -62,10 +62,10 @@ jobs:
           if [ "${id}" == "null" ]; then
 
             ##### Temp solution to support the transition of the launchpad into the landingzones folder
-            # /tf/rover/rover.sh --clone-launchpad --clone-branch vnext
+            /tf/rover/rover.sh --clone-destination /tf/caf/landingzones/vnext --clone-folder /landingzones/launchpad --clone-branch vnext
             #####
 
-            /tf/rover/rover.sh -lz /tf/caf/landingzones/launchpad -a apply \
+            /tf/rover/rover.sh -lz /tf/caf/landingzones/vnext/launchpad -a apply \
               -launchpad \
               --environment ${{ github.run_id }} \
               -var prefix=g${{ github.run_id}} \ \
@@ -251,10 +251,10 @@ jobs:
           ln -s ${GITHUB_WORKSPACE} /tf/caf
 
           ##### Temp solution to support the transition of the launchpad into the landingzones folder
-          /tf/rover/rover.sh --clone-launchpad --clone-branch vnext
-          #####
+          /tf/rover/rover.sh --clone-destination /tf/caf/landingzones/vnext --clone-folder /landingzones/launchpad --clone-branch vnext
+          ####
 
-          /tf/rover/rover.sh -lz /tf/caf/landingzones/launchpad -a destroy \
+          /tf/rover/rover.sh -lz /tf/caf/landingzones/vnext/launchpad -a destroy \
             -launchpad \
             -env ${{ github.run_id }} \
             -var prefix=g${{ github.run_id}} \
