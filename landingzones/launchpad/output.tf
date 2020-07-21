@@ -11,7 +11,7 @@ output global_settings {
 
 output resource_groups {
   sensitive = true
-  value     = var.resource_groups
+  value     = azurerm_resource_group.rg
 }
 
 output log_analytics {
