@@ -249,7 +249,11 @@ jobs:
       - name: Remove launchpad
         run: |
           ln -s ${GITHUB_WORKSPACE} /tf/caf
-
+          
+            ##### Temp solution to support the transition of the launchpad into the landingzones folder
+            /tf/rover/rover.sh --clone-destination /tf/caf/landingzones/vnext13 --clone-folder /landingzones/launchpad --clone-branch vnext13
+            #####
+            
           /tf/rover/rover.sh -lz /tf/caf/landingzones/launchpad -a destroy \
             -launchpad \
             -env ${{ github.run_id }} \
