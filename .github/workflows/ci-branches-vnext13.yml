@@ -60,6 +60,11 @@ jobs:
           id=$(az storage account list --query "[?tags.tfstate=='level0' && tags.environment=='${{ github.run_id }}']" -o json | jq -r .[0].id)
 
           if [ "${id}" == "null" ]; then
+          
+            ##### Temp solution to support the transition of the launchpad into the landingzones folder
+            /tf/rover/rover.sh --clone-destination /tf/caf/landingzones/vnext13 --clone-folder /landingzones/launchpad --clone-branch vnext13
+            #####
+            
             /tf/rover/rover.sh -lz /tf/caf/landingzones/vnext13/launchpad -a apply \
               -launchpad \
               --environment ${{ github.run_id }} \
