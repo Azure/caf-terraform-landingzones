@@ -17,19 +17,19 @@ To deploy a landing zone, use the execution environnement as described at the ro
 ## Deploying this landing zone
 
 ```hcl
-rover /tf/caf/landingzones/landingzone_starter plan
+rover -lz /tf/caf/landingzones/landingzone_starter -a plan
 ```
 
 Review the configuration and if you are ok with it, deploy it by running:
 
 ```hcl
-rover /tf/caf/landingzones/landingzone_starter apply
+rover -lz /tf/caf/landingzones/landingzone_starter -a apply
 ```
 
 Have fun playing with the landing zone an once you are done, you can simply delete the deployment using:
 
 ```hcl
-rover /tf/caf/landingzones/landingzone_starter destroy
+rover -lz /tf/caf/landingzones/landingzone_starter -a destroy
 ```
 
 ## Contribute

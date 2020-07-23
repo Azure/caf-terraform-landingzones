@@ -25,15 +25,15 @@ To deploy a landing zone, use the execution environnement as described at the ro
 ## Deploying this landing zone
 
 ```
-rover /tf/caf/landingzones/landingzone_vdc_demo plan
+rover -lz /tf/caf/landingzones/landingzone_vdc_demo -a plan
 ```
 Review the configuration and if you are ok with it, deploy it by running:
 ```
-rover /tf/caf/landingzones/landingzone_vdc_demo apply
+rover -lz /tf/caf/landingzones/landingzone_vdc_demo -a apply
 ```
 Have fun playing with the landing zone an once you are done, you can simply delete the deployment using:
 ```
-rover /tf/caf/landingzones/landingzone_vdc_demo destroy
+rover -lz /tf/caf/landingzones/landingzone_vdc_demo -a destroy
 ```
 
 More details about this landing zone can also be found in the landing zone folder and its blueprints subfolders.

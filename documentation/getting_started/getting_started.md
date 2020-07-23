@@ -58,13 +58,13 @@ az account set --subscription <subscription_GUID>
 On the first run, you need to use the launchpad to create the foundations for Terraform environment:
 
 ```bash
-rover /tf/caf/landingzones/launchpad apply -launchpad
+rover -lz /tf/caf/landingzones/launchpad -a apply -launchpad
 ```
 
 This command will interactively prompt you for *var.location*, asking for the name of a supported Azure region **where you want to deploy the Terraform state and dependencies**. You can specify that in the argument as in the following example:  
 
 ```bash
-rover /tf/caf/landingzones/launchpad apply -launchpad -var 'location=westus'
+rover -lz /tf/caf/landingzones/launchpad -a apply -launchpad -var 'location=westus'
 ```
 
 You can then launch your first landing zone!
@@ -74,15 +74,15 @@ Please note that each landing zone come with its own deployment settings, which 
 You are ready to start:
 
 ```bash
-rover /tf/caf/landingzones/landingzone_caf_foundations plan
+rover -lz /tf/caf/landingzones/landingzone_caf_foundations -a plan
 ```
 
 ```bash
-rover /tf/caf/landingzones/landingzone_caf_foundations apply
+rover -lz /tf/caf/landingzones/landingzone_caf_foundations -a apply
 ```
 
 ```bash
-rover /tf/caf/landingzones/landingzone_caf_foundations destroy
+rover -lz /tf/caf/landingzones/landingzone_caf_foundations -a destroy
 ```
 
 ## Updating your development environment
