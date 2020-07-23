@@ -60,7 +60,7 @@ jobs:
           id=$(az storage account list --query "[?tags.tfstate=='level0' && tags.environment=='${{ github.run_id }}']" -o json | jq -r .[0].id)
 
           if [ "${id}" == "null" ]; then
-            /tf/rover/rover.sh -lz /tf/caf/landingzones/launchpad -a apply \
+            /tf/rover/rover.sh -lz /tf/caf/landingzones/vnext13/launchpad -a apply \
               -launchpad \
               --environment ${{ github.run_id }} \
               -var prefix=g${{ github.run_id}} \ \
