@@ -55,19 +55,19 @@ jobs:
       
       - name: Locate launchpad
         run: |
-        ln -s ${GITHUB_WORKSPACE} /tf/caf
+          ln -s ${GITHUB_WORKSPACE} /tf/caf
 
-        id=$(az storage account list --query "[?tags.tfstate=='level0' && tags.environment=='${{ github.run_id }}']" -o json | jq -r .[0].id)
+          id=$(az storage account list --query "[?tags.tfstate=='level0' && tags.environment=='${{ github.run_id }}']" -o json | jq -r .[0].id)
 
-        if [ "${id}" == "null" ]; then
-          /tf/rover/rover.sh -lz /tf/caf/landingzones/launchpad -a apply \
-            -launchpad \
-            --environment ${{ github.run_id }} \
-            '-var prefix=g${{ github.run_id }}' \
-            '-var location=${{ matrix.region }}' \
-            '-var convention=${{ matrix.convention }}' \
-            '-var tags={testing_job_id="${{ github.run_id }}"}'
-        fi
+          if [ "${id}" == "null" ]; then
+            /tf/rover/rover.sh -lz /tf/caf/landingzones/launchpad -a apply \
+              -launchpad \
+              --environment ${{ github.run_id }} \
+              '-var prefix=g${{ github.run_id }}' \
+              '-var location=${{ matrix.region }}' \
+              '-var convention=${{ matrix.convention }}' \
+              '-var tags={testing_job_id="${{ github.run_id }}"}'
+          fi
 
   caf_foundations:
     name: caf_foundations
