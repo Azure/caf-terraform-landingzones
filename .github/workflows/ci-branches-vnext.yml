@@ -60,16 +60,12 @@ jobs:
           id=$(az storage account list --query "[?tags.tfstate=='level0' && tags.environment=='${{ github.run_id }}']" -o json | jq -r .[0].id)
 
           if [ "${id}" == "null" ]; then
-
-            ##### Temp solution to support the transition of the launchpad into the landingzones folder
-            /tf/rover/rover.sh --clone-destination /tf/caf/landingzones/vnext --clone-folder /landingzones/launchpad --clone-branch vnext
-            #####
-
-            /tf/rover/rover.sh -lz /tf/caf/landingzones/vnext/launchpad -a apply \
+            /tf/rover/rover.sh -lz /tf/caf/landingzones/launchpad -a apply \
               -launchpad \
               --environment ${{ github.run_id }} \
-              -var prefix=g${{ github.run_id}} \ \
-              -var location=${{ matrix.region }} \
+              '-var prefix=g${{ github.run_id }}' \
+              '-var location=${{ matrix.region }}' \
+              '-var convention=${{ matrix.convention }}' \
               '-var tags={testing_job_id="${{ github.run_id }}"}'
           fi
 
@@ -113,7 +109,7 @@ jobs:
             
       - name: deploy caf_foundations
         run: |
-            /tf/rover/rover.sh -lz /tf/caf/landingzones/vnext/${{ matrix.landingzone }} -a apply \
+            /tf/rover/rover.sh -lz /tf/caf/landingzones/${{ matrix.landingzone }} -a apply \
               --environment ${{ github.run_id }} \
               -var prefix=g${{ github.run_id}} \
               '-var tags={testing_job_id="${{ github.run_id }}"}' \
@@ -160,7 +156,7 @@ jobs:
             
       - name: deploy landing_zone
         run: |
-          /tf/rover/rover.sh -lz /tf/caf/landingzones/vnext/${{ matrix.landingzone }} -a apply \
+          /tf/rover/rover.sh -lz /tf/caf/landingzones/${{ matrix.landingzone }} -a apply \
             -env ${{ github.run_id }} \
             '-var tags={testing_job_id="${{ github.run_id }}"}' \
             '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}.tfvars'
@@ -168,7 +164,7 @@ jobs:
       - name: destroy landing_zone
         if: always()
         run: |
-          /tf/rover/rover.sh -lz /tf/caf/landingzones/vnext/${{ matrix.landingzone }} -a destroy \
+          /tf/rover/rover.sh -lz /tf/caf/landingzones/${{ matrix.landingzone }} -a destroy \
             --environment ${{ github.run_id }} \
             '-var tags={testing_job_id="${{ github.run_id }}"}' \
             '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}.tfvars'
@@ -213,7 +209,7 @@ jobs:
             
       - name: destroy caf_foundations
         run: |
-            /tf/rover/rover.sh -lz /tf/caf/landingzones/vnext/${{ matrix.landingzone }} -a destroy \
+            /tf/rover/rover.sh -lz /tf/caf/landingzones/${{ matrix.landingzone }} -a destroy \
               --environment ${{ github.run_id }} \
               -var prefix=g${{ github.run_id}} \
               '-var tags={testing_job_id="${{ github.run_id }}"}' \
@@ -250,15 +246,12 @@ jobs:
         run: |
           ln -s ${GITHUB_WORKSPACE} /tf/caf
 
-          ##### Temp solution to support the transition of the launchpad into the landingzones folder
-          /tf/rover/rover.sh --clone-destination /tf/caf/landingzones/vnext --clone-folder /landingzones/launchpad --clone-branch vnext
-          ####
-
-          /tf/rover/rover.sh -lz /tf/caf/landingzones/vnext/launchpad -a destroy \
+          /tf/rover/rover.sh -lz /tf/caf/landingzones/launchpad -a destroy \
             -launchpad \
             -env ${{ github.run_id }} \
-            -var prefix=g${{ github.run_id}} \
-            -var location=${{ env.region }} \
+            '-var prefix=g${{ github.run_id }}' \
+            '-var location=${{ matrix.region }}' \
+            '-var convention=${{ matrix.convention }}' \
             '-var tags={testing_job_id="${{ github.run_id }}"}' \
             -auto-approve
         

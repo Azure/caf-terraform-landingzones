@@ -2,7 +2,7 @@ terraform {
   experiments = [variable_validation]
 
   required_providers {
-    azurerm = "~> 2.15.0"
+    azurerm = "~> 2.17.0"
     azuread = "~> 0.10.0"
     random  = "~> 2.2.1"
     null    = "~> 2.1.0"
@@ -38,6 +38,13 @@ locals {
     landingzone = var.launchpad_mode
   }
   tags = merge(var.tags, local.landingzone_tag, { "level" = var.level }, { "environment" = var.environment }, { "rover_version" = var.rover_version })
+
+  global_settings = {
+    prefix            = local.prefix
+    convention        = var.convention
+    default_location  = var.location
+    environment       = var.environment
+  }
 
   prefix             = var.prefix == null ? random_string.prefix.result : var.prefix
   prefix_with_hyphen = local.prefix == "" ? "" : "${local.prefix}-"

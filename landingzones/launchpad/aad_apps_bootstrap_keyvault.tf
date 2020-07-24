@@ -23,6 +23,7 @@ resource "azurerm_key_vault_secret" "launchpad_subscription_id" {
   key_vault_id = azurerm_key_vault.keyvault[var.launchpad_key_names.keyvault].id
 }
 
+# launchpad_light or launchpad
 resource "azurerm_key_vault_secret" "launchpad_mode" {
   name         = "launchpad-mode"
   value        = var.launchpad_mode

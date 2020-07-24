@@ -7,3 +7,4 @@
 **/.terraform.tfstate.lock.info
 **/~*.*
 **/*.log
+**/backend.azurerm.tf

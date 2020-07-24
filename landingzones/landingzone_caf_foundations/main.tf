@@ -14,7 +14,7 @@ locals {
   tags = merge(var.tags, local.landingzone_tag)
 }
 
-data "terraform_remote_state" "level0_launchpad" {
+data "terraform_remote_state" "launchpad" {
   backend = "azurerm"
   config = {
     storage_account_name = var.lowerlevel_storage_account_name
@@ -25,7 +25,8 @@ data "terraform_remote_state" "level0_launchpad" {
 }
 
 locals {
-  prefix      = var.prefix == null ? data.terraform_remote_state.level0_launchpad.outputs.prefix : var.prefix
-  environment = lookup(data.terraform_remote_state.level0_launchpad.outputs, "environment", "sandpit")
-  tags_hub    = merge({ "environment" = local.environment }, var.global_settings.tags_hub)
+  global_settings = data.terraform_remote_state.launchpad.outputs.global_settings
+  prefix          = var.prefix == null ? local.global_settings.prefix : var.prefix
+  environment     = local.global_settings.environment
+  tags_hub        = merge({ "environment" = local.environment }, var.global_settings.tags_hub)
 }

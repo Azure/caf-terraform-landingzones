@@ -1,15 +1,11 @@
 
-
-
-
-
 resource "azurecaf_naming_convention" "account" {
   for_each = var.aad_users
 
   name          = each.value.user_name
-  prefix        = each.value.useprefix ? var.prefix : ""
+  prefix        = each.value.useprefix ? local.prefix : ""
   resource_type = "rg" # workaround to keep the dashes
-  convention    = each.value.convention
+  convention    = lookup(each.value, "convention", local.global_settings.convention)
   max_length    = lookup(each.value, "max_length", null)
 }
 
