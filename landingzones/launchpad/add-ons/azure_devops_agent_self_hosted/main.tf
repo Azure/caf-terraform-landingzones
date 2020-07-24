@@ -6,7 +6,7 @@ provider "azurecaf" {}
 
 terraform {
   required_providers {
-    azurerm = "~> 2.17.0"
+    azurerm = "~> 2.20.0"
     null    = "~> 2.1.0"
     tls     = "~> 2.1.1"
   }

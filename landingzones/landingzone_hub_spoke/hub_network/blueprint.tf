@@ -41,7 +41,7 @@ resource "azurerm_resource_group" "rg_edge" {
 ## Shared service virtual network
 module "core_network" {
   source  = "aztfmod/caf-virtual-network/azurerm"
-  version = "3.0.0"
+  version = "3.1.0"
 
   convention              = var.global_settings.convention
   resource_group_name     = azurerm_resource_group.rg_network.name

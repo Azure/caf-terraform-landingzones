@@ -100,14 +100,33 @@ networking = {
     subnets = {
       level0        = {
         name                = "level0"
-        cidr                = "192.168.100.16/29"
+        cidr                = ["192.168.100.16/29"]
+        nsg_name            = "level0_nsg"
         service_endpoints   = []
-        nsg_inbound         = [
-          # {"Name", "Priority", "Direction", "Action", "Protocol", "source_port_range", "destination_port_range", "source_address_prefix", "destination_address_prefix" }, 
-          ["ssh_internet", "150", "Inbound", "Allow", "*", "*", "22", "*", "*"],       # Temp until bastion + vwan in place.
-          ["ssh", "200", "Inbound", "Allow", "*", "*", "22", "192.168.200.8/29", "*"],
+        nsg = [
+          {
+            name                       = "ssh_internet",
+            priority                   = "150"
+            direction                  = "Inbound"
+            access                     = "Allow"
+            protocol                   = "*"
+            source_port_range          = "*"
+            destination_port_range     = "22"
+            source_address_prefix      = "*"
+            destination_address_prefix = "*"
+          },
+          {
+            name                       = "ssh",
+            priority                   = "200"
+            direction                  = "Inbound"
+            access                     = "Allow"
+            protocol                   = "UDP"
+            source_port_range          = "*"
+            destination_port_range     = "22"
+            source_address_prefix      = "192.168.200.8/29"
+            destination_address_prefix = "*"
+          }
         ]
-        nsg_outbound        = []
       }
     }
 

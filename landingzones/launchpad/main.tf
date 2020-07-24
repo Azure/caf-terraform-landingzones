@@ -2,7 +2,7 @@ terraform {
   experiments = [variable_validation]
 
   required_providers {
-    azurerm = "~> 2.17.0"
+    azurerm = "~> 2.20.0"
     azuread = "~> 0.10.0"
     random  = "~> 2.2.1"
     null    = "~> 2.1.0"

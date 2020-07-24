@@ -2,7 +2,7 @@
 module "diagnostics" {
 
   source  = "aztfmod/caf-diagnostics-logging/azurerm"
-  version = "~> 2.0.1"
+  version = "~> 2.1.0"
 
   name                  = var.diagnostics_settings.resource_diagnostics_name
   convention            = lookup( var.diagnostics_settings, "convention", local.global_settings.convention)

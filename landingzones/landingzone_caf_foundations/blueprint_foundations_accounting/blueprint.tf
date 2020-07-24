@@ -30,7 +30,7 @@ resource "azurerm_resource_group" "rg_operations" {
 #Specify the subscription logging repositories 
 module "activity_logs" {
   source  = "aztfmod/caf-activity-logs/azurerm"
-  version = "3.0.0"
+  version = "3.1.0"
 
   convention                 = var.convention
   enable_event_hub           = var.accounting_settings.azure_activity_logs_event_hub
@@ -47,7 +47,7 @@ module "activity_logs" {
 #Specify the operations diagnostic logging repositories 
 module "diagnostics_logging" {
   source  = "aztfmod/caf-diagnostics-logging/azurerm"
-  version = "2.0.1"
+  version = "2.1.0"
 
   convention          = var.convention
   name                = var.accounting_settings.azure_diagnostics_logs_name
@@ -61,7 +61,7 @@ module "diagnostics_logging" {
 #Create the Azure Monitor - Log Analytics workspace
 module "log_analytics" {
   source  = "aztfmod/caf-log-analytics/azurerm"
-  version = "2.2.0"
+  version = "2.3.0"
 
   convention          = var.convention
   prefix              = var.prefix

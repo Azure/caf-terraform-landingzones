@@ -1,7 +1,7 @@
 
 module "log_analytics" {
     source  = "aztfmod/caf-log-analytics/azurerm"
-    version = "~> 2.2.0"
+    version = "~> 2.3.0"
 
     name                              = var.log_analytics.resource_log_analytics_name
     convention                        = lookup( var.log_analytics, "convention", local.global_settings.convention)
