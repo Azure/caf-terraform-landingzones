@@ -57,6 +57,8 @@ jobs:
         run: |
           ln -s ${GITHUB_WORKSPACE} /tf/caf
 
+          ls -lsa /tf/caf
+          
           id=$(az storage account list --query "[?tags.tfstate=='level0' && tags.environment=='${{ github.run_id }}']" -o json | jq -r .[0].id)
 
           if [ "${id}" == "null" ]; then
