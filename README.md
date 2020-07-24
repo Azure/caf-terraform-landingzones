@@ -2,6 +2,7 @@
 ![landingzones](https://github.com/Azure/caf-terraform-landingzones/workflows/landingzones-vnext/badge.svg)
 [![VScodespaces](https://img.shields.io/endpoint?url=https%3A%2F%2Faka.ms%2Fvso-badge)](https://online.visualstudio.com/environments/new?name=caf%20landing%20zones&repo=azure/caf-terraform-landingzones)
 
+
 # Azure Cloud Adoption Framework landing zones for Terraform
 
 Microsoft [Cloud Adoption Framework for Azure](https://aka.ms/caf) provides you with guidance and best practices to adopt Azure.
@@ -45,6 +46,7 @@ Currently we provide you with the following sample landing zones:
 | [landingzone_vdc_demo](./landingzones/landingzone_vdc_demo)               | setup a demo environment of a hub-spoke topology including shared services, as well as various DMZ (ingress, egress, transit). You can find all details of the vdc_demo landing zone [Here](./landingzones/landingzone_vdc_demo/readme.md)                                                                                                                                                                                                                                              |
 | [landingzone_secure_vnet_dmz](./landingzones/landingzone_secure_vnet_dmz) | (preview) this is an early implementation of the reference architecture [secure_vnet_dmz](https://docs.microsoft.com/en-gb/azure/architecture/reference-architectures/dmz/secure-vnet-dmz). This is a work in progress used to illustrate landing zone creation process as described [here](./documentation/code_architecture/how_to_code_a_landingzone.md) . You can find all details of the secure vnet dmz landing zone [Here](./landingzones/landingzone_secure_vnet_dmz/readme.md) |
 | [landingzone_starter](./landingzones/landingzone_starter)                 | this is an empty landing zones to use as a template to develop a level 2 landing zone. You can find all details of the starter landing zone [Here](./landingzones/landingzone_starter/readme.md)                                                                                                                                                                                                                                                                                        |
+
 
 ## Repositories
 

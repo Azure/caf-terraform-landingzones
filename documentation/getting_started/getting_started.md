@@ -26,7 +26,7 @@ git clone https://github.com/Azure/caf-terraform-landingzones.git
 
 ## Open the repository in Visual Studio Code
 
-Open the repository you've just cloned in Visual Studio Code, click on the lower bar, green sign and in the palette opening on the top of Visual Studio Code Window, select **"Open Workspace in container"**
+Open the repository you've just cloned in Visual Studio Code, click on the lower bar, green sign and in the palette opening on the top of Visual Studio Code Window, select **"Open Folder in container"** or **"Reopen in container"**
 
 ![RemoteDevelopment](../../_pictures/caf_remote_dev.png)
 
