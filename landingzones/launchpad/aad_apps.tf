@@ -1,5 +1,6 @@
 module azure_applications {
-  source = "github.com/aztfmod/terraform-azuread-caf-aad-apps"
+  source  = "aztfmod/caf-aad-apps/azuread"
+  version = "1.0.0"
 
   aad_apps            = var.aad_apps
   aad_api_permissions = var.aad_api_permissions
