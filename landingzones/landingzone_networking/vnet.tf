@@ -1,9 +1,9 @@
 module "vnets" {
   for_each = var.vnets
 
-  source = "github.com/aztfmod/terraform-azurerm-caf-virtual-network?ref=vnext"
-  # source  = "aztfmod/caf-virtual-network/azurerm"
-  # version = "3.0.0"
+  # source = "github.com/aztfmod/terraform-azurerm-caf-virtual-network?ref=vnext"
+  source  = "aztfmod/caf-virtual-network/azurerm"
+  version = "3.1.0"
 
   convention              = local.global_settings.convention
   resource_group_name     = azurerm_resource_group.rg[each.value.resource_group_key].name

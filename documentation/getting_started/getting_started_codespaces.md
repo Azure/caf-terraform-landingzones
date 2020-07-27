@@ -59,13 +59,13 @@ az account set --subscription <subscription_GUID>
 On the first run, you need to apply the launchpad as the first landing zone:
 
 ```bash
-/tf/rover/rover.sh /tf/caf/landingzones/launchpad apply -launchpad
+/tf/rover/rover.sh -lz /tf/caf/landingzones/launchpad -a apply -launchpad
 ```
 
 You can specify a location for the launchpad using the following command:
 
 ```bash
-/tf/rover/rover.sh /tf/caf/landingzones/launchpad apply -launchpad -var location=westus
+/tf/rover/rover.sh -lz /tf/caf/landingzones/launchpad -a apply -launchpad -var location=westus
 ```
 
 You can then launch your first landing zone!
@@ -75,15 +75,15 @@ Please note that each landing zone come with its own deployment settings, which 
 You are ready to start:
 
 ```bash
-/tf/rover/rover.sh /tf/caf/landingzones/landingzone_caf_foundations plan
+/tf/rover/rover.sh -lz /tf/caf/landingzones/landingzone_caf_foundations -a plan
 ```
 
 ```bash
-/tf/rover/rover.sh /tf/caf/landingzones/landingzone_caf_foundations apply
+/tf/rover/rover.sh -lz /tf/caf/landingzones/landingzone_caf_foundations -a apply
 ```
 
 ```bash
-/tf/rover/rover.sh /tf/caf/landingzones/landingzone_caf_foundations destroy
+/tf/rover/rover.sh -lz /tf/caf/landingzones/landingzone_caf_foundations -a destroy
 ```
 
 Happy deployment with Azure landing zones, let us know your feedback and how you need it to evolve.

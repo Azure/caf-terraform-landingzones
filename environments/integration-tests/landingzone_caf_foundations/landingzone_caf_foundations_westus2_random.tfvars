@@ -163,7 +163,8 @@ accounting_settings = {
         }
       }
     }
-}
+  }
+
 
 ## governance
 governance_settings = {

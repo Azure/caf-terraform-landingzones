@@ -70,7 +70,6 @@ Every resource created must use the naming convention provider as published here
 If you are developing a module for which there is no current support for naming convention method, please submit an issue: https://github.com/aztfmod/terraform-provider-azurecaf/issues
 
 Example of naming convention provider usage to create a virtual network:
-
 ```hcl
 resource "azurecaf_naming_convention" "caf_name_vnet" {
   name          = var.networking_object.vnet.name
@@ -203,7 +202,6 @@ Starting on Terraform 0.13, modules shall not internally iterate on complex stru
 Starting in Terraform 0.13, you can leverage custom variables validation. As documented [here](https://www.terraform.io/docs/configuration/variables.html) we recommend roll-out of this feature in module, alongside with default variables values including in complex objects.
 
 Example: Custom validation
-
 ```hcl
 variable convention {
   description = "(Required) Naming convention to use"
@@ -218,7 +216,6 @@ variable convention {
 ```
 
 Example: Complex objects defaults:
-
 ```hcl
 variable keyvaults {
   description = "(Required) Key Vault objects to create"

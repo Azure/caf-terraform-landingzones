@@ -1,6 +1,6 @@
 module azure_applications {
-  depends_on = [azurerm_key_vault.keyvault]
-  source = "github.com/aztfmod/terraform-azuread-caf-aad-apps?ref=vnext"
+  source  = "aztfmod/caf-aad-apps/azuread"
+  version = "1.0.0"
 
   aad_apps            = var.aad_apps
   aad_api_permissions = var.aad_api_permissions

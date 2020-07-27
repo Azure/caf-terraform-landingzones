@@ -329,6 +329,7 @@ core_networking = {
 
   }
 
+  }
 
   # Settings for the Virtual Network gateway to be created
   provision_gateway = false

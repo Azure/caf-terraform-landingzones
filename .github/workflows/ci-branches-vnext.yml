@@ -15,6 +15,8 @@ on:
     paths-ignore:
       - 'documentation/**'
       - '_pictures/**'
+      - 'README.md'
+      - 'CHANGELOG.md'
   schedule:
     - cron:  '0 2 * * *'
 
@@ -25,7 +27,7 @@ env:
   ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
   ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-  TFVARS_PATH: '/tf/caf/environments'
+  TFVARS_PATH: '/tf/caf/caf-terraform-landingzones/environments'
 
 jobs:
   level0:
@@ -60,7 +62,7 @@ jobs:
           id=$(az storage account list --query "[?tags.tfstate=='level0' && tags.environment=='${{ github.run_id }}']" -o json | jq -r .[0].id)
 
           if [ "${id}" == "null" ]; then
-            /tf/rover/rover.sh -lz /tf/caf/landingzones/launchpad -a apply \
+            /tf/rover/rover.sh -lz /tf/caf/caf-terraform-landingzones/landingzones/launchpad -a apply \
               -launchpad \
               --environment ${{ github.run_id }} \
               '-var prefix=g${{ github.run_id }}' \
@@ -109,7 +111,7 @@ jobs:
             
       - name: deploy caf_foundations
         run: |
-            /tf/rover/rover.sh -lz /tf/caf/landingzones/${{ matrix.landingzone }} -a apply \
+            /tf/rover/rover.sh -lz /tf/caf/caf-terraform-landingzones/landingzones/${{ matrix.landingzone }} -a apply \
               --environment ${{ github.run_id }} \
               -var prefix=g${{ github.run_id}} \
               '-var tags={testing_job_id="${{ github.run_id }}"}' \
@@ -156,7 +158,7 @@ jobs:
             
       - name: deploy landing_zone
         run: |
-          /tf/rover/rover.sh -lz /tf/caf/landingzones/${{ matrix.landingzone }} -a apply \
+          /tf/rover/rover.sh -lz /tf/caf/caf-terraform-landingzones/landingzones/${{ matrix.landingzone }} -a apply \
             -env ${{ github.run_id }} \
             '-var tags={testing_job_id="${{ github.run_id }}"}' \
             '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}.tfvars'
@@ -164,7 +166,7 @@ jobs:
       - name: destroy landing_zone
         if: always()
         run: |
-          /tf/rover/rover.sh -lz /tf/caf/landingzones/${{ matrix.landingzone }} -a destroy \
+          /tf/rover/rover.sh -lz /tf/caf/caf-terraform-landingzones/landingzones/${{ matrix.landingzone }} -a destroy \
             --environment ${{ github.run_id }} \
             '-var tags={testing_job_id="${{ github.run_id }}"}' \
             '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}.tfvars'
@@ -209,7 +211,7 @@ jobs:
             
       - name: destroy caf_foundations
         run: |
-            /tf/rover/rover.sh -lz /tf/caf/landingzones/${{ matrix.landingzone }} -a destroy \
+            /tf/rover/rover.sh -lz /tf/caf/caf-terraform-landingzones/landingzones/${{ matrix.landingzone }} -a destroy \
               --environment ${{ github.run_id }} \
               -var prefix=g${{ github.run_id}} \
               '-var tags={testing_job_id="${{ github.run_id }}"}' \
@@ -246,7 +248,7 @@ jobs:
         run: |
           ln -s ${GITHUB_WORKSPACE} /tf/caf
 
-          /tf/rover/rover.sh -lz /tf/caf/landingzones/launchpad -a destroy \
+          /tf/rover/rover.sh -lz /tf/caf/caf-terraform-landingzones/landingzones/launchpad -a destroy \
             -launchpad \
             -env ${{ github.run_id }} \
             '-var prefix=g${{ github.run_id }}' \

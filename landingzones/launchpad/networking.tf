@@ -1,8 +1,7 @@
 
 module "virtual_network" {
-  source = "github.com/aztfmod/terraform-azurerm-caf-virtual-network?ref=vnext"
-  # source  = "aztfmod/caf-virtual-network/azurerm"
-  # version = "~> 2.0.1"
+  source  = "aztfmod/caf-virtual-network/azurerm"
+  version = "~> 3.1.0"
 
   for_each = var.networking
 

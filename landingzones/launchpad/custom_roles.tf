@@ -1,5 +1,6 @@
 module custom_role_definition {
-  source = "github.com/aztfmod/terraform-azurerm-caf-custom-role"
+  source  = "aztfmod/caf-custom-role/azurerm"
+  version = "1.0.0"
 
   custom_role_definitions = var.custom_role_definitions
   prefix                  = local.prefix

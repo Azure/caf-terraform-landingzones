@@ -1,8 +1,22 @@
+## v7.0.2001 (July 2020)
+
+BREAKING CHANGES:
+
+* Update to rover syntax, as documented in landing zones, syntax is now: rover -lz <lz name> -a <plan|apply|delete> (refer to Getting started and landing zones readmes)
+
+FEATURES:
+
+* **launchpad:** introduced support for Azure DevOps Addons and Azure DevOps self hosted agents.
+* **added support for azurerm 2.20 :** On all sample landing zones [azurerm provider](https://github.com/terraform-providers/terraform-provider-azurerm/releases/tag/v2.20.0)
+* **rover :** upgrade to rover 2007: - support for Terraform 0.29 - [#61](https://github.com/aztfmod/rover/issues/61)
+* **rover :** support for rover in Azure Container Instance - [#62](https://github.com/aztfmod/rover/issues/62)
+* **landingzone_caf_foundations :** Fixed passing in the list of supported services- [#61](https://github.com/Azure/caf-terraform-landingzones/issues/61)
+
 ## v6.0.2006 (June 2020)
 
 BREAKING CHANGES:
 
-* New launchpad. You must destroy the 2005:1510 first before redelpoying this version of the launchap. 
+* New launchpad. You must destroy the 2005:1510 first before redeploying this version of the launchpad.
 
 FEATURES:
 
