@@ -1,4 +1,4 @@
-## v7.0.2001 (July 2020)
+## v7.0.2007 (July 2020)
 
 BREAKING CHANGES:
 
