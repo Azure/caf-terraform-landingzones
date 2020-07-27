@@ -95,7 +95,7 @@ accounting_settings = {
 
 ## governance
 governance_settings = {
-  #current code supports only two levels of managemenr groups and one root
+  #current code supports only two levels of management groups and one root
   deploy_mgmt_groups = false
   management_groups = {
     root = {
