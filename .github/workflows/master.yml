@@ -16,6 +16,7 @@ on:
       - 'documentation/**'
       - '_pictures/**'
       - 'README.md'
+      - 'CHANGELOG.md'
   schedule:
     - cron:  '0 0 * * *'
 
