@@ -4,8 +4,8 @@
 global_settings = {
   #specifies the set of locations you are going to use in this landing zone
   location_map = {
-    region1 = "southeastasia"
-    region2 = "eastasia"
+    southeastasia = "southeastasia"
+    eastasia = "eastasia"
   }
 
   #naming convention to be used as defined in naming convention module, accepted values are cafclassic, cafrandom, random, passthrough
@@ -22,7 +22,7 @@ global_settings = {
 
   # Set of resource groups to land the foundations
   resource_groups_hub = {
-    region1 = {
+    southeastasia = {
       HUB-CORE-SEC = {
         name     = "hub-core-sec-sea"
         location = "southeastasia"
@@ -32,7 +32,7 @@ global_settings = {
         location = "southeastasia"
       }
     }
-    region2 = {
+    eastasia = {
       HUB-CORE-SEC = {
         name     = "hub-core-sec-hk"
         location = "southeastasia"
@@ -49,7 +49,7 @@ global_settings = {
 accounting_settings = {
 
   # Azure diagnostics logs retention period
-  region1 = {
+  southeastasia = {
     # Azure Subscription activity logs retention period
     azure_activity_log_enabled    = false
     azure_activity_logs_name      = "actlogs"
@@ -106,7 +106,7 @@ accounting_settings = {
       }
     }
     }
-    region2 = {
+    eastasia = {
       # Azure Subscription activity logs retention period
       azure_activity_log_enabled    = false
       azure_activity_logs_name      = "actlogs"
@@ -167,7 +167,7 @@ accounting_settings = {
 
 ## governance
 governance_settings = {
-  region1 = {
+  southeastasia = {
     #current code supports only two levels of managemenr groups and one root
     deploy_mgmt_groups = false
     management_groups = {
@@ -207,7 +207,7 @@ governance_settings = {
       msi_location           = "southeastasia"
     }
   }
-  region2 = {}
+  eastasia = {}
 }
 
 ## security 
