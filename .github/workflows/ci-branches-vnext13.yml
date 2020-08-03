@@ -167,7 +167,7 @@ jobs:
           /tf/rover/rover.sh -lz /tf/caf/caf-terraform-landingzones/landingzones/${{ matrix.landingzone }} -a apply \
             -env ${{ github.run_id }} \
             '-var tags={testing_job_id="${{ github.run_id }}"}' \
-            '-tfstate ${{ matrix.examples }}_landingzone_networking.tfstate' \
+            -tfstate ${{ matrix.examples }}_landingzone_networking.tfstate \
             '-var-file ${{ env.TFVARS_PATH }}/landingzones/${{ matrix.landingzone }}/examples/${{ matrix.examples }}/configuration.tfvars'
 
       - name: Destroy landing_zone
@@ -176,7 +176,7 @@ jobs:
           /tf/rover/rover.sh -lz /tf/caf/caf-terraform-landingzones/landingzones/${{ matrix.landingzone }} -a destroy \
             --environment ${{ github.run_id }} \
             '-var tags={testing_job_id="${{ github.run_id }}"}' \
-            '-tfstate ${{ matrix.examples }}_landingzone_networking.tfstate' \
+            -tfstate ${{ matrix.examples }}_landingzone_networking.tfstate \
             '-var-file ${{ env.TFVARS_PATH }}/landingzones/${{ matrix.landingzone }}/examples/${{ matrix.examples }}/configuration.tfvars'
       
          
