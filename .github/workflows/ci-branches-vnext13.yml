@@ -27,7 +27,7 @@ env:
   ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
   ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-  TFVARS_PATH: '/tf/caf/caf-terraform-landingzones/environments'
+  TFVARS_PATH: '/tf/caf/caf-terraform-landingzones/'
 
 jobs:
   tfsec:
@@ -126,7 +126,7 @@ jobs:
               --environment ${{ github.run_id }} \
               -var prefix=g${{ github.run_id}} \
               '-var tags={testing_job_id="${{ github.run_id }}"}' \
-              '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}_${{ matrix.region }}_${{ matrix.convention }}.tfvars'
+              '-var-file ${{ env.TFVARS_PATH }}/environments/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}_${{ matrix.region }}_${{ matrix.convention }}.tfvars'
                 
   landingzones:
     name: landingzones
@@ -178,15 +178,7 @@ jobs:
             '-var tags={testing_job_id="${{ github.run_id }}"}' \
             '-var-file ${{ env.TFVARS_PATH }}/landingzones/${{ matrix.landingzone }}/examples/${{ matrix.examples }}/configuration.tfvars'
       
-      # - name: Run Terraform-docs
-      #   if: always()  
-      #   uses: Dirrk/terraform-docs@v1.0.8
-      #   with:
-      #     tf_docs_working_dir: /tf/caf/caf-terraform-landingzones/landingzones/${{ matrix.landingzone }}
-      #     tf_docs_output_file: README.md
-      #     tf_docs_output_method: inject
-      #     tf_docs_git_push: 'true'
-          
+         
   caf_foundations_destroy:
     name: caf_foundations_destroy
     runs-on: ubuntu-latest
@@ -197,7 +189,7 @@ jobs:
       fail-fast: false
       matrix:
           landingzone: ["landingzone_caf_foundations"]
-          region: ["westus2"]
+          region: ["southeastasia"]
           convention: ["random"]
           environment: ["integration-tests"]
 
@@ -231,7 +223,7 @@ jobs:
               --environment ${{ github.run_id }} \
               -var prefix=g${{ github.run_id}} \
               '-var tags={testing_job_id="${{ github.run_id }}"}' \
-              '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}_${{ matrix.region }}_${{ matrix.convention }}.tfvars' \
+              '-var-file ${{ env.TFVARS_PATH }}/environments/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}_${{ matrix.region }}_${{ matrix.convention }}.tfvars' \
               '-auto-approve'
 
   level0_destroy:
