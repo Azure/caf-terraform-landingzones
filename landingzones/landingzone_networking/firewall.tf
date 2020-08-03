@@ -1,4 +1,3 @@
-
 ## Azure Firewall configuration
 module "az_firewall_ip" {
   for_each = var.firewalls
@@ -50,11 +49,11 @@ module "firewall_dashboard" {
   tags     = local.tags
 }
 
-# TODO: need improvements to put rules in the config file
 module "firewall_rules" {
   for_each = var.firewalls
 
   source = "./modules/firewall_rules"
 
   az_firewall_settings = module.az_firewall[each.key].az_firewall_config
+  az_firewall_rules    = each.value.az_fw_config.rules
 }

@@ -24,6 +24,31 @@ variable firewalls {
   default     = {}
 }
 
+variable bastions {
+  description = "(Optional) Map of Azure Bastions objects"
+  default     = {}
+}
+
+variable vwans {
+  description = "(Optional) Map of virtual wan objects"
+  default     = {}
+}
+
+variable ddos_services {
+  description = "(Optional) Map of ddos objects"
+  default     = {}
+}
+
+variable user_routes {
+  description = "(Optional) Map of routes"
+  default     = {}
+}
+
+variable subnet_udr {
+  description = "(Optional) Map of subnet/udr mappings"
+  default     = {}
+}
+
 variable resource_groups {}
 
 variable diagnostics {

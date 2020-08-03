@@ -5,7 +5,7 @@ global_settings = {
   #specifies the set of locations you are going to use in this landing zone
   location_map = {
     southeastasia = "southeastasia"
-    eastasia = "eastasia"
+    eastasia      = "eastasia"
   }
 
   #naming convention to be used as defined in naming convention module, accepted values are cafclassic, cafrandom, random, passthrough
@@ -71,10 +71,10 @@ accounting_settings = {
     azure_diagnostics_logs_name      = "diaglogs"
     azure_diagnostics_logs_event_hub = false
 
-  #Logging and monitoring 
+    #Logging and monitoring 
     analytics_workspace_name = "caflalogs-sg"
 
-  ##Log analytics solutions to be deployed 
+    ##Log analytics solutions to be deployed 
     solution_plan_map = {
       NetworkMonitoring = {
         "publisher" = "Microsoft"
@@ -105,64 +105,64 @@ accounting_settings = {
         "product"   = "OMSGallery/KeyVaultAnalytics"
       }
     }
+  }
+  eastasia = {
+    # Azure Subscription activity logs retention period
+    azure_activity_log_enabled    = false
+    azure_activity_logs_name      = "actlogs"
+    azure_activity_logs_event_hub = false
+    azure_activity_logs_retention = 365
+    azure_activity_audit = {
+      log = [
+        # ["Audit category name",  "Audit enabled)"] 
+        ["Administrative", true],
+        ["Security", true],
+        ["ServiceHealth", true],
+        ["Alert", true],
+        ["Recommendation", true],
+        ["Policy", true],
+        ["Autoscale", true],
+        ["ResourceHealth", true],
+      ]
     }
-    eastasia = {
-      # Azure Subscription activity logs retention period
-      azure_activity_log_enabled    = false
-      azure_activity_logs_name      = "actlogs"
-      azure_activity_logs_event_hub = false
-      azure_activity_logs_retention = 365
-      azure_activity_audit = {
-        log = [
-          # ["Audit category name",  "Audit enabled)"] 
-          ["Administrative", true],
-          ["Security", true],
-          ["ServiceHealth", true],
-          ["Alert", true],
-          ["Recommendation", true],
-          ["Policy", true],
-          ["Autoscale", true],
-          ["ResourceHealth", true],
-        ]
-      }
-      azure_diagnostics_logs_name      = "diaglogs"
-      azure_diagnostics_logs_event_hub = false
+    azure_diagnostics_logs_name      = "diaglogs"
+    azure_diagnostics_logs_event_hub = false
 
     #Logging and monitoring 
-      analytics_workspace_name = "caflalogs-hk"
+    analytics_workspace_name = "caflalogs-hk"
 
     ##Log analytics solutions to be deployed 
-      solution_plan_map = {
-        NetworkMonitoring = {
-          "publisher" = "Microsoft"
-          "product"   = "OMSGallery/NetworkMonitoring"
-        },
-        ADAssessment = {
-          "publisher" = "Microsoft"
-          "product"   = "OMSGallery/ADAssessment"
-        },
-        ADReplication = {
-          "publisher" = "Microsoft"
-          "product"   = "OMSGallery/ADReplication"
-        },
-        AgentHealthAssessment = {
-          "publisher" = "Microsoft"
-          "product"   = "OMSGallery/AgentHealthAssessment"
-        },
-        DnsAnalytics = {
-          "publisher" = "Microsoft"
-          "product"   = "OMSGallery/DnsAnalytics"
-        },
-        ContainerInsights = {
-          "publisher" = "Microsoft"
-          "product"   = "OMSGallery/ContainerInsights"
-        },
-        KeyVaultAnalytics = {
-          "publisher" = "Microsoft"
-          "product"   = "OMSGallery/KeyVaultAnalytics"
-        }
+    solution_plan_map = {
+      NetworkMonitoring = {
+        "publisher" = "Microsoft"
+        "product"   = "OMSGallery/NetworkMonitoring"
+      },
+      ADAssessment = {
+        "publisher" = "Microsoft"
+        "product"   = "OMSGallery/ADAssessment"
+      },
+      ADReplication = {
+        "publisher" = "Microsoft"
+        "product"   = "OMSGallery/ADReplication"
+      },
+      AgentHealthAssessment = {
+        "publisher" = "Microsoft"
+        "product"   = "OMSGallery/AgentHealthAssessment"
+      },
+      DnsAnalytics = {
+        "publisher" = "Microsoft"
+        "product"   = "OMSGallery/DnsAnalytics"
+      },
+      ContainerInsights = {
+        "publisher" = "Microsoft"
+        "product"   = "OMSGallery/ContainerInsights"
+      },
+      KeyVaultAnalytics = {
+        "publisher" = "Microsoft"
+        "product"   = "OMSGallery/KeyVaultAnalytics"
       }
     }
+  }
 }
 
 ## governance
