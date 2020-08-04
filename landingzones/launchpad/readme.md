@@ -73,6 +73,8 @@ Moving launchpad to the cloud
 
 Each resource deployed with the launchpad is leveraging the azurecaf provider to enforce naming convention
 
+![Launchpad Worklow](./documentation/img/launchpad_deployment.png)
+
 The launchpad light deploys the following Azure components:
 
 1. Resource groups - By default the launchpad light auto variables will create three resources groups : launchpad-tfstates to host a the tfstate storage account, launchpad-security to host a keyvault, launchpad-devops-agents to host deployment agents should you choose to deploy VMs to automate subsequent deployemnt using Azure DevOps or GitHub
@@ -149,42 +151,3 @@ The launchpad light deploys the following Azure components:
 
 8. Release Agents (Optional):
     * Deploys Virtual machines in the targeted Virtual Network. You may choose to leverage an existing Azure DevOps organization and deploy CI/CD agents and pipelines. The Agents will then be in charge of subsequent rover deployments to automate the IaC provisioning with Terraform
-
-## Launchpad Light architecture diagram
-
-![Foundations blueprint overview](../../_pictures/caf_foundations/foundations_overall.png)
-
-For an explanation on the purposes of the components in this foundational landing zone, please have a look at this specific Cloud Adoption Framework documentation: [Use Terraform to build your landing zones](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/terraform-landing-zone).
-
-## Getting Started
-
-To deploy a landingzone, refer to the setup instructions here: https://github.com/aztfmod/landingzones
-
-Deploy your first landingzone (caf_foundations)
-
-```bash
-rover -lz /tf/caf/landingzones/landingzone_caf_foundations -a plan
-```
-
-Review the configuration and if you are ok with it, deploy it by running:
-
-```bash
-rover -lz /tf/caf/landingzones/landingzone_caf_foundations -a apply
-```
-
-Have fun playing with the landing zone an once you are done, you can simply delete the deployment using:
-
-```bash
-rover -lz /tf/caf/landingzones/landingzone_caf_foundations -a destroy
-```
-
-The foundations will remain on your subscription so next run, you can jump to step 6 directly.
-More details about the landing zone can be found in the landing zone folder ./landingzone_caf_foundations
-
-## Update
-
-We recommend you do not update an existing environment directly and should validate a new landing zone release in a separate environment.
-
-## Contribute
-
-Pull requests are welcome to evolve the framework and integrate new features.
