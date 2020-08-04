@@ -60,7 +60,7 @@ vnets = {
             destination_address_prefix = "*"
           },
           {
-            name                       = "Kerberos-password-change",
+            name                       = "bastion-control-in-allow-4443",
             priority                   = "121"
             direction                  = "Inbound"
             access                     = "Allow"
@@ -121,6 +121,7 @@ vnets = {
 
   spoke_aks_sg = {
     resource_group_key = "vnet_sg"
+    location = "southeastasia"
     vnet = {
       name          = "aks"
       address_space = ["10.10.101.0/24"]

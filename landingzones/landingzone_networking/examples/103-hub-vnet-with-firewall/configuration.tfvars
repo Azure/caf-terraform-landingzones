@@ -78,6 +78,47 @@ firewalls = {
           ["AllMetrics", true, true, 30],
         ]
       }
+      rules = {
+        azurerm_firewall_network_rule_collection = {
+          rule1 = {
+            name     = "Authorize_http_https"
+            action   = "Allow"
+            priority = 105
+            ruleset = [
+              {
+              name = "Authorize_http_https"
+              source_addresses = [
+                "10.0.0.0/8",
+              ]
+              destination_ports = [
+                "80", "443",
+              ]
+              destination_addresses = [
+                "*"
+              ]
+              protocols = [
+                "TCP",
+              ]
+            },
+            {
+              name = "Authorize_kerberos"
+              source_addresses = [
+                "10.0.0.0/8",
+              ]
+              destination_ports = [
+                "88", 
+              ]
+              destination_addresses = [
+                "*"
+              ]
+              protocols = [
+                "TCP", "UDP",
+              ]
+            }
+            ]
+          }
+        }
+      }
     }
 
   }

@@ -3,11 +3,6 @@ provider "azurerm" {
 }
 
 terraform {
-  backend "azurerm" {
-  }
-}
-
-terraform {
   required_providers {
     azurecaf = {
       source  = "aztfmod/azurecaf"
