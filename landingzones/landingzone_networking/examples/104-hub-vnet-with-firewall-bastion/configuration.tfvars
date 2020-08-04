@@ -16,22 +16,12 @@ vnets = {
       address_space = ["10.10.100.0/24"]
     }
     specialsubnets = {
-      GatewaySubnet = {
-        name = "GatewaySubnet" #Must be called GateWaySubnet in order to host a Virtual Network Gateway
-        cidr = ["10.10.100.224/27"]
-      }
       AzureFirewallSubnet = {
         name = "AzureFirewallSubnet" #Must be called AzureFirewallSubnet 
-        cidr = ["10.10.100.192/27"]
+        cidr = ["10.10.100.192/26"]
       }
     }
     subnets = {
-      Active_Directory = {
-        name     = "Active_Directory"
-        cidr     = ["10.10.100.0/27"]
-        nsg_name = "Active_Directory_nsg"
-        nsg      = []
-      }
       AzureBastionSubnet = {
         name     = "AzureBastionSubnet" #Must be called AzureBastionSubnet 
         cidr     = ["10.10.100.160/27"]
@@ -119,28 +109,90 @@ vnets = {
     }
   }
 
-  spoke_aks_sg = {
+}
+
+firewalls = {
+  # Southeastasia firewall (do not change the key when created)
+  southeastasia = {
+    location           = "southeastasia"
     resource_group_key = "vnet_sg"
-    location = "southeastasia"
-    vnet = {
-      name          = "aks"
-      address_space = ["10.10.101.0/24"]
-    }
-    specialsubnets = {}
-    subnets = {
-      aks_nodepool_system = {
-        name     = "aks_nodepool_system"
-        cidr     = ["10.10.101.0/27"]
-        nsg_name = "aks_nodepool_system_nsg"
-        nsg      = []
+    vnet_key           = "hub_sg"
+
+    # Settings for the public IP address to be used for Azure Firewall 
+    # Must be standard and static for 
+    firewall_ip_addr_config = {
+      ip_name           = "firewall"
+      allocation_method = "Static"
+      sku               = "Standard" #defaults to Basic
+      ip_version        = "IPv4"     #defaults to IP4, Only dynamic for IPv6, Supported arguments are IPv4 or IPv6, NOT Both
+      diagnostics = {
+        log = [
+          #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period] 
+          ["DDoSProtectionNotifications", true, true, 30],
+          ["DDoSMitigationFlowLogs", true, true, 30],
+          ["DDoSMitigationReports", true, true, 30],
+        ]
+        metric = [
+          ["AllMetrics", true, true, 30],
+        ]
       }
-      aks_nodepool_user1 = {
-        name     = "aks_nodepool_user1"
-        cidr     = ["10.10.101.32/27"]
-        nsg_name = "aks_nodepool_user1_nsg"
-        nsg      = []
+    }
+
+    # Settings for the Azure Firewall settings
+    az_fw_config = {
+      name = "azfw"
+      diagnostics = {
+        log = [
+          #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period] 
+          ["AzureFirewallApplicationRule", true, true, 30],
+          ["AzureFirewallNetworkRule", true, true, 30],
+        ]
+        metric = [
+          ["AllMetrics", true, true, 30],
+        ]
+      }
+      rules = {}
+    }
+
+  }
+
+}
+
+bastions = {
+  southeastasia = {
+    location           = "southeastasia"
+    resource_group_key = "vnet_sg"
+    vnet_key           = "hub_sg"
+    subnet_key         = "AzureBastionSubnet"
+
+    bastion_ip_addr_config = {
+      ip_name           = "firewall"
+      allocation_method = "Static"
+      sku               = "Standard" #defaults to Basic
+      ip_version        = "IPv4"     #defaults to IP4, Only dynamic for IPv6, Supported arguments are IPv4 or IPv6, NOT Both
+      diagnostics = {
+        log = [
+          #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period] 
+          ["DDoSProtectionNotifications", true, true, 30],
+          ["DDoSMitigationFlowLogs", true, true, 30],
+          ["DDoSMitigationReports", true, true, 30],
+        ]
+        metric = [
+          ["AllMetrics", true, true, 30],
+        ]
+      }
+    }
+
+    bastion_config = {
+      name = "bastion"
+      diagnostics = {
+        log = [
+          #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period] 
+          ["BastionAuditLogs", true, true, 30],
+        ]
+        metric = [
+        ]
       }
     }
   }
-
 }

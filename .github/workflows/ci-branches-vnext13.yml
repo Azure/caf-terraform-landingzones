@@ -27,9 +27,20 @@ env:
   ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
   ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-  TFVARS_PATH: '/tf/caf/caf-terraform-landingzones/environments'
+  TFVARS_PATH: '/tf/caf/caf-terraform-landingzones/'
 
 jobs:
+  tfsec:
+    name: Run TFsec
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Terraform security scan
+        uses: triat/terraform-security-scan@v1.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   level0:
     name: level0
     runs-on: ubuntu-latest
@@ -81,7 +92,7 @@ jobs:
       fail-fast: false
       matrix:
           landingzone: ["landingzone_caf_foundations"]
-          region: ["westus2"]
+          region: ["southeastasia"]
           convention: ["random"]
           environment: ["integration-tests"]
 
@@ -115,7 +126,7 @@ jobs:
               --environment ${{ github.run_id }} \
               -var prefix=g${{ github.run_id}} \
               '-var tags={testing_job_id="${{ github.run_id }}"}' \
-              '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}_${{ matrix.region }}_${{ matrix.convention }}.tfvars'
+              '-var-file ${{ env.TFVARS_PATH }}/environments/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}_${{ matrix.region }}_${{ matrix.convention }}.tfvars'
                 
   landingzones:
     name: landingzones
@@ -127,9 +138,8 @@ jobs:
       fail-fast: false
       matrix:
           landingzone: ["landingzone_networking"]
-          region: ["westus2"]
+          examples: ["101-multiple-vnets", "102-multiple-vnets-peering", "103-hub-vnet-with-firewall", "104-hub-vnet-with-firewall-bastion", "105-hub-virtual-wan-firewall"]
           convention: ["cafrandom"]
-          environment: ["integration-tests"]
     
     container:
       image: aztfmod/roverdev:vnext-13-rc1
@@ -145,10 +155,6 @@ jobs:
           echo "ls /tf/caf" && ls -lsa /tf/caf
           ls -lsa /tmp
 
-          # job_id=${{ job.container.id }}
-          # workspace=${job_id:0:63}
-          # echo ::set-env name=TF_VAR_workspace::${workspace}
-
       - name: Login azure
         run: |
           az login --service-principal -u '${{ env.ARM_CLIENT_ID }}' -p '${{ env.ARM_CLIENT_SECRET }}' --tenant '${{ env.ARM_TENANT_ID }}'
@@ -156,21 +162,24 @@ jobs:
 
           echo "local user: $(whoami)"
             
-      - name: deploy landing_zone
+      - name: Deploy landing_zone
         run: |
           /tf/rover/rover.sh -lz /tf/caf/caf-terraform-landingzones/landingzones/${{ matrix.landingzone }} -a apply \
             -env ${{ github.run_id }} \
             '-var tags={testing_job_id="${{ github.run_id }}"}' \
-            '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}.tfvars'
+            -tfstate ${{ matrix.examples }}_landingzone_networking.tfstate \
+            '-var-file ${{ env.TFVARS_PATH }}/landingzones/${{ matrix.landingzone }}/examples/${{ matrix.examples }}/configuration.tfvars'
 
-      - name: destroy landing_zone
+      - name: Destroy landing_zone
         if: always()
         run: |
           /tf/rover/rover.sh -lz /tf/caf/caf-terraform-landingzones/landingzones/${{ matrix.landingzone }} -a destroy \
             --environment ${{ github.run_id }} \
             '-var tags={testing_job_id="${{ github.run_id }}"}' \
-            '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}.tfvars'
-
+            -tfstate ${{ matrix.examples }}_landingzone_networking.tfstate \
+            '-var-file ${{ env.TFVARS_PATH }}/landingzones/${{ matrix.landingzone }}/examples/${{ matrix.examples }}/configuration.tfvars'
+      
+         
   caf_foundations_destroy:
     name: caf_foundations_destroy
     runs-on: ubuntu-latest
@@ -181,7 +190,7 @@ jobs:
       fail-fast: false
       matrix:
           landingzone: ["landingzone_caf_foundations"]
-          region: ["westus2"]
+          region: ["southeastasia"]
           convention: ["random"]
           environment: ["integration-tests"]
 
@@ -215,7 +224,7 @@ jobs:
               --environment ${{ github.run_id }} \
               -var prefix=g${{ github.run_id}} \
               '-var tags={testing_job_id="${{ github.run_id }}"}' \
-              '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}_${{ matrix.region }}_${{ matrix.convention }}.tfvars' \
+              '-var-file ${{ env.TFVARS_PATH }}/environments/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}_${{ matrix.region }}_${{ matrix.convention }}.tfvars' \
               '-auto-approve'
 
   level0_destroy:
