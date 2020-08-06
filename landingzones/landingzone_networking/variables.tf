@@ -39,7 +39,6 @@ variable ddos_services {
   default     = {}
 }
 
-
 variable route_tables {
   description = "(Optional) User define route object"
   default     = {}
