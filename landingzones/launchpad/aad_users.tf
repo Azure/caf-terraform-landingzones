@@ -32,7 +32,7 @@ resource "random_password" "account" {
 
 resource "azurerm_key_vault_secret" "aad_user_name" {
   depends_on = [
-    azurerm_key_vault.keyvault
+    azurerm_key_vault_access_policy.keyvault_access_policy
   ]
 
   for_each = var.aad_users
@@ -44,7 +44,7 @@ resource "azurerm_key_vault_secret" "aad_user_name" {
 
 resource "azurerm_key_vault_secret" "aad_user_password" {
   depends_on = [
-    azurerm_key_vault.keyvault
+    azurerm_key_vault_access_policy.keyvault_access_policy
   ]
 
   for_each = var.aad_users

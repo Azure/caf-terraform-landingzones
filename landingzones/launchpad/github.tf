@@ -1,4 +1,7 @@
 resource "azurerm_key_vault_secret" "github_pat" {
+  depends_on = [
+    azurerm_key_vault_access_policy.keyvault_access_policy
+  ]
 
   name         = "github-pat"
   value        = ""

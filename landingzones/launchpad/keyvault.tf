@@ -23,20 +23,16 @@ resource "azurerm_key_vault" "keyvault" {
     tfstate     = var.level
     environment = local.global_settings.environment
   }
-
-  access_policy {
-    tenant_id = data.azurerm_client_config.current.tenant_id
-    object_id = var.logged_user_objectId
-
-    key_permissions    = []
-    secret_permissions = ["Get", "List", "Set", "Delete"]
-  }
-
-  lifecycle {
-    ignore_changes = [
-      access_policy
-    ]
-  }
-
 }
 
+resource "azurerm_key_vault_access_policy" "keyvault_access_policy" {
+  for_each = azurerm_key_vault.keyvault
+
+  key_vault_id = each.value.id
+
+  tenant_id = data.azurerm_client_config.current.tenant_id
+  object_id = var.logged_user_objectId
+
+  key_permissions    = []
+  secret_permissions = ["Get", "List", "Set", "Delete"]
+}
