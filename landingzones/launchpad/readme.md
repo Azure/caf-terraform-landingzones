@@ -73,7 +73,7 @@ Moving launchpad to the cloud
 
 Each resource deployed with the launchpad is leveraging the azurecaf provider to enforce naming convention
 
-![Launchpad Worklow](./documentation/img/launchpad_deployment.png)
+![Launchpad Worklow](./documentation/img/Launchpad_deployment.png)
 
 The launchpad light deploys the following Azure components:
 
