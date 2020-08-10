@@ -39,13 +39,8 @@ variable ddos_services {
   default     = {}
 }
 
-variable user_routes {
-  description = "(Optional) Map of routes"
-  default     = {}
-}
-
-variable subnet_udr {
-  description = "(Optional) Map of subnet/udr mappings"
+variable route_tables {
+  description = "(Optional) User define route object"
   default     = {}
 }
 
