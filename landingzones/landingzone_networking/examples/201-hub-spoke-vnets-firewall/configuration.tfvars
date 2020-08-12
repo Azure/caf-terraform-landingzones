@@ -256,8 +256,11 @@ route_tables = {
     name = "spoke_aks_sg_to_hub_sg"
     resource_group_key = "vnet_sg"
 
-    vnet_key = "spoke_aks_sg"
-    subnet_key = "aks_nodepool_system"
+    vnet_keys = {
+      "spoke_aks_sg" = {
+        subnet_keys = ["aks_nodepool_system","aks_nodepool_user1"]
+      }
+    }
     
     route_entries = {
       re1 = {
@@ -280,6 +283,6 @@ route_tables = {
         prefix                 = "16.0.0.0/8"
         next_hop_type          = "Internet"
       }
+    }
   }
-}
 }

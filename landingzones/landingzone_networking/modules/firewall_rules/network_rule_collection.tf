@@ -1,7 +1,7 @@
 # processing of the rules for:
 # azurerm_firewall_network_rule_collection - https://www.terraform.io/docs/providers/azurerm/r/firewall_network_rule_collection.html
 # azurerm_firewall_nat_rule_collection - https://www.terraform.io/docs/providers/azurerm/r/firewall_nat_rule_collection.html
-
+# FQDN for azurerm_firewall_network_rule_collection https://github.com/terraform-providers/terraform-provider-azurerm/issues/7743
 resource "azurerm_firewall_network_rule_collection" "netcollection" {
   for_each = lookup(var.az_firewall_rules, "azurerm_firewall_network_rule_collection", {})
 
