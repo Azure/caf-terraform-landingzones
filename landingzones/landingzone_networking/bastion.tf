@@ -1,10 +1,9 @@
 ## Azure Bastion configuration
 module "az_bastion_ip" {
-  for_each = var.bastions
-
-  #source = "github.com/aztfmod/terraform-azurerm-caf-public-ip?ref=vnext"
   source  = "aztfmod/caf-public-ip/azurerm"
   version = "2.1.0"
+
+  for_each = var.bastions
 
   convention                 = lookup(each.value, "convention", local.global_settings.convention)
   name                       = each.value.bastion_ip_addr_config.ip_name
@@ -18,11 +17,10 @@ module "az_bastion_ip" {
 }
 
 module "az_bastion" {
-  for_each = var.bastions
-
-  #source = "github.com/aztfmod/terraform-azurerm-caf-azure-firewall?ref=vnext"
   source  = "aztfmod/caf-azure-bastion/azurerm"
   version = "1.0.0"
+
+  for_each = var.bastions
 
   bastion_config          = each.value.bastion_config
   convention              = lookup(each.value, "convention", local.global_settings.convention)

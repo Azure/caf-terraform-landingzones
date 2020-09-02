@@ -198,33 +198,33 @@ vnets = {
 
 vwans = {
   southeastasia = {
-      resource_group_key = "vnet_sg"
-      name               = "ContosovWAN"
+    resource_group_key = "vnet_sg"
+    name               = "ContosovWAN"
 
-      hubs = {
-        hub1 = {
-          hub_name                      = "SEA-HUB"
-          region                        = "southeastasia"
-          hub_address_prefix            = "10.0.3.0/24"
-          deploy_firewall               = true
-          peerings                      = {}
-          firewall_name                 = "azfwsg"
-          firewall_resource_groupe_name = "azfwsg"
-          deploy_p2s                    = false
-          p2s_config = {
-            name       = "caf-sea-vpn-p2s"
-            scale_unit = 2
-            connection_configuration = {
-              name = "client-connections"
-              vpn_client_address_pool = {
-                address_prefixes = ["192.168.0.0/24"]
-              }
+    hubs = {
+      hub1 = {
+        hub_name                      = "SEA-HUB"
+        region                        = "southeastasia"
+        hub_address_prefix            = "10.0.3.0/24"
+        deploy_firewall               = true
+        peerings                      = {}
+        firewall_name                 = "azfwsg"
+        firewall_resource_groupe_name = "azfwsg"
+        deploy_p2s                    = false
+        p2s_config = {
+          name       = "caf-sea-vpn-p2s"
+          scale_unit = 2
+          connection_configuration = {
+            name = "client-connections"
+            vpn_client_address_pool = {
+              address_prefixes = ["192.168.0.0/24"]
             }
-            server_config = {
-              vpn_authentication_types = ["Certificate"]
-              client_root_certificate = {
-                name             = "DigiCert-Federated-ID-Root-CA"
-                public_cert_data = <<EOF
+          }
+          server_config = {
+            vpn_authentication_types = ["Certificate"]
+            client_root_certificate = {
+              name             = "DigiCert-Federated-ID-Root-CA"
+              public_cert_data = <<EOF
                                       MIIDuzCCAqOgAwIBAgIQCHTZWCM+IlfFIRXIvyKSrjANBgkqhkiG9w0BAQsFADBn
                                       MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3
                                       d3cuZGlnaWNlcnQuY29tMSYwJAYDVQQDEx1EaWdpQ2VydCBGZWRlcmF0ZWQgSUQg
@@ -246,46 +246,46 @@ vwans = {
                                       WsfMLH4JCLa/tRYL+Rw/N3ybCkDp00s0WUZ+AoDywSl0Q/ZEnNY0MsFiw6LyIdbq
                                       M/s/1JRtO3bDSzD9TazRVzn2oBqzSa8VgIo5C1nOnoAKJTlsClJKvIhnRlaLQqk=
                                       EOF
-              }
             }
           }
-          deploy_s2s = false
-          s2s_config = {
-            name       = "caf-sea-vpn-s2s"
-            scale_unit = 1
-          }
-          deploy_er = false
-          er_config = {
-            name        = "caf-sea-er"
-            scale_units = 1
-          }
-
+        }
+        deploy_s2s = false
+        s2s_config = {
+          name       = "caf-sea-vpn-s2s"
+          scale_unit = 1
+        }
+        deploy_er = false
+        er_config = {
+          name        = "caf-sea-er"
+          scale_units = 1
         }
 
-        hub2 = {
-          hub_name                      = "HK-HUB"
-          region                        = "eastasia"
-          hub_address_prefix            = "10.0.4.0/24"
-          deploy_firewall               = true
-          firewall_name                 = "azfhk"
-          firewall_resource_groupe_name = "azfhk"
-          peerings = {
-            ## this key must match with the key of the virtual network declared in the var.spokes structure
-            spoke1 = {
-              # TODO: add support for remote_virtual_network_id = <ID of the virtual network>
-              # optional if the virtual network has been provisionned outside.
-              hub_to_vitual_network_traffic_allowed          = true
-              vitual_network_to_hub_gateways_traffic_allowed = true
-              internet_security_enabled                      = false
-            }
+      }
+
+      hub2 = {
+        hub_name                      = "HK-HUB"
+        region                        = "eastasia"
+        hub_address_prefix            = "10.0.4.0/24"
+        deploy_firewall               = true
+        firewall_name                 = "azfhk"
+        firewall_resource_groupe_name = "azfhk"
+        peerings = {
+          ## this key must match with the key of the virtual network declared in the var.spokes structure
+          spoke1 = {
+            # TODO: add support for remote_virtual_network_id = <ID of the virtual network>
+            # optional if the virtual network has been provisionned outside.
+            hub_to_vitual_network_traffic_allowed          = true
+            vitual_network_to_hub_gateways_traffic_allowed = true
+            internet_security_enabled                      = false
           }
-          deploy_p2s = false
-          p2s_config = {}
-          deploy_s2s = false
-          s2s_config = {}
-          deploy_er  = false
-          er_config  = {}
         }
+        deploy_p2s = false
+        p2s_config = {}
+        deploy_s2s = false
+        s2s_config = {}
+        deploy_er  = false
+        er_config  = {}
       }
     }
+  }
 }

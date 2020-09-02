@@ -117,7 +117,7 @@ vnets = {
 
   spoke_aks_sg = {
     resource_group_key = "vnet_sg"
-    location = "southeastasia"
+    location           = "southeastasia"
     vnet = {
       name          = "aks"
       address_space = ["10.10.101.0/24"]
@@ -190,35 +190,35 @@ firewalls = {
             priority = 105
             ruleset = [
               {
-              name = "Authorize_http_https"
-              source_addresses = [
-                "10.0.0.0/8",
-              ]
-              destination_ports = [
-                "80", "443",
-              ]
-              destination_addresses = [
-                "*"
-              ]
-              protocols = [
-                "TCP",
-              ]
-            },
-            {
-              name = "Authorize_kerberos"
-              source_addresses = [
-                "10.0.0.0/8",
-              ]
-              destination_ports = [
-                "88", 
-              ]
-              destination_addresses = [
-                "*"
-              ]
-              protocols = [
-                "TCP", "UDP",
-              ]
-            }
+                name = "Authorize_http_https"
+                source_addresses = [
+                  "10.0.0.0/8",
+                ]
+                destination_ports = [
+                  "80", "443",
+                ]
+                destination_addresses = [
+                  "*"
+                ]
+                protocols = [
+                  "TCP",
+                ]
+              },
+              {
+                name = "Authorize_kerberos"
+                source_addresses = [
+                  "10.0.0.0/8",
+                ]
+                destination_ports = [
+                  "88",
+                ]
+                destination_addresses = [
+                  "*"
+                ]
+                protocols = [
+                  "TCP", "UDP",
+                ]
+              }
             ]
           }
         }
@@ -253,23 +253,23 @@ peerings = {
 
 route_tables = {
   from_spoke_to_hub = {
-    name = "spoke_aks_sg_to_hub_sg"
+    name               = "spoke_aks_sg_to_hub_sg"
     resource_group_key = "vnet_sg"
 
     vnet_keys = {
       "spoke_aks_sg" = {
-        subnet_keys = ["aks_nodepool_system","aks_nodepool_user1"]
+        subnet_keys = ["aks_nodepool_system", "aks_nodepool_user1"]
       }
     }
-    
+
     route_entries = {
       re1 = {
-        name                   = "defaultroute"
-        prefix                 = "0.0.0.0/0"
-        next_hop_type          = "VirtualAppliance"
+        name          = "defaultroute"
+        prefix        = "0.0.0.0/0"
+        next_hop_type = "VirtualAppliance"
         azfw = {
-          VirtualAppliance_key   = "southeastasia"
-          ipconfig_index = 0
+          VirtualAppliance_key = "southeastasia"
+          ipconfig_index       = 0
         }
       }
       re2 = {
@@ -279,9 +279,9 @@ route_tables = {
         next_hop_in_ip_address = "1.1.1.1"
       }
       re3 = {
-        name                   = "testspecialroute2"
-        prefix                 = "16.0.0.0/8"
-        next_hop_type          = "Internet"
+        name          = "testspecialroute2"
+        prefix        = "16.0.0.0/8"
+        next_hop_type = "Internet"
       }
     }
   }

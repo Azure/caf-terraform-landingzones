@@ -13,7 +13,7 @@ resource "azurerm_route_table" "route_table" {
       name                   = route.value.name
       address_prefix         = route.value.prefix
       next_hop_type          = route.value.next_hop_type
-      next_hop_in_ip_address = (route.value.next_hop_type == "VirtualAppliance")? (contains(keys(route.value), "azfw") == true ? module.az_firewall[route.value.azfw.VirtualAppliance_key].object.ip_configuration[route.value.azfw.ipconfig_index].private_ip_address : route.value.next_hop_in_ip_address) : null
+      next_hop_in_ip_address = (route.value.next_hop_type == "VirtualAppliance") ? (contains(keys(route.value), "azfw") == true ? module.az_firewall[route.value.azfw.VirtualAppliance_key].object.ip_configuration[route.value.azfw.ipconfig_index].private_ip_address : route.value.next_hop_in_ip_address) : null
     }
   }
 }

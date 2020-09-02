@@ -1,4 +1,3 @@
-
 resource "azurecaf_naming_convention" "rg" {
   for_each = var.resource_groups
 

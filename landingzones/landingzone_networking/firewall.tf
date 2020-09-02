@@ -1,10 +1,9 @@
 ## Azure Firewall configuration
 module "az_firewall_ip" {
-  for_each = var.firewalls
-
-  #source = "github.com/aztfmod/terraform-azurerm-caf-public-ip?ref=vnext"
   source  = "aztfmod/caf-public-ip/azurerm"
   version = "2.1.0"
+
+  for_each = var.firewalls
 
   convention                 = lookup(each.value, "convention", local.global_settings.convention)
   name                       = each.value.firewall_ip_addr_config.ip_name
@@ -18,11 +17,10 @@ module "az_firewall_ip" {
 }
 
 module "az_firewall" {
-  for_each = var.firewalls
-
-  #source = "github.com/aztfmod/terraform-azurerm-caf-azure-firewall?ref=vnext"
   source  = "aztfmod/caf-azure-firewall/azurerm"
   version = "2.1.0"
+
+  for_each = var.firewalls
 
   convention           = lookup(each.value, "convention", local.global_settings.convention)
   name                 = each.value.az_fw_config.name
@@ -37,9 +35,9 @@ module "az_firewall" {
 }
 
 module "firewall_dashboard" {
-  for_each = var.firewalls
-
   source = "./modules/firewall_dashboard"
+
+  for_each = var.firewalls
 
   fw_id    = module.az_firewall[each.key].id
   pip_id   = module.az_firewall_ip[each.key].id
@@ -50,9 +48,9 @@ module "firewall_dashboard" {
 }
 
 module "firewall_rules" {
-  for_each = var.firewalls
-
   source = "./modules/firewall_rules"
+
+  for_each = var.firewalls
 
   az_firewall_settings = module.az_firewall[each.key].az_firewall_config
   az_firewall_rules    = each.value.az_fw_config.rules
