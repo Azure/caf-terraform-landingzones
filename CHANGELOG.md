@@ -11,7 +11,7 @@ FEATURES:
 * **landingzone_networking :** Refactoring networking landing zones to use new key-based iterative model, this is enabling support for all networking models in only one landing zone.
 
 
-## v7.0.2001 (July 2020)
+## v7.0.2007 (July 2020)
 
 BREAKING CHANGES:
 
