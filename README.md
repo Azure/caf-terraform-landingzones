@@ -42,7 +42,7 @@ Currently we provide you with the following sample landing zones:
 | Name                                                                      | Purpose                                                                                                                                                                                                   |
 |---------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [landingzone_caf_foundations](./landingzones/landingzone_caf_foundations) | setup all the fundamentals for a subscription (logging, accounting, security.). You can find all details of the caf_foundations landing zone [Here](./landingzones/landingzone_caf_foundations/readme.md) |
-| [landingzone_networking](./landingzones/landingzone_networking)           | provides you with capability to crete any Azure networking combination of  Virtual Networks-based Hub and Spoke topologies or Azure Virtual WAN.                                                          |
+| [landingzone_networking](./landingzones/landingzone_networking)           | enables creation of any Azure networking combination of Virtual Networks-based hub-and-spoke topologies or Azure Virtual WAN based topologies.                                                            |
 | [launchpad](./landingzones/launchpad) | provides the state management capabilities and security features leveraging Azure storage for the backend, provides secret management and modular approach to support plugin for Azure DevOps automated pipeline creation (and others)        |
 
 ## Repositories
@@ -51,7 +51,6 @@ Currently we provide you with the following sample landing zones:
 |---------------------------------------------------------------------------------------------------|------------------------------------------------------------|
 | [caf-terraform-landingzones](https://github.com/azure/caf-terraform-landingzones) (You are here!) | landing zones repo with sample and core documentations     |
 | [rover](https://github.com/aztfmod/rover)                                                         | devops toolset for operating landing zones                 |
-| [launchpads](https://github.com/aztfmod/level0)                                                   | launchpads to support landing zones deployments            |
 | [azure_caf_provider](https://github.com/aztfmod/terraform-provider-azurecaf)                      | custom provider for naming conventions                     |
 | [modules](https://registry.terraform.io/modules/aztfmod)                                          | set of curated modules available in the Terraform registry |
 
