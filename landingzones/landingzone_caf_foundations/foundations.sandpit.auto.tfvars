@@ -35,11 +35,11 @@ global_settings = {
     eastasia = {
       HUB-CORE-SEC = {
         name     = "hub-core-sec-hk"
-        location = "southeastasia"
+        location = "eastasia"
       }
       HUB-OPERATIONS = {
         name     = "hub-operations-hk"
-        location = "southeastasia"
+        location = "eastasia"
       }
     }
   }
