@@ -27,7 +27,7 @@ env:
   ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
   ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-  TFVARS_PATH: '/tf/caf/caf-terraform-landingzones/environments'
+  TFVARS_PATH: '/tf/caf/caf-terraform-landingzones'
 
 jobs:
   tfsec:
@@ -126,7 +126,7 @@ jobs:
               --environment ${{ github.run_id }} \
               -var prefix=g${{ github.run_id}} \
               '-var tags={testing_job_id="${{ github.run_id }}"}' \
-              '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}_${{ matrix.region }}_${{ matrix.convention }}.tfvars'
+              '-var-file ${{ env.TFVARS_PATH }}/environments/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}_${{ matrix.region }}_${{ matrix.convention }}.tfvars' 
                 
   landingzones:
     name: landingzones
