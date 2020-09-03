@@ -1,5 +1,4 @@
 ![landingzones](https://github.com/Azure/caf-terraform-landingzones/workflows/landingzones/badge.svg)
-![landingzones-vnext](https://github.com/Azure/caf-terraform-landingzones/workflows/landingzones-vnext/badge.svg?branch=vnext)
 [![VScodespaces](https://img.shields.io/endpoint?url=https%3A%2F%2Faka.ms%2Fvso-badge)](https://online.visualstudio.com/environments/new?name=caf%20landing%20zones&repo=azure/caf-terraform-landingzones)
 [![Gitter](https://badges.gitter.im/aztfmod/community.svg)](https://gitter.im/aztfmod/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
