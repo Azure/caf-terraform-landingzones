@@ -53,7 +53,7 @@ jobs:
           convention: ["random"]
 
     container:
-      image: aztfmod/roverdev:vnext
+      image: aztfmod/rover:2009.0210
       options: --user 0
 
     steps:
@@ -97,7 +97,7 @@ jobs:
           environment: ["integration-tests"]
 
     container:
-      image: aztfmod/roverdev:vnext
+      image: aztfmod/rover:2009.0210
       options: --user 0
 
     steps:
@@ -138,11 +138,11 @@ jobs:
       fail-fast: false
       matrix:
           landingzone: ["landingzone_networking"]
-          examples: ["101-multiple-vnets", "102-multiple-vnets-peering", "103-hub-vnet-with-firewall", "104-hub-vnet-with-firewall-bastion", "105-hub-virtual-wan-firewall", "201-hub-spoke-vnets-firewall"]
+          examples: ["101-multiple-vnets", "102-multiple-vnets-peering", "103-hub-vnet-with-firewall", "104-hub-vnet-with-firewall-bastion", "105-hub-virtual-wan-firewall"]
           convention: ["cafrandom"]
     
     container:
-      image: aztfmod/roverdev:vnext
+      image: aztfmod/rover:2009.0210
       options: --user 0
     
     steps:
@@ -195,7 +195,7 @@ jobs:
           environment: ["integration-tests"]
 
     container:
-      image: aztfmod/roverdev:vnext
+      image: aztfmod/rover:2009.0210
       options: --user 0
 
     steps:
@@ -240,7 +240,7 @@ jobs:
           convention: ["random"]
 
     container:
-      image: aztfmod/roverdev:vnext
+      image: aztfmod/rover:2009.0210
       options: --user 0
 
     steps:
