@@ -1,10 +1,17 @@
-# Conventions for module development
+# Module development guidelines
 
 This document summarizes our coding practices for modules, they are liberally based on https://www.terraform.io/docs/modules/index.html.
 
 All modules must be stored inside a different repository, since module will be published on the Terraform Registry they must use the naming convention as described [here](https://www.terraform.io/docs/registry/modules/publish.html).
 
-Checklist for module publication:
+## Process to contribute
+
+Module contribution workflow:
+
+1. Before submitting a pull request (PR), please open an issue describing your changes in details and the reasons for the change with an example.
+1. On submitting the PR, please refer to the checklist.
+
+Checklist for module PR review:
 
 1. Coding conventions described below.
 2. Provide example including the main scenario the module is supposed to achieve.
@@ -73,7 +80,9 @@ resource "azurecaf_naming_convention" "caf_name_vnet" {
   convention    = var.convention
 }
 ```
+
 At the resource creation, you use the ```result``` output of the ```azurecaf_naming_convention``` provider:
+
 ```hcl
 resource "azurerm_virtual_network" "vnet" {
   name                = azurecaf_naming_convention.caf_name_vnet.result
@@ -161,7 +170,6 @@ For readability we don't generally recommend too deep module nesting, but in ord
 
 In order to allow reliable iterations within the modules, we recommend using ```for_each``` iteration and decomission usage of count for iterations as much as possible.
 
-
 ```hcl
 resource "azurerm_log_analytics_solution" "la_solution" {
   for_each = var.solution_plan_map
@@ -185,9 +193,9 @@ This will allow:
 2. Using ```key`` that can be leveraged in other modules or resources iterations.
 3. Better visibility in the log files.
 
-### CEC4: Unicity of deployment
+### CEC4: Unity of deployment
 
-Starting on Terraform 0.13, modules shall not internally iterate on complex structure and this shall the done by the calling landing zone using ```for_each``` capabilities. This shall be slowly adapted and refactored and shall be revised depending on our findings.
+Starting on Terraform 0.13, modules shall not internally iterate on complex structures and this shall the done by the calling landing zone using ```for_each``` capabilities. This shall be slowly adapted and refactored and shall be revised depending on our findings.
 
 ### CEC5: Variables custom validation
 
