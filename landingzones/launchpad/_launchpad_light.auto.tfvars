@@ -8,7 +8,7 @@ launchpad_key_names = {
 resource_groups = {
   tfstate     = {
     name        = "launchpad-tfstates"
-    location    = "southeastasia"
+    location    = "canadacentral"
     useprefix   = true
     max_length  = 40
   }
@@ -31,7 +31,7 @@ keyvaults = {
   launchpad = {
     name                = "launchpad"
     resource_group_key  = "security"
-    region              = "southeastasia"
+    region              = "canadacentral"
     convention          = "cafrandom"
     sku_name            = "standard"
   }

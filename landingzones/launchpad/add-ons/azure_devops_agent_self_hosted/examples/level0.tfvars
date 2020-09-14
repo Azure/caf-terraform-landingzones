@@ -7,7 +7,7 @@ vm_object = {
 
     resource_group = {
         name     = "devop-agents"
-        location = "southeastasia" 
+        location = "canadacentral" 
     }
 
 
