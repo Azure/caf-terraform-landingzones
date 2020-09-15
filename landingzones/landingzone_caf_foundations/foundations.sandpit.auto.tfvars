@@ -4,8 +4,8 @@
 global_settings = {
   #specifies the set of locations you are going to use in this landing zone
   location_map = {
-    southeastasia = "southeastasia"
-    eastasia      = "eastasia"
+    canadacentral = "canadacentral"
+    canadaeast      = "canadaeast"
   }
 
   #naming convention to be used as defined in naming convention module, accepted values are cafclassic, cafrandom, random, passthrough
@@ -22,24 +22,24 @@ global_settings = {
 
   # Set of resource groups to land the foundations
   resource_groups_hub = {
-    southeastasia = {
+    canadacentral = {
       HUB-CORE-SEC = {
         name     = "hub-core-sec-sea"
-        location = "southeastasia"
+        location = "canadacentral"
       }
       HUB-OPERATIONS = {
         name     = "hub-operations-sea"
-        location = "southeastasia"
+        location = "canadacentral"
       }
     }
-    eastasia = {
+    canadaeast = {
       HUB-CORE-SEC = {
         name     = "hub-core-sec-hk"
-        location = "eastasia"
+        location = "canadaeast"
       }
       HUB-OPERATIONS = {
         name     = "hub-operations-hk"
-        location = "eastasia"
+        location = "canadaeast"
       }
     }
   }
@@ -49,7 +49,7 @@ global_settings = {
 accounting_settings = {
 
   # Azure diagnostics logs retention period
-  southeastasia = {
+  canadacentral = {
     # Azure Subscription activity logs retention period
     azure_activity_log_enabled    = false
     azure_activity_logs_name      = "actlogs"
@@ -106,7 +106,7 @@ accounting_settings = {
       }
     }
   }
-  eastasia = {
+  canadaeast = {
     # Azure Subscription activity logs retention period
     azure_activity_log_enabled    = false
     azure_activity_logs_name      = "actlogs"
@@ -167,7 +167,7 @@ accounting_settings = {
 
 ## governance
 governance_settings = {
-  southeastasia = {
+  canadacentral = {
     #current code supports only two levels of managemenr groups and one root
     deploy_mgmt_groups = false
     management_groups = {
@@ -201,13 +201,13 @@ governance_settings = {
       cant_create_ip_spoke   = false
       managed_disks_only     = true
       restrict_locations     = false
-      list_of_allowed_locs   = ["southeastasia", "eastasia"]
+      list_of_allowed_locs   = ["canadacentral", "canadaeast"]
       restrict_supported_svc = false
       list_of_supported_svc  = ["Microsoft.Network/publicIPAddresses", "Microsoft.Compute/disks"]
-      msi_location           = "southeastasia"
+      msi_location           = "canadacentral"
     }
   }
-  eastasia = {}
+  canadaeast = {}
 }
 
 ## security 
@@ -215,8 +215,8 @@ security_settings = {
   #Azure Security Center Configuration 
   enable_security_center = false
   security_center = {
-    contact_email       = "email@email.com"
-    contact_phone       = "9293829328"
+    contact_email       = "herby.domond@maihotmail.com"
+    contact_phone       = "514-586-2696"
     alerts_to_admins    = true
     alert_notifications = true
   }
