@@ -104,14 +104,14 @@ jobs:
 
       - name: deploy example
         run: |
-          /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/caf_networking/ -a apply \
+          /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/landingzones/caf_networking/ -a apply \
             -tfstate $(basename ${{ matrix.config_files }}).tfstate \
             -var-file ${GITHUB_WORKSPACE}/landingzones/${{ matrix.config_files }}/configuration.tfvars \
             --environment ${{ github.run_id }}
 
       - name: destroy example
         run: |
-          /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/caf_networking/ -a destroy \
+          /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/landingzones/caf_networking/ -a destroy \
             -tfstate $(basename ${{ matrix.config_files }}).tfstate \
             -var-file ${GITHUB_WORKSPACE}/landingzones/${{ matrix.config_files }}/configuration.tfvars \
             --environment ${{ github.run_id }} \
@@ -194,14 +194,14 @@ jobs:
 
       - name: deploy example
         run: |
-          /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/caf_networking/ -a apply \
+          /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/landingzones/caf_networking/ -a apply \
             -tfstate $(basename ${{ matrix.config_files }}).tfstate \
             -var-file ${GITHUB_WORKSPACE}/landingzones/${{ matrix.config_files }}/configuration.tfvars \
             --environment ${{ github.run_id }}
 
       - name: destroy example
         run: |
-          /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/caf_networking/ -a destroy \
+          /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/landingzones/caf_networking/ -a destroy \
             -tfstate $(basename ${{ matrix.config_files }}).tfstate \
             -var-file ${GITHUB_WORKSPACE}/landingzones/${{ matrix.config_files }}/configuration.tfvars \
             --environment ${{ github.run_id }} \
