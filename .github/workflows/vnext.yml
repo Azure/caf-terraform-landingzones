@@ -144,23 +144,14 @@ jobs:
 
           echo "local user: $(whoami)"
 
-      - name: launchpad
+      - name: launchpad-upgrade-200
         run: |
-          # ln -s ${GITHUB_WORKSPACE} /tf/caf
-
-          # ls /tf/caf
-
-          id=$(az storage account list --query "[?tags.tfstate=='level0' && tags.environment=='${{ github.run_id }}']" -o json | jq -r .[0].id)
-
-          if [ "${id}" == "null" ]; then
-
-            /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/landingzones/caf_launchpad -a apply \
-              -var-file ${GITHUB_WORKSPACE}/landingzones/caf_launchpad/scenario/200/configuration.tfvars \
-              -launchpad \
-              --environment ${{ github.run_id }} \
-              '-var prefix=g${{ github.run_id }}' \
-              '-var tags={testing_job_id="${{ github.run_id }}"}'
-          fi
+          /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/landingzones/caf_launchpad -a apply \
+            -var-file ${GITHUB_WORKSPACE}/landingzones/caf_launchpad/scenario/200/configuration.tfvars \
+            -launchpad \
+            --environment ${{ github.run_id }} \
+            '-var prefix=g${{ github.run_id }}' \
+            '-var tags={testing_job_id="${{ github.run_id }}"}'
 
       - name: foundations
         run: |
