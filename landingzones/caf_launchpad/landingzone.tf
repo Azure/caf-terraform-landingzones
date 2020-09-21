@@ -1,0 +1,39 @@
+module "launchpad" {
+  source  = "aztfmod/caf-enterprise-scale/azurerm"
+  version = "~>0.1"
+
+  tags                     = local.tags
+  global_settings          = local.global_settings
+  tfstates                 = local.tfstates
+  logged_user_objectId     = var.logged_user_objectId
+  logged_aad_app_objectId  = var.logged_aad_app_objectId
+  user_type                = var.user_type
+  log_analytics            = var.log_analytics
+  diagnostics_definition   = var.diagnostics_definition
+  diagnostics_destinations = var.diagnostics_destinations
+  resource_groups          = var.resource_groups
+  keyvaults                = var.keyvaults
+  keyvault_access_policies = var.keyvault_access_policies
+  subscriptions            = var.subscriptions
+  compute = {
+    virtual_machines = var.virtual_machines
+    bastion_hosts    = var.bastion_hosts
+  }
+  networking = {
+    vnets                             = var.vnets
+    network_security_group_definition = var.network_security_group_definition
+    public_ip_addresses               = var.public_ip_addresses
+    azurerm_routes                    = var.azurerm_routes
+    route_tables                      = var.route_tables
+  }
+  storage_accounts            = var.storage_accounts
+  diagnostic_storage_accounts = var.diagnostic_storage_accounts
+  azuread_apps                = var.azuread_apps
+  azuread_api_permissions     = var.azuread_api_permissions
+  azuread_groups              = var.azuread_groups
+  azuread_app_roles           = var.azuread_app_roles
+  azuread_users               = var.azuread_users
+  managed_identities          = var.managed_identities
+  custom_role_definitions     = var.custom_role_definitions
+  role_mapping                = var.role_mapping
+}
