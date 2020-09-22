@@ -11,6 +11,7 @@ tfstates = {
   networking = {
     tfstate = "caf_foundations.tfstate"
   }
+}
 
 
 vnets = {
