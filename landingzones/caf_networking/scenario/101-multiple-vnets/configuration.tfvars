@@ -4,6 +4,15 @@ resource_groups = {
   }
 }
 
+tfstates = {
+  caf_foundations = {
+    tfstate = "caf_foundations.tfstate"
+  }
+  networking = {
+    tfstate = "caf_foundations.tfstate"
+  }
+
+
 vnets = {
   hub_sg = {
     resource_group_key = "vnet_sg"

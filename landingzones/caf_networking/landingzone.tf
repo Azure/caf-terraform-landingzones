@@ -1,6 +1,6 @@
 module "landingzones_networking" {
   source  = "aztfmod/caf-enterprise-scale/azurerm"
-  version = "~>0.1"
+  version = "~>0.2"
 
   tags                    = local.tags
   diagnostics             = local.diagnostics
