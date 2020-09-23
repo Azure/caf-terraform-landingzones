@@ -106,7 +106,7 @@ variable azuread_groups {
 variable azuread_users {
   default = {}
 }
-variable azuread_app_roles {
+variable azuread_roles {
   default = {}
 }
 variable managed_identities {
