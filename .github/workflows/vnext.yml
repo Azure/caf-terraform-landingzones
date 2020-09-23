@@ -86,8 +86,7 @@ jobs:
             "caf_networking/scenario/100-single-region-hub",
             "caf_networking/scenario/101-multiple-vnets",
             "caf_networking/scenario/105-hub-and-spoke",
-            "caf_networking/scenario/106-hub-virtual-wan-firewall",
-            "caf_networking/scenario/110-aks-private"
+            "caf_networking/scenario/106-hub-virtual-wan-firewall"
           ]
 
     container:
@@ -144,7 +143,18 @@ jobs:
 
           echo "local user: $(whoami)"
 
-      - name: launchpad-upgrade-200
+      - name: launchpad100-removal
+        run: |
+
+          /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/landingzones/caf_launchpad/ -a destroy \
+            -var-file ${GITHUB_WORKSPACE}/landingzones/caf_launchpad/scenario/100/configuration.tfvars \
+            -launchpad \
+            -env ${{ github.run_id }} \
+            '-var prefix=g${{ github.run_id }}' \
+            '-var tags={testing_job_id="${{ github.run_id }}"}' \
+            -auto-approve
+
+      - name: launchpad-200-deployment
         run: |
           /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/landingzones/caf_launchpad -a apply \
             -var-file ${GITHUB_WORKSPACE}/landingzones/caf_launchpad/scenario/200/configuration.tfvars \
@@ -152,11 +162,6 @@ jobs:
             --environment ${{ github.run_id }} \
             '-var prefix=g${{ github.run_id }}' \
             '-var tags={testing_job_id="${{ github.run_id }}"}'
-
-      - name: foundations
-        run: |
-          /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/landingzones/caf_foundations -a apply \
-          --environment ${{ github.run_id }}
 
   networking200:
     name: networking-200
@@ -169,7 +174,8 @@ jobs:
       matrix:
           config_files: [
             "caf_networking/scenario/200-single-region-hub",
-            "caf_networking/scenario/201-multi-region-hub"
+            "caf_networking/scenario/201-multi-region-hub",
+            "caf_networking/scenario/210-aks-private"
           ]
 
     container:
