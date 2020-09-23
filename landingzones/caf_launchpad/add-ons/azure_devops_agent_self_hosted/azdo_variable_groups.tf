@@ -5,6 +5,7 @@
 #   + vso.build_execute           (destroy)
 #
 resource "azuredevops_variable_group" "variable_group" {
+  depends_on = [azurerm_key_vault_secret.keyvault]
   for_each = try(var.azure_devops.variable_groups, {})
 
   project_id   = data.azuredevops_project.project.id

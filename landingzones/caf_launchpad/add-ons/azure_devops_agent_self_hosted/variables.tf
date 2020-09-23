@@ -89,3 +89,6 @@ variable azure_devops {
 variable role_mapping {
   default = {}
 }
+variable secrets_from_keys {
+  default = {}
+}

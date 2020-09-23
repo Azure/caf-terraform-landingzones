@@ -6,7 +6,7 @@ terraform {
     }
     azuread = {
       source  = "hashicorp/azuread"
-      version = "~> 0.11.0"
+      version = "~> 1.0.0"
     }
     random = {
       source  = "hashicorp/random"
@@ -76,6 +76,7 @@ locals {
 
   keyvaults = data.terraform_remote_state.launchpad.outputs.keyvaults
   aad_apps  = data.terraform_remote_state.launchpad.outputs.aad_apps
+  outputs   = data.terraform_remote_state.launchpad.outputs
 
   tfstates = merge(
     map(var.landingzone_name,
