@@ -14,6 +14,7 @@ default_region = "region1"
 
 regions = {
   region1 = "southeastasia"
+  region2 = "eastasia"
 }
 
 launchpad_key_names = {

@@ -303,36 +303,36 @@ network_security_group_definition = {
   # This entry is applied to all subnets with no NSG defined
   empty_nsg = {
 
-    # diagnostic_profiles = {
-    #   nsg = {
-    #     definition_key   = "network_security_group"
-    #     destination_type = "storage"
-    #     destination_key  = "all_regions"
-    #   }
-    #   operations = {
-    #     name             = "operations"
-    #     definition_key   = "network_security_group"
-    #     destination_type = "log_analytics"
-    #     destination_key  = "central_logs"
-    #   }
-    # }
+    diagnostic_profiles = {
+      nsg = {
+        definition_key   = "network_security_group"
+        destination_type = "storage"
+        destination_key  = "all_regions"
+      }
+      operations = {
+        name             = "operations"
+        definition_key   = "network_security_group"
+        destination_type = "log_analytics"
+        destination_key  = "central_logs"
+      }
+    }
   }
 
   azure_bastion_nsg = {
 
-    # diagnostic_profiles = {
-    #   nsg = {
-    #     definition_key   = "network_security_group"
-    #     destination_type = "storage"
-    #     destination_key  = "all_regions"
-    #   }
-    #   operations = {
-    #     name             = "operations"
-    #     definition_key   = "network_security_group"
-    #     destination_type = "log_analytics"
-    #     destination_key  = "central_logs"
-    #   }
-    # }
+    diagnostic_profiles = {
+      nsg = {
+        definition_key   = "network_security_group"
+        destination_type = "storage"
+        destination_key  = "all_regions"
+      }
+      operations = {
+        name             = "operations"
+        definition_key   = "network_security_group"
+        destination_type = "log_analytics"
+        destination_key  = "central_logs"
+      }
+    }
 
     nsg = [
       {
@@ -406,19 +406,19 @@ network_security_group_definition = {
 
   application_gateway = {
 
-    # diagnostic_profiles = {
-    #   nsg = {
-    #     definition_key   = "network_security_group"
-    #     destination_type = "storage"
-    #     destination_key  = "all_regions"
-    #   }
-    #   operations = {
-    #     name             = "operations"
-    #     definition_key   = "network_security_group"
-    #     destination_type = "log_analytics"
-    #     destination_key  = "central_logs"
-    #   }
-    # }
+    diagnostic_profiles = {
+      nsg = {
+        definition_key   = "network_security_group"
+        destination_type = "storage"
+        destination_key  = "all_regions"
+      }
+      operations = {
+        name             = "operations"
+        definition_key   = "network_security_group"
+        destination_type = "log_analytics"
+        destination_key  = "central_logs"
+      }
+    }
 
     nsg = [
       {
@@ -666,19 +666,19 @@ network_security_group_definition = {
 
   jumphost = {
 
-    # diagnostic_profiles = {
-    #   nsg = {
-    #     definition_key   = "network_security_group"
-    #     destination_type = "storage"
-    #     destination_key  = "all_regions"
-    #   }
-    #   operations = {
-    #     name             = "operations"
-    #     definition_key   = "network_security_group"
-    #     destination_type = "log_analytics"
-    #     destination_key  = "central_logs"
-    #   }
-    # }
+    diagnostic_profiles = {
+      nsg = {
+        definition_key   = "network_security_group"
+        destination_type = "storage"
+        destination_key  = "all_regions"
+      }
+      operations = {
+        name             = "operations"
+        definition_key   = "network_security_group"
+        destination_type = "log_analytics"
+        destination_key  = "central_logs"
+      }
+    }
 
     nsg = [
       {
@@ -702,54 +702,54 @@ network_security_group_definition = {
 # Define the settings for the diagnostics settings
 # Demonstrate how to log diagnostics in the correct region
 # Different profiles to target different operational teams
-#
-# diagnostics_definition = {
-#   azurerm_firewall = {
-#     name = "operational_logs_and_metrics"
-#     categories = {
-#       log = [
-#         #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
-#         ["AzureFirewallApplicationRule", true, true, 7],
-#         ["AzureFirewallNetworkRule", true, true, 7],
-#         ["AzureFirewallDnsProxy", true, true, 7],
-#       ]
-#       metric = [
-#         ["AllMetrics", true, true, 7],
-#       ]
-#     }
-#   }
 
-#   public_ip_address = {
-#     name = "operational_logs_and_metrics"
-#     categories = {
-#       log = [
-#         #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
-#         ["DDoSProtectionNotifications", true, true, 7],
-#         ["DDoSMitigationFlowLogs", true, true, 7],
-#         ["DDoSMitigationReports", true, true, 7],
-#       ]
-#       metric = [
-#         ["AllMetrics", true, true, 7],
-#       ]
-#     }
-#   }
+diagnostics_definition = {
+  azurerm_firewall = {
+    name = "operational_logs_and_metrics"
+    categories = {
+      log = [
+        #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
+        ["AzureFirewallApplicationRule", true, true, 7],
+        ["AzureFirewallNetworkRule", true, true, 7],
+        ["AzureFirewallDnsProxy", true, true, 7],
+      ]
+      metric = [
+        ["AllMetrics", true, true, 7],
+      ]
+    }
+  }
 
-#   azure_container_registry = {
-#     name = "operational_logs_and_metrics"
-#     categories = {
-#       log = [
-#         # ["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
-#         ["ContainerRegistryRepositoryEvents", true, false, 7],
-#         ["ContainerRegistryLoginEvents", true, false, 7],
-#       ]
-#       metric = [
-#         #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
-#         ["AllMetrics", true, false, 7],
-#       ]
-#     }
-#   }
+  public_ip_address = {
+    name = "operational_logs_and_metrics"
+    categories = {
+      log = [
+        #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
+        ["DDoSProtectionNotifications", true, true, 7],
+        ["DDoSMitigationFlowLogs", true, true, 7],
+        ["DDoSMitigationReports", true, true, 7],
+      ]
+      metric = [
+        ["AllMetrics", true, true, 7],
+      ]
+    }
+  }
 
-# }
+  azure_container_registry = {
+    name = "operational_logs_and_metrics"
+    categories = {
+      log = [
+        # ["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
+        ["ContainerRegistryRepositoryEvents", true, false, 7],
+        ["ContainerRegistryLoginEvents", true, false, 7],
+      ]
+      metric = [
+        #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
+        ["AllMetrics", true, false, 7],
+      ]
+    }
+  }
+
+}
 
 azure_container_registries = {
   acr1 = {
@@ -795,14 +795,14 @@ azure_container_registries = {
       }
     }
 
-    # you can setup up to 5 key
-    # diagnostic_profiles = {
-    #   central_logs_region1 = {
-    #     definition_key   = "azure_container_registry"
-    #     destination_type = "log_analytics"
-    #     destination_key  = "central_logs"
-    #   }
-    # }
+    # you can setup up to 5 keys
+    diagnostic_profiles = {
+      central_logs_region1 = {
+        definition_key   = "azure_container_registry"
+        destination_type = "log_analytics"
+        destination_key  = "central_logs"
+      }
+    }
 
   }
 }
