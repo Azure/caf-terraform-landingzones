@@ -31,7 +31,7 @@ module "launchpad" {
   azuread_apps                = var.azuread_apps
   azuread_api_permissions     = var.azuread_api_permissions
   azuread_groups              = var.azuread_groups
-  azuread_app_roles           = var.azuread_app_roles
+  azuread_roles               = var.azuread_roles
   azuread_users               = var.azuread_users
   managed_identities          = var.managed_identities
   custom_role_definitions     = var.custom_role_definitions
