@@ -154,6 +154,12 @@ jobs:
             '-var tags={testing_job_id="${{ github.run_id }}"}' \
             -auto-approve
 
+      - name: foundations-100
+        run: |
+          /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/landingzones/caf_foundations -a destroy \
+          --environment ${{ github.run_id }} \
+          -auto-approve
+
       - name: launchpad-200-deployment
         run: |
           /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/landingzones/caf_launchpad -a apply \
@@ -162,6 +168,11 @@ jobs:
             --environment ${{ github.run_id }} \
             '-var prefix=g${{ github.run_id }}' \
             '-var tags={testing_job_id="${{ github.run_id }}"}'
+
+      - name: foundations-200
+        run: |
+          /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/landingzones/caf_foundations -a apply \
+          --environment ${{ github.run_id }}
 
   networking200:
     name: networking-200
