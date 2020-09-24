@@ -102,9 +102,10 @@ azuread_apps = {
     useprefix               = true
     application_name        = "caf_launchpad_level0"
     password_expire_in_days = 180
-    keyvault = {
-      keyvault_key  = "launchpad"
-      secret_prefix = "aadapp-caf-launchpad-level0"
+    keyvaults = {
+      launchpad = {
+        secret_prefix = "aadapp-caf-launchpad-level0"
+      }
     }
   }
 }

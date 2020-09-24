@@ -5,8 +5,8 @@ locals {
 data "azurerm_key_vault_secret" "client_secret" {
   for_each = local.service_endpoints
 
-  name         = local.aad_apps[each.value.aad_app_key].keyvault.secret_name_client_secret
-  key_vault_id = local.aad_apps[each.value.aad_app_key].keyvault.id
+  name         = format("%s-client-secret", local.aad_apps[each.value.aad_app_key].keyvaults[each.value.secret_keyvault_key].secret_name_client_secret)
+  key_vault_id = local.aad_apps[each.value.aad_app_key].keyvaults[each.value.secret_keyvault_key].id
 }
 
 resource "azuredevops_serviceendpoint_azurerm" "azure" {
@@ -21,31 +21,4 @@ resource "azuredevops_serviceendpoint_azurerm" "azure" {
   azurerm_spn_tenantid      = local.aad_apps[each.value.aad_app_key].tenant_id
   azurerm_subscription_id   = each.value.subscription_id
   azurerm_subscription_name = each.value.subscription_name
-}
-
-resource "azurerm_role_definition" "devops" {
-  for_each    = local.service_endpoints
-  name        = format("%scaf-azure-devops-to-%s", local.global_settings.prefix_with_hyphen, each.value.subscription_name)
-  scope       = format("/subscriptions/%s", each.value.subscription_id)
-  description = "CAF Custom role for service principal in Azure Devops to access resources"
-
-  permissions {
-    actions = [
-      "Microsoft.Resources/subscriptions/read",
-      "Microsoft.KeyVault/vaults/read"
-    ]
-    not_actions = []
-  }
-
-  assignable_scopes = [
-    format("/subscriptions/%s", each.value.subscription_id),
-  ]
-}
-
-resource "azurerm_role_assignment" "devops" {
-  for_each = local.service_endpoints
-
-  scope              = format("/subscriptions/%s", each.value.subscription_id)
-  role_definition_id = azurerm_role_definition.devops[each.key].role_definition_resource_id
-  principal_id       = local.aad_apps[each.value.aad_app_key].azuread_service_principal.object_id
 }

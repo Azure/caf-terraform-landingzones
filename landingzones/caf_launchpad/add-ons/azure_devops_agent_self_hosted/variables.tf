@@ -45,13 +45,13 @@ variable app_services {
   default = {}
 }
 variable diagnostics_definition {
-  default = null
+  default = {}
 }
 variable resource_groups {
-  default = null
+  default = {}
 }
 variable network_security_group_definition {
-  default = null
+  default = {}
 }
 variable vnets {
   default = {}
@@ -90,5 +90,11 @@ variable role_mapping {
   default = {}
 }
 variable secrets_from_keys {
+  default = {}
+}
+variable custom_role_definitions {
+  default = {}
+}
+variable azuread_apps {
   default = {}
 }

@@ -480,22 +480,10 @@ azuread_apps = {
 
     # Store the ${secret_prefix}-client-id, ${secret_prefix}-client-secret...
     # Set the policy during the creation process of the launchpad
-    keyvault = {
-      keyvault_key  = "launchpad"
-      secret_prefix = "aadapp-caf-launchpad-level0"
-    }
-  }
-
-  # Changing that key requires changing the value of azure_devops.aad_app_key
-  azure_devops = {
-    useprefix               = true
-    application_name        = "caf-level0-security-devops-pat-rotation-aad-app1"
-    password_expire_in_days = 60
-    tenant_name             = "terraformdev.onmicrosoft.com"
-    reply_urls              = ["https://localhost"]
-    keyvault = {
-      keyvault_key  = "secrets"
-      secret_prefix = "aadapp-caf-level0-security-devops-pat-rotation-aad-app"
+    keyvaults = {
+      launchpad = {
+        secret_prefix = "aadapp-caf-launchpad-level0"
+      }
     }
   }
 
@@ -505,7 +493,7 @@ azuread_apps = {
 # Available roles:
 # az rest --method Get --uri https://graph.microsoft.com/v1.0/directoryRoleTemplates -o json | jq -r .value[].displayName
 #
-azuread_app_roles = {
+azuread_roles = {
   caf_launchpad_level0 = {
     roles = [
       "Application Administrator",

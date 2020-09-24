@@ -16,6 +16,8 @@ module "caf" {
   keyvaults                   = var.keyvaults
   keyvault_access_policies    = var.keyvault_access_policies
   role_mapping                = var.role_mapping
+  custom_role_definitions     = var.custom_role_definitions
+  azuread_apps                = var.azuread_apps
   compute = {
     virtual_machines = var.virtual_machines
   }

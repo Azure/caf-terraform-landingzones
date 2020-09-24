@@ -74,9 +74,15 @@ locals {
     log_analytics            = data.terraform_remote_state.launchpad.outputs.diagnostics.log_analytics
   }
 
-  keyvaults = data.terraform_remote_state.launchpad.outputs.keyvaults
-  aad_apps  = data.terraform_remote_state.launchpad.outputs.aad_apps
-  outputs   = data.terraform_remote_state.launchpad.outputs
+  keyvaults = merge(
+    data.terraform_remote_state.launchpad.outputs.keyvaults,
+    module.caf.keyvaults
+  )
+  aad_apps = merge(
+    data.terraform_remote_state.launchpad.outputs.aad_apps,
+    module.caf.aad_apps
+  )
+  outputs = data.terraform_remote_state.launchpad.outputs
 
   tfstates = merge(
     map(var.landingzone_name,

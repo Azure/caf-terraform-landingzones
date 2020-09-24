@@ -2,6 +2,7 @@
 
 # Get PAT token from keyvault
 data "azurerm_key_vault_secret" "agent_pat" {
+  count        = try(var.virtual_machines.virtual_machine_extensions, null) != null ? 1 : 0
   name         = var.azure_devops.pats.agent.secret_name
   key_vault_id = data.terraform_remote_state.launchpad.outputs.keyvaults[var.azure_devops.pats["agent"].lz_key][var.azure_devops.pats["agent"].keyvault_key].id
 }
@@ -20,7 +21,7 @@ module vm_extensions {
   settings = {
     devops_selfhosted_agent = {
       storage_accounts = module.caf.storage_accounts
-      agent_pat        = data.azurerm_key_vault_secret.agent_pat.value
+      agent_pat        = data.azurerm_key_vault_secret.agent_pat[0].value
       admin_username   = each.value.virtual_machine_settings[each.value.os_type].admin_username
       azure_devops     = var.azure_devops
     }
