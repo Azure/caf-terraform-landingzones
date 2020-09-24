@@ -1,6 +1,6 @@
 module "caf" {
-  # source = "git@github.com:aztfmod/terraform-azurerm-caf-landingzone-modules.git"
-  source     = "../../../../../aztfmod/es"
+  source  = "aztfmod/caf-enterprise-scale/azurerm"
+  version = "~> 0.3"
   depends_on = [azuredevops_agent_pool.pool, azuredevops_agent_queue.agent_queue]
 
   tfstates                    = local.tfstates

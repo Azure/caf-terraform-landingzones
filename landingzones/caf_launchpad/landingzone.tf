@@ -1,6 +1,6 @@
 module "launchpad" {
   source  = "aztfmod/caf-enterprise-scale/azurerm"
-  version = "~>0.2"
+  version = "~>0.3"
 
   tags                     = local.tags
   global_settings          = local.global_settings
