@@ -38,7 +38,7 @@ resource_groups = {
     name = "launchpad-security"
   }
   networking = {
-    name = "networking"
+    name = "launchpad-networking"
   }
   ops = {
     name = "operations"
