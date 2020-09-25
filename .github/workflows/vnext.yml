@@ -143,6 +143,12 @@ jobs:
 
           echo "local user: $(whoami)"
 
+      - name: foundations100-removal
+        run: |
+          /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/landingzones/caf_foundations -a destroy \
+          --environment ${{ github.run_id }} \
+          -auto-approve
+
       - name: launchpad100-removal
         run: |
 
@@ -154,12 +160,6 @@ jobs:
             '-var tags={testing_job_id="${{ github.run_id }}"}' \
             -auto-approve
 
-      - name: foundations-100
-        run: |
-          /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/landingzones/caf_foundations -a destroy \
-          --environment ${{ github.run_id }} \
-          -auto-approve
-
       - name: launchpad-200-deployment
         run: |
           /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/landingzones/caf_launchpad -a apply \
@@ -169,7 +169,7 @@ jobs:
             '-var prefix=g${{ github.run_id }}' \
             '-var tags={testing_job_id="${{ github.run_id }}"}'
 
-      - name: foundations-200
+      - name: foundations-200-deployment
         run: |
           /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/landingzones/caf_foundations -a apply \
           --environment ${{ github.run_id }}
