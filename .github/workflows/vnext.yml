@@ -84,7 +84,7 @@ jobs:
       matrix:
           config_files: [
             "caf_networking/scenario/100-single-region-hub",
-            "caf_networking/scenario/101-multiple-vnets",
+            "caf_networking/scenario/101-multi-region-hub",
             "caf_networking/scenario/105-hub-and-spoke",
             "caf_networking/scenario/106-hub-virtual-wan-firewall"
           ]
