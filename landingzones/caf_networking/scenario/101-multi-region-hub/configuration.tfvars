@@ -129,80 +129,6 @@ vnet_peerings = {
     use_remote_gateways          = false
   }
 
-  # Establish a peering with the devops vnet
-  hub_re1-TO-launchpad_devops = {
-    name = "hub_re1-TO-devops_region1"
-    from = {
-      vnet_key = "hub_re1"
-    }
-    to = {
-      tfstate_key = "foundations"
-      lz_key      = "launchpad"
-      output_key  = "vnets"
-      vnet_key    = "devops_region1"
-    }
-    allow_virtual_network_access = true
-    allow_forwarded_traffic      = false
-    allow_gateway_transit        = false
-    use_remote_gateways          = false
-  }
-
-  # Inbound peer with the devops vnet
-  launchpad_devops-TO-hub_re1 = {
-    name = "launchpad_devops-TO-hub_re1"
-    from = {
-      tfstate_key = "foundations"
-      lz_key      = "launchpad"
-      output_key  = "vnets"
-      vnet_key    = "devops_region1"
-    }
-    to = {
-      vnet_key = "hub_re1"
-    }
-    allow_virtual_network_access = true
-    allow_forwarded_traffic      = false
-    allow_gateway_transit        = false
-    use_remote_gateways          = false
-  }
-
-
-  # Establish a peering with the devops vnet
-  hub_re2-TO-launchpad_devops = {
-    name = "hub_re2-TO-devops_region1"
-    from = {
-      vnet_key = "hub_re2"
-    }
-    to = {
-      tfstate_key = "foundations"
-      lz_key      = "launchpad"
-      output_key  = "vnets"
-      vnet_key    = "devops_region1"
-    }
-    allow_virtual_network_access = true
-    allow_forwarded_traffic      = false
-    allow_gateway_transit        = false
-    use_remote_gateways          = false
-  }
-
-  # Inbound peer with the devops vnet
-  launchpad_devops-TO-hub_re2 = {
-    name = "launchpad_devops-TO-hub_re2"
-    from = {
-      tfstate_key = "foundations"
-      lz_key      = "launchpad"
-      output_key  = "vnets"
-      vnet_key    = "devops_region1"
-    }
-    to = {
-      vnet_key = "hub_re2"
-    }
-    allow_virtual_network_access = true
-    allow_forwarded_traffic      = false
-    allow_gateway_transit        = false
-    use_remote_gateways          = false
-  }
-
-
 }
 
 public_ip_addresses = {
@@ -231,7 +157,6 @@ public_ip_addresses = {
   }
 
 }
-
 
 bastion_hosts = {
   bastion_hub_re1 = {
