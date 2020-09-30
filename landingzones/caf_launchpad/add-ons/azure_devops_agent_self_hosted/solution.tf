@@ -1,6 +1,6 @@
 module "caf" {
-  source  = "aztfmod/caf-enterprise-scale/azurerm"
-  version = "~> 0.3"
+  source     = "aztfmod/caf-enterprise-scale/azurerm"
+  version    = "~> 0.3"
   depends_on = [azuredevops_agent_pool.pool, azuredevops_agent_queue.agent_queue]
 
   tfstates                    = local.tfstates

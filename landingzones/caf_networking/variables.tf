@@ -105,3 +105,15 @@ variable ddos_services {
 variable private_dns {
   default = {}
 }
+variable application_gateways {
+  default = {}
+}
+variable application_gateway_applications {
+  default = {}
+}
+variable keyvaults {
+  default = {}
+}
+variable keyvault_access_policies {
+  default = {}
+}
