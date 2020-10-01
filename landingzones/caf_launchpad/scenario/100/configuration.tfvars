@@ -7,16 +7,19 @@ scenarios = {
   launchpad = 100
 }
 
+# add 5 random chars at the end of the components name
 random_length = 5
 
-# Default region
+# Default region, used if no region is specified in a component configuraiton
 default_region = "region1"
 
+# All regions supported by this launchpad
 regions = {
   region1 = "southeastasia"
   region2 = "eastasia"
 }
 
+# Configuration of the launchpad elements keys 
 launchpad_key_names = {
   keyvault               = "launchpad"
   azuread_app            = "caf_launchpad_level0"
@@ -26,12 +29,15 @@ launchpad_key_names = {
   ]
 }
 
+# Name of the resource groups to be created
 resource_groups = {
+  # resource group key is "tfstate", we re-use the key in the configuration file instead of the "name" field which will be the name as deployed on Azure. 
   tfstate = {
     name      = "launchpad-tfstates"
     region    = "region1"
     useprefix = true
   }
+  # resource group key is "security", we re-use the key in the configuration file instead of the "name" field which will be the name as deployed on Azure. 
   security = {
     name      = "launchpad-security"
     useprefix = true
@@ -39,7 +45,9 @@ resource_groups = {
 }
 
 
+# Configuration of the storage accounts in the launchpad
 storage_accounts = {
+  # "level0" is the name of the key
   level0 = {
     name                     = "level0"
     resource_group_key       = "tfstate"
@@ -83,7 +91,7 @@ keyvault_access_policies = {
   # A maximum of 16 access policies per keyvault
   launchpad = {
     logged_in_user = {
-      # if the key is set to "logged_in_user" add the user running terraform in the keyvault policy
+      # if the key is set to "logged_in_user" add the user running terraform in the Key Vault policy
       # More examples in /examples/keyvault
       secret_permissions = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
     }
@@ -97,7 +105,8 @@ keyvault_access_policies = {
 
 
 azuread_apps = {
-  # Do not rename the key "launchpad" to be able to upgrade to higher scenario
+  # Azure AD applications created by the launchpad
+  # Do not rename the key "caf_launchpad_level0" to be able to upgrade to higher scenario
   caf_launchpad_level0 = {
     useprefix               = true
     application_name        = "caf_launchpad_level0"

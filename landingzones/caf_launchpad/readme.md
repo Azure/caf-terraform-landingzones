@@ -2,20 +2,36 @@
 
 The launchpads allow you to manage the foundations of landing zone environments by:
 
-Securing remote Terraform state storage for multiple subscriptions.
-Managing the transition from manual to automated environments.
+* Securing remote Terraform state storage for multiple subscriptions.
+* Managing the transition from manual to automated environments.
+* Bring up the DevOps foundations using Azure DevOps, Terraform Cloud and GitHub actions (more to come).
 
-## Launchpad initialization process
+</BR>
 
-The launchpad components are deployed by a set of Terraform files using the Rover
+## Getting started with launchpad
 
-```
+Depending on what you are trying to achieve, we provide you with different levels of launchpads to cover different scenario:
+
+| level                 | scenario                                                                                                         | supported environments                     |
+|-----------------------|------------------------------------------------------------------------------------------------------------------|--------------------------------------------|
+| [100](./scenario/100) | Start with this one! basic functionalities and features, no RBAC or security hardening - for demo and simple POC | working on AIRS subscriptions              |
+| [200](./scenario/200) | intermediate functionalities includes diagnostics features                                                       | may not work in AIRS, need AAD permissions |
+| [300](./scenario/300) | advanced functionalities, includes RBAC features                                                                 | not working in AIRS, need AAD permissions  |
+| [400](./scenario/400) | advanced functionalities, includes RBAC features and security hardening                                          | not working in AIRS, need AAD permissions  |
+
+You can pick your scenario and use one of the following commands:
+
+```bash
 # Simple scenario for learning and demonstration
 rover -lz /tf/caf/landingzones/caf_launchpad -launchpad -var-file /tf/caf/landingzones/caf_launchpad/scenario/100/configuration.tfvars -parallelism=30 -a apply
 
-# Advanced scenario - Require Azure AD privileges
+# Advanced scenario - Requires Azure AD privileges
 rover -lz /tf/caf/landingzones/caf_launchpad -launchpad -var-file /tf/caf/landingzones/caf_launchpad/scenario/200/configuration.tfvars -parallelism=30 -a apply
 ```
+
+</BR>
+
+## Overview of launchpad initialization
 
 ![Launchpad Worklow](./documentation/img/launchpad_workflow.png)
 
@@ -42,7 +58,7 @@ The rover executed in launchpad mode performs the following option to bootstrap 
 3. **Call terraform apply**:
     * deploy the resources as specified in the launchpad configuration files (see description below)
 
-```
+```bash
 Outputs:
 
 aad_apps = <sensitive>
@@ -62,7 +78,7 @@ resource_groups = <sensitive>
 
 5. **Upload the launchpad state (tfstate) to the storage level0 workspace** - the state contains the default settings, keyvault id, and service principal id created during the launchpad deployment
 
-```
+```bash
 Moving launchpad to the cloud
  - storage_account_name: storageaccname
  - resource_group: hrjx-rg-launchpad-tfstates-rVb7GtKPXxHMa
@@ -73,15 +89,15 @@ Moving launchpad to the cloud
 }
 ```
 
+</BR>
+
 ## Launchpad architecture
 
-Each resource deployed with the launchpad is leveraging the azurecaf provider to enforce naming convention
+Each resource deployed with the launchpad is leveraging the [azurecaf provider](https://github.com/aztfmod/terraform-provider-azurecaf) to enforce naming convention.
 
-![Launchpad Worklow](./documentation/img/Launchpad_deployment.png)
+The launchpad deploys the following Azure components:
 
-The launchpad light deploys the following Azure components:
-
-1. Resource groups - By default the launchpad light auto variables will create three resources groups : launchpad-tfstates to host a the tfstate storage account, launchpad-security to host a keyvault, launchpad-devops-agents to host deployment agents should you choose to deploy VMs to automate subsequent deployemnt using Azure DevOps or GitHub
+1. Resource groups - By default the launchpad light auto variables will create three resources groups : launchpad-tfstates to host a the tfstate storage account, launchpad-security to host a keyvault, launchpad-devops-agents to host deployment agents should you choose to deploy VMs to automate subsequent deployment using Azure DevOps or GitHub
 
 2. Storage Accounts - a storage account in the launchpad-tfstates reosource group. The storage account contains the tfstate of the launchpad deployment and will be automatically configured as the Terraform remote backend when deploying landing zones with the rover
 
@@ -95,7 +111,7 @@ The launchpad light deploys the following Azure components:
 
 7. Azure Active Directory Applications and role assignment
 
-    This a critical aspect of the launchpad bootstrap process. The deployment creates an Azure AD Application named "caf_launchpad_level0" by default. The launchpad can be configured to creatd additional Azure AD Applications
+    This a critical aspect of the launchpad bootstrap process. The deployment creates an Azure AD Application named "caf_launchpad_level0" by default. The launchpad can be configured to create additional Azure AD Applications
 
     * The user deploying the launchpad is set to be the application owner
     * A Service Principal + random password is created for each Application - the data is then stored in the referenced keyvault as multiple secrets
@@ -112,7 +128,7 @@ The launchpad light deploys the following Azure components:
 
     The example below shows an App Definition, a role assignment and an API permission assignment. using three terraform variables with define an app called "caf_launchpad_github_terraformdev_github-integration-landingzones", we assign the Application Developer role to this application, finally we grand admin consent to the Active Directory Graph APIs.
 
-    ``` terraform
+    ```terraform
     aad_apps = {
         azure_caf-terraform-landingzones = {
             application_name        = "caf_launchpad_github_terraformdev_github-integration-landingzones"
@@ -155,3 +171,16 @@ The launchpad light deploys the following Azure components:
 
 8. Release Agents (Optional):
     * Deploys Virtual machines in the targeted Virtual Network. You may choose to leverage an existing Azure DevOps organization and deploy CI/CD agents and pipelines. The Agents will then be in charge of subsequent rover deployments to automate the IaC provisioning with Terraform
+
+## Launchpad add-ons
+
+Add-ons are additional capabilities to enhance the launchpad, that are deployed separately and managed by a different state.
+
+Current add-ons:
+
+* Azure DevOps Self Hosted Agents and Pipeline
+
+In-development add-ons:
+
+* Terrform Cloud Enterprise
+* GitHub Actions
