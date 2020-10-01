@@ -21,4 +21,9 @@ module "caf" {
   compute = {
     virtual_machines = var.virtual_machines
   }
+
+  # Experiment to prevent using remote_tfstate in modules. 
+  combined_objects = {
+    keyvaults = try(data.terraform_remote_state.launchpad.outputs.keyvaults["launchpad"], {})
+  }
 }

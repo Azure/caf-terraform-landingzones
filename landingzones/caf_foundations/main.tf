@@ -2,7 +2,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 2.28.0"
+      version = "~> 2.29.0"
     }
     azuread = {
       source  = "hashicorp/azuread"
@@ -38,6 +38,7 @@ provider "azurerm" {
 }
 
 data "azurerm_client_config" "current" {}
+data "azurerm_subscription" "current" {}
 
 data "terraform_remote_state" "launchpad" {
   backend = "azurerm"
