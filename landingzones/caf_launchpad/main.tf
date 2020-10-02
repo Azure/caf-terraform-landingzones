@@ -2,7 +2,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 2.28.0"
+      version = "~> 2.29.0"
     }
     azuread = {
       source  = "hashicorp/azuread"
@@ -60,7 +60,7 @@ locals {
   landingzone_tag = {
     landingzone = var.launchpad_mode
   }
-  tags = merge(local.landingzone_tag, { "level" = var.level }, { "environment" = var.environment }, { "rover_version" = var.rover_version }, var.tags)
+  tags = merge(local.landingzone_tag, { "level" = var.landingzone.current.level }, { "environment" = var.environment }, { "rover_version" = var.rover_version }, var.tags)
 
   prefix = var.prefix == null ? random_string.prefix.result : var.prefix
 
@@ -75,16 +75,19 @@ locals {
     random_length      = var.random_length
   }
 
-  tfstates = map(var.landingzone_name,
-    map(
-      "storage_account_name", var.tfstate_storage_account_name,
-      "container_name", var.tfstate_container_name,
-      "resource_group_name", var.tfstate_resource_group_name,
-      "key", var.tfstate_key,
-      "level", var.level,
-      "tenant_id", data.azurerm_client_config.current.tenant_id,
-      "subscription_id", data.azurerm_client_config.current.subscription_id
-    )
+  tfstates = map(var.landingzone.current.key,
+   map(
+     var.backend_type,
+      map(
+        "storage_account_name", var.tfstate_storage_account_name,
+        "container_name", var.tfstate_container_name,
+        "resource_group_name", var.tfstate_resource_group_name,
+        "key", var.tfstate_key,
+        "level", var.landingzone.current.level,
+        "tenant_id", data.azurerm_client_config.current.tenant_id,
+        "subscription_id", data.azurerm_client_config.current.subscription_id
+      )
+   )
   )
 
 }

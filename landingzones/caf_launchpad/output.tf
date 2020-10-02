@@ -9,18 +9,13 @@ output diagnostics {
 }
 
 output keyvaults {
-  value = map(
-    var.landingzone_name,
-    module.launchpad.keyvaults
-  )
+  value = module.launchpad.keyvaults
   sensitive = true
 }
 
 output storage_accounts {
-  value = map(
-    var.landingzone_name,
-    module.launchpad.storage_accounts
-  )
+  value = module.launchpad.storage_accounts
+  
   sensitive = true
 }
 
@@ -29,8 +24,13 @@ output resource_groups {
   sensitive = true
 }
 
-output vnets {
-  value     = map(var.landingzone_name, module.launchpad.vnets)
+output networking {
+  value     = map(
+    var.landingzone.current.key, 
+    map(
+      "vnets", module.launchpad.vnets
+    )
+  )
   sensitive = true
 }
 

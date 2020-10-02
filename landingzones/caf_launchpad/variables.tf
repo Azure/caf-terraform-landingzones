@@ -12,20 +12,23 @@ variable tfstate_resource_group_name {
   default = ""
 }
 
+variable backend_type {
+  type = string
+  default = "azurerm"
+  validation {
+    condition     = contains(["azurerm"], var.backend_type)
+    error_message = "Backend to store the Terraform tfstates."
+  }
+}
+
 variable workspace {
   description = "The workspace is set by the rover at runtime. Do not change the walue"
 }
 
-variable landingzone_name {
+variable landingzone {
   description = "The landing zone name is used to reference the tfstate in configuration files. Therefore while set it is recommended not to change"
-  default     = "launchpad"
 }
 
-variable scenarios {
-  default = {
-    launchpad = 0
-  }
-}
 
 variable launchpad_mode {
   default = "launchpad_light"
@@ -37,15 +40,6 @@ variable launchpad_mode {
   }
 }
 
-variable level {
-  default = "level0"
-  type    = string
-
-  validation {
-    condition     = contains(["level0", "level1", "level2", "level3", "level4"], var.level)
-    error_message = "Allowed values are level0, level1, level2, level3 or level4."
-  }
-}
 
 variable passthrough {
   default = false

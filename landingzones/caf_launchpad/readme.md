@@ -23,7 +23,11 @@ You can pick your scenario and use one of the following commands:
 
 ```bash
 # Simple scenario for learning and demonstration
-rover -lz /tf/caf/landingzones/caf_launchpad -launchpad -var-file /tf/caf/landingzones/caf_launchpad/scenario/100/configuration.tfvars -parallelism=30 -a apply
+rover -lz /tf/caf/public/landingzones/caf_launchpad \
+    -launchpad \
+    -var-file /tf/caf/public/landingzones/caf_launchpad/scenario/100/configuration.tfvars \
+    -parallelism=30 \
+    -a apply
 
 # Advanced scenario - Requires Azure AD privileges
 rover -lz /tf/caf/landingzones/caf_launchpad -launchpad -var-file /tf/caf/landingzones/caf_launchpad/scenario/200/configuration.tfvars -parallelism=30 -a apply

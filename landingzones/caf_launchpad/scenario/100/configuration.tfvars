@@ -2,10 +2,14 @@
 # runs on: vscode, interactive user
 #
 
-level = "level0"
-scenarios = {
-  launchpad = 100
+landingzone = {
+  current = {
+    level = "level0"
+    key = "launchpad"
+  }
 }
+
+backend_type = "azurerm"
 
 # add 5 random chars at the end of the components name
 random_length = 5
@@ -58,7 +62,7 @@ storage_accounts = {
       # Those tags must never be changed while set as they are used by the rover to locate the launchpad and the tfstates.
       tfstate     = "level0"
       environment = "sandpit"
-      launchpad   = "launchpad_light" # Do not change. Required for the rover to work in AIRS, Limited privilege environments for demonstration purpuses
+      launchpad   = "launchpad" # Do not change. Required for the rover to work in AIRS, Limited privilege environments for demonstration purpuses
       ##
     }
     containers = {
