@@ -1,10 +1,10 @@
 module "launchpad" {
-  source  = "aztfmod/caf-enterprise-scale/azurerm"
-  version = "~>0.3"
+  # source  = "aztfmod/caf-enterprise-scale/azurerm"
+  # version = "~>0.3"
+  source = "../../../"
 
   tags                     = local.tags
   global_settings          = local.global_settings
-  tfstates                 = local.tfstates
   logged_user_objectId     = var.logged_user_objectId
   logged_aad_app_objectId  = var.logged_aad_app_objectId
   user_type                = var.user_type

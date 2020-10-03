@@ -8,11 +8,9 @@
 landingzone = {
   current = {
     level = "level0"
-    key = "launchpad"
+    key   = "launchpad"
   }
 }
-
-random_length = 5
 
 # Default region
 default_region = "region1"

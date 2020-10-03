@@ -11,9 +11,6 @@ landingzone = {
 
 backend_type = "azurerm"
 
-# add 5 random chars at the end of the components name
-random_length = 5
-
 # Default region, used if no region is specified in a component configuraiton
 default_region = "region1"
 

@@ -1,12 +1,11 @@
-level = "level0"
-
-random_length = 5
-
-scenarios = {
-  launchpad = 200
+landingzone = {
+  current = {
+    level = "level0"
+    key   = "launchpad"
+  }
 }
 
-launchpad_mode = "launchpad"
+backend_type = "azurerm"
 
 # Default region. When not set to a resource it will use that value
 default_region = "region1"

@@ -2,7 +2,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 2.29.0"
+      version = "~> 2.30.0"
     }
     azuread = {
       source  = "hashicorp/azuread"
@@ -76,19 +76,23 @@ locals {
   }
 
   tfstates = map(var.landingzone.current.key,
-   map(
-     var.backend_type,
-      map(
-        "storage_account_name", var.tfstate_storage_account_name,
-        "container_name", var.tfstate_container_name,
-        "resource_group_name", var.tfstate_resource_group_name,
-        "key", var.tfstate_key,
-        "level", var.landingzone.current.level,
-        "tenant_id", data.azurerm_client_config.current.tenant_id,
-        "subscription_id", data.azurerm_client_config.current.subscription_id
-      )
-   )
+    map(
+      var.backend_type,
+      local.backend[var.backend_type]
+    )
   )
+
+  backend = {
+    azurerm = {
+      storage_account_name = module.launchpad.storage_accounts[var.launchpad_key_names.tfstates[0]].name
+      container_name       = module.launchpad.storage_accounts[var.launchpad_key_names.tfstates[0]].containers["tfstate"].name
+      resource_group_name  = module.launchpad.storage_accounts[var.launchpad_key_names.tfstates[0]].resource_group_name
+      key                  = var.tf_name
+      level                = var.landingzone.current.level
+      tenant_id            = data.azurerm_client_config.current.tenant_id
+      subscription_id      = data.azurerm_client_config.current.subscription_id
+    }
+  }
 
 }
 

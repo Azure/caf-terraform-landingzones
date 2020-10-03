@@ -26,7 +26,7 @@ data "azuredevops_agent_pool" "pool" {
 }
 
 resource "azuredevops_agent_queue" "agent_queue" {
-  for_each   = data.azuredevops_agent_pool.pool
+  for_each = data.azuredevops_agent_pool.pool
 
   project_id    = data.azuredevops_project.project.id
   agent_pool_id = each.value.id

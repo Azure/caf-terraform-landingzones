@@ -17,7 +17,7 @@ module vm_extensions {
     module.caf,
     azuredevops_agent_queue.agent_queue
   ]
-  source     = "./extensions"
+  source = "./extensions"
   for_each = {
     for key, value in var.virtual_machines : key => value
     if try(value.virtual_machine_extensions, null) != null

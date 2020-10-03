@@ -13,7 +13,7 @@ variable tfstate_resource_group_name {
 }
 
 variable backend_type {
-  type = string
+  type    = string
   default = "azurerm"
   validation {
     condition     = contains(["azurerm"], var.backend_type)
