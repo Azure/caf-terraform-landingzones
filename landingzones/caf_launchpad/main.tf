@@ -58,7 +58,7 @@ resource "random_string" "alpha1" {
 
 locals {
   landingzone_tag = {
-    landingzone = var.launchpad_mode
+    landingzone = var.landingzone.current.key
   }
   tags = merge(local.landingzone_tag, { "level" = var.landingzone.current.level }, { "environment" = var.environment }, { "rover_version" = var.rover_version }, var.tags)
 

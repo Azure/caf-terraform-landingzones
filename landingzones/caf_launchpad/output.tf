@@ -8,22 +8,6 @@ output diagnostics {
   sensitive = true
 }
 
-output keyvaults {
-  value     = module.launchpad.keyvaults
-  sensitive = true
-}
-
-output storage_accounts {
-  value = module.launchpad.storage_accounts
-
-  sensitive = true
-}
-
-output resource_groups {
-  value     = module.launchpad.resource_groups
-  sensitive = true
-}
-
 output networking {
   value = map(
     var.landingzone.current.key,
@@ -39,12 +23,8 @@ output tfstates {
   sensitive = true
 }
 
-output aad_apps {
-  value     = module.launchpad.aad_apps
+output backend_type {
+  value     = var.backend_type
   sensitive = true
 }
 
-output managed_identities {
-  value     = module.launchpad.managed_identities
-  sensitive = true
-}

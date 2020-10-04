@@ -1,26 +1,28 @@
 #
-# This is a ci configuration of the scenario 100. This configuration adjusts the permission to the service principal calling terraform
+# runs on: vscode, interactive user
 #
-# Runs on: pipelines, head-less
-#
-
 
 landingzone = {
   current = {
-    level = "level0"
-    key   = "launchpad"
+    level    = "level0"
+    key      = "launchpad"
+    scenario = "launchpad 100"
   }
 }
 
-# Default region
+backend_type = "azurerm"
+
+# Default region, used if no region is specified in a component configuraiton
 default_region = "region1"
 
+# List of the regions to deploy services
 regions = {
   region1 = "southeastasia"
+  region2 = "eastasia"
 }
 
+# Configuration of the launchpad elements keys 
 launchpad_key_names = {
-  keyvault               = "launchpad"
   azuread_app            = "caf_launchpad_level0"
   keyvault_client_secret = "aadapp-caf-launchpad-level0"
   tfstates = [
@@ -28,23 +30,24 @@ launchpad_key_names = {
   ]
 }
 
+# Name of the resource groups to be created
 resource_groups = {
-  tfstate = {
-    name      = "launchpad-tfstates"
-    region    = "region1"
-    useprefix = true
-  }
-  security = {
-    name      = "launchpad-security"
-    useprefix = true
+  # resource group key is "tfstate", we re-use the key in the configuration file instead of the "name" field which will be the name as deployed on Azure. 
+  level0 = {
+    name = "launchpad-level0"
+    tags = {
+      level = "level0"
+    }
   }
 }
 
 
+# Configuration of the storage accounts in the launchpad
 storage_accounts = {
+  # "level0" is the name of the key and cannot be change. The name can be changed
   level0 = {
     name                     = "level0"
-    resource_group_key       = "tfstate"
+    resource_group_key       = "level0"
     account_kind             = "BlobStorage"
     account_tier             = "Standard"
     account_replication_type = "RAGRS"
@@ -52,7 +55,7 @@ storage_accounts = {
       # Those tags must never be changed while set as they are used by the rover to locate the launchpad and the tfstates.
       tfstate     = "level0"
       environment = "sandpit"
-      launchpad   = "launchpad"
+      launchpad   = "launchpad" # Do not change. Required for the rover to work in AIRS, Limited privilege environments for demonstration purpuses
       ##
     }
     containers = {
@@ -65,9 +68,9 @@ storage_accounts = {
 
 keyvaults = {
   # Do not rename the key "launchpad" to be able to upgrade to the standard launchpad
-  launchpad = {
-    name                = "launchpad"
-    resource_group_key  = "security"
+  level0 = {
+    name                = "level0"
+    resource_group_key  = "level0"
     region              = "region1"
     sku_name            = "standard"
     soft_delete_enabled = true
@@ -76,6 +79,12 @@ keyvaults = {
       tfstate     = "level0"
       environment = "sandpit"
     }
+
+    creation_policies = {
+      logged_in_app = {
+        secret_permissions = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
+      }
+    }
   }
 
 }
@@ -83,14 +92,7 @@ keyvaults = {
 
 keyvault_access_policies = {
   # A maximum of 16 access policies per keyvault
-  launchpad = {
-    logged_in_user = {
-      secret_permissions = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
-    }
-    logged_in_aad_app = {
-      azuread_app_key    = "caf_launchpad_level0"
-      secret_permissions = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
-    }
+  level0 = {
     caf_launchpad_level0 = {
       azuread_app_key    = "caf_launchpad_level0"
       secret_permissions = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
@@ -101,15 +103,15 @@ keyvault_access_policies = {
 
 
 azuread_apps = {
-  # Do not rename the key "launchpad" to be able to upgrade to higher scenario
+  # Azure AD applications created by the launchpad
+  # Do not rename the key "caf_launchpad_level0" to be able to upgrade to higher scenario
   caf_launchpad_level0 = {
-    #convention              = "cafrandom"
-    useprefix               = true
     application_name        = "caf_launchpad_level0"
     password_expire_in_days = 180
-    keyvault = {
-      keyvault_key  = "launchpad"
-      secret_prefix = "aadapp-caf-launchpad-level0"
+    keyvaults = {
+      level0 = {
+        secret_prefix = "aadapp-caf-launchpad-level0"
+      }
     }
   }
 }

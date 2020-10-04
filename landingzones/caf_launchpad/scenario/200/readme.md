@@ -19,9 +19,17 @@ This scenario require the following privileges:
 ## Deployment
 
 ```bash
-rover -lz /tf/caf/landingzones/caf_launchpad/ -launchpad -var-file /tf/caf/landingzones/caf_launchpad/scenario/200/configuration.tfvars -a apply
+rover -lz /tf/caf/landingzones/caf_launchpad \
+  -launchpad \
+  -var-file /tf/caf/landingzones/caf_launchpad/scenario/200/configuration.tfvars \
+  -level level0 \
+  -a apply
 
-rover -lz /tf/caf/landingzones/caf_launchpad/ -launchpad -var-file /tf/caf/landingzones/caf_launchpad/scenario/200/configuration.tfvars -a destroy
+rover -lz /tf/caf/landingzones/caf_launchpad \
+  -launchpad \
+  -var-file /tf/caf/landingzones/caf_launchpad/scenario/200/configuration.tfvars \
+  -level level0 \
+  -a destroy
 ```
 
 ## Architecture diagram

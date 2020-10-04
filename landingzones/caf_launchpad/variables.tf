@@ -1,16 +1,8 @@
 # Map of the current tfstate
-variable tfstate_storage_account_name {
-  default = ""
-}
-variable tfstate_container_name {
-  default = ""
-}
-variable tfstate_key {
-  default = ""
-}
-variable tfstate_resource_group_name {
-  default = ""
-}
+variable tfstate_storage_account_name {}
+variable tfstate_container_name {}
+variable tfstate_key {}
+variable tfstate_resource_group_name {}
 
 variable backend_type {
   type    = string
@@ -21,25 +13,9 @@ variable backend_type {
   }
 }
 
-variable workspace {
-  description = "The workspace is set by the rover at runtime. Do not change the walue"
-}
-
 variable landingzone {
   description = "The landing zone name is used to reference the tfstate in configuration files. Therefore while set it is recommended not to change"
 }
-
-
-variable launchpad_mode {
-  default = "launchpad_light"
-  type    = string
-
-  validation {
-    condition     = contains(["launchpad_light", "launchpad"], var.launchpad_mode)
-    error_message = "Allowed values are launchpad_light or launchpad."
-  }
-}
-
 
 variable passthrough {
   default = false
@@ -59,6 +35,11 @@ variable regions {
   default = {
     region1 = "southeastasia"
   }
+}
+
+variable enable {
+  description = "Map of services defined in the configuration file you want to disable during a deployment"
+  default     = {}
 }
 
 variable prefix {
@@ -85,6 +66,7 @@ variable diagnostic_storage_accounts {
 
 variable keyvaults {}
 variable keyvault_access_policies {}
+variable dynamic_keyvault_secrets {}
 
 variable subscriptions {
   default = {}
@@ -153,14 +135,6 @@ variable aad_roles {
 }
 
 variable azuread_api_permissions {
-  default = {}
-}
-
-variable github_projects {
-  default = {}
-}
-
-variable azure_devops {
   default = {}
 }
 

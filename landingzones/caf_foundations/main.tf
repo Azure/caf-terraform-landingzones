@@ -2,7 +2,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 2.29.0"
+      version = "~> 2.30.0"
     }
     azuread = {
       source  = "hashicorp/azuread"
@@ -40,13 +40,13 @@ provider "azurerm" {
 data "azurerm_client_config" "current" {}
 data "azurerm_subscription" "current" {}
 
-data "terraform_remote_state" "launchpad" {
-  backend = "azurerm"
+data "terraform_remote_state" "remote" {
+  backend = var.backend_type
   config = {
-    storage_account_name = var.lowerlevel_storage_account_name
-    container_name       = var.lowerlevel_container_name
-    key                  = var.lowerlevel_key
-    resource_group_name  = var.lowerlevel_resource_group_name
+    storage_account_name = var.lower_storage_account_name
+    container_name       = var.lower_container_name
+    key                  = var.landingzone.remote.tfstate
+    resource_group_name  = var.lower_resource_group_name
   }
 }
 
@@ -54,29 +54,37 @@ locals {
   landingzone_tag = {
     landingzone = basename(abspath(path.module))
   }
-  tags = merge(local.landingzone_tag, { "level" = var.level }, { "environment" = local.global_settings.environment }, { "rover_version" = var.rover_version }, var.tags)
+  tags = merge(local.landingzone_tag, { "level" = var.landingzone.current.level }, { "environment" = local.global_settings.environment }, { "rover_version" = var.rover_version }, var.tags)
 
   # Passing through the higher level the base diagnostics settings
-  global_settings = data.terraform_remote_state.launchpad.outputs.global_settings
-  diagnostics     = data.terraform_remote_state.launchpad.outputs.diagnostics
+  global_settings = data.terraform_remote_state.remote.outputs.global_settings
+  diagnostics     = data.terraform_remote_state.remote.outputs.diagnostics
 
-  vnets = try(data.terraform_remote_state.launchpad.outputs.vnets, {})
+  vnets = try(data.terraform_remote_state.remote.outputs.vnets, {})
 
+  # Update the tfstates map
   tfstates = merge(
-    map(var.landingzone_name,
+    map(var.landingzone.current.key,
       map(
-        "storage_account_name", var.tfstate_storage_account_name,
-        "container_name", var.tfstate_container_name,
-        "resource_group_name", var.tfstate_resource_group_name,
-        "key", var.tfstate_key,
-        "level", var.level,
-        "tenant_id", data.azurerm_client_config.current.tenant_id,
-        "subscription_id", data.azurerm_client_config.current.subscription_id
+        data.terraform_remote_state.remote.outputs.backend_type,
+        local.backend[data.terraform_remote_state.remote.outputs.backend_type]
       )
     )
     ,
-    data.terraform_remote_state.launchpad.outputs.tfstates
+    data.terraform_remote_state.remote.outputs.tfstates
   )
+
+  backend = {
+    azurerm = {
+      storage_account_name = var.tfstate_storage_account_name
+      container_name       = var.tfstate_container_name
+      resource_group_name  = var.tfstate_resource_group_name
+      key                  = var.tfstate_key
+      level                = var.landingzone.current.level
+      tenant_id            = data.azurerm_client_config.current.tenant_id
+      subscription_id      = data.azurerm_client_config.current.subscription_id
+    }
+  }
 
 }
 

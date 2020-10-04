@@ -1,8 +1,14 @@
 landingzone = {
   current = {
-    level = "level0"
-    key   = "launchpad"
+    level    = "level0"
+    key      = "launchpad"
+    scenario = "launchpad 200"
   }
+}
+
+enable = {
+  bastion_hosts    = false
+  virtual_machines = false
 }
 
 backend_type = "azurerm"
@@ -16,7 +22,6 @@ regions = {
 }
 
 launchpad_key_names = {
-  keyvault               = "launchpad"
   azuread_app            = "caf_launchpad_level0"
   keyvault_client_secret = "aadapp-caf-launchpad-level0"
   tfstates = [
@@ -29,9 +34,35 @@ launchpad_key_names = {
 }
 
 resource_groups = {
-  tfstate = {
-    name   = "launchpad-tfstates"
-    region = "region1"
+  level0 = {
+    name = "launchpad-level0"
+    tags = {
+      level = "level0"
+    }
+  }
+  level1 = {
+    name = "launchpad-level1"
+    tags = {
+      level = "level1"
+    }
+  }
+  level2 = {
+    name = "launchpad-level2"
+    tags = {
+      level = "level2"
+    }
+  }
+  level3 = {
+    name = "launchpad-level3"
+    tags = {
+      level = "level3"
+    }
+  }
+  level4 = {
+    name = "launchpad-level4"
+    tags = {
+      level = "level4"
+    }
   }
   security = {
     name = "launchpad-security"
@@ -53,7 +84,7 @@ resource_groups = {
 storage_accounts = {
   level0 = {
     name                     = "level0"
-    resource_group_key       = "tfstate"
+    resource_group_key       = "level0"
     account_kind             = "BlobStorage"
     account_tier             = "Standard"
     account_replication_type = "RAGRS"
@@ -74,7 +105,7 @@ storage_accounts = {
 
   level1 = {
     name                     = "level1"
-    resource_group_key       = "tfstate"
+    resource_group_key       = "level1"
     account_kind             = "BlobStorage"
     account_tier             = "Standard"
     account_replication_type = "RAGRS"
@@ -93,7 +124,7 @@ storage_accounts = {
 
   level2 = {
     name                     = "level2"
-    resource_group_key       = "tfstate"
+    resource_group_key       = "level2"
     account_kind             = "BlobStorage"
     account_tier             = "Standard"
     account_replication_type = "RAGRS"
@@ -112,7 +143,7 @@ storage_accounts = {
 
   level3 = {
     name                     = "level3"
-    resource_group_key       = "tfstate"
+    resource_group_key       = "level3"
     account_kind             = "BlobStorage"
     account_tier             = "Standard"
     account_replication_type = "RAGRS"
@@ -131,7 +162,7 @@ storage_accounts = {
 
   level4 = {
     name                     = "level4"
-    resource_group_key       = "tfstate"
+    resource_group_key       = "level4"
     account_kind             = "BlobStorage"
     account_tier             = "Standard"
     account_replication_type = "RAGRS"
@@ -215,15 +246,149 @@ diagnostic_storage_accounts = {
 
 
 keyvaults = {
-  # Do not rename the key "launchpad" to be able to upgrade to the standard launchpad
-  launchpad = {
-    name                = "launchpad"
-    resource_group_key  = "security"
-    region              = "region1"
+  level0 = {
+    name                = "level0"
+    resource_group_key  = "level0"
     sku_name            = "standard"
     soft_delete_enabled = true
     tags = {
       tfstate     = "level0"
+      environment = "sandpit"
+    }
+
+    creation_policies = {
+      logged_in_user = {
+        # if the key is set to "logged_in_user" add the user running terraform in the keyvault policy
+        # More examples in /examples/keyvault
+        secret_permissions = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
+      }
+    }
+
+    # you can setup up to 5 profiles
+    diagnostic_profiles = {
+      operations = {
+        definition_key   = "default_all"
+        destination_type = "log_analytics"
+        destination_key  = "central_logs"
+      }
+      siem = {
+        definition_key   = "siem_all"
+        destination_type = "storage"
+        destination_key  = "all_regions"
+      }
+    }
+
+  }
+
+  level1 = {
+    name                = "level1"
+    resource_group_key  = "level1"
+    sku_name            = "standard"
+    soft_delete_enabled = true
+    tags = {
+      tfstate     = "level1"
+      environment = "sandpit"
+    }
+
+    creation_policies = {
+      logged_in_user = {
+        # if the key is set to "logged_in_user" add the user running terraform in the keyvault policy
+        # More examples in /examples/keyvault
+        secret_permissions = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
+      }
+    }
+
+    # you can setup up to 5 profiles
+    diagnostic_profiles = {
+      operations = {
+        definition_key   = "default_all"
+        destination_type = "log_analytics"
+        destination_key  = "central_logs"
+      }
+      siem = {
+        definition_key   = "siem_all"
+        destination_type = "storage"
+        destination_key  = "all_regions"
+      }
+    }
+
+  }
+
+  level2 = {
+    name                = "level2"
+    resource_group_key  = "level2"
+    sku_name            = "standard"
+    soft_delete_enabled = true
+    tags = {
+      tfstate     = "level2"
+      environment = "sandpit"
+    }
+
+    creation_policies = {
+      logged_in_user = {
+        # if the key is set to "logged_in_user" add the user running terraform in the keyvault policy
+        # More examples in /examples/keyvault
+        secret_permissions = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
+      }
+    }
+
+    # you can setup up to 5 profiles
+    diagnostic_profiles = {
+      operations = {
+        definition_key   = "default_all"
+        destination_type = "log_analytics"
+        destination_key  = "central_logs"
+      }
+      siem = {
+        definition_key   = "siem_all"
+        destination_type = "storage"
+        destination_key  = "all_regions"
+      }
+    }
+
+  }
+
+  level3 = {
+    name                = "level3"
+    resource_group_key  = "level3"
+    sku_name            = "standard"
+    soft_delete_enabled = true
+    tags = {
+      tfstate     = "level3"
+      environment = "sandpit"
+    }
+
+    creation_policies = {
+      logged_in_user = {
+        # if the key is set to "logged_in_user" add the user running terraform in the keyvault policy
+        # More examples in /examples/keyvault
+        secret_permissions = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
+      }
+    }
+
+    # you can setup up to 5 profiles
+    diagnostic_profiles = {
+      operations = {
+        definition_key   = "default_all"
+        destination_type = "log_analytics"
+        destination_key  = "central_logs"
+      }
+      siem = {
+        definition_key   = "siem_all"
+        destination_type = "storage"
+        destination_key  = "all_regions"
+      }
+    }
+
+  }
+
+  level4 = {
+    name                = "level4"
+    resource_group_key  = "level4"
+    sku_name            = "standard"
+    soft_delete_enabled = true
+    tags = {
+      tfstate     = "level4"
       environment = "sandpit"
     }
 
@@ -298,7 +463,7 @@ keyvaults = {
 
 keyvault_access_policies = {
   # A maximum of 16 access policies per keyvault
-  launchpad = {
+  level0 = {
     caf_launchpad_level0 = {
       # Reference a key to an azure ad applications
       azuread_app_key    = "caf_launchpad_level0"
@@ -310,6 +475,64 @@ keyvault_access_policies = {
       secret_permissions = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
     }
   }
+  # A maximum of 16 access policies per keyvault
+  level1 = {
+    caf_launchpad_level0 = {
+      # Reference a key to an azure ad applications
+      azuread_app_key    = "caf_launchpad_level0"
+      secret_permissions = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
+    }
+    keyvault_level1_rw = {
+      # Reference a key to an azure ad group
+      azuread_group_key  = "keyvault_level1_rw"
+      secret_permissions = ["Get", "List"]
+    }
+  }
+
+  # A maximum of 16 access policies per keyvault
+  level2 = {
+    caf_launchpad_level0 = {
+      # Reference a key to an azure ad applications
+      azuread_app_key    = "caf_launchpad_level0"
+      secret_permissions = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
+    }
+    keyvault_level2_rw = {
+      # Reference a key to an azure ad group
+      azuread_group_key  = "keyvault_level2_rw"
+      secret_permissions = ["Get", "List"]
+    }
+  }
+
+
+  # A maximum of 16 access policies per keyvault
+  level3 = {
+    caf_launchpad_level0 = {
+      # Reference a key to an azure ad applications
+      azuread_app_key    = "caf_launchpad_level0"
+      secret_permissions = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
+    }
+    keyvault_level3_rw = {
+      # Reference a key to an azure ad group
+      azuread_group_key  = "keyvault_level3_rw"
+      secret_permissions = ["Get", "List"]
+    }
+  }
+
+
+  # A maximum of 16 access policies per keyvault
+  level4 = {
+    caf_launchpad_level1 = {
+      # Reference a key to an azure ad applications
+      azuread_app_key    = "caf_launchpad_level0"
+      secret_permissions = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
+    }
+    keyvault_level4_rw = {
+      # Reference a key to an azure ad group
+      azuread_group_key  = "keyvault_level4_rw"
+      secret_permissions = ["Get", "List"]
+    }
+  }
+
 
   secrets = {
     caf_launchpad_level0 = {
@@ -323,6 +546,151 @@ keyvault_access_policies = {
     keyvault_password_rotation = {
       azuread_group_key  = "keyvault_password_rotation"
       secret_permissions = ["Set", "Get", "List", "Delete", ]
+    }
+  }
+}
+
+
+# Store output attributes into keyvault secret
+# Those values are used by the rover to connect the current remote state and 
+# identity the lower level
+dynamic_keyvault_secrets = {
+  level0 = {
+    msi = {
+      output_key    = "managed_identities"
+      resource_key  = "level0"
+      attribute_key = "id"
+      secret_name   = "msi-resource-id"
+    }
+    subscription_id = {
+      output_key    = "tenant"
+      attribute_key = "subscription_id"
+      secret_name   = "subscription-id"
+    }
+    tenant_id = {
+      output_key    = "tenant"
+      attribute_key = "tenant_id"
+      secret_name   = "tenant-id"
+    }
+  }
+  level1 = {
+    msi = {
+      output_key    = "managed_identities"
+      resource_key  = "level1"
+      attribute_key = "id"
+      secret_name   = "msi-resource-id"
+    }
+    lower_stg = {
+      output_key    = "storage_accounts"
+      resource_key  = "level0"
+      attribute_key = "name"
+      secret_name   = "lower-storage-account-name"
+    }
+    lower_rg = {
+      output_key    = "resource_groups"
+      resource_key  = "level0"
+      attribute_key = "name"
+      secret_name   = "lower-resource-group-name"
+    }
+    subscription_id = {
+      output_key    = "tenant"
+      attribute_key = "subscription_id"
+      secret_name   = "subscription-id"
+    }
+    tenant_id = {
+      output_key    = "tenant"
+      attribute_key = "tenant_id"
+      secret_name   = "tenant-id"
+    }
+  }
+  level2 = {
+    msi = {
+      output_key    = "managed_identities"
+      resource_key  = "level2"
+      attribute_key = "id"
+      secret_name   = "msi-resource-id"
+    }
+    lower_stg = {
+      output_key    = "storage_accounts"
+      resource_key  = "level1"
+      attribute_key = "name"
+      secret_name   = "lower-storage-account-name"
+    }
+    lower_rg = {
+      output_key    = "resource_groups"
+      resource_key  = "level1"
+      attribute_key = "name"
+      secret_name   = "lower-resource-group-name"
+    }
+    subscription_id = {
+      output_key    = "tenant"
+      attribute_key = "subscription_id"
+      secret_name   = "subscription-id"
+    }
+    tenant_id = {
+      output_key    = "tenant"
+      attribute_key = "tenant_id"
+      secret_name   = "tenant-id"
+    }
+  }
+  level3 = {
+    msi = {
+      output_key    = "managed_identities"
+      resource_key  = "level3"
+      attribute_key = "id"
+      secret_name   = "msi-resource-id"
+    }
+    lower_stg = {
+      output_key    = "storage_accounts"
+      resource_key  = "level2"
+      attribute_key = "name"
+      secret_name   = "lower-storage-account-name"
+    }
+    lower_rg = {
+      output_key    = "resource_groups"
+      resource_key  = "level2"
+      attribute_key = "name"
+      secret_name   = "lower-resource-group-name"
+    }
+    subscription_id = {
+      output_key    = "tenant"
+      attribute_key = "subscription_id"
+      secret_name   = "subscription-id"
+    }
+    tenant_id = {
+      output_key    = "tenant"
+      attribute_key = "tenant_id"
+      secret_name   = "tenant-id"
+    }
+  }
+  level4 = {
+    msi = {
+      output_key    = "managed_identities"
+      resource_key  = "level4"
+      attribute_key = "id"
+      secret_name   = "msi-resource-id"
+    }
+    lower_stg = {
+      output_key    = "storage_accounts"
+      resource_key  = "level3"
+      attribute_key = "name"
+      secret_name   = "lower-storage-account-name"
+    }
+    lower_rg = {
+      output_key    = "resource_groups"
+      resource_key  = "level3"
+      attribute_key = "name"
+      secret_name   = "lower-resource-group-name"
+    }
+    subscription_id = {
+      output_key    = "tenant"
+      attribute_key = "subscription_id"
+      secret_name   = "subscription-id"
+    }
+    tenant_id = {
+      output_key    = "tenant"
+      attribute_key = "tenant_id"
+      secret_name   = "tenant-id"
     }
   }
 }
@@ -376,8 +744,8 @@ azuread_groups = {
   }
 
   keyvault_level1_rw = {
-    name        = "caf-level1-keyvault-rw"
-    description = "Provide read and write access to the keyvault secrets and tfstates / level1."
+    name        = "caf-level1-landingzones-rw"
+    description = "Provide read and write access to manage landingzones / level1."
     members = {
     }
     owners = {
@@ -387,8 +755,8 @@ azuread_groups = {
   }
 
   keyvault_level2_rw = {
-    name        = "caf-level2-keyvault-rw"
-    description = "Provide read and write access to the keyvault secrets and tfstates / level2."
+    name        = "caf-level2-landingzones-rw"
+    description = "Provide read and write access to manage landingzones / level2."
     members = {
     }
     owners = {
@@ -398,8 +766,8 @@ azuread_groups = {
   }
 
   keyvault_level3_rw = {
-    name        = "caf-level3-keyvault-rw"
-    description = "Provide read and write access to the keyvault secrets and tfstates / level3."
+    name        = "caf-level3-landingzones-rw"
+    description = "Provide read and write access to manage landingzones / level3."
     members = {
     }
     owners = {
@@ -409,8 +777,19 @@ azuread_groups = {
   }
 
   keyvault_level4_rw = {
-    name        = "caf-level4-keyvault-rw"
-    description = "Provide read and write access to the keyvault secrets and tfstates / level4."
+    name        = "caf-level4-landingzones-rw"
+    description = "Provide read and write access to manage landingzones / level4."
+    members = {
+    }
+    owners = {
+
+    }
+    prevent_duplicate_name = false
+  }
+
+  applications_level4 = {
+    name        = "caf-level4-applications"
+    description = "Provide read access to the applications who need to deploy on the level4."
     members = {
     }
     owners = {
@@ -480,7 +859,7 @@ azuread_apps = {
     # Store the ${secret_prefix}-client-id, ${secret_prefix}-client-secret...
     # Set the policy during the creation process of the launchpad
     keyvaults = {
-      launchpad = {
+      level0 = {
         secret_prefix = "aadapp-caf-launchpad-level0"
       }
     }
@@ -840,11 +1219,6 @@ custom_role_definitions = {
         "Microsoft.Network/virtualNetworks/read",
         "Microsoft.Network/virtualNetworks/write",
       ]
-      data_actions = [
-        "Microsoft.Storage/storageAccounts/blobServices/containers/blobs/delete",
-        "Microsoft.Storage/storageAccounts/blobServices/containers/blobs/write",
-        "Microsoft.Storage/storageAccounts/blobServices/containers/blobs/read",
-      ]
     }
 
   }
@@ -862,11 +1236,6 @@ custom_role_definitions = {
         "Microsoft.Authorization/roleDefinitions/read",
         "Microsoft.Authorization/roleDefinitions/write",
         "Microsoft.Resources/subscriptions/providers/read"
-      ]
-      data_actions = [
-        "Microsoft.Storage/storageAccounts/blobServices/containers/blobs/delete",
-        "Microsoft.Storage/storageAccounts/blobServices/containers/blobs/write",
-        "Microsoft.Storage/storageAccounts/blobServices/containers/blobs/read",
       ]
     }
   }
@@ -913,7 +1282,7 @@ role_mapping = {
       }
     }
     resource_groups = {
-      tfstate = {
+      level0 = {
         "Reader" = {
           azuread_groups = [
             "caf_launchpad_Reader"
@@ -966,9 +1335,17 @@ role_mapping = {
             "level0"
           ]
         }
+        "Storage Blob Data Reader" = {
+          azuread_groups = [
+            "keyvault_level1_rw"
+          ]
+        }
       }
       level1 = {
         "Storage Blob Data Contributor" = {
+          logged_in = [
+            "user"
+          ]
           azuread_groups = [
             "keyvault_level1_rw"
           ]
@@ -976,9 +1353,17 @@ role_mapping = {
             "level1"
           ]
         }
+        "Storage Blob Data Reader" = {
+          azuread_groups = [
+            "keyvault_level2_rw"
+          ]
+        }
       }
       level2 = {
         "Storage Blob Data Contributor" = {
+          logged_in = [
+            "user"
+          ]
           azuread_groups = [
             "keyvault_level2_rw"
           ]
@@ -986,9 +1371,17 @@ role_mapping = {
             "level2"
           ]
         }
+        "Storage Blob Data Reader" = {
+          azuread_groups = [
+            "keyvault_level3_rw"
+          ]
+        }
       }
       level3 = {
         "Storage Blob Data Contributor" = {
+          logged_in = [
+            "user"
+          ]
           azuread_groups = [
             "keyvault_level3_rw"
           ]
@@ -996,14 +1389,27 @@ role_mapping = {
             "level3"
           ]
         }
+        "Storage Blob Data Reader" = {
+          azuread_groups = [
+            "keyvault_level4_rw"
+          ]
+        }
       }
       level4 = {
         "Storage Blob Data Contributor" = {
+          logged_in = [
+            "user"
+          ]
           azuread_groups = [
             "keyvault_level4_rw"
           ]
           managed_identities = [
             "level4"
+          ]
+        }
+        "Storage Blob Data Reader" = {
+          azuread_groups = [
+            "applications_level4"
           ]
         }
       }

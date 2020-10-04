@@ -13,12 +13,12 @@ output vnets {
   sensitive = true
 }
 
-output keyvaults {
-  value     = data.terraform_remote_state.launchpad.outputs.keyvaults
+output tfstates {
+  value     = local.tfstates
   sensitive = true
 }
 
-output tfstates {
-  value     = local.tfstates
+output backend_type {
+  value     = data.terraform_remote_state.remote.outputs.backend_type
   sensitive = true
 }
