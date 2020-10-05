@@ -11,7 +11,7 @@ keyvaults = {
     }
 
     creation_policies = {
-      logged_in_app = {
+      logged_in_aad_app = {
         secret_permissions = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
       }
     }
@@ -29,7 +29,7 @@ keyvaults = {
     }
 
     creation_policies = {
-      logged_in_app = {
+      logged_in_aad_app = {
         secret_permissions = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
       }
     }
@@ -46,7 +46,7 @@ keyvaults = {
     }
 
     creation_policies = {
-      logged_in_app = {
+      logged_in_aad_app = {
         secret_permissions = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
       }
     }
@@ -64,7 +64,7 @@ keyvaults = {
     }
 
     creation_policies = {
-      logged_in_app = {
+      logged_in_aad_app = {
         secret_permissions = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
       }
     }
@@ -81,7 +81,7 @@ keyvaults = {
     }
 
     creation_policies = {
-      logged_in_app = {
+      logged_in_aad_app = {
         secret_permissions = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
       }
     }
