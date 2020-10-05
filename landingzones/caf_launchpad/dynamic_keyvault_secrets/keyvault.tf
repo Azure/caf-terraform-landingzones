@@ -1,5 +1,5 @@
 module secret {
-  source = "./secret" 
+  source   = "./secret"
   for_each = var.settings
 
   name        = each.value.secret_name

@@ -9,7 +9,10 @@ Landing zone:
 
 ```bash
 # Deploy
-rover -lz /tf/caf/landingzones/caf_launchpad/add-ons/azure_devops_agent_self_hosted/ -var-file /tf/caf/landingzones/caf_launchpad/add-ons/azure_devops_agent_self_hosted/configuration/devops_agents.tfvars -a apply
+rover -lz /tf/caf/public/landingzones/caf_launchpad/add-ons/azure_devops_agent_self_hosted/ \
+  -var-file /tf/caf/public/landingzones/caf_launchpad/add-ons/azure_devops_agent_self_hosted/configuration/devops_agents.tfvars \
+  -level level0 \
+  -a apply
 
 # Destroy
 rover -lz /tf/caf/landingzones/caf_launchpad/add-ons/azure_devops_agent_self_hosted/ -var-file /tf/caf/landingzones/caf_launchpad/add-ons/azure_devops_agent_self_hosted/configuration/devops_agents.tfvars -a destroy

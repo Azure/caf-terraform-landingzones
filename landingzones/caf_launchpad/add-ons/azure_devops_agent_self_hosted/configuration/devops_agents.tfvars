@@ -1,4 +1,18 @@
 
+landingzone = {
+  backend_type = "azurerm"
+  current = {
+    level = "level0"
+    key   = "azdo-devops"
+  }
+  remote = {
+    launchpad = {
+      tfstate = "caf_launchpad.tfstate"
+    }
+  }
+}
+
+
 resource_groups = {
   devops_region1 = {
     name = "devops-agents-rg1"

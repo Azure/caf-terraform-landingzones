@@ -21,7 +21,7 @@ storage_accounts = {
     }
   }
 
-  
+
   level1 = {
     name                     = "level1"
     resource_group_key       = "level1"

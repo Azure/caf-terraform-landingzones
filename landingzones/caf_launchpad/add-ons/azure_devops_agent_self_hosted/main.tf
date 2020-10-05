@@ -2,7 +2,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 2.28.0"
+      version = "~> 2.30.0"
     }
     azuread = {
       source  = "hashicorp/azuread"
@@ -46,13 +46,15 @@ provider "azurerm" {
 
 data "azurerm_client_config" "current" {}
 
-data "terraform_remote_state" "launchpad" {
-  backend = "azurerm"
+data "terraform_remote_state" "remote" {
+  for_each = var.landingzone.remote
+
+  backend = var.landingzone.backend_type
   config = {
-    storage_account_name = var.lowerlevel_storage_account_name
-    container_name       = var.lowerlevel_container_name
-    key                  = var.lowerlevel_key
-    resource_group_name  = var.lowerlevel_resource_group_name
+    storage_account_name = var.lower_storage_account_name
+    container_name       = var.lower_container_name
+    key                  = each.value.tfstate
+    resource_group_name  = var.lower_resource_group_name
   }
 }
 
