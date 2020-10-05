@@ -23,14 +23,11 @@ variable landingzone {
       key   = "foundation"
     }
     remote = {
-      key     = "launchpad"
-      tfstate = "caf_launchpad.tfstate"
+      launchpad = {
+        tfstate = "caf_launchpad.tfstate"
+      }
     }
   }
-}
-
-variable backend_type {
-  default = "azurerm"
 }
 
 variable rover_version {}

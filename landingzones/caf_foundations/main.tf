@@ -41,11 +41,11 @@ data "azurerm_client_config" "current" {}
 data "azurerm_subscription" "current" {}
 
 data "terraform_remote_state" "remote" {
-  backend = var.backend_type
+  backend = var.landingzone.backend_type
   config = {
     storage_account_name = var.lower_storage_account_name
     container_name       = var.lower_container_name
-    key                  = var.landingzone.remote.tfstate
+    key                  = var.landingzone.remote.launchpad.tfstate
     resource_group_name  = var.lower_resource_group_name
   }
 }
