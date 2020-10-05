@@ -1,16 +1,15 @@
 # Map of the current tfstate
-variable tfstate_storage_account_name {}
-variable tfstate_container_name {}
-variable tfstate_key {}
-variable tfstate_resource_group_name {}
-
-variable backend_type {
-  type    = string
-  default = "azurerm"
-  validation {
-    condition     = contains(["azurerm"], var.backend_type)
-    error_message = "Backend to store the Terraform tfstates."
-  }
+variable tfstate_storage_account_name {
+  default = null
+}
+variable tfstate_container_name {
+  default = null
+}
+variable tfstate_key {
+  default = null
+}
+variable tfstate_resource_group_name {
+  default = null
 }
 
 variable landingzone {
@@ -65,7 +64,9 @@ variable diagnostic_storage_accounts {
 }
 
 variable keyvaults {}
-variable keyvault_access_policies {}
+variable keyvault_access_policies {
+  default = {}
+}
 variable dynamic_keyvault_secrets {}
 
 variable subscriptions {

@@ -24,7 +24,7 @@ output tfstates {
 }
 
 output backend_type {
-  value     = var.backend_type
+  value     = var.landingzone.backend_type
   sensitive = true
 }
 

@@ -77,8 +77,8 @@ locals {
 
   tfstates = map(var.landingzone.current.key,
     map(
-      var.backend_type,
-      local.backend[var.backend_type]
+      var.landingzone.backend_type,
+      local.backend[var.landingzone.backend_type]
     )
   )
 
