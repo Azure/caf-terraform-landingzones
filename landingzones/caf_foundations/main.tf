@@ -60,7 +60,10 @@ locals {
   global_settings = data.terraform_remote_state.remote.outputs.global_settings
   diagnostics     = data.terraform_remote_state.remote.outputs.diagnostics
 
-  vnets = try(data.terraform_remote_state.remote.outputs.vnets, {})
+  networking = merge(
+    map(var.landingzone.current.key, {}),
+    data.terraform_remote_state.remote.outputs.networking
+  )
 
   # Update the tfstates map
   tfstates = merge(

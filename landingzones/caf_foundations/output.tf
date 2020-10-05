@@ -8,8 +8,8 @@ output diagnostics {
   sensitive = true
 }
 
-output vnets {
-  value     = local.vnets
+output networking {
+  value     = local.networking
   sensitive = true
 }
 

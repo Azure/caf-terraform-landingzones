@@ -18,9 +18,10 @@ variable tfstate_resource_group_name {
 
 variable landingzone {
   default = {
+  backend_type = "azurerm"
     current = {
       level = "level1"
-      key   = "foundation"
+      key   = "foundations"
     }
     remote = {
       launchpad = {
