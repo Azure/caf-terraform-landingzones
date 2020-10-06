@@ -24,10 +24,6 @@ terraform {
       source  = "aztfmod/azurecaf"
       version = "~> 1.1.0"
     }
-    enterprise-scale = {
-      source  = "Azure/enterprise-scale"
-      version = "~> 0.0"
-    }
   }
   required_version = ">= 0.13"
 }
