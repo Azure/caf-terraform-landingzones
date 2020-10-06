@@ -21,12 +21,12 @@ dynamic_keyvault_secrets = {
       secret_name   = "tenant-id"
     }
     admin = {
-      secret_name  = "azdo-pat-admin"
-      value        = ""
+      secret_name = "azdo-pat-admin"
+      value       = ""
     }
     agent = {
-      secret_name  = "azdo-pat-agent"
-      value        = ""
+      secret_name = "azdo-pat-agent"
+      value       = ""
     }
   }
   level1 = {

@@ -2,7 +2,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 2.28.0"
+      version = "~> 2.30.0"
     }
     azuread = {
       source  = "hashicorp/azuread"
@@ -43,72 +43,105 @@ provider "azurerm" {
 
 data "azurerm_client_config" "current" {}
 
-data "terraform_remote_state" "caf_foundations" {
-  backend = "azurerm"
-  config = {
-    storage_account_name = var.lowerlevel_storage_account_name
-    container_name       = var.lowerlevel_container_name
-    resource_group_name  = var.lowerlevel_resource_group_name
-    key                  = var.tfstates.caf_foundations.tfstate
-  }
-}
+data "terraform_remote_state" "current_networking" {
+  for_each = try(var.landingzone.current.networking, {})
 
-data "terraform_remote_state" "networking" {
-  backend = "azurerm"
+  backend = var.landingzone.backend_type
   config = {
     storage_account_name = var.tfstate_storage_account_name
     container_name       = var.tfstate_container_name
     resource_group_name  = var.tfstate_resource_group_name
-    key                  = var.tfstates.networking.tfstate
+    key                  = each.value.tfstate
   }
 }
 
+data "terraform_remote_state" "lower_networking" {
+  for_each = try(var.landingzone.lower.networking, {})
+
+  backend = var.landingzone.backend_type
+  config = {
+    storage_account_name = var.lower_storage_account_name
+    container_name       = var.lower_container_name
+    resource_group_name  = var.lower_resource_group_name
+    key                  = each.value.tfstate
+  }
+}
+
+data "terraform_remote_state" "foundations" {
+  backend = var.landingzone.backend_type
+  config = {
+    storage_account_name = var.lower_storage_account_name
+    container_name       = var.lower_container_name
+    resource_group_name  = var.lower_resource_group_name
+    key                  = var.landingzone.lower.foundations.tfstate
+  }
+}
 
 locals {
   landingzone_tag = {
     "landingzone" = basename(abspath(path.module))
   }
-  tags = merge(local.landingzone_tag, { "level" = var.level }, { "environment" = local.global_settings.environment }, { "rover_version" = var.rover_version }, var.tags)
+  tags = merge(local.landingzone_tag, { "level" = var.landingzone.current.level }, { "environment" = local.global_settings.environment }, { "rover_version" = var.rover_version }, var.tags)
 
   global_settings = {
-    prefix         = try(var.global_settings.prefix, data.terraform_remote_state.caf_foundations.outputs.global_settings.prefix)
-    default_region = try(var.global_settings.default_region, data.terraform_remote_state.caf_foundations.outputs.global_settings.default_region)
-    regions        = try(var.global_settings.regions, null) == null ? data.terraform_remote_state.caf_foundations.outputs.global_settings.regions : merge(data.terraform_remote_state.caf_foundations.outputs.global_settings.regions, var.global_settings.regions)
-    environment    = data.terraform_remote_state.caf_foundations.outputs.global_settings.environment
-    random_length  = try(var.global_settings.random_length, data.terraform_remote_state.caf_foundations.outputs.global_settings.random_length)
+    prefix         = try(var.global_settings.prefix, data.terraform_remote_state.foundations.outputs.global_settings.prefix)
+    default_region = try(var.global_settings.default_region, data.terraform_remote_state.foundations.outputs.global_settings.default_region)
+    regions        = try(var.global_settings.regions, null) == null ? data.terraform_remote_state.foundations.outputs.global_settings.regions : merge(data.terraform_remote_state.foundations.outputs.global_settings.regions, var.global_settings.regions)
+    environment    = data.terraform_remote_state.foundations.outputs.global_settings.environment
+    random_length  = try(var.global_settings.random_length, data.terraform_remote_state.foundations.outputs.global_settings.random_length)
     passthrough    = try(var.global_settings.passthrough, false)
   }
 
   diagnostics = {
-    diagnostics_definition   = merge(data.terraform_remote_state.caf_foundations.outputs.diagnostics.diagnostics_definition, var.diagnostics_definition)
-    diagnostics_destinations = data.terraform_remote_state.caf_foundations.outputs.diagnostics.diagnostics_destinations
-    storage_accounts         = data.terraform_remote_state.caf_foundations.outputs.diagnostics.storage_accounts
-    log_analytics            = data.terraform_remote_state.caf_foundations.outputs.diagnostics.log_analytics
+    diagnostics_definition   = merge(data.terraform_remote_state.foundations.outputs.diagnostics.diagnostics_definition, var.diagnostics_definition)
+    diagnostics_destinations = data.terraform_remote_state.foundations.outputs.diagnostics.diagnostics_destinations
+    storage_accounts         = data.terraform_remote_state.foundations.outputs.diagnostics.storage_accounts
+    log_analytics            = data.terraform_remote_state.foundations.outputs.diagnostics.log_analytics
   }
 
-  vnets = merge(
-    data.terraform_remote_state.caf_foundations.outputs.vnets,
+  # Merge all remote networking objects
+  lower_networking = {
+    for key, networking in try(var.landingzone.lower.networking, {}) : key => merge(data.terraform_remote_state.lower_networking[key].outputs.networking[key])
+  }
+  current_networking = {
+    for key, networking in try(var.landingzone.current.networking, {}) : key => merge(data.terraform_remote_state.current_networking[key].outputs.networking[key])
+  }
+
+  # Combine them with the local networking objects
+  networking = merge(
+    local.lower_networking,
+    local.current_networking,
     map(
-      var.landingzone_name,
-      try(module.landingzones_networking.vnets, {}
+      var.landingzone.current.key,
+      map(
+        "vnets", try(module.landingzones_networking.vnets, {})
       )
     )
   )
 
+  # vnets = merge(
+  #   data.terraform_remote_state.foundations.outputs.vnets,
+  #   map(
+  #     var.landingzone_name,
+  #     try(module.landingzones_networking.vnets, {}
+  #     )
+  #   )
+  # )
+
   tfstates = merge(
-    map(var.landingzone_name,
+    map(var.landingzone.current.key,
       map(
         "storage_account_name", var.tfstate_storage_account_name,
         "container_name", var.tfstate_container_name,
         "resource_group_name", var.tfstate_resource_group_name,
         "key", var.tfstate_key,
-        "level", var.level,
+        "level", var.landingzone.current.level,
         "tenant_id", data.azurerm_client_config.current.tenant_id,
         "subscription_id", data.azurerm_client_config.current.subscription_id
       )
     )
     ,
-    data.terraform_remote_state.networking.outputs.tfstates
+    data.terraform_remote_state.foundations.outputs.tfstates
   )
 
 

@@ -1,6 +1,7 @@
 module "landingzones_networking" {
-  source  = "aztfmod/caf-enterprise-scale/azurerm"
-  version = "~>0.3"
+  source  = "aztfmod/caf/azurerm"
+  version = "~> 0.4"
+
 
   tags                     = local.tags
   diagnostics              = local.diagnostics
@@ -37,5 +38,8 @@ module "landingzones_networking" {
   }
   storage_accounts   = var.storage_accounts
   managed_identities = var.managed_identities
+  remote_objects = {
+    networking = merge(local.lower_networking, local.current_networking)
+  }
 
 }

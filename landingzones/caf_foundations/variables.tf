@@ -18,7 +18,7 @@ variable tfstate_resource_group_name {
 
 variable landingzone {
   default = {
-  backend_type = "azurerm"
+    backend_type = "azurerm"
     current = {
       level = "level1"
       key   = "foundations"

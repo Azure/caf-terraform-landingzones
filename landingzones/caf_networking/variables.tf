@@ -1,37 +1,37 @@
 # Map of the remote data state for lower level
-variable lowerlevel_storage_account_name {}
-variable lowerlevel_container_name {}
-variable lowerlevel_key {}
-variable lowerlevel_resource_group_name {}
+variable lower_storage_account_name {}
+variable lower_container_name {}
+variable lower_resource_group_name {}
 
 variable tfstate_storage_account_name {}
 variable tfstate_container_name {}
 variable tfstate_key {}
 variable tfstate_resource_group_name {}
 
-variable tfstates {
+variable landingzone {
   default = {
-    caf_foundations = {
-      tfstate = "caf_foundations.tfstate"
+    backend_type = "azurerm"
+    current = {
+      level = "level2"
+      key   = "networking_hub"
     }
-    caf_networking = {
-      tfstate = "caf_networking.tfstate"
+    remote = {
+      foundations = {
+        tfstate = "caf_foundations.tfstate"
+      }
+      networking = {
+        foundations = {
+          tfstate = "caf_foundations.tfstate"
+        }
+      }
     }
   }
-}
-
-variable landingzone_name {
-  description = "The landing zone name is used to reference the tfstate in configuration files. Therefore while set it is recommended not to change"
-  default     = "networking"
 }
 
 variable global_settings {
   default = {}
 }
 variable rover_version {}
-variable level {
-  default = "level2"
-}
 variable logged_user_objectId {
   default = null
 }
