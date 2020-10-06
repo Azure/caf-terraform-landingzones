@@ -1,6 +1,6 @@
 module "landingzones_shared_services" {
   source  = "aztfmod/caf/azurerm"
-  version = "~> 0.4"
+  version = "~> 0.4.0-preview1"
 
   tags                    = local.tags
   diagnostics             = local.diagnostics

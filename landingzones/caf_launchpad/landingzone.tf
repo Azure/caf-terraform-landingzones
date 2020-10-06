@@ -1,7 +1,6 @@
 module "launchpad" {
   source  = "aztfmod/caf/azurerm"
-  version = "~> 0.4"
-  # source = "../../../"
+  version = "~> 0.4.0-preview1"
 
   tags                     = local.tags
   global_settings          = local.global_settings
