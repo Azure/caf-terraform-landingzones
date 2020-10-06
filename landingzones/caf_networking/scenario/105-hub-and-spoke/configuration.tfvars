@@ -1,15 +1,24 @@
-global_settings = {
-  regions = {
-    region1 = "eastasia"
+landingzone = {
+  backend_type = "azurerm"
+  current = {
+    level = "level2"
+    key   = "networking_hub"
+  }
+  lower = {
+    foundations = {
+      tfstate = "caf_foundations.tfstate"
+    }
+    networking = {
+      launchpad = {
+        tfstate = "caf_foundations.tfstate"
+      }
+    }
   }
 }
 
-tfstates = {
-  caf_foundations = {
-    tfstate = "caf_foundations.tfstate"
-  }
-  networking = {
-    tfstate = "caf_foundations.tfstate"
+global_settings = {
+  regions = {
+    region1 = "eastasia"
   }
 }
 
