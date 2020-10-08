@@ -34,7 +34,7 @@ output application_gateway_applications {
   sensitive = true
 }
 
-# output public_ip_addresses {
-#   value     = module.landingzones_networking.public_ip_addresses
-#   sensitive = true
-# }
+output public_ip_addresses {
+  value     = module.landingzones_networking.public_ip_addresses
+  sensitive = true
+}
