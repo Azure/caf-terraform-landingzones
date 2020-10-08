@@ -1,14 +1,22 @@
-Deploy the launchpad services in the level1 layer.
+# CAF Foundations landing zone
 
-# This is currently a stub - pending refactoring! 
+## /!\ This is currently a stub - pending refactoring
 
-# Review the configuration file
+# Using CAF foundations
+
+During the previous the content of this landing zone is empty unless you specify a configuration file to enable it.
 
 ```bash
 cd /tf/caf
 
-#  to deploy the CAF Foundations
+#  to deploy the CAF Foundations in passthrough mode (recommended for now)
 rover -lz /tf/caf/landingzones/caf_foundations \
+-level level1 \
+-a apply
+
+#  to deploy the CAF Foundations with enteprise scale (experimental)
+rover -lz /tf/caf/landingzones/caf_foundations \
+-var-folder /tf/caf/landingzones/caf_foundations/scenarios/200 \
 -level level1 \
 -a apply
 

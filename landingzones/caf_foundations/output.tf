@@ -1,6 +1,6 @@
 output global_settings {
   value     = local.global_settings
-  sensitive = true
+  sensitive = false
 }
 
 output diagnostics {
@@ -19,6 +19,6 @@ output tfstates {
 }
 
 output backend_type {
-  value     = data.terraform_remote_state.remote.outputs.backend_type
+  value     = data.terraform_remote_state.launchpad.outputs.backend_type
   sensitive = true
 }

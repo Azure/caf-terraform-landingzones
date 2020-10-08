@@ -23,7 +23,7 @@ variable landingzone {
       level = "level1"
       key   = "foundations"
     }
-    remote = {
+    lower = {
       launchpad = {
         tfstate = "caf_launchpad.tfstate"
       }
@@ -40,5 +40,9 @@ variable logged_aad_app_objectId {
 }
 variable tags {
   type    = map
+  default = {}
+}
+
+variable enterprise_scale {
   default = {}
 }
