@@ -78,24 +78,4 @@ storage_accounts = {
     }
   }
 
-  level4 = {
-    name                     = "level4"
-    resource_group_key       = "level4"
-    account_kind             = "BlobStorage"
-    account_tier             = "Standard"
-    account_replication_type = "RAGRS"
-    tags = {
-      # Those tags must never be changed while set as they are used by the rover to locate the launchpad and the tfstates.
-      tfstate     = "level4"
-      environment = "sandpit"
-      launchpad   = "launchpad"
-    }
-    containers = {
-      tfstate = {
-        name = "tfstate"
-      }
-    }
-
-  }
-
 }

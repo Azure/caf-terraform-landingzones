@@ -1,4 +1,0 @@
-
-enterprise_scale = {
-  
-}

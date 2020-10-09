@@ -28,3 +28,23 @@ output backend_type {
   sensitive = true
 }
 
+output keyvaults {
+  value = map(
+    var.landingzone.current.key, module.launchpad.keyvaults
+  )
+  sensitive = true
+}
+
+output managed_identities {
+  value = map(
+    var.landingzone.current.key, module.launchpad.managed_identities
+  )
+  sensitive = true
+}
+
+output aad_apps {
+  value = map(
+    var.landingzone.current.key, module.launchpad.aad_apps
+  )
+  sensitive = true
+}

@@ -149,24 +149,6 @@ role_mapping = {
           ]
         }
       }
-      level4 = {
-        "Storage Blob Data Contributor" = {
-          logged_in = [
-            "user"
-          ]
-          azuread_groups = [
-            "keyvault_level4_rw"
-          ]
-          managed_identities = [
-            "level4"
-          ]
-        }
-        "Storage Blob Data Reader" = {
-          azuread_groups = [
-            "applications_level4"
-          ]
-        }
-      }
     }
   }
 

@@ -199,18 +199,6 @@ keyvaults = {
       }
     }
 
-    secrets = {
-      azdo_pat_admin = {
-        name           = "azdo-pat-admin"
-        value          = ""
-        ignore_changes = true
-      }
-      azdo_pat_agent = {
-        name           = "azdo-pat-agent"
-        value          = ""
-        ignore_changes = true
-      }
-    }
 
   }
 }

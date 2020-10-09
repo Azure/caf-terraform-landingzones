@@ -1,7 +1,9 @@
 module "caf" {
-  # source     = "aztfmod/caf-enterprise-scale/azurerm"
-  # version    = "~> 0.3"
-  source     = "../../../../../aztfmod/es"
+  # source     = "aztfmod/caf/azurerm"
+  # version    = "~> 0.4"
+  # source = "github.com/aztfmod/terraform-azurerm-caf?ref=0.4"
+  source = "../../../../../aztfmod/es"
+
   depends_on = [azuredevops_agent_pool.pool, azuredevops_agent_queue.agent_queue]
 
   tfstates                    = local.tfstates
@@ -25,6 +27,8 @@ module "caf" {
 
   # Experiment to prevent using remote_tfstate in modules. 
   remote_objects = {
-    keyvaults = try(data.terraform_remote_state.remote.outputs.keyvaults["launchpad"], {})
+    keyvaults          = local.current_keyvaults
+    networking         = local.current_networking
+    managed_identities = local.current_managed_identities
   }
 }

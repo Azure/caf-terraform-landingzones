@@ -58,17 +58,6 @@ azuread_groups = {
     prevent_duplicate_name = false
   }
 
-  keyvault_level4_rw = {
-    name        = "caf-level4-landingzones-rw"
-    description = "Provide read and write access to manage landingzones / level4."
-    members = {
-    }
-    owners = {
-
-    }
-    prevent_duplicate_name = false
-  }
-
   applications_level4 = {
     name        = "caf-level4-applications"
     description = "Provide read access to the applications who need to deploy on the level4."
@@ -160,5 +149,34 @@ azuread_roles = {
       "Application Developer",
       "User Account Administrator"
     ]
+  }
+  managed_identities = {
+    level0 = {
+      roles = [
+        "Directory Readers",
+        "Application Developer",
+        "User Account Administrator"
+      ]
+    }
+    level1 = {
+      roles = [
+        "Directory Readers"
+      ]
+    }
+    level2 = {
+      roles = [
+        "Directory Readers"
+      ]
+    }
+    level3 = {
+      roles = [
+        "Directory Readers"
+      ]
+    }
+    level4 = {
+      roles = [
+        "Directory Readers"
+      ]
+    }
   }
 }

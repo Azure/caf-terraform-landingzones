@@ -8,7 +8,7 @@ data "azurerm_key_vault_secret" "agent_pat" {
   }
 
   name         = var.azure_devops.pats.agent.secret_name
-  key_vault_id = data.terraform_remote_state.remote.outputs.keyvaults[var.azure_devops.pats["agent"].lz_key][var.azure_devops.pats["agent"].keyvault_key].id
+  key_vault_id = local.current_keyvaults[var.azure_devops.pats["agent"].lz_key][var.azure_devops.pats["agent"].keyvault_key].id
 }
 
 

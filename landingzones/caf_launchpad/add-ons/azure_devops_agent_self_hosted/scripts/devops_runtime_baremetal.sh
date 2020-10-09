@@ -52,7 +52,8 @@ apt-get install -y --no-install-recommends \
         ca-certificates \
         jq \
         apt-transport-https \
-        docker.io
+        docker.io \
+        sudo
 
 echo "Allowing agent to run docker"
 
@@ -69,8 +70,6 @@ docker pull "${rover_version}" 2>/dev/null
 echo "Installing Azure CLI"
 
 curl -sL https://aka.ms/InstallAzureCLIDeb | bash
-
-az login --identity
 
 echo "install VSTS Agent"
 

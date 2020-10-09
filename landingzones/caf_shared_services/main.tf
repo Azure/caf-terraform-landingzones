@@ -108,7 +108,7 @@ locals {
     for key, networking in try(var.landingzone.current.networking, {}) : key => merge(data.terraform_remote_state.current_networking[key].outputs.networking[key])
   }
 
-  
+
   tfstates = merge(
     map(var.landingzone.current.key,
       map(
