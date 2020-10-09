@@ -40,12 +40,12 @@ provider "azurerm" {
 data "azurerm_client_config" "current" {}
 data "azurerm_subscription" "current" {}
 
-data "terraform_remote_state" "remote" {
+data "terraform_remote_state" "launchpad" {
   backend = var.landingzone.backend_type
   config = {
     storage_account_name = var.lower_storage_account_name
     container_name       = var.lower_container_name
-    key                  = var.landingzone.remote.launchpad.tfstate
+    key                  = var.landingzone.lower.launchpad.tfstate
     resource_group_name  = var.lower_resource_group_name
   }
 }
@@ -57,24 +57,24 @@ locals {
   tags = merge(local.landingzone_tag, { "level" = var.landingzone.current.level }, { "environment" = local.global_settings.environment }, { "rover_version" = var.rover_version }, var.tags)
 
   # Passing through the higher level the base diagnostics settings
-  global_settings = data.terraform_remote_state.remote.outputs.global_settings
-  diagnostics     = data.terraform_remote_state.remote.outputs.diagnostics
+  global_settings = data.terraform_remote_state.launchpad.outputs.global_settings
+  diagnostics     = data.terraform_remote_state.launchpad.outputs.diagnostics
 
   networking = merge(
     map(var.landingzone.current.key, {}),
-    data.terraform_remote_state.remote.outputs.networking
+    data.terraform_remote_state.launchpad.outputs.networking
   )
 
   # Update the tfstates map
   tfstates = merge(
     map(var.landingzone.current.key,
       map(
-        data.terraform_remote_state.remote.outputs.backend_type,
-        local.backend[data.terraform_remote_state.remote.outputs.backend_type]
+        data.terraform_remote_state.launchpad.outputs.backend_type,
+        local.backend[data.terraform_remote_state.launchpad.outputs.backend_type]
       )
     )
     ,
-    data.terraform_remote_state.remote.outputs.tfstates
+    data.terraform_remote_state.launchpad.outputs.tfstates
   )
 
   backend = {

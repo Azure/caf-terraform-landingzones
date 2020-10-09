@@ -114,7 +114,7 @@ locals {
     map(
       var.landingzone.current.key,
       map(
-        "vnets", try(module.landingzones_networking.vnets, {})
+        "vnets", try(module.landingzone_networking.vnets, {})
       )
     )
   )
@@ -123,7 +123,7 @@ locals {
   #   data.terraform_remote_state.foundations.outputs.vnets,
   #   map(
   #     var.landingzone_name,
-  #     try(module.landingzones_networking.vnets, {}
+  #     try(module.landingzone_networking.vnets, {}
   #     )
   #   )
   # )
