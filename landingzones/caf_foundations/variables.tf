@@ -31,6 +31,7 @@ variable landingzone {
   }
 }
 
+variable tenant_id {}
 variable rover_version {}
 variable logged_user_objectId {
   default = null

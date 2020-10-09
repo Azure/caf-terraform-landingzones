@@ -9,7 +9,7 @@ variable tfstate_key {}
 variable tfstate_resource_group_name {}
 
 variable landingzone {}
-
+variable tenant_id {}
 variable global_settings {
   default = {}
 }

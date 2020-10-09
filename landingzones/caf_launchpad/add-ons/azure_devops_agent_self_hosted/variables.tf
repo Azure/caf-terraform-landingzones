@@ -11,7 +11,7 @@ variable tfstate_resource_group_name {}
 variable global_settings {
   default = {}
 }
-
+variable tenant_id {}
 variable landingzone {
 }
 variable rover_version {

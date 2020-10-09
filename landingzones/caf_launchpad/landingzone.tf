@@ -3,6 +3,7 @@ module "launchpad" {
   # version    = "~> 0.4"
   source = "github.com/aztfmod/terraform-azurerm-caf?ref=0.4"
 
+  tenant_id                = var.tenant_id
   tags                     = local.tags
   global_settings          = local.global_settings
   enable                   = var.enable

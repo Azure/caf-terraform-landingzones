@@ -12,6 +12,7 @@ variable tfstate_resource_group_name {
   default = null
 }
 
+variable tenant_id {}
 variable landingzone {
   description = "The landing zone name is used to reference the tfstate in configuration files. Therefore while set it is recommended not to change"
 }
