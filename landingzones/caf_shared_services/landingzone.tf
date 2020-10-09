@@ -1,6 +1,7 @@
 module "landingzones_shared_services" {
-  source  = "aztfmod/caf/azurerm"
-  version = "0.4.0-preview1"
+  # source     = "aztfmod/caf/azurerm"
+  # version    = "~> 0.4"
+  source = "github.com/aztfmod/terraform-azurerm-caf?ref=0.4"
 
   tags                    = local.tags
   diagnostics             = local.diagnostics
