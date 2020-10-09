@@ -55,7 +55,6 @@ jobs:
         run: |
           /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/landingzones/caf_launchpad -a apply \
             -var-folder ${GITHUB_WORKSPACE}/landingzones/caf_launchpad/scenario/100 \
-            -var-folder ${GITHUB_WORKSPACE}/landingzones/caf_launchpad/scenario/100/ci \
             -level level0 \
             -launchpad \
             -parallelism=30 \
