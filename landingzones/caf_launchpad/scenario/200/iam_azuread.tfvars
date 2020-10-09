@@ -58,7 +58,7 @@ azuread_groups = {
     prevent_duplicate_name = false
   }
 
-  applications_level4 = {
+  keyvault_level4_rw = {
     name        = "caf-level4-applications"
     description = "Provide read access to the applications who need to deploy on the level4."
     members = {
