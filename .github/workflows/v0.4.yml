@@ -55,6 +55,7 @@ jobs:
         run: |
           /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/landingzones/caf_launchpad -a apply \
             -var-folder ${GITHUB_WORKSPACE}/landingzones/caf_launchpad/scenario/100 \
+            -var-folder ${GITHUB_WORKSPACE}/landingzones/caf_launchpad/scenario/100/ci \
             -level level0 \
             -launchpad \
             -parallelism=30 \
@@ -218,7 +219,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-          region: ["westus2"]
+        random_length: ['5']
 
     container:
       image: aztfmod/roveralpha:2010.050603
@@ -234,14 +235,13 @@ jobs:
 
           echo "local user: $(whoami)"
 
-
       - name: foundations
         run: |
           /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/landingzones/caf_foundations -a destroy \
-          -level level1 \
-          -parallelism=30 \
-          --environment ${{ github.run_id }} \
-          -auto-approve
+            -level level1 \
+            -parallelism=30 \
+            --environment ${{ github.run_id }} \
+            -auto-approve
 
       - name: Remove launchpad
         run: |
