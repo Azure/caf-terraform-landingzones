@@ -103,7 +103,7 @@ jobs:
         run: |
           /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/landingzones/caf_networking/ -a apply \
             -tfstate $(basename ${{ matrix.config_files }}).tfstate \
-            -level 2 \
+            -level level2 \
             -parallelism=30 \
             -var-file ${GITHUB_WORKSPACE}/landingzones/${{ matrix.config_files }}/configuration.tfvars \
             --environment ${{ github.run_id }}
@@ -112,7 +112,7 @@ jobs:
         run: |
           /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/landingzones/caf_networking/ -a destroy \
             -tfstate $(basename ${{ matrix.config_files }}).tfstate \
-            -level 2 \
+            -level level2 \
             -parallelism=30 \
             -var-file ${GITHUB_WORKSPACE}/landingzones/${{ matrix.config_files }}/configuration.tfvars \
             --environment ${{ github.run_id }} \
@@ -160,6 +160,7 @@ jobs:
       - name: foundations-200-upgrade
         run: |
           /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/landingzones/caf_foundations -a apply \
+          -level level1 \
           --environment ${{ github.run_id }}
 
   networking200:
