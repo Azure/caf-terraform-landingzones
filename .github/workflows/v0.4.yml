@@ -34,7 +34,6 @@ jobs:
       fail-fast: true
       max-parallel: 1
       matrix:
-          region: ["southeastasia"]
           random_length: ['5']
 
     container:
@@ -61,7 +60,6 @@ jobs:
             --environment ${{ github.run_id }} \
             '-var random_length=${{ matrix.random_length }}' \
             '-var prefix=g${{ github.run_id }}' \
-            '-var regions={region1="${{ matrix.region }}"}' \
             '-var tags={testing_job_id="${{ github.run_id }}"}'
 
       - name: foundations
