@@ -45,10 +45,8 @@ virtual_machines = {
     networking_interfaces = {
       nic0 = {
         # Value of the keys from networking.tfvars
-        networking = {
-          vnet_key   = "devops_region1"
-          subnet_key = "jumpbox"
-        }
+        vnet_key   = "devops_region1"
+        subnet_key = "jumpbox"
         name                    = "0"
         enable_ip_forwarding    = false
         internal_dns_name_label = "nic0"
