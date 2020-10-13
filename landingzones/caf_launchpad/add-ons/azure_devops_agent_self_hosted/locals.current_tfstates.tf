@@ -10,7 +10,11 @@ data "terraform_remote_state" "launchpad" {
 }
 
 locals {
-  tags = merge(var.tags, { "level" = var.landingzone.current.level }, { "environment" = local.global_settings.environment }, { "rover_version" = var.rover_version })
+  landingzone_tag = {
+    "landingzone" = var.landingzone.current.key
+  }
+
+  tags = merge(var.tags, local.landingzone_tag, { "level" = var.landingzone.current.level }, { "environment" = local.global_settings.environment }, { "rover_version" = var.rover_version })
 
   global_settings = {
     prefix             = data.terraform_remote_state.launchpad.outputs.global_settings.prefix

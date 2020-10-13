@@ -1,8 +1,8 @@
 module "caf" {
   # source     = "aztfmod/caf/azurerm"
   # version    = "~> 0.4"
-  source = "github.com/aztfmod/terraform-azurerm-caf?ref=0.4"
-  # source = "../../../../../aztfmod/es"
+  # source = "github.com/aztfmod/terraform-azurerm-caf?ref=0.4"
+  source = "../../../../../aztfmod/es"
 
   depends_on = [azuredevops_agent_pool.pool, azuredevops_agent_queue.agent_queue]
 
@@ -24,6 +24,9 @@ module "caf" {
   azuread_apps                = var.azuread_apps
   compute = {
     virtual_machines = var.virtual_machines
+  }
+  storage = {
+    storage_account_blobs = var.storage_account_blobs
   }
 
   # Experiment to prevent using remote_tfstate in modules. 
