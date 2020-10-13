@@ -57,6 +57,9 @@ variable mssql_servers {
 variable storage_accounts {
   default = {}
 }
+variable storage_account_blobs {
+  default = {}
+}
 variable azuread_groups {
   default = {}
 }
@@ -79,9 +82,6 @@ variable azure_devops {
   default = {}
 }
 variable role_mapping {
-  default = {}
-}
-variable secrets_from_keys {
   default = {}
 }
 variable custom_role_definitions {

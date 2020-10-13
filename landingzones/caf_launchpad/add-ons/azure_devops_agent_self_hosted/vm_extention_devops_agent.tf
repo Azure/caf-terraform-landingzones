@@ -31,6 +31,9 @@ module vm_extensions {
       agent_pat        = data.azurerm_key_vault_secret.agent_pat[each.key].value
       admin_username   = each.value.virtual_machine_settings[each.value.os_type].admin_username
       azure_devops     = var.azure_devops
+      storage_account_blobs_urls = [
+        for key, value in try(var.storage_account_blobs, []) : module.caf.storage_account_blobs[key].url
+      ]
     }
   }
 }

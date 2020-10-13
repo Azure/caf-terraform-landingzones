@@ -25,6 +25,9 @@ module "caf" {
   compute = {
     virtual_machines = var.virtual_machines
   }
+  storage = {
+    storage_account_blobs = var.storage_account_blobs
+  }
 
   # Experiment to prevent using remote_tfstate in modules. 
   remote_objects = {

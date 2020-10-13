@@ -10,14 +10,21 @@ data "terraform_remote_state" "launchpad" {
 }
 
 locals {
-  tags = merge(var.tags, { "level" = var.landingzone.current.level }, { "environment" = local.global_settings.environment }, { "rover_version" = var.rover_version })
+  landingzone_tag = {
+    "landingzone" = var.landingzone.current.key
+  }
+
+  tags = merge(var.tags, local.landingzone_tag, { "level" = var.landingzone.current.level }, { "environment" = local.global_settings.environment }, { "rover_version" = var.rover_version })
 
   global_settings = {
     prefix             = data.terraform_remote_state.launchpad.outputs.global_settings.prefix
     prefix_with_hyphen = data.terraform_remote_state.launchpad.outputs.global_settings.prefix_with_hyphen
+    prefix_start_alpha = data.terraform_remote_state.launchpad.outputs.global_settings.prefix_start_alpha
     default_region     = try(var.global_settings.default_region, data.terraform_remote_state.launchpad.outputs.global_settings.default_region)
     environment        = data.terraform_remote_state.launchpad.outputs.global_settings.environment
     regions            = try(var.global_settings.regions, data.terraform_remote_state.launchpad.outputs.global_settings.regions)
+    passthrough        = data.terraform_remote_state.launchpad.outputs.global_settings.passthrough
+    random_length      = data.terraform_remote_state.launchpad.outputs.global_settings.random_length
   }
 
   diagnostics = {

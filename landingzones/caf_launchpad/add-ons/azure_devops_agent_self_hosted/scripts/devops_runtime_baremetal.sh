@@ -107,7 +107,3 @@ for agent_num in $(seq 1 ${num_agent}); do
     echo "config done"
   cd ..
 done
-
-az account clear
-
-apt-get update && apt-get -fy upgrade && [ -f /var/run/reboot-required ] && shutdown -r now
