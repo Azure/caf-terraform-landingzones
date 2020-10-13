@@ -19,9 +19,12 @@ locals {
   global_settings = {
     prefix             = data.terraform_remote_state.launchpad.outputs.global_settings.prefix
     prefix_with_hyphen = data.terraform_remote_state.launchpad.outputs.global_settings.prefix_with_hyphen
+    prefix_with_alpha  = data.terraform_remote_state.launchpad.outputs.global_settings.prefix_with_alpha
     default_region     = try(var.global_settings.default_region, data.terraform_remote_state.launchpad.outputs.global_settings.default_region)
     environment        = data.terraform_remote_state.launchpad.outputs.global_settings.environment
     regions            = try(var.global_settings.regions, data.terraform_remote_state.launchpad.outputs.global_settings.regions)
+    passthrough        = data.terraform_remote_state.launchpad.outputs.global_settings.passthrough
+    random_length      = data.terraform_remote_state.launchpad.outputs.global_settings.random_length
   }
 
   diagnostics = {
