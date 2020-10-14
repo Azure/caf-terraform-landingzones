@@ -15,7 +15,7 @@ variable landingzone {
       level = "level2"
       key   = "networking_hub"
     }
-    remote = {
+    lower = {
       foundations = {
         tfstate = "caf_foundations.tfstate"
       }

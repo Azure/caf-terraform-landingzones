@@ -23,9 +23,9 @@ Cloud Adoption Framework for Azure Terraform landing zones is an Open Source pro
 * Propose a prescriptive guidance on how to enable DevOps for infrastructure as code on Microsoft Azure.
 * Foster a community of Azure *Terraformers* using a common set of practices and sharing best practices.
 
-## What's new in vnext
+## What's new in this release
 
-This vnext is relying extensively on Terraform 0.13 capabilities (module iterations, conditional modules, variables validation, etc.).
+This release is relying extensively on Terraform 0.13 capabilities (module iterations, conditional modules, variables validation, etc.).
 
 Those new features allow more complex and more dynamic code composition. The following concepts are used:
 
@@ -56,12 +56,12 @@ Currently we provide you with the following core sample landing zones:
 | [caf_launchpad](./landingzones/caf_launchpad)             | provides the state management capabilities and security features leveraging Azure storage for the backend, provides secret management and modular approach to support plugin for Azure DevOps automated pipeline creation (and others) |
 
 For each landing zones, we provide different level of configuration examples to meet different purposes:
-| level | scenario                                                                                                         | requirements                                       |
-|-------|------------------------------------------------------------------------------------------------------------------|----------------------------------------------------|
-| 100   | Start with this one! basic functionalities and features, no RBAC or security hardening - for demo and simple POC | working on any subscription with Owner permissions |
-| 200   | intermediate functionalities includes diagnostics features                                                       | may need custom AAD permissions                    |
-| 300   | advanced functionalities, includes RBAC features                                                                 | need custom AAD permissions                        |
-| 400   | advanced functionalities, includes RBAC features and security hardening                                          | need custom AAD permissions                        |
+| level | scenario                                                                                                                               | requirements                                       |
+|-------|----------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------|
+| 100   | Start with this one! basic functionalities and features, no RBAC or security hardening - for demo and simple POC                       | working on any subscription with Owner permissions |
+| 200   | intermediate functionalities includes diagnostics features and Azure Active Directory groups                                           | may need custom AAD permissions                    |
+| 300   | advanced functionalities, includes RBAC features, virtual network and private link scenario and reduced portal view for hardened items | need custom AAD permissions                        |
+| 400   | advanced functionalities, includes RBAC features and security hardening                                                                | need custom AAD permissions                        |
 
 ## Landing zone solutions
 
