@@ -3,7 +3,7 @@
  
     // Update the 'dockerComposeFile' list if you have more compose files or use different names.
     "dockerComposeFile": "docker-compose.yml",
-
+ 
     // Container user to use in VSCode Online and GitHub Codespaces
     "containerUser" : "vscode",
  
@@ -31,7 +31,7 @@
     // "shutdownAction": "none",
  
     // Uncomment the next line to run commands after the container is created.
-    "postCreateCommand": "cp -R /tmp/.ssh-localhost/* ~/.ssh && chmod 700 ~/.ssh && chmod 600 ~/.ssh/*",
+    "postCreateCommand": "cp -R /tmp/.ssh-localhost/* ~/.ssh && sudo chmod 600 ~/.ssh/* && sudo chown -R $(whoami) /tf/caf && git config --global core.editor vi",
  
     // Add the IDs of extensions you want installed when the container is created in the array below.
     "extensions": [
