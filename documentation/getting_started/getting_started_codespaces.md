@@ -36,7 +36,7 @@ Open a Terminal using ```CTRL``` + ```J``` or ```Command``` + ```J```
 You are ready to use landing zones by launching the rover as below:
 
 ```bash
-/tf/rover/rover.sh
+rover
 ```
 
 ![Create](../../_pictures/getting_started/vs_codespaces_rover.png)
@@ -47,7 +47,7 @@ You must be authenticated first:
 For that we will rely on Azure authentication as completed by Azure Cli, via browser method:
 
 ```bash
-/tf/rover/rover.sh login
+rover login
 ```
 
 We recommend that you verify the output of the login and make sure the subscription selected by default is the one you want to work on. If not, you can use the following switch:
@@ -56,34 +56,49 @@ We recommend that you verify the output of the login and make sure the subscript
 az account set --subscription <subscription_GUID>
 ```
 
-On the first run, you need to apply the launchpad as the first landing zone:
+
+## Deploying the DevOps requirements
+
+On the first run, you need to use the launchpad to create the foundations for Terraform environment. This will set storage accounts to store the state files, and key vaults to get you started with a secure environment. It can eventually be upgraded to support your DevOps environment (pipelines, etc.)
+
+You can find more information on the launchpad settings [Here](../../landingzones/caf_launchpad)
 
 ```bash
-/tf/rover/rover.sh -lz /tf/caf/landingzones/launchpad -a apply -launchpad
+rover -launchpad -lz /tf/caf/landingzones/caf_launchpad \
+-var-folder /tf/caf/landingzones/caf_launchpad/scenario/100 \
+-a apply
 ```
 
-You can specify a location for the launchpad using the following command:
+## Deploying the foundations
+
+Next step is to deploy the foundations (this typically could include management groups, policies, etc.). We can start with it empty, and enrich it later. 
+
+You can find more information on the launchpad settings [Here](../../landingzones/caf_launchpad)
+
+
+Get started with the basic foundations:
 
 ```bash
-/tf/rover/rover.sh -lz /tf/caf/landingzones/launchpad -a apply -launchpad -var location=westus
+rover -lz /tf/caf/landingzones/caf_foundations \
+-level level1 \
+-a apply
 ```
 
-You can then launch your first landing zone!
+## Deploying a networking scenario
 
-Please note that each landing zone come with its own deployment settings, which may deploy resources in different region than where you set the foundations.  
+You can deploy one of the typical Azure network topologies (hub, hub and spoke, Virtual WAN). 
 
-You are ready to start:
+Have a look at the example scenario [Here](../../landingzones/caf_networking) and pick one you want to deploy.
+
+You can deploy a simple hub networking using: 
 
 ```bash
-/tf/rover/rover.sh -lz /tf/caf/landingzones/landingzone_caf_foundations -a plan
+rover -lz /tf/caf/landingzones/caf_networking \
+-level level2 \
+-var-folder /tf/caf/landingzones/caf_networking/scenario/100-single-region-hub \
+-a apply
 ```
 
-```bash
-/tf/rover/rover.sh -lz /tf/caf/landingzones/landingzone_caf_foundations -a apply
-```
+## Destroying your test
 
-```bash
-/tf/rover/rover.sh -lz /tf/caf/landingzones/landingzone_caf_foundations -a destroy
-```
-
-Happy deployment with Azure landing zones, let us know your feedback and how you need it to evolve.
+Once you are done testing, just use the same commands as before, juste replace the last line ```-a apply``` by ```-a destroy```.
