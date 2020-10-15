@@ -1,5 +1,5 @@
 module secret {
-  source   = "./secret"
+  source = "./secret"
   for_each = {
     for key, value in var.settings : key => value
     if try(value.value, null) == null
@@ -11,7 +11,7 @@ module secret {
 }
 
 module secret_immutable {
-  source   = "./secret_immutable"
+  source = "./secret_immutable"
   for_each = {
     for key, value in var.settings : key => value
     if try(value.value, null) == ""

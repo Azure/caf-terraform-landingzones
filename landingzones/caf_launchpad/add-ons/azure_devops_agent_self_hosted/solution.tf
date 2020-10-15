@@ -6,7 +6,7 @@ module "caf" {
 
   depends_on = [azuredevops_agent_pool.pool, azuredevops_agent_queue.agent_queue]
 
-  tenant_id               = var.tenant_id
+  tenant_id                   = var.tenant_id
   tfstates                    = local.tfstates
   tags                        = local.tags
   global_settings             = local.global_settings

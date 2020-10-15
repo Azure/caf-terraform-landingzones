@@ -18,7 +18,7 @@ resource "azurerm_virtual_machine_extension" "devops_selfhosted_agent" {
     {
       "timestamp" : each.value.version,
       "fileUris" : concat(local.devops_selfhosted_agent.file_uris, local.devops_selfhosted_agent.storage_account_blobs_urls),
-      
+
     }
   )
   protected_settings = jsonencode(

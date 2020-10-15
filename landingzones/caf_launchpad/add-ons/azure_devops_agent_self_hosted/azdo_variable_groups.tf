@@ -5,7 +5,7 @@
 #   + vso.build_execute           (destroy)
 #
 resource "azuredevops_variable_group" "variable_group" {
-  for_each   = try(var.azure_devops.variable_groups, {})
+  for_each = try(var.azure_devops.variable_groups, {})
 
   project_id   = data.azuredevops_project.project.id
   name         = each.value.name

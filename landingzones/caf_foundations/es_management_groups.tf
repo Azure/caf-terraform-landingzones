@@ -6,9 +6,9 @@ locals {
       subscription_ids           = []
       archetype_config = {
         archetype_id = "es_management"
-        parameters   = {
+        parameters = {
           ES-Deploy-ForwardDiagLog = {
-           logAnalytics = try(local.diagnostics.log_analytics[var.enterprise_scale.log_analytics_key].id, null)
+            logAnalytics = try(local.diagnostics.log_analytics[var.enterprise_scale.log_analytics_key].id, null)
           }
           # ES-Allowed-Locations = {
           #   listOfAllowedLocations = [
