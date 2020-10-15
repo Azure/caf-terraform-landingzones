@@ -3,6 +3,7 @@ locals {
 }
 
 data "azurerm_key_vault_secret" "client_secret" {
+  depends_on = [module.caf]
   for_each = local.service_endpoints
 
   name         = format("%s-client-secret", local.aad_apps[each.value.aad_app_key].keyvaults[each.value.secret_keyvault_key].secret_name_client_secret)
@@ -10,6 +11,7 @@ data "azurerm_key_vault_secret" "client_secret" {
 }
 
 resource "azuredevops_serviceendpoint_azurerm" "azure" {
+  depends_on = [module.caf]
   for_each = local.service_endpoints
 
   project_id            = data.azuredevops_project.project.id
