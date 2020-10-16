@@ -36,5 +36,5 @@ Use the following configuration file in order to get started with the enterprise
 rover -lz /tf/caf/landingzones/caf_foundations \
 -var-folder /tf/caf/landingzones/caf_foundations/scenario/200 \
 -level level1 \
--a plan
+-a apply
 ```
