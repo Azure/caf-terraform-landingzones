@@ -6,7 +6,9 @@ The foundations landing zone allows you to manage the core components of an envi
 * Policies
 * Auditing and Accounting, deployment or connection to existing ones.
 
-Foundations landing zone operates at **level 1**. For a review of the hierarchy approach of Cloud Adoption Framework for Azure landing zones on Terraform, you can refer to [the following documentation](../documentation/code_architecture/hierarchy.md).
+Foundations landing zone operates at **level 1**.
+
+For a review of the hierarchy approach of Cloud Adoption Framework for Azure landing zones on Terraform, you can refer to [the following documentation](../../documentation/code_architecture/hierarchy.md).
 
 </BR>
 

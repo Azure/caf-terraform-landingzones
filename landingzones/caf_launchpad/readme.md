@@ -6,7 +6,9 @@ The launchpad allows you to manage the foundations of landing zone environments 
 * Managing the transition from manual to automated environments.
 * Bring up the DevOps foundations using Azure DevOps, Terraform Cloud and GitHub actions (more to come).
 
-Launchpad operate at **level 0**. For a review of the hierarchy approach of Cloud Adoption Framework for Azure landing zones on Terraform, you can refer to [the following documentation](../documentation/code_architecture/hierarchy.md).
+Launchpad operates at **level 0**.
+
+For a review of the hierarchy approach of Cloud Adoption Framework for Azure landing zones on Terraform, you can refer to [the following documentation](../../documentation/code_architecture/hierarchy.md).
 
 </BR>
 
