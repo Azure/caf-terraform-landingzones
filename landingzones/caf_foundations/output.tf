@@ -9,7 +9,7 @@ output diagnostics {
 }
 
 output vnets {
-  value     = local.vnets
+  value     = local.remote.vnets
   sensitive = true
 }
 
