@@ -1,10 +1,14 @@
-# Azure Cloud Adoption Framework - Launchpad
+# Cloud Adoption Framework for Azure - Landing zones on Terraform - Launchpad
 
-The launchpads allow you to manage the foundations of landing zone environments by:
+The launchpad allows you to manage the foundations of landing zone environments by:
 
 * Securing remote Terraform state storage for multiple subscriptions.
 * Managing the transition from manual to automated environments.
 * Bring up the DevOps foundations using Azure DevOps, Terraform Cloud and GitHub actions (more to come).
+
+Launchpad operates at **level 0**.
+
+For a review of the hierarchy approach of Cloud Adoption Framework for Azure landing zones on Terraform, you can refer to [the following documentation](../../documentation/code_architecture/hierarchy.md).
 
 </BR>
 
@@ -23,9 +27,9 @@ You can pick your scenario and use one of the following commands:
 
 ```bash
 # Simple scenario for learning and demonstration
-rover -lz /tf/caf/public/landingzones/caf_launchpad \
+rover -lz /tf/caf/landingzones/caf_launchpad \
     -launchpad \
-    -var-folder /tf/caf/public/landingzones/caf_launchpad/scenario/100 \
+    -var-folder /tf/caf/landingzones/caf_launchpad/scenario/100 \
     -parallelism=30 \
     -a apply
 

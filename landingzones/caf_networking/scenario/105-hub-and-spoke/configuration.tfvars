@@ -16,23 +16,20 @@ landingzone = {
   }
 }
 
-global_settings = {
-  regions = {
-    region1 = "eastasia"
-  }
-}
-
 resource_groups = {
-  vnet_region1 = {
-    name = "vnet-hub"
+  vnet_hub_region1 = {
+    name = "vnet-hub-re1"
+  }
+  vnet_spoke_region1 = {
+    name = "vnet-spoke-re1"
   }
 }
 
 vnets = {
-  hub_sg = {
-    resource_group_key = "vnet_region1"
+  hub_re1 = {
+    resource_group_key = "vnet_hub_region1"
     vnet = {
-      name          = "hub"
+      name          = "hub-re1"
       address_space = ["10.10.100.0/24"]
     }
     specialsubnets = {
@@ -50,10 +47,10 @@ vnets = {
     }
   }
 
-  hub_sg = {
-    resource_group_key = "vnet_region1"
+  spoke_re1 = {
+    resource_group_key = "vnet_spoke_region1"
     vnet = {
-      name          = "spoke"
+      name          = "spoke-re1"
       address_space = ["10.11.100.0/24"]
     }
     specialsubnets = {}
@@ -71,172 +68,89 @@ vnets = {
   }
 }
 
-# firewalls = {
-#   # Southeastasia firewall (do not change the key when created)
-#   southeastasia = {
-#     location           = "southeastasia"
-#     resource_group_key = "vnet_sg"
-#     vnet_key           = "hub_sg"
+azurerm_firewalls = {
+  # Southeastasia firewall (do not change the key when created)
+  fw_re1 = {
+    region           = "region1"
+    name = "azfwre1"
+    resource_group_key = "vnet_hub_region1"
+    vnet_key           = "hub_re1"
+    public_ip_key = "az_fw_pip"
 
-#     # Settings for the public IP address to be used for Azure Firewall
-#     # Must be standard and static for
-#     firewall_ip_addr_config = {
-#       ip_name           = "firewall"
-#       allocation_method = "Static"
-#       sku               = "Standard" #defaults to Basic
-#       ip_version        = "IPv4"     #defaults to IP4, Only dynamic for IPv6, Supported arguments are IPv4 or IPv6, NOT Both
-#       diagnostics = {
-#         log = [
-#           #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
-#           ["DDoSProtectionNotifications", true, true, 30],
-#           ["DDoSMitigationFlowLogs", true, true, 30],
-#           ["DDoSMitigationReports", true, true, 30],
-#         ]
-#         metric = [
-#           ["AllMetrics", true, true, 30],
-#         ]
-#       }
-#     }
-
-#     # Settings for the Azure Firewall settings
-#     az_fw_config = {
-#       name = "azfw"
-#       diagnostics = {
-#         log = [
-#           #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
-#           ["AzureFirewallApplicationRule", true, true, 30],
-#           ["AzureFirewallNetworkRule", true, true, 30],
-#         ]
-#         metric = [
-#           ["AllMetrics", true, true, 30],
-#         ]
-#       }
-#     }
-
-#   }
-
-# }
-
-
-#
-# Definition of the networking security groups
-#
-network_security_group_definition = {
-  azure_bastion_nsg = {
-
-    diagnostic_profiles = {
-      nsg = {
-        definition_key   = "network_security_group"
-        destination_type = "storage"
-        destination_key  = "all_regions"
-      }
-      operations = {
-        name             = "operations"
-        definition_key   = "network_security_group"
-        destination_type = "log_analytics"
-        destination_key  = "central_logs"
-      }
-    }
-
-    nsg = [
-      {
-        name                       = "bastion-in-allow",
-        priority                   = "100"
-        direction                  = "Inbound"
-        access                     = "Allow"
-        protocol                   = "tcp"
-        source_port_range          = "*"
-        destination_port_range     = "443"
-        source_address_prefix      = "*"
-        destination_address_prefix = "*"
-      },
-      {
-        name                       = "bastion-control-in-allow-443",
-        priority                   = "120"
-        direction                  = "Inbound"
-        access                     = "Allow"
-        protocol                   = "tcp"
-        source_port_range          = "*"
-        destination_port_range     = "135"
-        source_address_prefix      = "GatewayManager"
-        destination_address_prefix = "*"
-      },
-      {
-        name                       = "Kerberos-password-change",
-        priority                   = "121"
-        direction                  = "Inbound"
-        access                     = "Allow"
-        protocol                   = "tcp"
-        source_port_range          = "*"
-        destination_port_range     = "4443"
-        source_address_prefix      = "GatewayManager"
-        destination_address_prefix = "*"
-      },
-      {
-        name                       = "bastion-vnet-out-allow-22",
-        priority                   = "103"
-        direction                  = "Outbound"
-        access                     = "Allow"
-        protocol                   = "tcp"
-        source_port_range          = "*"
-        destination_port_range     = "22"
-        source_address_prefix      = "*"
-        destination_address_prefix = "VirtualNetwork"
-      },
-      {
-        name                       = "bastion-vnet-out-allow-3389",
-        priority                   = "101"
-        direction                  = "Outbound"
-        access                     = "Allow"
-        protocol                   = "tcp"
-        source_port_range          = "*"
-        destination_port_range     = "3389"
-        source_address_prefix      = "*"
-        destination_address_prefix = "VirtualNetwork"
-      },
-      {
-        name                       = "bastion-azure-out-allow",
-        priority                   = "120"
-        direction                  = "Outbound"
-        access                     = "Allow"
-        protocol                   = "tcp"
-        source_port_range          = "*"
-        destination_port_range     = "443"
-        source_address_prefix      = "*"
-        destination_address_prefix = "AzureCloud"
-      }
-    ]
   }
 
-  jumphost = {
+}
 
-    diagnostic_profiles = {
-      nsg = {
-        definition_key   = "network_security_group"
-        destination_type = "storage"
-        destination_key  = "all_regions"
+public_ip_addresses = {
+
+  az_fw_pip = {
+    name                    = "az_fw_re1_pip1"
+    region                  = "region1"
+    resource_group_key      = "vnet_hub_region1"
+    sku                     = "Standard"
+    allocation_method       = "Static"
+    ip_version              = "IPv4"
+    idle_timeout_in_minutes = "4"
+
+  }
+}
+
+route_tables = {
+  default_to_firewall_re1 = {
+    name               = "default_to_firewall_re1"
+    resource_group_key = "vnet_spoke_region1"
+  }
+}
+
+azurerm_routes = {
+  default_to_firewall_rg1 = {
+    name               = "0-0-0-0-through-firewall-re1"
+    resource_group_key = "vnet_spoke_region1"
+    route_table_key    = "default_to_firewall_re1"
+    address_prefix     = "0.0.0.0/0"
+    next_hop_type      = "VirtualAppliance"
+
+    # To be set when next_hop_type = "VirtualAppliance"
+    private_ip_keys = {
+      azurerm_firewall = {
+        key             = "fw_re1"
+        interface_index = 0
       }
-      operations = {
-        name             = "operations"
-        definition_key   = "network_security_group"
-        destination_type = "log_analytics"
-        destination_key  = "central_logs"
-      }
+      # virtual_machine = {
+      #   key = ""
+      #   nic_key = ""
+      # }
     }
+  }
+}
 
-    nsg = [
-      {
-        name                       = "ssh-inbound-22",
-        priority                   = "200"
-        direction                  = "Inbound"
-        access                     = "Allow"
-        protocol                   = "tcp"
-        source_port_range          = "*"
-        destination_port_range     = "22"
-        source_address_prefix      = "*"
-        destination_address_prefix = "VirtualNetwork"
-      },
-    ]
+vnet_peerings = {
+  hub-re1_TO_spoke-re1 = {
+    name = "hub-re1_TO_spoke-re1"
+    from = {
+      vnet_key = "hub_re1"
+    }
+    to = {
+      vnet_key = "spoke_re1"
+    }
+    allow_virtual_network_access = true
+    allow_forwarded_traffic      = true
+    allow_gateway_transit        = false
+    use_remote_gateways          = false
+  }
+
+  spoke-re1_TO_hub-re1 = {
+    name = "hub_re2_TO_hub_re1"
+    from = {
+      vnet_key = "spoke_re1"
+    }
+    to = {
+      vnet_key = "hub_re1"
+    }
+    allow_virtual_network_access = true
+    allow_forwarded_traffic      = false
+    allow_gateway_transit        = false
+    use_remote_gateways          = false
   }
 
 }
