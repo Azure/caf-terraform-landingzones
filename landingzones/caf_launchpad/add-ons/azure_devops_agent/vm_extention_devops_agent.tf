@@ -2,24 +2,22 @@
 
 # Get PAT token from keyvault
 data "azurerm_key_vault_secret" "agent_pat" {
+  depends_on = [module.caf]
   for_each = {
-    for key, value in var.virtual_machines : key => value
+    for key, value in try(var.virtual_machines, {}) : key => value
     if try(value.virtual_machine_extensions, null) != null
   }
 
   name         = var.azure_devops.pats.agent.secret_name
-  key_vault_id = local.current_keyvaults[var.azure_devops.pats["agent"].lz_key][var.azure_devops.pats["agent"].keyvault_key].id
+  key_vault_id = try(var.azure_devops.pats["agent"].lz_key, null) == null ? local.combined.keyvaults[var.landingzone.key][var.azure_devops.pats["agent"].keyvault_key].id : local.combined.keyvaults[var.azure_devops.pats["agent"].lz_key][var.azure_devops.pats["agent"].keyvault_key].id
 }
 
 
 module vm_extensions {
-  depends_on = [
-    module.caf,
-    azuredevops_agent_queue.agent_queue
-  ]
-  source = "./extensions"
+  source     = "./extensions"
+  depends_on = [module.caf]
   for_each = {
-    for key, value in var.virtual_machines : key => value
+    for key, value in try(var.virtual_machines, {}) : key => value
     if try(value.virtual_machine_extensions, null) != null
   }
 

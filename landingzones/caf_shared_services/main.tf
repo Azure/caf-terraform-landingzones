@@ -85,12 +85,14 @@ locals {
   tags = merge(local.landingzone_tag, { "level" = var.landingzone.current.level }, { "environment" = local.global_settings.environment }, { "rover_version" = var.rover_version }, var.tags)
 
   global_settings = {
-    prefix         = try(var.global_settings.prefix, data.terraform_remote_state.foundations.outputs.global_settings.prefix)
-    default_region = try(var.global_settings.default_region, data.terraform_remote_state.foundations.outputs.global_settings.default_region)
-    regions        = try(var.global_settings.regions, null) == null ? data.terraform_remote_state.foundations.outputs.global_settings.regions : merge(data.terraform_remote_state.foundations.outputs.global_settings.regions, var.global_settings.regions)
-    environment    = data.terraform_remote_state.foundations.outputs.global_settings.environment
-    random_length  = try(var.global_settings.random_length, data.terraform_remote_state.foundations.outputs.global_settings.random_length)
-    passthrough    = try(var.global_settings.passthrough, data.terraform_remote_state.foundations.outputs.global_settings.passthrough)
+    prefix             = try(var.global_settings.prefix, data.terraform_remote_state.foundations.outputs.global_settings.prefix)
+    prefix_with_hyphen = try(var.global_settings.prefix_with_hyphen, data.terraform_remote_state.foundations.outputs.global_settings.prefix_with_hyphen)
+    prefix_start_alpha = try(var.global_settings.prefix_start_alpha, data.terraform_remote_state.foundations.outputs.global_settings.prefix_start_alpha)
+    default_region     = try(var.global_settings.default_region, data.terraform_remote_state.foundations.outputs.global_settings.default_region)
+    regions            = try(var.global_settings.regions, null) == null ? data.terraform_remote_state.foundations.outputs.global_settings.regions : merge(data.terraform_remote_state.foundations.outputs.global_settings.regions, var.global_settings.regions)
+    environment        = data.terraform_remote_state.foundations.outputs.global_settings.environment
+    random_length      = try(var.global_settings.random_length, data.terraform_remote_state.foundations.outputs.global_settings.random_length)
+    passthrough        = try(var.global_settings.passthrough, data.terraform_remote_state.foundations.outputs.global_settings.passthrough)
   }
 
   diagnostics = {

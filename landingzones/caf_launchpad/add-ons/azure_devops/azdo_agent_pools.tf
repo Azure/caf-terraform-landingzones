@@ -1,7 +1,7 @@
 
 locals {
-  organization_agent_pools = lookup(var.azure_devops, "organization_agent_pools", {})
-  project_agent_pools      = lookup(var.azure_devops, "project_agent_pools", {})
+  organization_agent_pools = try(var.azure_devops.organization_agent_pools, {})
+  project_agent_pools      = try(var.azure_devops.project_agent_pools, {})
 }
 
 

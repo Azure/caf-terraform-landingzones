@@ -1,4 +1,4 @@
-
+# The PAT token must be provisioned in a different deployment
 provider "azuredevops" {
   org_service_url       = var.azure_devops.url
   personal_access_token = data.azurerm_key_vault_secret.pat.value
@@ -6,7 +6,8 @@ provider "azuredevops" {
 
 data "azurerm_key_vault_secret" "pat" {
   name         = var.azure_devops.pats["admin"].secret_name
-  key_vault_id = local.current_keyvaults[var.azure_devops.pats["admin"].lz_key][var.azure_devops.pats["admin"].keyvault_key].id
+  key_vault_id = local.remote.keyvaults[var.landingzone.key][var.azure_devops.pats["admin"].lz_key][var.azure_devops.pats["admin"].keyvault_key].id
+
 }
 
 data "azuredevops_project" "project" {
