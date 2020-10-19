@@ -150,7 +150,7 @@ vnet_peerings = {
     allow_virtual_network_access = true
     allow_forwarded_traffic      = false
     allow_gateway_transit        = false
-    use_remote_gateways          = true
+    use_remote_gateways          = false
   }
 
 }
