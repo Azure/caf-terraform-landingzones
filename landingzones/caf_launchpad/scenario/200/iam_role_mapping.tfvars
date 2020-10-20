@@ -9,7 +9,7 @@ role_mapping = {
       logged_in_subscription = {
         "caf-launchpad-contributor" = {
           azuread_groups = {
-            keys = ["keyvault_level0_rw", "keyvault_level1_rw", "keyvault_level2_rw", "keyvault_level3_rw", "keyvault_level4_rw",]
+            keys = ["keyvault_level0_rw", "keyvault_level1_rw", "keyvault_level2_rw", "keyvault_level3_rw", "keyvault_level4_rw", ]
           }
           managed_identities = {
             keys = ["level0", "level1", "level2", "level3", "level4"]

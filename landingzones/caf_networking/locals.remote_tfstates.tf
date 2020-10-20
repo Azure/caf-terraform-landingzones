@@ -68,13 +68,13 @@ locals {
 
 
   combined = {
-    vnets                            = merge(local.remote.vnets, map(var.landingzone.key, module.landingzone_networking.vnets))
-    azurerm_firewalls                = merge(local.remote.azurerm_firewalls, map(var.landingzone.key, module.landingzone_networking.azurerm_firewalls))
-    public_ip_addresses              = merge(local.remote.public_ip_addresses, map(var.landingzone.key, module.landingzone_networking.public_ip_addresses))
-    virtual_wans                     = merge(local.remote.virtual_wans, map(var.landingzone.key, module.landingzone_networking.virtual_wans))
-    private_dns                      = merge(local.remote.private_dns, map(var.landingzone.key, module.landingzone_networking.private_dns))
-    application_gateways             = merge(local.remote.application_gateways, map(var.landingzone.key, module.landingzone_networking.application_gateways))
-    application_gateway_applications = merge(local.remote.application_gateway_applications, map(var.landingzone.key, module.landingzone_networking.application_gateway_applications))
+    vnets                            = merge(local.remote.vnets, map(var.landingzone.key, module.networking.vnets))
+    azurerm_firewalls                = merge(local.remote.azurerm_firewalls, map(var.landingzone.key, module.networking.azurerm_firewalls))
+    public_ip_addresses              = merge(local.remote.public_ip_addresses, map(var.landingzone.key, module.networking.public_ip_addresses))
+    virtual_wans                     = merge(local.remote.virtual_wans, map(var.landingzone.key, module.networking.virtual_wans))
+    private_dns                      = merge(local.remote.private_dns, map(var.landingzone.key, module.networking.private_dns))
+    application_gateways             = merge(local.remote.application_gateways, map(var.landingzone.key, module.networking.application_gateways))
+    application_gateway_applications = merge(local.remote.application_gateway_applications, map(var.landingzone.key, module.networking.application_gateway_applications))
   }
 
 }

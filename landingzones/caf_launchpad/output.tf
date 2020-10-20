@@ -15,12 +15,12 @@ output networking {
       "vnets", module.launchpad.vnets
     )
   )
-  sensitive = true
+  sensitive   = true
   description = "[WARNING] deprecated. Use vnets from 0.4"
 }
 
 output vnets {
-  value = map(var.landingzone.key, module.launchpad.vnets)
+  value     = map(var.landingzone.key, module.launchpad.vnets)
   sensitive = true
 }
 

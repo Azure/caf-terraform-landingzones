@@ -1,10 +1,8 @@
 module "landingzones_shared_services" {
-  # source     = "aztfmod/caf/azurerm"
-  # version    = "~> 0.4"
-  # source = "github.com/aztfmod/terraform-azurerm-caf?ref=0.4"
-  source = "../../../aztfmod/es"
+  source  = "aztfmod/caf/azurerm"
+  version = "~> 0.4"
 
-  current_landingzone_key     = var.landingzone.key
+  current_landingzone_key = var.landingzone.key
   tenant_id               = var.tenant_id
   tags                    = local.tags
   diagnostics             = local.diagnostics
@@ -21,6 +19,6 @@ module "landingzones_shared_services" {
 
   # Pass the remote objects you need to connect to.
   remote_objects = {
-    vnets              = local.remote.vnets
+    vnets = local.remote.vnets
   }
 }

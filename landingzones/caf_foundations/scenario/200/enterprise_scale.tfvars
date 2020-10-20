@@ -22,8 +22,8 @@ enterprise_scale = {
       parent_management_group_id = ""
       subscription_ids           = []
       archetype_config = {
-        archetype_id = "es_custom"
-        parameters   = {}
+        archetype_id   = "es_custom"
+        parameters     = {}
         access_control = {}
       }
     }
@@ -33,9 +33,9 @@ enterprise_scale = {
       subscription_ids           = []
       archetype_config = {
         archetype_id = "es_management"
-        parameters   = {
+        parameters = {
           ES-Deploy-ForwardDiagLog = {
-           logAnalytics = "central_logs_region1"
+            logAnalytics = "central_logs_region1"
           }
         }
         access_control = {}
