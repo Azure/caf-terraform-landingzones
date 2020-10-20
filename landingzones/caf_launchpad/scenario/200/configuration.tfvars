@@ -1,10 +1,7 @@
 landingzone = {
   backend_type = "azurerm"
-  current = {
-    level    = "level0"
-    key      = "launchpad"
-    scenario = "launchpad 200"
-  }
+  level        = "level0"
+  key          = "launchpad"
 }
 
 enable = {
