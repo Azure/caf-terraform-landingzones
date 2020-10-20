@@ -108,7 +108,7 @@ role_mapping = {
         }
         "Storage Blob Data Reader" = {
           azuread_groups = {
-            keys = -["keyvault_level2_rw"]
+            keys = ["keyvault_level2_rw"]
           }
         }
       }
