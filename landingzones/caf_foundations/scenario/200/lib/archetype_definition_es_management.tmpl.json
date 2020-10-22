@@ -1,7 +1,7 @@
 {
   "es_management": {
       "policy_assignments": [
-          "ES-Deploy-ASC-Standard"
+        "ES-Deploy-ASC-Standard"
       ],
       "policy_definitions": [
       ],

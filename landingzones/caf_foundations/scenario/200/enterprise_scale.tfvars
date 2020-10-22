@@ -17,7 +17,7 @@ enterprise_scale = {
 
   #management groups hierarchy configuration
   management_groups = {
-    root-caf = {
+    caf = {
       display_name               = "CAF-RootManagementGroup"
       parent_management_group_id = ""
       subscription_ids           = []
@@ -29,7 +29,7 @@ enterprise_scale = {
     }
     child-caf = {
       display_name               = "CAF-ChildManagementGroup"
-      parent_management_group_id = "root-caf"
+      parent_management_group_id = "caf"
       subscription_ids           = []
       archetype_config = {
         archetype_id = "es_management"
