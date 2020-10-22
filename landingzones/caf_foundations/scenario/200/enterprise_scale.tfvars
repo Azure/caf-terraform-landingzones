@@ -1,11 +1,11 @@
 landingzone = {
   backend_type = "azurerm"
-  current = {
-    level = "level1"
-    key   = "caf_foundations"
-  }
-  lower = {
+  global_settings_key = "launchpad"
+  level = "level1"
+  key   = "caf_foundations"
+  tfstates = {
     launchpad = {
+      level   = "lower"
       tfstate = "caf_launchpad.tfstate"
     }
   }
@@ -17,19 +17,19 @@ enterprise_scale = {
 
   #management groups hierarchy configuration
   management_groups = {
-    root-caf = {
+    caf = {
       display_name               = "CAF-RootManagementGroup"
       parent_management_group_id = ""
       subscription_ids           = []
       archetype_config = {
-        archetype_id   = "es_custom"
+        archetype_id   = "es_root"
         parameters     = {}
         access_control = {}
       }
     }
     child-caf = {
       display_name               = "CAF-ChildManagementGroup"
-      parent_management_group_id = "root-caf"
+      parent_management_group_id = "caf"
       subscription_ids           = []
       archetype_config = {
         archetype_id = "es_management"
