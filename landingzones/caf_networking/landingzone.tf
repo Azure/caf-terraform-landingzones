@@ -40,6 +40,8 @@ module "networking" {
   managed_identities = var.managed_identities
 
   remote_objects = {
+    azuread_groups                   = local.remote.azuread_groups
+    managed_identities               = local.remote.managed_identities
     vnets                            = local.remote.vnets
     azurerm_firewalls                = local.remote.azurerm_firewalls
     virtual_wans                     = local.remote.virtual_wans

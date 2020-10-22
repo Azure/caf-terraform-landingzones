@@ -24,6 +24,10 @@ variable random_length {
   default = null
 }
 
+variable inherit_tags {
+  default = false
+}
+
 variable default_region {
   description = "Define the default region where services are deployed if the location is not set at the resource level"
   default     = "region1"

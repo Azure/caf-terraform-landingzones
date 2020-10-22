@@ -73,6 +73,7 @@ locals {
     regions            = var.regions
     passthrough        = var.passthrough
     random_length      = var.random_length
+    inherit_tags       = var.inherit_tags
   }
 
   tfstates = map(var.landingzone.key,

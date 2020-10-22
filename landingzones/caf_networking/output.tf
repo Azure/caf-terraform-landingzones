@@ -38,3 +38,12 @@ output public_ip_addresses {
   value     = local.combined.public_ip_addresses
   sensitive = true
 }
+
+output managed_identities {
+  value     = local.remote.managed_identities
+  sensitive = true
+}
+output azuread_groups {
+  value     = local.remote.azuread_groups
+  sensitive = true
+}
