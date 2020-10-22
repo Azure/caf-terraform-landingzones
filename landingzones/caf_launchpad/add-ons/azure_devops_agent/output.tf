@@ -3,6 +3,11 @@ output managed_identities {
   sensitive = false
 }
 
+output azuread_groups {
+  value     = local.combined.azuread_groups
+  sensitive = true
+}
+
 output keyvaults {
   value     = local.combined.keyvaults
   sensitive = false
