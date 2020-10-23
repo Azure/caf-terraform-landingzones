@@ -13,6 +13,8 @@ enable = {
 # Default region. When not set to a resource it will use that value
 default_region = "region1"
 
+inherit_tags = true
+
 regions = {
   region1 = "southeastasia"
   region2 = "eastasia"
