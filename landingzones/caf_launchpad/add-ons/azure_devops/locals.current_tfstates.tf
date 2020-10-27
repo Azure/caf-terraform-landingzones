@@ -53,6 +53,7 @@ locals {
 
   combined = {
     aad_apps           = merge(local.remote.aad_apps[var.landingzone.key], map(var.landingzone.key, module.caf.aad_apps))
+    azuread_groups     = merge(local.remote.azuread_groups, map(var.landingzone.key, module.caf.azuread_groups))
     keyvaults          = merge(local.remote.keyvaults[var.landingzone.key], map(var.landingzone.key, module.caf.keyvaults))
     managed_identities = merge(local.remote.managed_identities[var.landingzone.key], map(var.landingzone.key, module.caf.managed_identities))
   }
@@ -60,6 +61,10 @@ locals {
   remote = {
     aad_apps = {
       for key, value in try(var.landingzone.tfstates, {}) : var.landingzone.key => merge(try(data.terraform_remote_state.remote[key].outputs.aad_apps, {}))
+    }
+
+    azuread_groups = {
+      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.azuread_groups[key], {}))
     }
 
     keyvaults = {

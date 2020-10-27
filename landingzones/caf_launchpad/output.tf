@@ -54,3 +54,10 @@ output aad_apps {
   )
   sensitive = true
 }
+
+output azuread_groups {
+  value = map(
+    var.landingzone.key, module.launchpad.azuread_groups
+  )
+  sensitive = true
+}

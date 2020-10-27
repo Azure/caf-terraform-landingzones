@@ -31,5 +31,6 @@ module "caf" {
     keyvaults          = local.remote.keyvaults
     vnets              = local.remote.vnets
     managed_identities = local.remote.managed_identities
+    azuread_groups     = local.remote.azuread_groups
   }
 }

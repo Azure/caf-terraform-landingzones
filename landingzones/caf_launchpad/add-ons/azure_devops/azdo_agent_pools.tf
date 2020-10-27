@@ -42,7 +42,7 @@ resource "azuredevops_agent_queue" "agent_queue" {
 # Grant acccess to queue to all pipelines in the project
 #
 
-resource "azuredevops_resource_authorization" "auth" {
+resource "azuredevops_resource_authorization" "queue" {
   for_each = data.azuredevops_agent_pool.pool
 
   project_id  = data.azuredevops_project.project.id

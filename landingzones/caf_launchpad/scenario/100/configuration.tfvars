@@ -8,6 +8,9 @@ landingzone = {
 # Default region. When not set to a resource it will use that value
 default_region = "region1"
 
+# Inherit_tags defines if a resource will inherit it's resource group tags
+inherit_tags = true
+
 regions = {
   region1 = "southeastasia"
   region2 = "eastasia"
