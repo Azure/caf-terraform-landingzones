@@ -173,3 +173,7 @@ variable route_tables {
 variable azurerm_routes {
   default = {}
 }
+
+variable keyvault_access_policies_azuread_apps {
+  default = {}
+}
