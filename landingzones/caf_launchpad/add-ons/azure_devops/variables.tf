@@ -69,6 +69,9 @@ variable keyvaults {
 variable keyvault_access_policies {
   default = {}
 }
+variable keyvault_access_policies_azuread_apps {
+  default = {}
+}
 variable virtual_machines {
   default = {}
 }
