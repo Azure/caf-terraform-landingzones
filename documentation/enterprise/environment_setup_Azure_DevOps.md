@@ -68,7 +68,7 @@ In order to start consuming Azure Terraform LZ we need to have account with spec
 
 ## Next Steps
 
-Once you done on those 3 important steps your organization is ready to start adopting Azure Terraform Landing Zone. You can start by [following this documentation](../getting_started/getting_started.md) in order to setup your local development environment.
+Once you done on those 3 important steps your organization is ready to adopt Azure Terraform Landing Zone. You can start by [following this documentation](../getting_started/getting_started.md) in order to setup your local development environment.
 
 <br>
 
