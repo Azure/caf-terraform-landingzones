@@ -66,6 +66,8 @@ In order to start consuming Azure Terraform LZ we need to have account with spec
 1. Using User account with enough permission commonly Global Admin
 2. Provision the identity bootstrap account with Azure AD application, you can refer to [the following documentation](./bootstrap_account_provisioning.md)
 
+## Next Steps
+
 Once you done on those 3 important steps your organization is ready to start adopting Azure Terraform Landing Zone. You can start by [following this documentation](../getting_started/getting_started.md) in order to setup your local development environment.
 
 <br>
@@ -82,3 +84,4 @@ az login --service-principal -u ${ARM_CLIENT_ID} -p ${ARM_CLIENT_SECRET} --tenan
 az account set --subscription ${ARM_SUBSCRIPTION_ID}
 ```
 
+You are good to go. Start with launchpad and follow with other landing zone deployment.
