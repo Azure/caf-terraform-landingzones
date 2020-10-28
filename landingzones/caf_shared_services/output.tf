@@ -12,3 +12,12 @@ output tfstates {
   value     = local.tfstates
   sensitive = true
 }
+
+output managed_identities {
+  value     = local.remote.managed_identities
+  sensitive = true
+}
+output azuread_groups {
+  value     = local.remote.azuread_groups
+  sensitive = true
+}

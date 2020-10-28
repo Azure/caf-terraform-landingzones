@@ -90,3 +90,6 @@ variable custom_role_definitions {
 variable azuread_apps {
   default = {}
 }
+variable dynamic_keyvault_secrets {
+  default = {}
+}

@@ -1,11 +1,8 @@
 module "caf" {
-  # source     = "aztfmod/caf/azurerm"
-  # version    = "~> 0.4"
-  source = "github.com/aztfmod/terraform-azurerm-caf?ref=0.4"
-  # source = "../../../../../aztfmod/es"
+  source  = "aztfmod/caf/azurerm"
+  version = "~> 0.4"
 
-  depends_on = [azuredevops_agent_pool.pool, azuredevops_agent_queue.agent_queue]
-
+  current_landingzone_key     = var.landingzone.key
   tenant_id                   = var.tenant_id
   tfstates                    = local.tfstates
   tags                        = local.tags
@@ -29,10 +26,11 @@ module "caf" {
     storage_account_blobs = var.storage_account_blobs
   }
 
-  # Experiment to prevent using remote_tfstate in modules. 
+  # Pass the remote objects you need to connect to.
   remote_objects = {
-    keyvaults          = local.current_keyvaults
-    networking         = local.current_networking
-    managed_identities = local.current_managed_identities
+    keyvaults          = local.remote.keyvaults
+    vnets              = local.remote.vnets
+    managed_identities = local.remote.managed_identities
+    azuread_groups     = local.remote.azuread_groups
   }
 }

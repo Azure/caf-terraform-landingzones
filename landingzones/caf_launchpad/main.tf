@@ -2,7 +2,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 2.30.0"
+      version = "~> 2.32.0"
     }
     azuread = {
       source  = "hashicorp/azuread"
@@ -58,9 +58,9 @@ resource "random_string" "alpha1" {
 
 locals {
   landingzone_tag = {
-    landingzone = var.landingzone.current.key
+    landingzone = var.landingzone.key
   }
-  tags = merge(local.landingzone_tag, { "level" = var.landingzone.current.level }, { "environment" = var.environment }, { "rover_version" = var.rover_version }, var.tags)
+  tags = merge(local.landingzone_tag, { "level" = var.landingzone.level }, { "environment" = var.environment }, { "rover_version" = var.rover_version }, var.tags)
 
   prefix = var.prefix == null ? random_string.prefix.result : var.prefix
 
@@ -73,11 +73,12 @@ locals {
     regions            = var.regions
     passthrough        = var.passthrough
     random_length      = var.random_length
+    inherit_tags       = var.inherit_tags
   }
 
-  tfstates = map(var.landingzone.current.key,
+  tfstates = map(var.landingzone.key,
     map(
-      var.landingzone.backend_type,
+      var.landingzone.key,
       local.backend[var.landingzone.backend_type]
     )
   )
@@ -88,7 +89,7 @@ locals {
       container_name       = module.launchpad.storage_accounts[var.launchpad_key_names.tfstates[0]].containers["tfstate"].name
       resource_group_name  = module.launchpad.storage_accounts[var.launchpad_key_names.tfstates[0]].resource_group_name
       key                  = var.tf_name
-      level                = var.landingzone.current.level
+      level                = var.landingzone.level
       tenant_id            = data.azurerm_client_config.current.tenant_id
       subscription_id      = data.azurerm_client_config.current.subscription_id
     }

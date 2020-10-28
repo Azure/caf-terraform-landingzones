@@ -1,6 +1,19 @@
-level = "level2"
-
-landingzone_name = "shared_services"
+landingzone = {
+  backend_type        = "azurerm"
+  global_settings_key = "foundations"
+  level               = "level2"
+  key                 = "shared_services"
+  tfstates = {
+    foundations = {
+      level   = "lower"
+      tfstate = "caf_foundations.tfstate"
+    }
+    launchpad = {
+      level   = "lower"
+      tfstate = "caf_foundations.tfstate"
+    }
+  }
+}
 
 resource_groups = {
   primary = {
@@ -8,15 +21,6 @@ resource_groups = {
   }
   secondary = {
     name = "asr-hk"
-  }
-}
-
-tfstates = {
-  caf_foundations = {
-    tfstate = "caf_foundations.tfstate"
-  }
-  networking = {
-    tfstate = "caf_foundations.tfstate"
   }
 }
 

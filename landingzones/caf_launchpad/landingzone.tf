@@ -1,22 +1,23 @@
 module "launchpad" {
-  # source     = "aztfmod/caf/azurerm"
-  # version    = "~> 0.4"
-  source = "github.com/aztfmod/terraform-azurerm-caf?ref=0.4"
+  source  = "aztfmod/caf/azurerm"
+  version = "~> 0.4"
 
-  tenant_id                = var.tenant_id
-  tags                     = local.tags
-  global_settings          = local.global_settings
-  enable                   = var.enable
-  logged_user_objectId     = var.logged_user_objectId
-  logged_aad_app_objectId  = var.logged_aad_app_objectId
-  user_type                = var.user_type
-  log_analytics            = var.log_analytics
-  diagnostics_definition   = var.diagnostics_definition
-  diagnostics_destinations = var.diagnostics_destinations
-  resource_groups          = var.resource_groups
-  keyvaults                = var.keyvaults
-  keyvault_access_policies = var.keyvault_access_policies
-  subscriptions            = var.subscriptions
+  current_landingzone_key               = var.landingzone.key
+  tenant_id                             = var.tenant_id
+  tags                                  = local.tags
+  global_settings                       = local.global_settings
+  enable                                = var.enable
+  logged_user_objectId                  = var.logged_user_objectId
+  logged_aad_app_objectId               = var.logged_aad_app_objectId
+  user_type                             = var.user_type
+  log_analytics                         = var.log_analytics
+  diagnostics_definition                = var.diagnostics_definition
+  diagnostics_destinations              = var.diagnostics_destinations
+  resource_groups                       = var.resource_groups
+  keyvaults                             = var.keyvaults
+  keyvault_access_policies              = var.keyvault_access_policies
+  keyvault_access_policies_azuread_apps = var.keyvault_access_policies_azuread_apps
+  subscriptions                         = var.subscriptions
   compute = {
     virtual_machines = var.virtual_machines
     bastion_hosts    = var.bastion_hosts

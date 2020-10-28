@@ -1,17 +1,16 @@
 landingzone = {
-  backend_type = "azurerm"
-  current = {
-    level = "level2"
-    key   = "networking_hub"
-  }
-  lower = {
+  backend_type        = "azurerm"
+  global_settings_key = "foundations"
+  level               = "level2"
+  key                 = "example"
+  tfstates = {
     foundations = {
+      level   = "lower"
       tfstate = "caf_foundations.tfstate"
     }
-    networking = {
-      launchpad = {
-        tfstate = "caf_foundations.tfstate"
-      }
+    launchpad = {
+      level   = "lower"
+      tfstate = "caf_foundations.tfstate"
     }
   }
 }
@@ -132,56 +131,6 @@ vnet_peerings = {
     allow_forwarded_traffic      = false
     allow_gateway_transit        = false
     use_remote_gateways          = false
-  }
-
-}
-
-public_ip_addresses = {
-
-  bastion_host_re1 = {
-    name                    = "bastion-re1-pip1"
-    region                  = "region1"
-    resource_group_key      = "vnet_hub_re1"
-    sku                     = "Standard"
-    allocation_method       = "Static"
-    ip_version              = "IPv4"
-    idle_timeout_in_minutes = "4"
-
-  }
-
-  bastion_host_re2 = {
-    name                    = "bastion-re2-pip1"
-    region                  = "region2"
-    resource_group_key      = "vnet_hub_re2"
-    sku                     = "Standard"
-    allocation_method       = "Static"
-    ip_version              = "IPv4"
-    idle_timeout_in_minutes = "4"
-
-
-  }
-
-}
-
-bastion_hosts = {
-  bastion_hub_re1 = {
-    name               = "bastion-re1"
-    region             = "region1"
-    resource_group_key = "vnet_hub_re1"
-    vnet_key           = "hub_re1"
-    subnet_key         = "AzureBastionSubnet"
-    public_ip_key      = "bastion_host_re1"
-
-  }
-
-  bastion_hub_re2 = {
-    name               = "bastion-re2"
-    region             = "region2"
-    resource_group_key = "vnet_hub_re2"
-    vnet_key           = "hub_re2"
-    subnet_key         = "AzureBastionSubnet"
-    public_ip_key      = "bastion_host_re2"
-
   }
 
 }

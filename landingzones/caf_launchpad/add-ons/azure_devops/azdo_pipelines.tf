@@ -13,6 +13,11 @@ resource "azuredevops_build_definition" "build_definition" {
   project_id = data.azuredevops_project.project.id
   name       = each.value.name
   path       = each.value.folder
+ 
+  variable_groups = lookup(each.value, "variable_group_keys", null) == null ? null : [
+    for key in each.value.variable_group_keys:
+    azuredevops_variable_group.variable_group[key].id
+  ]
 
   repository {
     repo_id     = local.repositories[each.value.git_repo_name].id

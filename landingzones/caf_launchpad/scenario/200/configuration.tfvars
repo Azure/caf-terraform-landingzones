@@ -1,10 +1,7 @@
 landingzone = {
   backend_type = "azurerm"
-  current = {
-    level    = "level0"
-    key      = "launchpad"
-    scenario = "launchpad 200"
-  }
+  level        = "level0"
+  key          = "launchpad"
 }
 
 enable = {
@@ -15,6 +12,8 @@ enable = {
 
 # Default region. When not set to a resource it will use that value
 default_region = "region1"
+
+inherit_tags = true
 
 regions = {
   region1 = "southeastasia"

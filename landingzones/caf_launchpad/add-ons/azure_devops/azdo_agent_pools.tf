@@ -1,7 +1,7 @@
 
 locals {
-  organization_agent_pools = lookup(var.azure_devops, "organization_agent_pools", {})
-  project_agent_pools      = lookup(var.azure_devops, "project_agent_pools", {})
+  organization_agent_pools = try(var.azure_devops.organization_agent_pools, {})
+  project_agent_pools      = try(var.azure_devops.project_agent_pools, {})
 }
 
 
@@ -42,7 +42,7 @@ resource "azuredevops_agent_queue" "agent_queue" {
 # Grant acccess to queue to all pipelines in the project
 #
 
-resource "azuredevops_resource_authorization" "auth" {
+resource "azuredevops_resource_authorization" "queue" {
   for_each = data.azuredevops_agent_pool.pool
 
   project_id  = data.azuredevops_project.project.id

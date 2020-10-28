@@ -1,9 +1,10 @@
 {
-  "es_management": {
+  "es_root": {
       "policy_assignments": [
         "ES-Deploy-ASC-Standard"
       ],
       "policy_definitions": [
+        "ES-Deploy-ASC-Standard"
       ],
       "policy_set_definitions": [],
       "role_assignments": [],

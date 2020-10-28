@@ -12,13 +12,17 @@ terraform {
       source  = "hashicorp/random"
       version = "~> 2.2.1"
     }
+    null = {
+      source  = "hashicorp/null"
+      version = "~> 2.1.0"
+    }
     external = {
       source  = "hashicorp/external"
       version = "~> 1.2.0"
     }
-    null = {
-      source  = "hashicorp/null"
-      version = "~> 2.1.0"
+    azuredevops = {
+      source  = "terraform-providers/azuredevops"
+      version = "~> 0.0.1"
     }
     tls = {
       source  = "hashicorp/tls"
@@ -31,7 +35,6 @@ terraform {
   }
   required_version = ">= 0.13"
 }
-
 
 provider "azurerm" {
   features {
@@ -46,7 +49,7 @@ data "azurerm_client_config" "current" {}
 
 locals {
 
-  # Update the tfstates map
+
   tfstates = merge(
     map(var.landingzone.key,
       map(

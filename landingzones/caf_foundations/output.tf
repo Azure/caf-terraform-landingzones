@@ -8,17 +8,20 @@ output diagnostics {
   sensitive = true
 }
 
-output networking {
-  value     = local.networking
+output vnets {
+  value     = local.remote.vnets
+  sensitive = true
+}
+output managed_identities {
+  value     = local.remote.managed_identities
+  sensitive = true
+}
+output azuread_groups {
+  value     = local.remote.azuread_groups
   sensitive = true
 }
 
 output tfstates {
   value     = local.tfstates
-  sensitive = true
-}
-
-output backend_type {
-  value     = data.terraform_remote_state.launchpad.outputs.backend_type
   sensitive = true
 }

@@ -1,6 +1,8 @@
-module "landingzone_networking" {
-  source = "github.com/aztfmod/terraform-azurerm-caf?ref=0.4"
+module "networking" {
+  source  = "aztfmod/caf/azurerm"
+  version = "~> 0.4"
 
+  current_landingzone_key  = var.landingzone.key
   tags                     = local.tags
   diagnostics              = local.diagnostics
   global_settings          = local.global_settings
@@ -15,7 +17,6 @@ module "landingzone_networking" {
     application_gateways                                    = var.application_gateways
     application_gateway_applications                        = var.application_gateway_applications
     vnets                                                   = var.vnets
-    networking_objects                                      = {}
     vnet_peerings                                           = var.vnet_peerings
     vhub_peerings                                           = var.vhub_peerings
     network_security_group_definition                       = var.network_security_group_definition
@@ -37,8 +38,17 @@ module "landingzone_networking" {
   }
   storage_accounts   = var.storage_accounts
   managed_identities = var.managed_identities
+
   remote_objects = {
-    networking = merge(local.lower_networking, local.current_networking)
+    azuread_groups                   = local.remote.azuread_groups
+    managed_identities               = local.remote.managed_identities
+    vnets                            = local.remote.vnets
+    azurerm_firewalls                = local.remote.azurerm_firewalls
+    virtual_wans                     = local.remote.virtual_wans
+    private_dns                      = local.remote.private_dns
+    application_gateways             = local.remote.application_gateways
+    application_gateway_applications = local.remote.application_gateway_applications
+    public_ip_addresses              = local.remote.public_ip_addresses
   }
 
 }

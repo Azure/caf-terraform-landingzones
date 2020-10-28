@@ -16,7 +16,7 @@ resource "azuredevops_variable_group" "variable_group" {
     for_each = lookup(each.value, "keyvault", null) == null ? [] : [1]
 
     content {
-      name                = local.keyvaults[each.value.keyvault.lz_key][each.value.keyvault.keyvault_key].name
+      name                = try(each.value.keyvault.lz_key, null) == null ? local.combined.keyvaults[var.landingzone.key][each.value.keyvault.keyvault_key].name : local.combined.keyvaults[each.value.keyvault.lz_key][each.value.keyvault.keyvault_key].name
       service_endpoint_id = azuredevops_serviceendpoint_azurerm.azure[each.value.keyvault.serviceendpoint_key].id
     }
   }
