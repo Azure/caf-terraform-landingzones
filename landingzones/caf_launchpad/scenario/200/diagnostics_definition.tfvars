@@ -115,7 +115,27 @@ diagnostics_definition = {
     }
   }
 
-  asr = {
+  azure_kubernetes_cluster = {
+    name = "operational_logs_and_metrics"
+    categories = {
+      log = [
+        # ["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
+        ["kube-apiserver", true, false, 7],
+        ["kube-audit", true, false, 7],
+        ["kube-audit-admin", true, false, 7],
+        ["kube-controller-manager", true, false, 7],
+        ["kube-scheduler", true, false, 7],
+        ["cluster-autoscaler", true, false, 7],
+        ["guard", true, false, 7],
+      ]
+      metric = [
+        #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
+        ["AllMetrics", true, false, 7],
+      ]
+    }
+  }
+
+  azure_site_recovery = {
     name                           = "operational_logs_and_metrics"
     log_analytics_destination_type = "Dedicated"
     categories = {
@@ -142,8 +162,8 @@ diagnostics_definition = {
     }
 
   }
-  
-  automation = {
+
+  azure_automation = {
     name = "operational_logs_and_metrics"
     categories = {
       log = [
