@@ -142,7 +142,7 @@ diagnostics_definition = {
     }
 
   }
-  
+
   automation = {
     name = "operational_logs_and_metrics"
     categories = {

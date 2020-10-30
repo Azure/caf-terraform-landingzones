@@ -52,15 +52,15 @@ locals {
 
 
   combined = {
-    aad_apps           = merge(local.remote.aad_apps[var.landingzone.key], map(var.landingzone.key, module.caf.aad_apps))
+    aad_apps           = merge(local.remote.aad_apps, map(var.landingzone.key, module.caf.aad_apps))
     azuread_groups     = merge(local.remote.azuread_groups, map(var.landingzone.key, module.caf.azuread_groups))
-    keyvaults          = merge(local.remote.keyvaults[var.landingzone.key], map(var.landingzone.key, module.caf.keyvaults))
-    managed_identities = merge(local.remote.managed_identities[var.landingzone.key], map(var.landingzone.key, module.caf.managed_identities))
+    keyvaults          = merge(local.remote.keyvaults, map(var.landingzone.key, module.caf.keyvaults))
+    managed_identities = merge(local.remote.managed_identities, map(var.landingzone.key, module.caf.managed_identities))
   }
 
   remote = {
     aad_apps = {
-      for key, value in try(var.landingzone.tfstates, {}) : var.landingzone.key => merge(try(data.terraform_remote_state.remote[key].outputs.aad_apps, {}))
+      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.aad_apps[key], {}))
     }
 
     azuread_groups = {
@@ -68,15 +68,15 @@ locals {
     }
 
     keyvaults = {
-      for key, value in try(var.landingzone.tfstates, {}) : var.landingzone.key => merge(try(data.terraform_remote_state.remote[key].outputs.keyvaults, {}))
+      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.keyvaults[key], {}))
     }
 
     managed_identities = {
-      for key, value in try(var.landingzone.tfstates, {}) : var.landingzone.key => merge(try(data.terraform_remote_state.remote[key].outputs.managed_identities, {}))
+      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.managed_identities[key], {}))
     }
 
-    networking = {
-      for key, value in try(var.landingzone.tfstates, {}) : var.landingzone.key => merge(try(data.terraform_remote_state.remote[key].outputs.networking, {}))
+    vnets = {
+      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.vnets[key], {}))
     }
   }
 
