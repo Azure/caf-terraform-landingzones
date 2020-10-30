@@ -2,7 +2,6 @@ module "caf" {
   source  = "aztfmod/caf/azurerm"
   version = "~> 0.4"
 
-
   current_landingzone_key               = var.landingzone.key
   tenant_id                             = var.tenant_id
   tfstates                              = local.tfstates
@@ -29,9 +28,9 @@ module "caf" {
   }
 
   remote_objects = {
-    keyvaults          = local.remote.keyvaults[var.landingzone.key]
-    networking         = local.remote.networking[var.landingzone.key]
-    managed_identities = local.remote.managed_identities[var.landingzone.key]
+    keyvaults          = local.remote.keyvaults
+    vnets              = local.remote.vnets
+    managed_identities = local.remote.managed_identities
     azuread_groups     = local.remote.azuread_groups
   }
 }

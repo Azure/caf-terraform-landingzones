@@ -10,10 +10,10 @@ variable tfstate_resource_group_name {}
 
 variable landingzone {
   default = {
-    backend_type = "azurerm"
-    level = "level2"
+    backend_type        = "azurerm"
+    level               = "level2"
     global_settings_key = "foundations"
-    key   = "shared_services"
+    key                 = "shared_services"
     tfstates = {
       foundations = {
         level   = "lower"
