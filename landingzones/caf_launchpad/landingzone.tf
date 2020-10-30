@@ -11,6 +11,7 @@ module "launchpad" {
   logged_aad_app_objectId               = var.logged_aad_app_objectId
   user_type                             = var.user_type
   log_analytics                         = var.log_analytics
+  event_hub_namespaces                  = var.event_hub_namespaces
   diagnostics_definition                = var.diagnostics_definition
   diagnostics_destinations              = var.diagnostics_destinations
   resource_groups                       = var.resource_groups

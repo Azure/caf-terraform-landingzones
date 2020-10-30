@@ -110,6 +110,24 @@ log_analytics = {
   }
 }
 
+# Event hub diagnostics
+event_hub_namespaces = {
+  central_logs_region1 = {
+    name               = "logs"
+    resource_group_key = "ops"
+    sku                = "Standard"
+    region             = "region1"
+
+    diagnostic_profiles = {
+      central_logs_region1 = {
+        definition_key   = "event_hub_namespace"
+        destination_type = "storage"
+        destination_key  = "all_regions"
+      }
+    }
+  }
+}
+
 
 diagnostics_destinations = {
   # Storage keys must reference the azure region name
@@ -128,6 +146,12 @@ diagnostics_destinations = {
     central_logs = {
       log_analytics_key              = "central_logs_region1"
       log_analytics_destination_type = "Dedicated"
+    }
+  }
+
+  event_hub_namespaces = {
+    central_logs = {
+      event_hub_namespace_key = "central_logs_region1"
     }
   }
 }
