@@ -3,7 +3,7 @@ level = "level2"
 landingzone_name = "shared_services"
 
 resource_groups = {
-  primary = {
+  alerts = {
     name = "alerts"
   }
 }
@@ -16,7 +16,7 @@ monitoring = {
     location                     = ["Southeast Asia", "East Asia"] #add/modify more regions if needed; must be supplied in a List.
     action_group_name            = "ag_servicehealth"
     shortname                    = "HealthAlerts"
-    resource_group_key           = "primary"
+    resource_group_key           = "alerts"
 
     email_alert_settings = [
       {
