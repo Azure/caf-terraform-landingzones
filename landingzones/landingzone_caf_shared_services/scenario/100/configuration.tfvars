@@ -13,7 +13,6 @@ monitoring = {
   service_health_alerts = {
     enable_service_health_alerts = true
     name                         = "service-health-alert"
-    location                     = ["Southeast Asia", "East Asia"] #add/modify more regions if needed; must be supplied in a List.
     action_group_name            = "ag_servicehealth"
     shortname                    = "HealthAlerts"
     resource_group_key           = "alerts"
