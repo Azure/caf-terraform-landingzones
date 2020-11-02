@@ -1,9 +1,8 @@
 
 #
-# Define the settings for the diagnostics settings
-# Demonstrate how to log diagnostics in the correct region
-# Different profiles to target different operational teams
+# Define a set of settings for the various type of Azure resources
 #
+
 diagnostics_definition = {
   log_analytics = {
     name = "operational_logs_and_metrics"
