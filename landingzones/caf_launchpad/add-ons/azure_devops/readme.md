@@ -25,9 +25,14 @@ Landing zone:
 Azure Devops (example):
 * Organization: https://dev.azure.com/azure-terraform
 * Project     : contoso_demo (https://dev.azure.com/azure-terraform/contoso_demo)
-* Repo        : caf-configuration
+* Repo        : caf-configuration (https://dev.azure.com/azure-terraform/contoso_demo/_git/caf-configuration)
   - In order for pipeline to work properly, YAML file should be in this repo and referred accordingly under pipeline section in azure_devops.tfvars
   - sample yaml attached [here](./scenario/200-contoso_demo/pipeline/rover.yaml).
+
+Azure:
+* PAT Token   : PAT Token should be updated in keyvault secret that deployed by launchpad LZ as below
+
+![](./documentation/images/pat_token.png)
 
 ## Deployment
 
