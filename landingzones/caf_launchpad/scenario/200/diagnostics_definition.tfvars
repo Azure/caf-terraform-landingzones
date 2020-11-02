@@ -115,6 +115,71 @@ diagnostics_definition = {
     }
   }
 
+  azure_kubernetes_cluster = {
+    name = "operational_logs_and_metrics"
+    categories = {
+      log = [
+        # ["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
+        ["kube-apiserver", true, false, 7],
+        ["kube-audit", true, false, 7],
+        ["kube-audit-admin", true, false, 7],
+        ["kube-controller-manager", true, false, 7],
+        ["kube-scheduler", true, false, 7],
+        ["cluster-autoscaler", true, false, 7],
+        ["guard", true, false, 7],
+      ]
+      metric = [
+        #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
+        ["AllMetrics", true, false, 7],
+      ]
+    }
+  }
+
+  azure_site_recovery = {
+    name                           = "operational_logs_and_metrics"
+    log_analytics_destination_type = "Dedicated"
+    categories = {
+      log = [
+        # ["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
+        ["AzureBackupReport", true, true, 7],
+        ["CoreAzureBackup", true, true, 7],
+        ["AddonAzureBackupAlerts", true, true, 7],
+        ["AddonAzureBackupJobs", true, true, 7],
+        ["AddonAzureBackupPolicy", true, true, 7],
+        ["AddonAzureBackupProtectedInstance", true, true, 7],
+        ["AddonAzureBackupStorage", true, true, 7],
+        ["AzureSiteRecoveryJobs", true, true, 7],
+        ["AzureSiteRecoveryEvents", true, true, 7],
+        ["AzureSiteRecoveryReplicatedItems", true, true, 7],
+        ["AzureSiteRecoveryReplicationStats", true, true, 7],
+        ["AzureSiteRecoveryRecoveryPoints", true, true, 7],
+        ["AzureSiteRecoveryReplicationDataUploadRate", true, true, 7],
+        ["AzureSiteRecoveryProtectedDiskDataChurn", true, true, 30],
+      ]
+      metric = [
+        #["AllMetrics", 60, True],
+      ]
+    }
+
+  }
+
+  azure_automation = {
+    name = "operational_logs_and_metrics"
+    categories = {
+      log = [
+        # ["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
+        ["JobLogs", true, true, 30],
+        ["JobStreams", true, true, 30],
+        ["DscNodeStatus", true, true, 30],
+      ]
+      metric = [
+        # ["Category name",  "Metric Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
+        ["AllMetrics", true, true, 30],
+      ]
+    }
+
+  }
+
   compliance_all = {
     name = "compliance_logs"
     categories = {

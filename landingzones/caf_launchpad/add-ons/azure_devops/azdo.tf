@@ -6,7 +6,7 @@ provider "azuredevops" {
 
 data "azurerm_key_vault_secret" "pat" {
   name         = var.azure_devops.pats["admin"].secret_name
-  key_vault_id = local.remote.keyvaults[var.landingzone.key][var.azure_devops.pats["admin"].lz_key][var.azure_devops.pats["admin"].keyvault_key].id
+  key_vault_id = local.remote.keyvaults[var.azure_devops.pats["admin"].lz_key][var.azure_devops.pats["admin"].keyvault_key].id
 
 }
 

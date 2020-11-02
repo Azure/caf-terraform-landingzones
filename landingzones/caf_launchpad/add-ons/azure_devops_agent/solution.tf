@@ -16,6 +16,7 @@ module "caf" {
   azuread_groups              = var.azuread_groups
   keyvaults                   = var.keyvaults
   keyvault_access_policies    = var.keyvault_access_policies
+  managed_identities          = var.managed_identities
   role_mapping                = var.role_mapping
   custom_role_definitions     = var.custom_role_definitions
   azuread_apps                = var.azuread_apps
