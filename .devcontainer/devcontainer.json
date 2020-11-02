@@ -10,14 +10,6 @@
     // The 'service' property is the name of the service for the container that VS Code should
     // use. Update this value and .devcontainer/docker-compose.yml to the real service name.
     "service": "rover",
-<<<<<<< HEAD
-    
-    // Container user to use in VSCode Online and GitHub Codespaces
-    "containerUser" : "vscode",
- 
-=======
-
->>>>>>> 0.4
     // The optional 'workspaceFolder' property is the path VS Code should open by default when
     // connected. This is typically a volume mount in .devcontainer/docker-compose.yml
     "workspaceFolder": "/tf/caf",
