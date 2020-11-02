@@ -28,6 +28,14 @@ recovery_vaults = {
 
     region = "region1"
 
+    diagnostic_profiles = {
+      asr1 = {
+        definition_key   = "azure_site_recovery"
+        destination_type = "log_analytics"
+        destination_key  = "central_logs"
+      }
+    }
+
     # replication_policies = {
     #   repl1 = {
     #     name               = "policy1"
@@ -135,6 +143,14 @@ automations = {
     resource_group_key = "primary"
 
     region = "region1"
+
+    diagnostic_profiles = {
+      asr1 = {
+        definition_key   = "azure_automation"
+        destination_type = "log_analytics"
+        destination_key  = "central_logs"
+      }
+    }
   }
 
 }
