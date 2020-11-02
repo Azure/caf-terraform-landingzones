@@ -53,7 +53,7 @@ jobs:
           convention: ["random"]
 
     container:
-      image: aztfmod/rover:2009.0210
+      image: aztfmod/rover:2010.2808
       options: --user 0
 
     steps:
@@ -97,7 +97,7 @@ jobs:
           environment: ["integration-tests"]
 
     container:
-      image: aztfmod/rover:2009.0210
+      image: aztfmod/rover:2010.2808
       options: --user 0
 
     steps:
@@ -142,7 +142,7 @@ jobs:
           convention: ["cafrandom"]
     
     container:
-      image: aztfmod/rover:2009.0210
+      image: aztfmod/rover:2010.2808
       options: --user 0
     
     steps:
@@ -195,7 +195,7 @@ jobs:
           environment: ["integration-tests"]
 
     container:
-      image: aztfmod/rover:2009.0210
+      image: aztfmod/rover:2010.2808
       options: --user 0
 
     steps:
@@ -240,7 +240,7 @@ jobs:
           convention: ["random"]
 
     container:
-      image: aztfmod/rover:2009.0210
+      image: aztfmod/rover:2010.2808
       options: --user 0
 
     steps:

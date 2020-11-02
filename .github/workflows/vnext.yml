@@ -37,7 +37,7 @@ jobs:
           region: ["southeastasia"]
 
     container:
-      image: aztfmod/roveralpha:2009.180404
+      image: aztfmod/rover:2010.2808
       options: --user 0
 
     steps:
@@ -90,7 +90,7 @@ jobs:
           ]
 
     container:
-      image: aztfmod/roveralpha:2009.180404
+      image: aztfmod/rover:2010.2808
       options: --user 0
 
     steps:
@@ -130,7 +130,7 @@ jobs:
           region: ["southeastasia"]
 
     container:
-      image: aztfmod/roveralpha:2009.180404
+      image: aztfmod/rover:2010.2808
       options: --user 0
 
     steps:
@@ -190,7 +190,7 @@ jobs:
           ]
 
     container:
-      image: aztfmod/roveralpha:2009.180404
+      image: aztfmod/rover:2010.2808
       options: --user 0
 
     steps:
@@ -229,7 +229,7 @@ jobs:
           region: ["westus2"]
 
     container:
-      image: aztfmod/roveralpha:2009.180404
+      image: aztfmod/rover:2010.2808
       options: --user 0
 
     steps:

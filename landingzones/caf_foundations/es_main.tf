@@ -17,7 +17,7 @@ module "enterprise_scale" {
 
   # Set a path for the custom archetype library path
   library_path = try(format("%s%s", path.root, var.enterprise_scale.library_path), "")
-  
+
   # Deploys the custom landing zone configuration as defined in config file
   custom_landing_zones = try(var.enterprise_scale.management_groups, {})
 

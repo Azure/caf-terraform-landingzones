@@ -93,3 +93,6 @@ variable azuread_apps {
 variable dynamic_keyvault_secrets {
   default = {}
 }
+variable managed_identities {
+  default = {}
+}
