@@ -6,7 +6,7 @@
 name: v0.4
 
 on:
-  push:
+  [pull_request, push]:
     branches:
       - 0.4
     paths-ignore:
