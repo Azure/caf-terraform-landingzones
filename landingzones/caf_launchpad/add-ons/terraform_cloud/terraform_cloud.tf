@@ -76,8 +76,8 @@ resource "null_resource" "backend_file_destroy" {
   }
 
   provisioner "local-exec" {
-    command     = format("rm %s%s", path.cwd,  self.triggers.backend_file)
-    when        = destroy
-    on_failure  = fail
+    command    = format("rm %s%s", path.cwd, self.triggers.backend_file)
+    when       = destroy
+    on_failure = fail
   }
 }
