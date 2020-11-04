@@ -24,7 +24,7 @@ We define a sandpit environment as an environment where innovation and experimen
 Ideally multiple projects needed to fully utilize Azure LZ capabilities:
 
 * Main Project - Repo of your private terraform code and project management for LZ adoption in your organization
-* Configuration Projects - For each environments (Prod, NonProd, Sandpit) that you plan to leverage Azure Terraform Landing Zone, dedicated project in Azure Devops is needed to fully utilize the automation mechanism that the LZ provided. 
+* Configuration Projects - For each environments (Prod, NonProd, Sandpit) that you plan to leverage Azure Terraform Landing Zone, dedicated project in Azure Devops is needed to fully utilize the automation mechanism that the LZ provided. This will reduce the risk and minimize error on mixing the environment especially on configuration files(.tfvars),pipelines and variables. 
 
 Examples Azure DevOps setup:
 

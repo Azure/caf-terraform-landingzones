@@ -20,7 +20,7 @@ For a review of the hierarchy approach of Cloud Adoption Framework for Azure lan
 ## Dependencies
 
 Landing zone:
-* CAF Launchpad
+* CAF Launchpad (Scenario 200 or above)
 
 Azure Devops (example):
 * Organization: https://dev.azure.com/azure-terraform
