@@ -2,7 +2,7 @@
 
 ## Overview
 
-In this guide, we will summarize steps to get started in an enteprise environment. 
+In this guide, we summarize steps to get started in an enteprise environment. 
 
 
 # Get Started (Step By Step)
@@ -56,7 +56,7 @@ Examples Azure DevOps setup:
 
 During the lifecycle of the landing zones deployment you will probably find that it is easier to work first with a mono-repository environment but we recommend using multiple repositories as follow: 
 * **Configuration repository**: [this template can be used](https://github.com/azure/caf-terraform-landingzones-starter) as configuration repository for CAF landing zones, containing definition of the configuration for your different environments.
-* **Logic repository**: this Azure CAF landing zone repository. 
+* **Logic repository**: this Azure CAF landing zone repository. Documentation to come on how to fork this repository.
 
 This approach allows you to easily:
 * check-in your configuration in your specific Git repository.
@@ -73,7 +73,7 @@ This approach allows you to easily:
 In order to start consuming Azure Terraform landing zones, we need to create a privileged account to boostrap the environment. 
 
 You can opt for:
-1. Using an user account with enough permission (Azure Active Directory Global Administratore)
+1. Using an user account with enough permission (Azure Active Directory Global Administrator)
 2. Provision the identity bootstrap account with Azure AD application, you can refer to [the following documentation](./bootstrap_account_provisioning.md)
 
 ## Next steps
