@@ -71,13 +71,13 @@ azure_devops = {
       allow_access = true
       variables = {
         HOME_FOLDER_USER    = "vsts_azpcontainer"
-        ROVER_IMAGE         = "aztfmod/roverdev:2010.201552"
+        ROVER_IMAGE         = "aztfmod/rover:2010.2808"
         TF_CLI_ARGS         = "'-no-color'"
         TF_CLI_ARGS_init    = ""
         TF_CLI_ARGS_plan    = "'-input=false'"
         TF_VAR_ARGS_destroy = "'-auto-approve -refresh=false'"
         ENVIRONMENT         = "sandpit"
-        LANDINGZONE_BRANCH  = "0.4"
+        LANDINGZONE_BRANCH  = "2010.0.0"
       }
     }
 
