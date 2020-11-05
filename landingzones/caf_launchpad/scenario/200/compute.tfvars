@@ -1,5 +1,3 @@
-
-
 ##################################################
 #
 # Compute resources
@@ -54,9 +52,9 @@ virtual_machines = {
         # you can setup up to 5 profiles
         diagnostic_profiles = {
           operations = {
-            definition_key   = "nic"
-            destination_type = "log_analytics"
-            destination_key  = "central_logs"
+            definition_key   = "network_interface_card"
+            destination_type = "storage"
+            destination_key  = "all_regions"
           }
         }
 

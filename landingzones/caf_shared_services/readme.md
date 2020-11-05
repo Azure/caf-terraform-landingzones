@@ -18,16 +18,16 @@ For a review of the hierarchy approach of Cloud Adoption Framework for Azure lan
 By default, the content of this landing zone is empty unless you specify a configuration file to enable it.
 
 ```bash
-rover -lz /tf/caf/landingzones/caf_shared_services/
--level level1 \
+rover -lz /tf/caf/landingzones/caf_shared_services \
+-level level2 \
 -a apply
 ```
 
-You can deploy an example with Azure Site Recovery configuration:
+You can deploy an example with Azure Site Recovery configuration and Automation:
 
 ```bash
-rover -lz /tf/caf/landingzones/caf_shared_services/
--level level1 \
--var-folder /tf/caf/landingzones/caf_shared_services/scenario/100
+rover -lz /tf/caf/landingzones/caf_shared_services \
+-level level2 \
+-var-folder /tf/caf/landingzones/caf_shared_services/scenario/100 \
 -a apply
 ```

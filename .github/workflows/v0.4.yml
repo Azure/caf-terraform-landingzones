@@ -6,6 +6,14 @@
 name: v0.4
 
 on:
+  pull_request:
+    branches: 
+      - 0.4
+    paths-ignore:
+      - 'documentation/**'
+      - '_pictures/**'
+      - 'README.md'
+      - 'CHANGELOG.md'
   push:
     branches:
       - 0.4

@@ -1,3 +1,5 @@
+# Defines different repositories for the diagnostics logs
+# Storage accounts, log analytics, event hubs
 
 diagnostic_storage_accounts = {
   # Stores diagnostic logging for region1
@@ -110,24 +112,22 @@ log_analytics = {
   }
 }
 
+# Event hub diagnostics
+event_hub_namespaces = {
+  central_logs_region1 = {
+    name               = "logs"
+    resource_group_key = "ops"
+    sku                = "Standard"
+    region             = "region1"
 
-diagnostics_destinations = {
-  # Storage keys must reference the azure region name
-  storage = {
-    all_regions = {
-      southeastasia = {
-        storage_account_key = "diagsiem_region1"
+    diagnostic_profiles = {
+      central_logs_region1 = {
+        definition_key   = "event_hub_namespace"
+        destination_type = "storage"
+        destination_key  = "all_regions"
       }
-      eastasia = {
-        storage_account_key = "diagsiem_region2"
-      }
-    }
-  }
-
-  log_analytics = {
-    central_logs = {
-      log_analytics_key              = "central_logs_region1"
-      log_analytics_destination_type = "Dedicated"
     }
   }
 }
+
+
