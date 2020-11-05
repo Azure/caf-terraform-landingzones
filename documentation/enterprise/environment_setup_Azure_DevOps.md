@@ -2,7 +2,7 @@
 
 ## Overview
 
-Enterprise deployment is complex. We propose an approach that uses automation to reproduce this complexity (the subscriptions and the Azure Active Directory) and to test and validate patterns multiple times before hitting a production environment. Using standardized deployments and battlefield-proven artefacts ensures reliability.
+In this guide, we will summarize steps to get started in an enteprise environment. 
 
 
 # Get Started (Step By Step)
@@ -11,9 +11,12 @@ Enterprise deployment is complex. We propose an approach that uses automation to
 
 ## Azure Sandpit Environment
 
-Successful implementations tend to focus on first building a sandpit / innovation hub environment where all stakeholders (IT operations, security, compliance, information protection, finance, and business) define their requirements. The DevOps team builds, automates, tests modules, blueprints, and landing zones to create an infrastructure environment that is good enough.
+Successful implementations tend to focus on building first a sandpit/innovation hub environment where all stakeholders (IT operations, security, compliance, information protection, finance, and business) define their requirements. 
 
-We define a sandpit environment as an environment where innovation and experimentations can happen freely. As such is it composed of:
+The DevOps team focuses on building, automating, testing modules, and landing zones to create an infrastructure environment that is good enough.
+
+We define a sandpit environment as an environment where innovation and experimentations can happen "freely". 
+As such is it composed of:
 -	One or more subscriptions that are isolated from ANY customer environment.
 -	A separate Azure AD tenant space.
 
@@ -21,10 +24,10 @@ We define a sandpit environment as an environment where innovation and experimen
 
 ### Projects
 
-Ideally multiple projects needed to fully utilize Azure LZ capabilities:
+Ideally multiple projects needed to fully utilize Azure landing zones capabilities:
 
-* Main Project - Repo of your private terraform code and project management for LZ adoption in your organization
-* Configuration Projects - For each environments (Prod, NonProd, Sandpit) that you plan to leverage Azure Terraform Landing Zone, dedicated project in Azure Devops is needed to fully utilize the automation mechanism that the LZ provided. This will reduce the risk and minimize error on mixing the environment especially on configuration files(.tfvars),pipelines and variables. 
+* **Main Project** - Repository of your private Terraform code and project management for landing zones adoption in your organization
+* **Configuration Projects** - For each environments (Production, Non-production, Sandpit) that you plan to leverage Azure Terraform landing zone, dedicated project in Azure Devops is needed to fully utilize the automation mechanism provided. This will reduce the risk and minimize error on mixing environments configuration files(.tfvars),pipelines and variables. 
 
 Examples Azure DevOps setup:
 
@@ -51,9 +54,14 @@ Examples Azure DevOps setup:
 
 ### Repositories
 
-During the lifecycle of the landing zones deployment you will probably find that it is easier to work first with a mono-repository environment (mixing Terraform code and variables) especially when you focusing on sandpit deployment until you have good enough state to move to other environment. Azure Devops Main project would be a good one to start with and slowly transition your config related code to environment specific project. 
+During the lifecycle of the landing zones deployment you will probably find that it is easier to work first with a mono-repository environment but we recommend using multiple repositories as follow: 
+* **Configuration repository**: [this template can be used](https://github.com/azure/caf-terraform-landingzones-starter) as configuration repository for CAF landing zones, containing definition of the configuration for your different environments.
+* **Logic repository**: this Azure CAF landing zone repository. 
 
-From an Azure DevOps perspective, you will use multi repo pipelines and check-out. The repos can also be located cross-projects within the same organization. 
+This approach allows you to easily:
+* check-in your configuration in your specific Git repository.
+* resync the code with the public codebase for updates.
+* customize the code if needed and contribute back to the community.
 
 ### Full IaC Architecture (Contoso example)
 
@@ -61,12 +69,14 @@ From an Azure DevOps perspective, you will use multi repo pipelines and check-ou
 
 ## Bootstrap process
 
-### Bootstrap Identity
-In order to start consuming Azure Terraform LZ we need to have account with specific privileges to boostrap your environment. You can choose between:
-1. Using User account with enough permission commonly Global Admin
+### Bootstrap identity
+In order to start consuming Azure Terraform landing zones, we need to create a privileged account to boostrap the environment. 
+
+You can opt for:
+1. Using an user account with enough permission (Azure Active Directory Global Administratore)
 2. Provision the identity bootstrap account with Azure AD application, you can refer to [the following documentation](./bootstrap_account_provisioning.md)
 
-## Next Steps
+## Next steps
 
 Once you done on those 3 important steps your organization is ready to adopt Azure Terraform Landing Zone. You can start by [following this documentation](../getting_started/getting_started.md) in order to setup your local development environment.
 
@@ -84,4 +94,4 @@ az login --service-principal -u ${ARM_CLIENT_ID} -p ${ARM_CLIENT_SECRET} --tenan
 az account set --subscription ${ARM_SUBSCRIPTION_ID}
 ```
 
-You are good to go. Start with launchpad and follow with other landing zone deployment.
+You are good to go. Start with launchpad and continue with higher level landing zones.
