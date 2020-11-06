@@ -1,4 +1,13 @@
-## v8.0.2001 (August 2020)
+## v9.0.2009 (September 2020)
+
+BREAKING CHANGES:
+
+* Iterating on our new key-based iterative model to simplify deployment and maintenance, this is a major refactoring that will bring compatibility with enterprise-scale landing zones and extensible platform for construction sets (solutions and applications) deployed on top of core landing zones. 
+
+FEATURES:
+* **added support for azurerm 2.28 :** On all sample landing zones [azurerm provider](https://github.com/terraform-providers/terraform-provider-azurerm/releases/tag/v2.28.0)
+
+## v8.0.2008 (August 2020)
 
 BREAKING CHANGES:
 

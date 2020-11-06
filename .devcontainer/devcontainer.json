@@ -1,38 +1,38 @@
 {
     "name": "Azure CAF landing zones",
- 
+
     // Update the 'dockerComposeFile' list if you have more compose files or use different names.
     "dockerComposeFile": "docker-compose.yml",
- 
+
+    // Container user to use in VSCode Online and GitHub Codespaces
+    "containerUser" : "vscode",
+
     // The 'service' property is the name of the service for the container that VS Code should
     // use. Update this value and .devcontainer/docker-compose.yml to the real service name.
     "service": "rover",
-    
-    // Container user to use in VSCode Online and GitHub Codespaces
-    "containerUser" : "vscode",
- 
+
     // The optional 'workspaceFolder' property is the path VS Code should open by default when
     // connected. This is typically a volume mount in .devcontainer/docker-compose.yml
     "workspaceFolder": "/tf/caf",
- 
-    // Use 'settings' to set *default* container specific settings.json values on container create. 
+
+    // Use 'settings' to set *default* container specific settings.json values on container create.
     // You can edit these settings after create using File > Preferences > Settings > Remote.
-    "settings": { 
+    "settings": {
         "files.eol": "\n",
         "terminal.integrated.shell.linux": "/bin/bash",
         "editor.tabSize": 2,
         "terminal.integrated.scrollback": 8000,
     },
- 
+
     // Uncomment the next line if you want start specific services in your Docker Compose config.
     // "runServices": [],
- 
+
     // Uncomment this like if you want to keep your containers running after VS Code shuts down.
     // "shutdownAction": "none",
- 
+
     // Uncomment the next line to run commands after the container is created.
-    "postCreateCommand": "cp -R /tmp/.ssh-localhost/* ~/.ssh && chmod 700 ~/.ssh && chmod 600 ~/.ssh/*",
- 
+    "postCreateCommand": "cp -R /tmp/.ssh-localhost/* ~/.ssh && sudo chmod 600 ~/.ssh/* && sudo chown -R $(whoami) /tf/caf && git config --global core.editor vi && pre-commit install && pre-commit update",
+
     // Add the IDs of extensions you want installed when the container is created in the array below.
     "extensions": [
         "4ops.terraform",

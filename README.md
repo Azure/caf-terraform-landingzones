@@ -2,7 +2,6 @@
 [![VScodespaces](https://img.shields.io/endpoint?url=https%3A%2F%2Faka.ms%2Fvso-badge)](https://online.visualstudio.com/environments/new?name=caf%20landing%20zones&repo=azure/caf-terraform-landingzones)
 [![Gitter](https://badges.gitter.im/aztfmod/community.svg)](https://gitter.im/aztfmod/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-
 # Azure Cloud Adoption Framework landing zones for Terraform
 
 Microsoft [Cloud Adoption Framework for Azure](https://aka.ms/caf) provides you with guidance and best practices to adopt Azure.
@@ -24,11 +23,30 @@ Cloud Adoption Framework for Azure Terraform landing zones is an Open Source pro
 * Propose a prescriptive guidance on how to enable DevOps for infrastructure as code on Microsoft Azure.
 * Foster a community of Azure *Terraformers* using a common set of practices and sharing best practices.
 
+## What's new in this release
+
+This release is relying extensively on Terraform 0.13 capabilities (module iterations, conditional modules, variables validation, etc.).
+
+Those new features allow more complex and more dynamic code composition. The following concepts are used:
+
+* **No-code environment composition**: a landing zone environment can be composed customizing variable files and code must be robust enough to accommodate combinations and composition.
+* **Flexible foundations to meet customer needs**: everything is customizable at all layers.
+* **Key-based configuration and customization**: all configuration objects will call each other based on the object keys.
+* **Iteration-based objects deployment**: a landing zone calls all its modules, iterating on complex objects for technical resources deployment.
+* **Enterprise-scale support**: added support for foundations landing zones to optionally leverage Azure Enterprise-scale module.
+* **Terraform Cloud/Enterprise bootstrap**: added initial support for Hashicorp Terraform Cloud/Enterprise to support environment bootstrap.
+
 ## Getting started
 
 See our [Getting Started](./documentation/getting_started/getting_started.md) on your laptop, or on the web with [Getting Started on VSCodespaces](./documentation/getting_started/getting_started_codespaces.md).
 
 See our [Getting Started Video](https://www.youtube.com/watch?v=t1exCkWft60)
+
+## Sample configuration repository
+
+When starting an enterprise deployment, we recommend you start creating a configuration repository where you start crafting you configuration environment.
+
+You can find the [starter repository here](https://github.com/Azure/caf-terraform-landingzones-starter)
 
 ## Documentation
 
@@ -36,13 +54,33 @@ More details on how to develop, deploy and operate with landing zones can be fou
 
 ## Sample landing zones
 
-Currently we provide you with the following sample landing zones:
+Currently we provide you with the following core sample landing zones:
 
-| Name                                                                      | Purpose                                                                                                                                                                                                   |
-|---------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [landingzone_caf_foundations](./landingzones/landingzone_caf_foundations) | setup all the fundamentals for a subscription (logging, accounting, security.). You can find all details of the caf_foundations landing zone [Here](./landingzones/landingzone_caf_foundations/readme.md) |
-| [landingzone_networking](./landingzones/landingzone_networking)           | enables creation of any Azure networking combination of Virtual Networks-based hub-and-spoke topologies or Azure Virtual WAN based topologies.                                                            |
-| [launchpad](./landingzones/launchpad) | provides the state management capabilities and security features leveraging Azure storage for the backend, provides secret management and modular approach to support plugin for Azure DevOps automated pipeline creation (and others)        |
+| Name                                                      | Purpose                                                                                                                                                                                                                                |
+|-----------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [caf_foundations](./landingzones/caf_foundations)         | setup all the fundamentals for a subscription (logging, accounting, security.). You can find all details of the caf_foundations landing zone [Here](./landingzones/landingzone_caf_foundations/readme.md)                              |
+| [caf_networking](./landingzones/caf_networking)           | enables creation of any Azure networking combination of Virtual Networks-based hub-and-spoke topologies or Azure Virtual WAN based topologies.                                                                                         |
+| [caf_shared_services](./landingzones/caf_shared_services) | provides shared services like monitoring, Azure Backup, Azure Site Recovery etc.                                                                                                                                                       |
+| [caf_launchpad](./landingzones/caf_launchpad)             | provides the state management capabilities and security features leveraging Azure storage for the backend, provides secret management and modular approach to support plugin for Azure DevOps automated pipeline creation (and others) |
+
+For each landing zones, we provide different level of configuration examples to meet different purposes:
+| level | scenario                                                                                                                               | requirements                                       |
+|-------|----------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------|
+| 100   | Start with this one! basic functionalities and features, no RBAC or security hardening - for demo and simple POC                       | working on any subscription with Owner permissions |
+| 200   | intermediate functionalities includes diagnostics features and Azure Active Directory groups                                           | may need custom AAD permissions                    |
+| 300   | advanced functionalities, includes RBAC features, virtual network and private link scenario and reduced portal view for hardened items | need custom AAD permissions                        |
+| 400   | advanced functionalities, includes RBAC features and security hardening                                                                | need custom AAD permissions                        |
+
+## Landing zone solutions
+
+Once you deploy the core components, you can leverage the following additional solution landing zones (work in progress!):
+
+| Solution                  | URL                                                   |
+|---------------------------|-------------------------------------------------------|
+| Azure Kubernetes Services | https://github.com/aztfmod/landingzone_aks            |
+| Data and Analytics        | https://github.com/aztfmod/landingzone_data_analytics |
+| SAP HANA on Azure         | Coming Soon                                           |
+| Shared Image Gallery      | Coming soon                                           |
 
 ## Repositories
 
