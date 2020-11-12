@@ -21,6 +21,7 @@ data "terraform_remote_state" "remote" {
     storage_account_name = local.landingzone[try(each.value.level, "current")].storage_account_name
     container_name       = local.landingzone[try(each.value.level, "current")].container_name
     resource_group_name  = local.landingzone[try(each.value.level, "current")].resource_group_name
+    subscription_id      = var.tfstate_subscription_id
     key                  = each.value.tfstate
   }
 }
