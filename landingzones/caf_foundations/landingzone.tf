@@ -1,4 +1,4 @@
-module "landingzones_shared_services" {
+module "foundations" {
   source  = "aztfmod/caf/azurerm"
   version = "~> 0.4"
 
@@ -12,19 +12,6 @@ module "landingzones_shared_services" {
   logged_user_objectId        = var.logged_user_objectId
   logged_aad_app_objectId     = var.logged_aad_app_objectId
   resource_groups             = var.resource_groups
-  
-  shared_services = {
-    recovery_vaults = var.recovery_vaults
-    automations     = var.automations
-  }
+  keyvaults                   = var.keyvaults
 
-  compute = {
-    virtual_machines = var.virtual_machines
-  }
-
-  # Pass the remote objects you need to connect to.
-  remote_objects = {
-    vnets     = local.remote.vnets
-    keyvaults = local.remote.keyvaults
-  }
 }

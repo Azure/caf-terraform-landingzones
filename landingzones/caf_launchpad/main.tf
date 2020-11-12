@@ -74,13 +74,12 @@ locals {
     passthrough        = var.passthrough
     random_length      = var.random_length
     inherit_tags       = var.inherit_tags
+    use_slug           = var.use_slug
   }
 
-  tfstates = map(var.landingzone.key,
-    map(
+  tfstates = map(
       var.landingzone.key,
       local.backend[var.landingzone.backend_type]
-    )
   )
 
   backend = {

@@ -63,3 +63,9 @@ variable replicated_vms {
 variable network_mappings {
   default = {}
 }
+variable diagnostic_storage_accounts {
+  default = {}
+}
+variable virtual_machines {
+  default = {}
+}
