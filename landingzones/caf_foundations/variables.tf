@@ -51,3 +51,12 @@ variable enterprise_scale {
 variable diagnostics_definition {
   default = {}
 }
+variable keyvaults {
+  default = {}
+}
+variable resource_groups {
+  default = {}
+}
+variable diagnostic_storage_accounts {
+  default = {}
+}
