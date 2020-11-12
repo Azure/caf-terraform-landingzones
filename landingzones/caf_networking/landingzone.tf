@@ -1,7 +1,6 @@
 module "networking" {
-  source  = "/tf/caf/aztfmod"
-  # source  = "aztfmod/caf/azurerm"
-  # version = "~> 0.4"
+  source  = "aztfmod/caf/azurerm"
+  version = "~> 0.4"
 
   current_landingzone_key  = var.landingzone.key
   tags                     = local.tags
