@@ -3,6 +3,9 @@ variable lower_storage_account_name {}
 variable lower_container_name {}
 variable lower_resource_group_name {}
 
+variable tfstate_subscription_id {
+  description = "This value is propulated by the rover. subscription id hosting the remote tfstates"
+}
 variable tfstate_storage_account_name {
   description = "This value is propulated by the rover"
 }
@@ -49,5 +52,14 @@ variable enterprise_scale {
 }
 
 variable diagnostics_definition {
+  default = {}
+}
+variable keyvaults {
+  default = {}
+}
+variable resource_groups {
+  default = {}
+}
+variable diagnostic_storage_accounts {
   default = {}
 }
