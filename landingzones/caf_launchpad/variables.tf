@@ -50,6 +50,10 @@ variable prefix {
   default = null
 }
 
+variable use_slug {
+  default = true
+}
+
 variable log_analytics {
   default = {}
 }
