@@ -1,11 +1,11 @@
 output tfstates {
   value     = local.tfstates
-  sensitive = false
+  sensitive = true
 }
 
 output vnets {
   value     = local.combined.vnets
-  sensitive = false
+  sensitive = true
 }
 
 output azurerm_firewalls {
