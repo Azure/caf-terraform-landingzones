@@ -27,7 +27,10 @@ module "networking" {
     azurerm_firewalls                                       = var.azurerm_firewalls
     express_route_circuits                                  = var.express_route_circuits
 <<<<<<< HEAD
+<<<<<<< HEAD
     express_route_circuit_authorizations                    = var.express_route_circuit_authorizations
+=======
+>>>>>>> 31f9746... Add Express Route Circuit
 =======
 >>>>>>> 31f9746... Add Express Route Circuit
     public_ip_addresses                                     = var.public_ip_addresses
