@@ -118,3 +118,6 @@ variable keyvaults {
 variable keyvault_access_policies {
   default = {}
 }
+variable express_route_circuits {
+  default = {}
+}

@@ -1,6 +1,7 @@
 module "networking" {
-  source  = "aztfmod/caf/azurerm"
-  version = "~> 0.4"
+  # source  = "aztfmod/caf/azurerm"
+  # version = "~> 0.4"
+  source = "/tf/caf/aztfmod"
 
   current_landingzone_key  = var.landingzone.key
   tags                     = local.tags
@@ -24,6 +25,7 @@ module "networking" {
     azurerm_firewall_application_rule_collection_definition = var.azurerm_firewall_application_rule_collection_definition
     azurerm_firewall_nat_rule_collection_definition         = var.azurerm_firewall_nat_rule_collection_definition
     azurerm_firewalls                                       = var.azurerm_firewalls
+    express_route_circuits                                  = var.express_route_circuits
     public_ip_addresses                                     = var.public_ip_addresses
     route_tables                                            = var.route_tables
     azurerm_routes                                          = var.azurerm_routes
