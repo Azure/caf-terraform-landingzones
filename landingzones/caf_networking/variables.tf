@@ -120,7 +120,10 @@ variable keyvault_access_policies {
 }
 variable express_route_circuits {
   default = {}
+<<<<<<< HEAD
 }
 variable express_route_circuit_authorizations {
   default = {}
+=======
+>>>>>>> 31f9746... Add Express Route Circuit
 }
