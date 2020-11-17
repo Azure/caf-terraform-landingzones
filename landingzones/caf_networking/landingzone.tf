@@ -26,6 +26,7 @@ module "networking" {
     azurerm_firewall_nat_rule_collection_definition         = var.azurerm_firewall_nat_rule_collection_definition
     azurerm_firewalls                                       = var.azurerm_firewalls
     express_route_circuits                                  = var.express_route_circuits
+    express_route_circuit_authorizations                    = var.express_route_circuit_authorizations
     public_ip_addresses                                     = var.public_ip_addresses
     route_tables                                            = var.route_tables
     azurerm_routes                                          = var.azurerm_routes

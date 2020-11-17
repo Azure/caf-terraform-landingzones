@@ -121,3 +121,6 @@ variable keyvault_access_policies {
 variable express_route_circuits {
   default = {}
 }
+variable express_route_circuit_authorizations {
+  default = {}
+}
