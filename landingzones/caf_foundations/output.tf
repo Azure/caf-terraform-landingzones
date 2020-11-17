@@ -31,8 +31,4 @@ output keyvaults {
     var.landingzone.key,
     module.foundations.keyvaults
   )
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 0f4d568... Update for multi-sub
