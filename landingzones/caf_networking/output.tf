@@ -47,3 +47,7 @@ output azuread_groups {
   value     = local.remote.azuread_groups
   sensitive = true
 }
+output express_route_circuits {
+  value     = module.networking.express_route_circuits
+  sensitive = false
+}
