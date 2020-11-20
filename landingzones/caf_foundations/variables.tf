@@ -60,6 +60,12 @@ variable keyvaults {
 variable resource_groups {
   default = {}
 }
+variable log_analytics {
+  default = {}
+}
+variable event_hub_namespaces {
+  default = {}
+}
 variable diagnostic_storage_accounts {
   default = {}
 }

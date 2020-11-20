@@ -13,5 +13,6 @@ module "foundations" {
   logged_aad_app_objectId     = var.logged_aad_app_objectId
   resource_groups             = var.resource_groups
   keyvaults                   = var.keyvaults
-
+  log_analytics               = var.log_analytics
+  event_hub_namespaces        = var.event_hub_namespaces
 }
