@@ -69,3 +69,6 @@ variable event_hub_namespaces {
 variable diagnostic_storage_accounts {
   default = {}
 }
+variable diagnostics_destinations {
+  default = {}
+}

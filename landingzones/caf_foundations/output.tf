@@ -4,7 +4,7 @@ output global_settings {
 }
 
 output diagnostics {
-  value     = local.diagnostics
+  value     = module.foundations.diagnostics
   sensitive = true
 }
 

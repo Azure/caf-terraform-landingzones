@@ -24,7 +24,8 @@ module "landingzones_shared_services" {
 
   # Pass the remote objects you need to connect to.
   remote_objects = {
-    vnets     = local.remote.vnets
-    keyvaults = local.remote.keyvaults
+    vnets           = local.remote.vnets
+    keyvaults       = local.remote.keyvaults
+    recovery_vaults = local.remote.recovery_vaults
   }
 }
