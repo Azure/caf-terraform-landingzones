@@ -2,7 +2,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 2.33.0"
+      version = "~> 2.37.0"
     }
     azuread = {
       source  = "hashicorp/azuread"
@@ -75,6 +75,7 @@ locals {
     random_length      = var.random_length
     inherit_tags       = var.inherit_tags
     use_slug           = var.use_slug
+    tags               = var.tags
   }
 
   tfstates = map(var.landingzone.key,
