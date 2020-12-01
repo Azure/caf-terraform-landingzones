@@ -1,6 +1,7 @@
 module "landingzones_shared_services" {
-  source  = "aztfmod/caf/azurerm"
-  version = "~> 0.4"
+  # source  = "aztfmod/caf/azurerm"
+  # version = "~> 0.4"
+  source = "github.com/aztfmod/terraform-azurerm-caf?ref=patch-diagnostics"
 
   current_landingzone_key     = var.landingzone.key
   tenant_id                   = var.tenant_id
@@ -12,7 +13,7 @@ module "landingzones_shared_services" {
   logged_user_objectId        = var.logged_user_objectId
   logged_aad_app_objectId     = var.logged_aad_app_objectId
   resource_groups             = var.resource_groups
-  
+
   shared_services = {
     recovery_vaults = var.recovery_vaults
     automations     = var.automations

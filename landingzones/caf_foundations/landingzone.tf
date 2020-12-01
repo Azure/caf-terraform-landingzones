@@ -1,12 +1,12 @@
 module "foundations" {
   # source  = "aztfmod/caf/azurerm"
   # version = "~> 0.4"
-  source = "/tf/caf/aztfmod"
+  source = "github.com/aztfmod/terraform-azurerm-caf?ref=patch-diagnostics"
 
   current_landingzone_key     = var.landingzone.key
   tenant_id                   = var.tenant_id
   tags                        = local.tags
-  diagnostics                 = var.diagnostics_destinations == {} ? local.diagnostics : null
+  diagnostics                 = local.remote.diagnostics
   global_settings             = local.global_settings
   tfstates                    = local.tfstates
   diagnostics_definition      = var.diagnostics_definition
@@ -16,6 +16,6 @@ module "foundations" {
   logged_aad_app_objectId     = var.logged_aad_app_objectId
   resource_groups             = var.resource_groups
   keyvaults                   = var.keyvaults
-  log_analytics               = var.log_analytics
-  event_hub_namespaces        = var.event_hub_namespaces
+  log_analytics               = var.diagnostic_log_analytics
+  event_hub_namespaces        = var.diagnostic_event_hub_namespaces
 }

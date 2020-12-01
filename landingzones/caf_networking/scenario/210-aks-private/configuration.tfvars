@@ -63,19 +63,19 @@ vnets = {
     specialsubnets = {}
     subnets = {
       aks_nodepool_system = {
-        name                                           = "aks_nodepool_system"
-        cidr                                           = ["100.64.48.0/24"]
-        route_table_key                                = "default_to_firewall_rg1"
+        name            = "aks_nodepool_system"
+        cidr            = ["100.64.48.0/24"]
+        route_table_key = "default_to_firewall_rg1"
       }
       aks_nodepool_user1 = {
-        name                                           = "aks_nodepool_user1"
-        cidr                                           = ["100.64.49.0/24"]
-        route_table_key                                = "default_to_firewall_rg1"
+        name            = "aks_nodepool_user1"
+        cidr            = ["100.64.49.0/24"]
+        route_table_key = "default_to_firewall_rg1"
       }
       aks_nodepool_user2 = {
-        name                                           = "aks_nodepool_user2"
-        cidr                                           = ["100.64.50.0/24"]
-        route_table_key                                = "default_to_firewall_rg1"
+        name            = "aks_nodepool_user2"
+        cidr            = ["100.64.50.0/24"]
+        route_table_key = "default_to_firewall_rg1"
       }
       private_links = {
         name                                           = "private_links"
@@ -94,9 +94,9 @@ vnet_peerings = {
       vnet_key = "hub_rg1"
     }
     to = {
-      lz_key      = "launchpad"
-      output_key  = "vnets"
-      vnet_key    = "devops_region1"
+      lz_key     = "launchpad"
+      output_key = "vnets"
+      vnet_key   = "devops_region1"
     }
     name                         = "hub_rg1-TO-devops_region1"
     allow_virtual_network_access = true

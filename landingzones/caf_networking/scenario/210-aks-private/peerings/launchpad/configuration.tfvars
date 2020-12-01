@@ -23,12 +23,12 @@ vnet_peerings = {
   # Inbound peer with the devops vnet
   launchpad_devops-TO-hub_rg1 = {
     from = {
-      vnet_key    = "devops_region1"
+      vnet_key = "devops_region1"
     }
     to = {
-      lz_key      = "networking_hub"
-      output_key  = "vnets"
-      vnet_key    = "hub_rg1"
+      lz_key     = "networking_hub"
+      output_key = "vnets"
+      vnet_key   = "hub_rg1"
     }
     name                         = "launchpad_devops-TO-hub_rg1"
     allow_virtual_network_access = true
