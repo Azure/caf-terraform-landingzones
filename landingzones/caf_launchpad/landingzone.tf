@@ -1,8 +1,8 @@
 module "launchpad" {
   # source  = "aztfmod/caf/azurerm"
   # version = "~> 0.4"
-  # source = "github.com/aztfmod/terraform-azurerm-caf?ref=patch-diagnostics"
-  source = "../../../aztfmod"
+  source = "github.com/aztfmod/terraform-azurerm-caf?ref=patch-diagnostics"
+  # source = "../../../aztfmod"
 
   current_landingzone_key               = var.landingzone.key
   tenant_id                             = var.tenant_id

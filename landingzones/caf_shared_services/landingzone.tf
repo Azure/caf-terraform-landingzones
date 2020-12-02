@@ -6,7 +6,7 @@ module "landingzones_shared_services" {
   current_landingzone_key     = var.landingzone.key
   tenant_id                   = var.tenant_id
   tags                        = local.tags
-  diagnostics                 = local.diagnostics
+  diagnostics                 = local.remote.diagnostics
   global_settings             = local.global_settings
   tfstates                    = local.tfstates
   diagnostic_storage_accounts = var.diagnostic_storage_accounts
