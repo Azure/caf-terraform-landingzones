@@ -64,3 +64,11 @@ variable azurerm_application_insights {
 variable machine_learning_workspaces {
   default = {}
 }
+
+variable app_service_plans {
+  default = {}
+}
+
+variable app_services {
+  default = {}
+}
