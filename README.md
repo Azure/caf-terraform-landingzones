@@ -46,7 +46,7 @@ See our [Getting Started Video](https://www.youtube.com/watch?v=t1exCkWft60)
 
 When starting an enterprise deployment, we recommend you start creating a configuration repository where you start crafting you configuration environment.
 
-You can find the [starter repository here](https://github.com/Azure/caf-terraform-landingzones-starter)
+You can find the [starter repository here](https://github.com/Azure/caf-terraform-landingzones-starter) and our sample configuration [onboarding video here](https://www.youtube.com/watch?v=M5BXm30IpdY)
 
 ## Documentation
 

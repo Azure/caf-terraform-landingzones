@@ -60,7 +60,8 @@ On the first run, you need to use the launchpad to create the foundations for Te
 You can find more information on the launchpad settings [Here](../../landingzones/caf_launchpad)
 
 ```bash
-rover -launchpad -lz /tf/caf/landingzones/caf_launchpad \
+rover -lz /tf/caf/landingzones/caf_launchpad \
+-launchpad \
 -var-folder /tf/caf/landingzones/caf_launchpad/scenario/100 \
 -a apply
 ```
