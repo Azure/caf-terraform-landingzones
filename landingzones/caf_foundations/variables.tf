@@ -78,3 +78,6 @@ variable diagnostic_log_analytics {
 variable diagnostics_destinations {
   default = {}
 }
+variable dynamic_keyvault_secrets {
+  default = {}
+}
