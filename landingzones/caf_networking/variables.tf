@@ -124,3 +124,6 @@ variable express_route_circuits {
 variable express_route_circuit_authorizations {
   default = {}
 }
+variable network_watchers {
+  default = {}
+}

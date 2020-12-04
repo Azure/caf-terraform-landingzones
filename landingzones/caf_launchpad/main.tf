@@ -75,6 +75,7 @@ locals {
     random_length      = var.random_length
     inherit_tags       = var.inherit_tags
     use_slug           = var.use_slug
+    tags               = var.tags
   }
 
   tfstates = map(

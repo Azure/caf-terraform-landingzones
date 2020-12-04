@@ -1,6 +1,6 @@
 module "launchpad" {
   source  = "aztfmod/caf/azurerm"
-  version = "~> 0.4"
+  version = "0.4.19"
 
   current_landingzone_key               = var.landingzone.key
   tenant_id                             = var.tenant_id
