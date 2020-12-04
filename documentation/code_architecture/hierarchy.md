@@ -67,6 +67,6 @@ With Terraform, you can read a state file's output and use it as input variables
 
 ![Composition](../../_pictures/code_architecture/landingzone_composition.png)
 
-For more details, you can refer to: [Introduction to service composition inside landing zones](./code_architecture/service_composition.md)
+For more details, you can refer to: [Introduction to service composition inside landing zones](./service_composition.md)
 
 [Back to summary](../README.md)
