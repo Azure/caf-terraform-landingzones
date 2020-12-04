@@ -6,10 +6,7 @@
 module "vm_extension_monitoring_agent" {
   # source     = "aztfmod/caf/azurerm//modules/compute/virtual_machine_extensions"
   # version    = "~> 0.4"
-  source = "github.com/aztfmod/terraform-azurerm-caf?ref=patch-diagnostics//modules/compute/virtual_machine_extensions"
-  # source = "/tf/caf/aztfmod/modules/compute/virtual_machine_extensions"
-
-  # depends_on = [module.landingzones_shared_services]
+  source = "github.com/aztfmod/terraform-azurerm-caf?ref=master//modules/compute/virtual_machine_extensions"
 
   for_each = {
     for key, value in try(var.virtual_machines, {}) : key => value
