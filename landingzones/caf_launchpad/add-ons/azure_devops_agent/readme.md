@@ -39,4 +39,16 @@ rover -lz /tf/caf/landingzones/caf_launchpad/add-ons/azure_devops_agent \
   -level level1 \
   -env sandpit \
   -a apply
+
+
+# If the tfstates are stored in a different subscription you need to execute the following command
+
+rover -lz /tf/caf/landingzones/caf_launchpad/add-ons/azure_devops_agent \
+  -tfstate_subscription_id <ID of the subscription> \
+  -tfstate azdo-agent-level1.tfstate \
+  -var-folder /tf/caf/landingzones/caf_launchpad/add-ons/azure_devops_agent/scenario/200-contoso_demo/level1 \
+  -parallelism 30 \
+  -level level1 \
+  -env sandpit \
+  -a apply
 ```

@@ -36,9 +36,17 @@ rover -lz /tf/caf/landingzones/caf_launchpad \
 # Advanced scenario - Requires Azure AD privileges
 rover -lz /tf/caf/landingzones/caf_launchpad \
     -launchpad \
-    -var-folder /tf/caf/landingzones/caf_launchpad/scenario/200 \
+    -var-folder /tf/caf/landingzones/caf_launchpad/scenario/200/configuration.tfvars \
     -parallelism=30 \
-    -a apply 
+    -a apply
+
+# If the tfstates are stored in a different subscription you need to execute the following command
+rover -lz /tf/caf/landingzones/caf_launchpad \
+    -tfstate_subscription_id <ID of the subscription> \
+    -launchpad \
+    -var-folder /tf/caf/landingzones/caf_launchpad/scenario/200/configuration.tfvars \
+    -parallelism=30 \
+    -a apply
 ```
 
 </BR>

@@ -21,6 +21,7 @@ data "terraform_remote_state" "remote" {
     storage_account_name = local.landingzone[try(each.value.level, "current")].storage_account_name
     container_name       = local.landingzone[try(each.value.level, "current")].container_name
     resource_group_name  = local.landingzone[try(each.value.level, "current")].resource_group_name
+    subscription_id      = var.tfstate_subscription_id
     key                  = each.value.tfstate
   }
 }
@@ -56,6 +57,9 @@ locals {
     }
     keyvaults = {
       for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.keyvaults[key], {}))
+    }
+    recovery_vaults = {
+      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.recovery_vaults[key], {}))
     }
   }
 }

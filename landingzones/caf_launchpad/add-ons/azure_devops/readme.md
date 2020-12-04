@@ -42,7 +42,19 @@ rover -lz /tf/caf/landingzones/caf_launchpad/add-ons/azure_devops \
   -var-folder /tf/caf/landingzones/caf_launchpad/add-ons/azure_devops/scenario/200-contoso_demo \
   -parallelism 30 \
   -level level0 \
-  -a apply -env sandpit
+  -env sandpit \
+  -a apply
+
+
+# If the tfstates are stored in a different subscription you need to execute the following command
+rover -lz /tf/caf/landingzones/caf_launchpad/add-ons/azure_devops \
+  -tfstate_subscription_id <ID of the subscription> \
+  -tfstate azure_devops-contoso_demo.tfstate \
+  -var-folder /tf/caf/landingzones/caf_launchpad/add-ons/azure_devops/scenario/200-contoso_demo \
+  -parallelism 30 \
+  -level level0 \
+  -env sandpit \
+  -a apply 
 ```
 
 We are planning to release more examples on how to deploy the Azure Devops Agents.

@@ -21,3 +21,10 @@ output azuread_groups {
   value     = local.remote.azuread_groups
   sensitive = true
 }
+
+output recovery_vaults {
+  value = map(
+    var.landingzone.key,
+    module.landingzones_shared_services.recovery_vaults
+  )
+}

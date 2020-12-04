@@ -1,6 +1,7 @@
 module "caf" {
-  source  = "aztfmod/caf/azurerm"
-  version = "~> 0.4"
+  # source  = "aztfmod/caf/azurerm"
+  # version = "~> 0.4"
+  source = "github.com/aztfmod/terraform-azurerm-caf?ref=master"
 
   current_landingzone_key               = var.landingzone.key
   tenant_id                             = var.tenant_id

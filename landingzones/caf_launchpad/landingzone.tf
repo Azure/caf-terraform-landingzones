@@ -1,6 +1,7 @@
 module "launchpad" {
-  source  = "aztfmod/caf/azurerm"
-  version = "0.4.19"
+  # source  = "aztfmod/caf/azurerm"
+  # version = "~> 0.4"
+  source = "github.com/aztfmod/terraform-azurerm-caf?ref=master"
 
   current_landingzone_key               = var.landingzone.key
   tenant_id                             = var.tenant_id
@@ -11,9 +12,14 @@ module "launchpad" {
   logged_aad_app_objectId               = var.logged_aad_app_objectId
   user_type                             = var.user_type
   log_analytics                         = var.log_analytics
+  diagnostics = {
+    diagnostics_definition              = var.diagnostics_definition
+    diagnostics_destinations            = var.diagnostics_destinations
+    diagnostic_event_hub_namespaces     = var.diagnostic_event_hub_namespaces
+    diagnostic_log_analytics            = var.diagnostic_log_analytics
+    diagnostic_storage_accounts         = var.diagnostic_storage_accounts
+  }
   event_hub_namespaces                  = var.event_hub_namespaces
-  diagnostics_definition                = var.diagnostics_definition
-  diagnostics_destinations              = var.diagnostics_destinations
   resource_groups                       = var.resource_groups
   keyvaults                             = var.keyvaults
   keyvault_access_policies              = var.keyvault_access_policies
@@ -31,7 +37,7 @@ module "launchpad" {
     route_tables                      = var.route_tables
   }
   storage_accounts            = var.storage_accounts
-  diagnostic_storage_accounts = var.diagnostic_storage_accounts
+  # diagnostic_storage_accounts = var.diagnostic_storage_accounts
   azuread_apps                = var.azuread_apps
   azuread_api_permissions     = var.azuread_api_permissions
   azuread_groups              = var.azuread_groups
