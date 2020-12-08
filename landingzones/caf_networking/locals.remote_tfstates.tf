@@ -72,6 +72,9 @@ locals {
     public_ip_addresses = {
       for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.public_ip_addresses[key], {}))
     }
+    keyvaults = {
+      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.keyvaults[key], {}))
+    }
   }
 
 

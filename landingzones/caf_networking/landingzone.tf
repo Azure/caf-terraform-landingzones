@@ -1,7 +1,7 @@
 module "networking" {
   # source  = "aztfmod/caf/azurerm"
   # version = "~> 0.4"
-  source = "github.com/aztfmod/terraform-azurerm-caf?ref=master"
+  source = "github.com/aztfmod/terraform-azurerm-caf?ref=private_endpoints_centralized"
 
   current_landingzone_key  = var.landingzone.key
   tags                     = local.tags
@@ -33,6 +33,7 @@ module "networking" {
     virtual_wans                                            = var.virtual_wans
     ddos_services                                           = var.ddos_services
     private_dns                                             = var.private_dns
+    private_endpoints                                       = var.private_endpoints
   }
   compute = {
     virtual_machines           = var.virtual_machines
@@ -43,15 +44,16 @@ module "networking" {
   managed_identities = var.managed_identities
 
   remote_objects = {
-    azuread_groups                   = local.remote.azuread_groups
-    managed_identities               = local.remote.managed_identities
-    vnets                            = local.remote.vnets
-    azurerm_firewalls                = local.remote.azurerm_firewalls
-    virtual_wans                     = local.remote.virtual_wans
-    private_dns                      = local.remote.private_dns
     application_gateways             = local.remote.application_gateways
     application_gateway_applications = local.remote.application_gateway_applications
+    azuread_groups                   = local.remote.azuread_groups
+    azurerm_firewalls                = local.remote.azurerm_firewalls
+    keyvaults                        = local.remote.keyvaults
+    managed_identities               = local.remote.managed_identities
+    private_dns                      = local.remote.private_dns
     public_ip_addresses              = local.remote.public_ip_addresses
+    vnets                            = local.remote.vnets
+    virtual_wans                     = local.remote.virtual_wans
   }
 
 }
