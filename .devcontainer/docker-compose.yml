@@ -6,7 +6,7 @@
   version: '3.7'
   services:
     rover:
-      image: aztfmod/rover:2011.3012
+      image: aztfmod/roverdev:2012.100915
       user: vscode
 
       labels:
