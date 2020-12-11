@@ -1,6 +1,6 @@
 output diagnostics {
   value     = module.networking.diagnostics
-  sensitive = false
+  sensitive = true
 }
 
 output tfstates {
