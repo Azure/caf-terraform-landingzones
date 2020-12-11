@@ -21,8 +21,8 @@ terraform {
       version = "~> 1.2.0"
     }
     azuredevops = {
-      source  = "microsoft/azuredevops"
-      version = "~> 0.1.0"
+      source  = "terraform-providers/azuredevops"
+      version = "~> 0.0.1"
     }
     tls = {
       source  = "hashicorp/tls"
