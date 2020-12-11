@@ -29,6 +29,10 @@ This release is relying extensively on Terraform 0.13 capabilities (module itera
 
 Those new features allow more complex and more dynamic code composition. The following concepts are used:
 
+* **Multi-subscription deployment**: initial support to deploy landing zones in any subscription from the launchpad subscription.
+* **Autonomous module consumption**: consumption of the CAF module outside of landing zones.
+* **Starter kit extension**: added new scenarios for sandpit environment, added support for AKS.
+* **Verified by Hashicorp status**:  status achieved for new CAF module and provider.
 * **No-code environment composition**: a landing zone environment can be composed customizing variable files and code must be robust enough to accommodate combinations and composition.
 * **Flexible foundations to meet customer needs**: everything is customizable at all layers.
 * **Key-based configuration and customization**: all configuration objects will call each other based on the object keys.
@@ -44,7 +48,7 @@ See our [Getting Started Video](https://www.youtube.com/watch?v=t1exCkWft60)
 
 ## Sample configuration repository
 
-When starting an enterprise deployment, we recommend you start creating a configuration repository where you start crafting you configuration environment.
+When starting an enterprise deployment, we recommend you start creating a configuration repository where you craft the configuration files for your environments.
 
 You can find the [starter repository here](https://github.com/Azure/caf-terraform-landingzones-starter) and our sample configuration [onboarding video here](https://www.youtube.com/watch?v=M5BXm30IpdY)
 
