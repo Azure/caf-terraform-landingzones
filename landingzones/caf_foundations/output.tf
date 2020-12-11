@@ -4,7 +4,7 @@ output global_settings {
 }
 output diagnostics {
   value     = module.foundations.diagnostics
-  sensitive = false
+  sensitive = true
 }
 output vnets {
   value     = local.remote.vnets
