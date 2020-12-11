@@ -4,9 +4,8 @@
 
 
 module "vm_extension_monitoring_agent" {
-  # source     = "aztfmod/caf/azurerm//modules/compute/virtual_machine_extensions"
-  # version    = "~> 0.4"
-  source = "github.com/aztfmod/terraform-azurerm-caf?ref=master//modules/compute/virtual_machine_extensions"
+  source  = "aztfmod/caf/azurerm//modules/compute/virtual_machine_extensions"
+  version = "0.4.20"
 
   for_each = {
     for key, value in try(var.virtual_machines, {}) : key => value
@@ -23,9 +22,8 @@ module "vm_extension_monitoring_agent" {
 }
 
 module "vm_extension_diagnostics" {
-  # source     = "aztfmod/caf/azurerm//modules/compute/virtual_machine_extensions"
-  # version    = "~> 0.4"
-  source = "github.com/aztfmod/terraform-azurerm-caf?ref=master//modules/compute/virtual_machine_extensions"
+  source     = "aztfmod/caf/azurerm//modules/compute/virtual_machine_extensions"
+  version    = "0.4.20"
 
   for_each = {
     for key, value in try(var.virtual_machines, {}) : key => value

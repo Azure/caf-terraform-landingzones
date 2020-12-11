@@ -1,7 +1,6 @@
 module "networking" {
-  # source  = "aztfmod/caf/azurerm"
-  # version = "~> 0.4"
-  source = "github.com/aztfmod/terraform-azurerm-caf?ref=master"
+  source  = "aztfmod/caf/azurerm"
+  version = "0.4.20"
 
   current_landingzone_key  = var.landingzone.key
   tags                     = local.tags
