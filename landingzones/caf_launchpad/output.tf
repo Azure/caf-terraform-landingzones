@@ -5,7 +5,7 @@ output global_settings {
 
 output diagnostics {
   value     = module.launchpad.diagnostics
-  sensitive = false
+  sensitive = true
 }
 
 output networking {
