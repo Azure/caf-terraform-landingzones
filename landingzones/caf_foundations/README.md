@@ -22,9 +22,15 @@ By default, the content of this landing zone is empty unless you specify a confi
 
 ```bash
 #  To deploy the CAF foundations in passthrough mode
-rover -lz /tf/caf/landingzones/caf_foundations \
--level level1 \
--a apply
+rover -lz /tf/caf/public/landingzones/caf_foundations \
+  -level level1 \
+  -a apply
+
+# If the tfstates are stored in a different subscription you need to execute the following command
+rover -lz /tf/caf/public/landingzones/caf_foundations \
+  -tfstate_subscription_id <ID of the subscription> \
+  -level level1 \
+  -a apply
 ```
 
 ## Deploying CAF foundations with enterprise-scale (experimental)
@@ -33,8 +39,15 @@ This is currently work in progress.
 Use the following configuration file in order to get started with the enterprise-scale module integration:
 
 ```bash
-rover -lz /tf/caf/landingzones/caf_foundations \
--var-folder /tf/caf/landingzones/caf_foundations/scenario/200 \
--level level1 \
--a apply
+rover -lz /tf/caf/public/landingzones/caf_foundations \
+  -var-folder /tf/caf/public/landingzones/caf_foundations/scenario/200 \
+  -level level1 \
+  -a apply
+
+# If the tfstates are stored in a different subscription you need to execute the following command
+rover -lz /tf/caf/public/landingzones/caf_foundations \
+  -tfstate_subscription_id <ID of the subscription> \
+  -var-folder /tf/caf/public/landingzones/caf_foundations/scenario/200 \
+  -level level1 \
+  -a apply
 ```

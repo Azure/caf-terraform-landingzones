@@ -2,12 +2,10 @@ output global_settings {
   value     = local.global_settings
   sensitive = true
 }
-
 output diagnostics {
-  value     = local.diagnostics
+  value     = module.foundations.diagnostics
   sensitive = true
 }
-
 output vnets {
   value     = local.remote.vnets
   sensitive = true
@@ -20,9 +18,14 @@ output azuread_groups {
   value     = local.remote.azuread_groups
   sensitive = true
 }
-
 output tfstates {
   value     = local.tfstates
   sensitive = true
 }
-
+output keyvaults {
+  value = map(
+    var.landingzone.key,
+    try(module.foundations.keyvaults, {})
+  )
+  sensitive = true
+}

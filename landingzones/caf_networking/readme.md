@@ -31,8 +31,15 @@ Depending on the networking scenario and topology, we provide you with different
 Once you have picked a scenario for test, you can deploy it using:
 
 ```bash
-rover -lz /tf/caf/landingzones/caf_networking \
--level level2 \
--var-folder /tf/caf/landingzones/caf_networking/scenario/100-single-region-hub \
--a apply
+rover -lz /tf/caf/public/landingzones/caf_networking \
+  -level level2 \
+  -var-folder /tf/caf/public/landingzones/caf_networking/scenario/100-single-region-hub \
+  -a apply
+
+# If the tfstates are stored in a different subscription you need to execute the following command
+rover -lz /tf/caf/public/landingzones/caf_networking \
+  -tfstate_subscription_id <ID of the subscription> \
+  -level level2 \
+  -var-folder /tf/caf/public/landingzones/caf_networking/scenario/100-single-region-hub \
+  -a apply
 ```

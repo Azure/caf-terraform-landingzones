@@ -2,7 +2,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "2.37.0"
+      version = "2.40.0"
     }
     azuread = {
       source  = "hashicorp/azuread"
@@ -78,11 +78,9 @@ locals {
     tags               = var.tags
   }
 
-  tfstates = map(var.landingzone.key,
-    map(
-      var.landingzone.key,
-      local.backend[var.landingzone.backend_type]
-    )
+  tfstates = map(
+    var.landingzone.key,
+    local.backend[var.landingzone.backend_type]
   )
 
   backend = {

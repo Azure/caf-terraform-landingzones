@@ -2,7 +2,7 @@ landingzone = {
   backend_type        = "azurerm"
   global_settings_key = "foundations"
   level               = "level2"
-  key                 = "example"
+  key                 = "networking_hub"
   tfstates = {
     foundations = {
       level   = "lower"
@@ -19,10 +19,6 @@ resource_groups = {
   vnet_rg1 = {
     name   = "vnet-rg1"
     region = "region1"
-  }
-  vnet_rg2 = {
-    name   = "vnet-rg2"
-    region = "region2"
   }
 }
 
@@ -67,20 +63,23 @@ vnets = {
     specialsubnets = {}
     subnets = {
       aks_nodepool_system = {
-        name                                           = "aks_nodepool_system"
-        cidr                                           = ["100.64.48.0/24"]
-        route_table_key                                = "default_to_firewall_rg1"
-        enforce_private_link_endpoint_network_policies = true
+        name            = "aks_nodepool_system"
+        cidr            = ["100.64.48.0/24"]
+        route_table_key = "default_to_firewall_rg1"
       }
       aks_nodepool_user1 = {
-        name                                           = "aks_nodepool_user1"
-        cidr                                           = ["100.64.49.0/24"]
-        route_table_key                                = "default_to_firewall_rg1"
-        enforce_private_link_endpoint_network_policies = true
+        name            = "aks_nodepool_user1"
+        cidr            = ["100.64.49.0/24"]
+        route_table_key = "default_to_firewall_rg1"
       }
       aks_nodepool_user2 = {
-        name                                           = "aks_nodepool_user2"
-        cidr                                           = ["100.64.50.0/24"]
+        name            = "aks_nodepool_user2"
+        cidr            = ["100.64.50.0/24"]
+        route_table_key = "default_to_firewall_rg1"
+      }
+      private_links = {
+        name                                           = "private_links"
+        cidr                                           = ["100.64.51.0/24"]
         route_table_key                                = "default_to_firewall_rg1"
         enforce_private_link_endpoint_network_policies = true
       }
@@ -95,30 +94,11 @@ vnet_peerings = {
       vnet_key = "hub_rg1"
     }
     to = {
-      tfstate_key = "foundations"
-      lz_key      = "launchpad"
-      output_key  = "vnets"
-      vnet_key    = "devops_region1"
+      lz_key     = "launchpad"
+      output_key = "vnets"
+      vnet_key   = "devops_region1"
     }
     name                         = "hub_rg1-TO-devops_region1"
-    allow_virtual_network_access = true
-    allow_forwarded_traffic      = false
-    allow_gateway_transit        = false
-    use_remote_gateways          = false
-  }
-
-  # Inbound peer with the devops vnet
-  launchpad_devops-TO-hub_rg1 = {
-    from = {
-      tfstate_key = "foundations"
-      lz_key      = "launchpad"
-      output_key  = "vnets"
-      vnet_key    = "devops_region1"
-    }
-    to = {
-      vnet_key = "hub_rg1"
-    }
-    name                         = "launchpad_devops-TO-hub_rg1"
     allow_virtual_network_access = true
     allow_forwarded_traffic      = false
     allow_gateway_transit        = false
@@ -766,33 +746,11 @@ azure_container_registries = {
 
     private_endpoints = {
       # Require enforce_private_link_endpoint_network_policies set to true on the subnet
-      spoke_aks_rg1-aks_nodepool_system = {
+      spoke_aks_rg1-private_links = {
         name               = "acr-test-private-link"
         resource_group_key = "vnet_rg1"
         vnet_key           = "spoke_aks_rg1"
-        subnet_key         = "aks_nodepool_system"
-        private_service_connection = {
-          name                 = "acr-test-private-link-psc"
-          is_manual_connection = false
-          subresource_names    = ["registry"]
-        }
-      }
-      spoke_aks_rg1-aks_nodepool_user1 = {
-        name               = "acr-test-private-link"
-        resource_group_key = "vnet_rg1"
-        vnet_key           = "spoke_aks_rg1"
-        subnet_key         = "aks_nodepool_user1"
-        private_service_connection = {
-          name                 = "acr-test-private-link-psc"
-          is_manual_connection = false
-          subresource_names    = ["registry"]
-        }
-      }
-      spoke_aks_rg1-aks_nodepool_user2 = {
-        name               = "acr-test-private-link"
-        resource_group_key = "vnet_rg1"
-        vnet_key           = "spoke_aks_rg1"
-        subnet_key         = "aks_nodepool_user2"
+        subnet_key         = "private_links"
         private_service_connection = {
           name                 = "acr-test-private-link-psc"
           is_manual_connection = false

@@ -1,6 +1,6 @@
 module "networking" {
   source  = "aztfmod/caf/azurerm"
-  version = "0.4.19"
+  version = "0.4.20"
 
   current_landingzone_key  = var.landingzone.key
   tags                     = local.tags
@@ -24,12 +24,15 @@ module "networking" {
     azurerm_firewall_application_rule_collection_definition = var.azurerm_firewall_application_rule_collection_definition
     azurerm_firewall_nat_rule_collection_definition         = var.azurerm_firewall_nat_rule_collection_definition
     azurerm_firewalls                                       = var.azurerm_firewalls
+    express_route_circuits                                  = var.express_route_circuits
+    express_route_circuit_authorizations                    = var.express_route_circuit_authorizations
     public_ip_addresses                                     = var.public_ip_addresses
     route_tables                                            = var.route_tables
     azurerm_routes                                          = var.azurerm_routes
     virtual_wans                                            = var.virtual_wans
     ddos_services                                           = var.ddos_services
     private_dns                                             = var.private_dns
+    private_endpoints                                       = var.private_endpoints
   }
   compute = {
     virtual_machines           = var.virtual_machines
@@ -40,15 +43,16 @@ module "networking" {
   managed_identities = var.managed_identities
 
   remote_objects = {
-    azuread_groups                   = local.remote.azuread_groups
-    managed_identities               = local.remote.managed_identities
-    vnets                            = local.remote.vnets
-    azurerm_firewalls                = local.remote.azurerm_firewalls
-    virtual_wans                     = local.remote.virtual_wans
-    private_dns                      = local.remote.private_dns
     application_gateways             = local.remote.application_gateways
     application_gateway_applications = local.remote.application_gateway_applications
+    azuread_groups                   = local.remote.azuread_groups
+    azurerm_firewalls                = local.remote.azurerm_firewalls
+    keyvaults                        = local.remote.keyvaults
+    managed_identities               = local.remote.managed_identities
+    private_dns                      = local.remote.private_dns
     public_ip_addresses              = local.remote.public_ip_addresses
+    vnets                            = local.remote.vnets
+    virtual_wans                     = local.remote.virtual_wans
   }
 
 }
