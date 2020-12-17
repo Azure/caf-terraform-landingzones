@@ -1,6 +1,6 @@
 module "foundations" {
   source  = "aztfmod/caf/azurerm"
-  version = "0.4.20"
+  version = "~>4.21"
 
   current_landingzone_key     = var.landingzone.key
   tenant_id                   = var.tenant_id
