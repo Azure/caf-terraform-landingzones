@@ -22,8 +22,8 @@ module "vm_extension_monitoring_agent" {
 }
 
 module "vm_extension_diagnostics" {
-  source     = "aztfmod/caf/azurerm//modules/compute/virtual_machine_extensions"
-  version    = "~>4.21"
+  source  = "aztfmod/caf/azurerm//modules/compute/virtual_machine_extensions"
+  version = "~>4.21"
 
   for_each = {
     for key, value in try(var.virtual_machines, {}) : key => value
