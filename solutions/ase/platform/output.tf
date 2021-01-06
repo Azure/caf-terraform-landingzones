@@ -1,5 +1,5 @@
 output diagnostics {
-  value     = module.networking.diagnostics
+  value     = local.diagnostics
   sensitive = true
 }
 
