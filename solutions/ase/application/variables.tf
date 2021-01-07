@@ -76,3 +76,6 @@ variable role_mapping {
 variable custom_role_definitions {
   default = {}
 }
+variable dynamic_keyvault_secrets {
+  default = {}
+}

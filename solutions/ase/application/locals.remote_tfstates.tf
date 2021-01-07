@@ -59,6 +59,9 @@ locals {
     app_service_plans = {
       for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.app_service_plans[key], {}))
     }
+    app_services = {
+      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.app_services[key], {}))
+    }
     mssql_servers = {
       for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.mssql_servers[key], {}))
     }

@@ -25,11 +25,6 @@ module "caf" {
     app_services                 = var.app_services
   }
 
-  remote_objects = {
-    vnets                     = local.remote.vnets
-    private_dns               = local.remote.private_dns
-  }
-
   database = {
     azurerm_redis_caches  = var.azurerm_redis_caches
     mssql_servers         = var.mssql_servers

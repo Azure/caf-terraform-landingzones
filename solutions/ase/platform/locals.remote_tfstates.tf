@@ -50,5 +50,16 @@ locals {
     private_dns = {
       for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.private_dns[key], {}))
     }
+    app_service_environments = {
+      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.app_service_environments[key], {}))
+    }
+    app_service_plans = {
+      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.app_service_plans[key], {}))
+    }
+  }
+
+  combined = {
+    app_service_environments         = merge(local.remote.app_service_environments, map(var.landingzone.key, module.caf.app_service_environments))
+    app_service_plans                = merge(local.remote.app_service_plans, map(var.landingzone.key, module.caf.app_service_plans))
   }
 }

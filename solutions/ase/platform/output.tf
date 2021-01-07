@@ -14,11 +14,11 @@ output global_settings {
 }
 
 output app_service_environments {
-  value     = module.caf.app_service_environments
+  value     = local.combined.app_service_environments
   sensitive = true
 }
 
 output app_service_plans {
-  value     = module.caf.app_service_plans
+  value     = local.combined.app_service_plans
   sensitive = true
 }
