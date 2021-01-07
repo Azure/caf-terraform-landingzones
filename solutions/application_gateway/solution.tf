@@ -26,6 +26,7 @@ module "caf" {
 
   remote_objects = {
     azuread_groups                   = local.remote.azuread_groups
+    managed_identities               = local.remote.managed_identities
     vnets                            = local.remote.vnets
     private_dns                      = local.remote.private_dns
     public_ip_addresses              = local.remote.public_ip_addresses
