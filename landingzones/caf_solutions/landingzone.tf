@@ -1,4 +1,4 @@
-module "solutions" {
+module "caf" {
   source  = "aztfmod/caf/azurerm"
   version = "~> 4.21"
 

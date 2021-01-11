@@ -88,10 +88,11 @@ locals {
     private_dns                      = merge(local.remote.private_dns, map(var.landingzone.key, module.caf.private_dns))
     application_gateways             = merge(local.remote.application_gateways, map(var.landingzone.key, module.caf.application_gateways))
     application_gateway_applications = merge(local.remote.application_gateway_applications, map(var.landingzone.key, module.caf.application_gateway_applications))
-    app_service_plans                = merge(local.remote.app_service_plans, map(var.landingzone.key, module.solutions.app_service_plans))
-    app_services                     = merge(local.remote.app_services, map(var.landingzone.key, module.solutions.app_services))
-    managed_identities               = merge(local.remote.managed_identities, map(var.landingzone.key, module.solutions.managed_identities))
-    mssql_servers                    = merge(local.remote.mssql_servers, map(var.landingzone.key, module.solutions.mssql_servers))
-    mssql_elastic_pools              = merge(local.remote.mssql_elastic_pools, map(var.landingzone.key, module.solutions.mssql_elastic_pools))
+    app_service_environments         = merge(local.remote.app_service_environments, map(var.landingzone.key, module.caf.app_service_environments))
+    app_service_plans                = merge(local.remote.app_service_plans, map(var.landingzone.key, module.caf.app_service_plans))
+    app_services                     = merge(local.remote.app_services, map(var.landingzone.key, module.caf.app_services))
+    managed_identities               = merge(local.remote.managed_identities, map(var.landingzone.key, module.caf.managed_identities))
+    mssql_servers                    = merge(local.remote.mssql_servers, map(var.landingzone.key, module.caf.mssql_servers))
+    mssql_elastic_pools              = merge(local.remote.mssql_elastic_pools, map(var.landingzone.key, module.caf.mssql_elastic_pools))
   }
 }

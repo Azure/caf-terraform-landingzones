@@ -39,7 +39,7 @@ output mssql_elastic_pools {
 }
 
 output redis_caches {
-  value     = module.solutions.redis_caches
+  value     = module.caf.redis_caches
   sensitive = true
 }
 
@@ -49,7 +49,7 @@ output managed_identities {
 }
 
 output keyvaults {
-  value     = map(var.landingzone.key, module.solutions.keyvaults)
+  value     = map(var.landingzone.key, module.caf.keyvaults)
   sensitive = true
 }
 
