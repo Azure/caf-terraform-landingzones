@@ -2,22 +2,22 @@ module "caf" {
   source  = "aztfmod/caf/azurerm"
   version = "~> 4.21"
 
-  current_landingzone_key     = var.landingzone.key
-  tags                        = local.tags
-  diagnostics                 = local.diagnostics
-  global_settings             = local.global_settings
-  tfstates                    = local.tfstates
-  tenant_id                   = var.tenant_id
-  logged_user_objectId        = var.logged_user_objectId
-  logged_aad_app_objectId     = var.logged_aad_app_objectId
-  resource_groups             = var.resource_groups
-  storage_accounts            = var.storage_accounts
-  azuread_groups              = var.azuread_groups
-  keyvaults                   = var.keyvaults
-  keyvault_access_policies    = var.keyvault_access_policies
-  managed_identities          = var.managed_identities
-  role_mapping                = var.role_mapping
-  custom_role_definitions     = var.custom_role_definitions
+  current_landingzone_key  = var.landingzone.key
+  tags                     = local.tags
+  diagnostics              = local.diagnostics
+  global_settings          = local.global_settings
+  tfstates                 = local.tfstates
+  tenant_id                = var.tenant_id
+  logged_user_objectId     = var.logged_user_objectId
+  logged_aad_app_objectId  = var.logged_aad_app_objectId
+  resource_groups          = var.resource_groups
+  storage_accounts         = var.storage_accounts
+  azuread_groups           = var.azuread_groups
+  keyvaults                = var.keyvaults
+  keyvault_access_policies = var.keyvault_access_policies
+  managed_identities       = var.managed_identities
+  role_mapping             = var.role_mapping
+  custom_role_definitions  = var.custom_role_definitions
 
   webapp = {
     azurerm_application_insights = var.azurerm_application_insights
@@ -27,15 +27,15 @@ module "caf" {
   }
 
   networking = {
-    application_gateways              = var.application_gateways
-    application_gateway_applications  = var.application_gateway_applications
+    application_gateways             = var.application_gateways
+    application_gateway_applications = var.application_gateway_applications
   }
 
   database = {
-    azurerm_redis_caches  = var.azurerm_redis_caches
-    mssql_servers         = var.mssql_servers
-    mssql_databases       = var.mssql_databases
-    mssql_elastic_pools   = var.mssql_elastic_pools
+    azurerm_redis_caches = var.azurerm_redis_caches
+    mssql_servers        = var.mssql_servers
+    mssql_databases      = var.mssql_databases
+    mssql_elastic_pools  = var.mssql_elastic_pools
   }
 
   security = {
