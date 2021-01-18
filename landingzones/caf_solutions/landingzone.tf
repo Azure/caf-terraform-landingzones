@@ -94,6 +94,7 @@ module "caf" {
 
   security = {
     dynamic_keyvault_secrets      = var.dynamic_keyvault_secrets
+    keyvault_certificates         = var.keyvault_certificates
     keyvault_certificate_requests = var.keyvault_certificate_requests
   }
 
