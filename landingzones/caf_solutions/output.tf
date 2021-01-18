@@ -1,6 +1,6 @@
 #Core outputs
 output diagnostics {
-  value     = local.remote.diagnostics
+  value     = local.diagnostics
   sensitive = true
 }
 
