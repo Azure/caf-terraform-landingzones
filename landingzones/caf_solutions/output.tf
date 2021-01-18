@@ -52,7 +52,7 @@ output managed_identities {
 }
 
 output keyvaults {
-  value     = map(var.landingzone.key, module.caf.keyvaults)
+  value     = tomap({ (var.landingzone.key) = module.caf.keyvaults })
   sensitive = true
 }
 
