@@ -1,5 +1,6 @@
+#Core outputs
 output diagnostics {
-  value     = local.diagnostics
+  value     = local.remote.diagnostics
   sensitive = true
 }
 
@@ -13,6 +14,7 @@ output global_settings {
   sensitive = true
 }
 
+# ASE
 output app_service_environments {
   value     = local.combined.app_service_environments
   sensitive = true
@@ -28,6 +30,7 @@ output app_services {
   sensitive = true
 }
 
+# DB
 output mssql_servers {
   value     = local.combined.mssql_servers
   sensitive = true
@@ -53,6 +56,7 @@ output keyvaults {
   sensitive = true
 }
 
+# App Gateways
 output application_gateways {
   value     = local.combined.application_gateways
   sensitive = true
@@ -63,7 +67,29 @@ output application_gateway_applications {
   sensitive = true
 }
 
+# DNS
 output private_dns {
   value     = local.combined.private_dns
   sensitive = true
+}
+
+# Kubernetes
+output aks_clusters_kubeconfig {
+  value = {
+    for key, aks_cluster in module.caf.aks_clusters : key => {
+      aks_kubeconfig_cmd       = aks_cluster.aks_kubeconfig_cmd
+      aks_kubeconfig_admin_cmd = aks_cluster.aks_kubeconfig_admin_cmd
+    }
+  }
+  sensitive = false
+}
+
+output aks_clusters {
+  value     = tomap({ (var.landingzone.key) = module.caf.aks_clusters })
+  sensitive = true
+}
+
+output virtual_machines {
+  value     = module.caf.virtual_machines
+  sensitive = false
 }
