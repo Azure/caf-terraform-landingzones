@@ -248,3 +248,13 @@ variable local_network_gateways {
 variable azure_container_registries {
   default = {}
 }
+variable azuread_api_permissions {
+  default = {}
+}
+variable azuread_apps {
+  default = {}
+}
+variable azuread_users {
+  default = {}
+}
+variable user_type {}
