@@ -73,7 +73,7 @@ output private_dns {
   sensitive = true
 }
 
-# Kubernetes
+# Kubernetes related outputs
 output aks_clusters_kubeconfig {
   value = {
     for key, aks_cluster in module.caf.aks_clusters : key => {
