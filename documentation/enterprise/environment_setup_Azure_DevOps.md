@@ -1,8 +1,8 @@
-# Enterprise Adoption Guide on Cloud Adoption Framework for Azure - Landing zones on Terraform 
+# Enterprise Adoption Guide on Cloud Adoption Framework for Azure - Landing zones on Terraform
 
 ## Overview
 
-In this guide, we summarize steps to get started in an enteprise environment. 
+In this guide, we summarize steps to get started in an enteprise environment.
 
 
 # Get Started (Step By Step)
@@ -11,11 +11,11 @@ In this guide, we summarize steps to get started in an enteprise environment.
 
 ## Azure Sandpit Environment
 
-Successful implementations tend to focus on building first a sandpit/innovation hub environment where all stakeholders (IT operations, security, compliance, information protection, finance, and business) define their requirements. 
+Successful implementations tend to focus on building first a sandpit/innovation hub environment where all stakeholders (IT operations, security, compliance, information protection, finance, and business) define their requirements.
 
 The DevOps team focuses on building, automating, testing modules, and landing zones to create an infrastructure environment that is good enough.
 
-We define a sandpit environment as an environment where innovation and experimentations can happen "freely". 
+We define a sandpit environment as an environment where innovation and experimentations can happen "freely".
 As such is it composed of:
 -	One or more subscriptions that are isolated from ANY customer environment.
 -	A separate Azure AD tenant space.
@@ -27,7 +27,7 @@ As such is it composed of:
 Ideally multiple projects needed to fully utilize Azure landing zones capabilities:
 
 * **Main Project** - Repository of your private Terraform code and project management for landing zones adoption in your organization
-* **Configuration Projects** - For each environments (Production, Non-production, Sandpit) that you plan to leverage Azure Terraform landing zone, dedicated project in Azure Devops is needed to fully utilize the automation mechanism provided. This will reduce the risk and minimize error on mixing environments configuration files(.tfvars),pipelines and variables. 
+* **Configuration Projects** - For each environments (Production, Non-production, Sandpit) that you plan to leverage Azure Terraform landing zone, dedicated project in Azure Devops is needed to fully utilize the automation mechanism provided. This will reduce the risk and minimize error on mixing environments configuration files(.tfvars),pipelines and variables.
 
 Examples Azure DevOps setup:
 
@@ -54,7 +54,7 @@ Examples Azure DevOps setup:
 
 ### Repositories
 
-During the lifecycle of the landing zones deployment you will probably find that it is easier to work first with a mono-repository environment but we recommend using multiple repositories as follow: 
+During the lifecycle of the landing zones deployment you will probably find that it is easier to work first with a mono-repository environment but we recommend using multiple repositories as follow:
 * **Configuration repository**: [this template can be used](https://github.com/azure/caf-terraform-landingzones-starter) as configuration repository for CAF landing zones, containing definition of the configuration for your different environments.
 * **Logic repository**: this Azure CAF landing zone repository. Documentation to come on how to fork this repository.
 
@@ -70,7 +70,7 @@ This approach allows you to easily:
 ## Bootstrap process
 
 ### Bootstrap identity
-In order to start consuming Azure Terraform landing zones, we need to create a privileged account to boostrap the environment. 
+In order to start consuming Azure Terraform landing zones, we need to create a privileged account to boostrap the environment.
 
 You can opt for:
 1. Using an user account with enough permission (Azure Active Directory Global Administrator)

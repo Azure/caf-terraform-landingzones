@@ -60,23 +60,23 @@ always a hot topic, and while one size fits all is rarely the norm, we
 tend to recommend starting with either of the following extending's on
 Terraform (unclear) documentation.
 
-![config](../../_pictures/delivery/code_repo.png) 
+![config](../../_pictures/delivery/code_repo.png)
 
 For a given environment, ideally the code should remain identical and
 only the variables should evolve. The following example illustrates the
 two repository we recommend: one for the configuration and one for the code of deployment.
 
-![config](../../_pictures/delivery/config_repo.png) 
+![config](../../_pictures/delivery/config_repo.png)
 
 Looking closer at the configuration repository, we can see that each
 environment is represented in a folder and each environment enforces the
 following structure:
 
-| **directory name** |  **purpose and content** | 
-| -------------------| ------------------------| 
-| devops             | Contains the DevOps environment variables to configure the Azure DevOps variable groups, and pipeline definitions | 
+| **directory name** |  **purpose and content** |
+| -------------------| ------------------------|
+| devops             | Contains the DevOps environment variables to configure the Azure DevOps variable groups, and pipeline definitions |
 | landingzones       | Contains a directory for each landing zone. Each directory will include its own pipeline definition for apply, destroy, etc.   Each directory must also contain the landing zones variable definitions files.
-| launchpad          |  Contains the configuration files for the launchpad environment. | 
+| launchpad          |  Contains the configuration files for the launchpad environment. |
 
 An enterprise environment will consist of a series of pipelines
 enforcing the different types of environments in different

@@ -8,7 +8,7 @@ The networking landing zone allows you to deploy most networking topologies on M
 * Any custom network topology based on virtual networks or virtual WAN
 * Library of network security groups definition
 
-Networking landing zone operates at **level 2**. 
+Networking landing zone operates at **level 2**.
 
 For a review of the hierarchy approach of Cloud Adoption Framework for Azure landing zones on Terraform, you can refer to [the following documentation](../../../../documentation/code_architecture/hierarchy.md).
 

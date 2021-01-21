@@ -57,7 +57,7 @@ Blueprints/Services can be stored either inside the landing zones (as a subdirec
 
 The delivery of a full landing zone might be decomposed in multiples levels in order to manage different personas and contain the blast radius that a mistake might incur in one landing zone.
 
-### Launchpad 
+### Launchpad
 [Source here](https://github.com/aztfmod/level0)
 
 A special landing zone is called launchpad and it acts as your toolbox to deploy the resources that in turn helps manage the fundamentals of a full landing zone deployment:

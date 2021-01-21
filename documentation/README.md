@@ -26,14 +26,10 @@ Soon - [Deployment guide for Azure CAF landing zones]()
 
 ## Development and code
 
-[Modules development guidelines](./code_architecture/module_conventions.md)
-
 [Modules Unit and integration testing](./test/unit_test.md)
 
 Soon - [Landing zones development conventions]()
 
 [Introduction to service composition inside landing zones](./code_architecture/service_composition.md)
-
-[Create your first landing zone in 10 easy steps - part 1](./code_architecture/how_to_code_a_landingzone.md)
 
 Soon - [Create your first landing zone in 10 easy steps - part 2]()
