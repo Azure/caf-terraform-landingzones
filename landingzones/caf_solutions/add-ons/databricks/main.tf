@@ -2,7 +2,6 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 2.33.0"
     }
     azurecaf = {
       source  = "aztfmod/azurecaf"
@@ -37,18 +36,6 @@ data "terraform_remote_state" "landingzone" {
 }
 
 locals {
-  caf = data.terraform_remote_state.landingzone.outputs.caf
-
-  tags = merge(var.tags, { "level" = try(var.landingzone.level, {}) }, { "environment" = var.environment }, { "rover_version" = var.rover_version })
-
-  global_settings = {
-    prefix         = data.terraform_remote_state.landingzone.outputs.global_settings.prefix
-    default_region = try(var.global_settings.default_region, data.terraform_remote_state.landingzone.outputs.global_settings.default_region)
-    environment    = data.terraform_remote_state.landingzone.outputs.global_settings.environment
-    regions        = try(var.global_settings.regions, data.terraform_remote_state.landingzone.outputs.global_settings.regions)
-    max_length     = try(var.max_length, data.terraform_remote_state.landingzone.outputs.global_settings.max_length)
-  }
-
   diagnostics = {
     diagnostics_definition   = merge(data.terraform_remote_state.landingzone.outputs.diagnostics.diagnostics_definition, var.diagnostics_definition)
     diagnostics_destinations = data.terraform_remote_state.landingzone.outputs.diagnostics.diagnostics_destinations

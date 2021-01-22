@@ -93,3 +93,22 @@ output virtual_machines {
   value     = module.caf.virtual_machines
   sensitive = false
 }
+
+# Data and AI outputs
+output databricks_workspaces {
+  value     = tomap({ (var.landingzone.key) = module.caf.databricks_workspaces })
+  sensitive = true
+}
+
+output machine_learning_workspaces {
+  value     = tomap({ (var.landingzone.key) = module.caf.machine_learning_workspaces })
+  sensitive = true
+}
+
+output synapse_workspaces {
+  value     = tomap({ (var.landingzone.key) = module.caf.synapse_workspaces })
+  sensitive = true
+}
+
+
+

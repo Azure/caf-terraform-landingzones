@@ -1,5 +1,5 @@
 locals {
-  azure_workspace_resource_id = local.caf.databricks_workspaces[var.databricks.workspace_key].id
+  azure_workspace_resource_id = local.remote.databricks_workspaces[var.databricks.lz_key][var.databricks.workspace_key].id
 }
 
 provider "databricks" {
