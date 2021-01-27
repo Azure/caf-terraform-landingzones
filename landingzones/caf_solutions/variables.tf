@@ -258,3 +258,12 @@ variable azuread_users {
   default = {}
 }
 variable user_type {}
+variable domain_name_registrations {
+  default = {}
+}
+variable dns_zone_records {
+  default = {}
+}
+variable keyvault_keys {
+  default = {}
+}

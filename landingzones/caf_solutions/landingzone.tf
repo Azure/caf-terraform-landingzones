@@ -59,10 +59,13 @@ module "caf" {
   }
 
   networking = {
+
     application_gateway_applications     = var.application_gateway_applications
     application_gateways                 = var.application_gateways
     azurerm_routes                       = var.azurerm_routes
     dns_zones                            = var.dns_zones
+    dns_zone_records                     = var.dns_zone_records
+    domain_name_registrations            = var.domain_name_registrations
     express_route_circuit_authorizations = var.express_route_circuit_authorizations
     express_route_circuits               = var.express_route_circuits
     front_door_waf_policies              = var.front_door_waf_policies
@@ -117,8 +120,9 @@ module "caf" {
   }
 
   security = {
-    keyvault_certificates         = var.keyvault_certificates
+    keyvault_keys                 = var.keyvault_keys
     keyvault_certificate_requests = var.keyvault_certificate_requests
+    keyvault_certificate_issuers  = var.keyvault_certificate_issuers
   }
 
   shared_services = {
