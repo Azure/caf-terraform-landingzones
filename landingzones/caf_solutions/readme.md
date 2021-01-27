@@ -27,3 +27,4 @@ rover -lz /tf/caf/public/landingzones/caf_solutions \
 -a apply
 ```
 
+Solution examples are available in the CAF Landing zones Starter repo: https://github.com/Azure/caf-terraform-landingzones-starter
