@@ -1,6 +1,6 @@
 # Cloud Adoption Framework for Azure - Landing zones on Terraform - Solutions
 
-The solutions landing zone developed in order to cater infrastructure part of your application. This module will keep on updated to support all possible workload regardless of technology which is IaaS, PaaS and container. Solutions LZ should be able to deploy majority of your workloads reside in level 3.
+The solutions landing zone developed in order to cater infrastructure part of your application. This LZ will keep on improving to support all possible workload regardless of technology varies from IaaS, PaaS and container. Solutions LZ should be able to deploy majority of your workloads reside in level 3.
 
 * App Service (including App Service Environment)
 * Azure Kubernetes Service (AKS)
