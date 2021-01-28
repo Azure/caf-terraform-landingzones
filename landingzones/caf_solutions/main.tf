@@ -2,7 +2,7 @@ terraform {
   required_providers {
     azurerm = {
       source = "hashicorp/azurerm"
-      #version constraints defined in the caf module
+      version = "~> 2.43"
     }
     azuread = {
       source  = "hashicorp/azuread"
