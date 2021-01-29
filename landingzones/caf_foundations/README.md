@@ -35,6 +35,8 @@ rover -lz /tf/caf/public/landingzones/caf_foundations \
 
 ## Deploying CAF foundations with enterprise-scale (experimental)
 
+For full description on enterprise_scale module usage, please refer to https://github.com/Azure/terraform-azurerm-caf-enterprise-scale
+
 This is currently work in progress.
 Use the following configuration file in order to get started with the enterprise-scale module integration:
 

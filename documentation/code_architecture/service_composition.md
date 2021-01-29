@@ -30,10 +30,10 @@ Depending on the blueprints maturity, you can:<br>
 
 module "blueprint_networking_shared_egress" {
     source = "./blueprint_networking_shared_egress"
-    
+
     ...
 }
-  
+
 ```
 
 - **reuse them from the official repos** from Azure Cloud Adoption Framework blueprints. We recommend/require that you use strict versionning. Please refer to the [following repository](https://github.com/aztfmod/blueprints) for the standard blueprints. <br>

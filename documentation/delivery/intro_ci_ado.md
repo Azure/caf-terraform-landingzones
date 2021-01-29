@@ -17,7 +17,7 @@ name: "landingzone_test"
 
 variables:
   group: demo-release-global
-  
+
 ```
 
 My variable group looks something like that:
@@ -59,7 +59,7 @@ jobs:
   continueOnError: false
 
   container: rover
-  
+
   variables:
   - group: release-level0-bootstrap
 
@@ -112,7 +112,7 @@ jobs:
   - group: demo-release-global
   - group: demo-release-level1
 
-  steps: 
+  steps:
   - checkout: self
   - checkout: terraform-landingzones
 

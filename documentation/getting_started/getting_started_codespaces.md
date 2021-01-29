@@ -71,7 +71,7 @@ rover -launchpad -lz /tf/caf/landingzones/caf_launchpad \
 
 ## Deploying the foundations
 
-Next step is to deploy the foundations (this typically could include management groups, policies, etc.). We can start with it empty, and enrich it later. 
+Next step is to deploy the foundations (this typically could include management groups, policies, etc.). We can start with it empty, and enrich it later.
 
 You can find more information on the launchpad settings [Here](../../landingzones/caf_launchpad)
 
@@ -86,11 +86,11 @@ rover -lz /tf/caf/landingzones/caf_foundations \
 
 ## Deploying a networking scenario
 
-You can deploy one of the typical Azure network topologies (hub, hub and spoke, Virtual WAN). 
+You can deploy one of the typical Azure network topologies (hub, hub and spoke, Virtual WAN).
 
 Have a look at the example scenario [Here](../../landingzones/caf_networking) and pick one you want to deploy.
 
-You can deploy a simple hub networking using: 
+You can deploy a simple hub networking using:
 
 ```bash
 rover -lz /tf/caf/landingzones/caf_networking \
