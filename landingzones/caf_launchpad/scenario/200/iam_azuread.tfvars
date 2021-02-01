@@ -143,12 +143,14 @@ azuread_apps = {
 # az rest --method Get --uri https://graph.microsoft.com/v1.0/directoryRoleTemplates -o json | jq -r .value[].displayName
 #
 azuread_roles = {
-  caf_launchpad_level0 = {
-    roles = [
-      "Application Administrator",
-      "Application Developer",
-      "User Account Administrator"
-    ]
+  azuread_apps = {
+    caf_launchpad_level0 = {
+      roles = [
+        "Application Administrator",
+        "Application Developer",
+        "User Account Administrator"
+      ]
+    }
   }
   managed_identities = {
     level0 = {

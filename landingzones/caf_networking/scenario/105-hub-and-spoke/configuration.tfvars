@@ -128,6 +128,7 @@ vnet_peerings = {
     name = "hub-re1_TO_spoke-re1"
     from = {
       vnet_key = "hub_re1"
+      lz_key = ""
     }
     to = {
       vnet_key = "spoke_re1"
