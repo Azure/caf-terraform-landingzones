@@ -89,7 +89,7 @@ for agent_num in $(seq 1 ${num_agent}); do
   cd "$agent_dir"
     echo "moving to $agent_dir"
 
-    cleanup 
+    cleanup
 
     name="${agent_prefix}-${agent_num}"
     echo "installing agent $name"

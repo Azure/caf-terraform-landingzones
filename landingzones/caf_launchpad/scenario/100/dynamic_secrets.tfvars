@@ -1,6 +1,6 @@
 
 # Store output attributes into keyvault secret
-# Those values are used by the rover to connect the current remote state and 
+# Those values are used by the rover to connect the current remote state and
 # identity the lower level
 dynamic_keyvault_secrets = {
   level0 = {

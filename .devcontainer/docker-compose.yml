@@ -6,7 +6,7 @@
   version: '3.7'
   services:
     rover:
-      image: aztfmod/rover:2012.1109
+      image: aztfmod/rover:2102.0100
       user: vscode
 
       labels:
@@ -17,6 +17,7 @@
         # and the value of "workspaceFolder" in .devcontainer/devcontainer.json
         - ..:/tf/caf
         - volume-caf-vscode:/home/vscode
+        - volume-caf-vscode-bashhistory:/commandhistory
         - ~/.ssh:/tmp/.ssh-localhost:ro
         - /var/run/docker.sock:/var/run/docker.sock
 
@@ -27,3 +28,4 @@
     volume-caf-vscode:
       labels:
         - "caf=Azure CAF"
+    volume-caf-vscode-bashhistory:

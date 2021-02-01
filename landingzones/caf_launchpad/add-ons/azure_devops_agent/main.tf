@@ -1,8 +1,8 @@
 terraform {
   required_providers {
     azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "2.40.0"
+      source = "hashicorp/azurerm"
+      version = "~> 2.43"
     }
     azuread = {
       source  = "hashicorp/azuread"
@@ -21,8 +21,8 @@ terraform {
       version = "~> 1.2.0"
     }
     azuredevops = {
-      source  = "terraform-providers/azuredevops"
-      version = "~> 0.0.1"
+      source  = "microsoft/azuredevops"
+      version = "~> 0.1.1"
     }
     tls = {
       source  = "hashicorp/tls"

@@ -11,5 +11,5 @@ data "azurerm_key_vault_secret" "pat" {
 }
 
 data "azuredevops_project" "project" {
-  project_name = var.azure_devops.project
+  name = var.azure_devops.project
 }

@@ -23,8 +23,7 @@ output azuread_groups {
 }
 
 output recovery_vaults {
-  value = map(
-    var.landingzone.key,
-    module.landingzones_shared_services.recovery_vaults
-  )
+  value = tomap({
+    (var.landingzone.key) = module.landingzones_shared_services.recovery_vaults
+  })
 }

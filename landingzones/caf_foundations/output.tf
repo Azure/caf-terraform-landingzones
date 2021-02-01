@@ -23,9 +23,8 @@ output tfstates {
   sensitive = true
 }
 output keyvaults {
-  value = map(
-    var.landingzone.key,
-    try(module.foundations.keyvaults, {})
-  )
+  value = tomap({
+    (var.landingzone.key) = try(module.foundations.keyvaults, {})
+  })
   sensitive = true
 }

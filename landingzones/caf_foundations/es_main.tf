@@ -2,7 +2,7 @@
 
 module "enterprise_scale" {
   source  = "Azure/caf-enterprise-scale/azurerm"
-  version = "0.0.7-preview"
+  version = "0.0.8"
 
   root_parent_id = data.azurerm_client_config.current.tenant_id
 
