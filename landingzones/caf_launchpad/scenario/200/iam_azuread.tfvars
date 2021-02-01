@@ -148,7 +148,7 @@ azuread_roles = {
       roles = [
         "Application Administrator",
         "Application Developer",
-        "User Account Administrator"
+        "User Administrator"
       ]
     }
   }
@@ -157,7 +157,7 @@ azuread_roles = {
       roles = [
         "Directory Readers",
         "Application Developer",
-        "User Account Administrator"
+        "User Administrator"
       ]
     }
     level1 = {
