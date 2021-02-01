@@ -1,8 +1,8 @@
 # Cloud Adoption Framework for Azure - Landing zones on Terraform - Solutions
 
-The solutions landing zone developed in order to cater infrastructure part of your application. This LZ will keep on improving to support all possible workload regardless of technology varies from IaaS, PaaS and container. Solutions LZ should be able to deploy majority of your workloads reside in level 3.
+The landing zones solutions provide the underlying infrastructure to support your applications. The following are solutions accelerator ready to be deployed into your environment. They would require some review to match your operating model.
 
-* App Service (including App Service Environment)
+* App Services (including App Service Environment)
 * Azure Kubernetes Service (AKS)
 * Azure Databricks
 * Azure SQL Database
@@ -18,13 +18,5 @@ Solutions landing zone operates at **level 3**.
 For a review of the hierarchy approach of Cloud Adoption Framework for Azure landing zones on Terraform, you can refer to [the following documentation](../../documentation/code_architecture/hierarchy.md).
 
 ## Deploying solutions
-
-By default, the content of this landing zone is empty unless you specify a configuration file to enable it.
-
-```bash
-rover -lz /tf/caf/public/landingzones/caf_solutions \
--level level3 \
--a apply
-```
 
 Solution examples are available in the CAF Landing zones Starter repo: https://github.com/Azure/caf-terraform-landingzones-starter
