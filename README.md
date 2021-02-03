@@ -66,7 +66,7 @@ Currently we provide you with the following core sample landing zones:
 | [caf_foundations](./landingzones/caf_foundations) | 1 | setup all the fundamentals for a subscription (logging, accounting, security.). You can find all details of the caf_foundations landing zone [Here](./landingzones/caf_foundations/README.md) |
 | [caf_shared_services](./landingzones/caf_shared_services) | 2 | provides shared services like monitoring, Azure Backup, Azure Site Recovery etc. |
 | [caf_networking](./landingzones/caf_networking) | 2 | enables creation of any Azure networking combination of Virtual Networks-based hub-and-spoke topologies or Azure Virtual WAN based topologies. |
-| [caf_solutions](./landingzones/caf_solutions) | 3 | provides the state management capabilities and security features leveraging Azure storage for the backend, provides secret management and modular approach to support plugin for Azure DevOps automated pipeline creation (and others) |
+| [caf_solutions](./landingzones/caf_solutions) | 3 | "universal" landing zone that allow you to compose with any object from the CAF module and beyond. |
 
 
 ## Repositories
