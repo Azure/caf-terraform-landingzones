@@ -10,14 +10,6 @@ output vnets {
   value     = local.remote.vnets
   sensitive = true
 }
-output managed_identities {
-  value     = local.remote.managed_identities
-  sensitive = true
-}
-output azuread_groups {
-  value     = local.remote.azuread_groups
-  sensitive = true
-}
 output tfstates {
   value     = local.tfstates
   sensitive = true
@@ -28,24 +20,20 @@ output keyvaults {
   })
   sensitive = true
 }
-
+# Active Directory
 output managed_identities {
-  value = tomap({
-    (var.landingzone.key) = module.foundations.managed_identities
-  })
+  value = local.combined.managed_identities
   sensitive = true
 }
-
-output aad_apps {
-  value = tomap({
-    (var.landingzone.key) = module.foundations.aad_apps
-  })
-  sensitive = true
-}
-
 output azuread_groups {
-  value = tomap({
-    (var.landingzone.key) = module.foundations.azuread_groups
-  })
+  value = local.combined.azuread_groups
+  sensitive = true
+}
+output azuread_applications {
+  value = local.combined.azuread_applications
+  sensitive = true
+}
+output azuread_users {
+  value = local.combined.managed_identities
   sensitive = true
 }
