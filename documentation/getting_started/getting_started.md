@@ -1,4 +1,4 @@
-# Getting stated with Azure Cloud Adoption Framework landing zones for Terraform
+# Getting started with Azure Cloud Adoption Framework landing zones for Terraform
 
 ## Prerequisites
 
