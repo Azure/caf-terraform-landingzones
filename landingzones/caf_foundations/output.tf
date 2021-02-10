@@ -28,3 +28,24 @@ output keyvaults {
   })
   sensitive = true
 }
+
+output managed_identities {
+  value = tomap({
+    (var.landingzone.key) = module.foundations.managed_identities
+  })
+  sensitive = true
+}
+
+output aad_apps {
+  value = tomap({
+    (var.landingzone.key) = module.foundations.aad_apps
+  })
+  sensitive = true
+}
+
+output azuread_groups {
+  value = tomap({
+    (var.landingzone.key) = module.foundations.azuread_groups
+  })
+  sensitive = true
+}
