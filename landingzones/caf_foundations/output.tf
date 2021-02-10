@@ -29,8 +29,8 @@ output azuread_groups {
   value = local.combined.azuread_groups
   sensitive = true
 }
-output azuread_applications {
-  value = local.combined.azuread_applications
+output aad_apps {
+  value = local.combined.aad_apps
   sensitive = true
 }
 output azuread_users {
