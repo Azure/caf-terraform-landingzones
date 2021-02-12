@@ -81,3 +81,32 @@ variable diagnostics_destinations {
 variable dynamic_keyvault_secrets {
   default = {}
 }
+
+## Azure Active Directory
+variable azuread_apps {
+  default = {}
+}
+variable azuread_api_permissions {
+  default = {}
+}
+variable azuread_groups {
+  default = {}
+}
+variable azuread_users {
+  default = {}
+}
+variable azuread_roles {
+  default = {}
+}
+variable managed_identities {
+  default = {}
+}
+variable custom_role_definitions {
+  default = {}
+}
+variable role_mapping {
+  default = {
+    built_in_role_mapping = {}
+    custom_role_mapping   = {}
+  }
+}

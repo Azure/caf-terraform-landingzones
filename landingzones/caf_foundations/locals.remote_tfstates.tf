@@ -71,8 +71,22 @@ locals {
     azuread_groups = {
       for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.azuread_groups[key], {}))
     }
+    azuread_applications = {
+      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.aad_apps[key], {}))
+    }
+    azuread_users = {
+      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.azuread_users[key], {}))
+    }
     vnets = {
       for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.vnets[key], {}))
     }
   }
+
+  combined = {
+    managed_identities    = merge(local.remote.managed_identities, tomap({ (var.landingzone.key) = module.foundations.managed_identities }))
+    azuread_groups        = merge(local.remote.azuread_groups, tomap({ (var.landingzone.key) = module.foundations.azuread_groups }))
+    aad_apps              = merge(local.remote.azuread_applications, tomap({ (var.landingzone.key) = module.foundations.aad_apps }))
+    azuread_users         = merge(local.remote.azuread_users, tomap({ (var.landingzone.key) = module.foundations.azuread_users }))
+  }
+
 }
