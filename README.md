@@ -1,5 +1,4 @@
 ![landingzones](https://github.com/Azure/caf-terraform-landingzones/workflows/landingzones/badge.svg)
-[![VScodespaces](https://img.shields.io/endpoint?url=https%3A%2F%2Faka.ms%2Fvso-badge)](https://online.visualstudio.com/environments/new?name=caf%20landing%20zones&repo=azure/caf-terraform-landingzones)
 [![Gitter](https://badges.gitter.im/aztfmod/community.svg)](https://gitter.im/aztfmod/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 # Cloud Adoption Framework for Azure landing zones on Terraform
@@ -40,13 +39,13 @@ Those new features allow more complex and more dynamic code composition. The fol
 * **Enterprise-scale support**: added support for foundations landing zones to optionally leverage Azure Enterprise-scale module.
 * **Terraform Cloud/Enterprise bootstrap**: added initial support for Hashicorp Terraform Cloud/Enterprise to support environment bootstrap.
 
-## Getting started
+<!-- ## Getting started
 
 See our [Getting Started](./documentation/getting_started/getting_started.md) on your laptop, or on the web with [Getting Started on VSCodespaces](./documentation/getting_started/getting_started_codespaces.md).
 
-See our [Getting Started Video](https://www.youtube.com/watch?v=t1exCkWft60)
+See our [Getting Started Video](https://www.youtube.com/watch?v=t1exCkWft60) -->
 
-## Sample configuration repository
+## Getting started
 
 When starting an enterprise deployment, we recommend you start creating a configuration repository where you craft the configuration files for your environments.
 

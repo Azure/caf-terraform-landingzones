@@ -21,9 +21,9 @@ output diagnostics {
 # }
 
 output vnets {
-  value     = tomap({
+  value = tomap({
     (var.landingzone.key) = module.launchpad.vnets
-    })
+  })
   sensitive = true
 }
 
