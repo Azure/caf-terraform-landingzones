@@ -133,3 +133,9 @@ variable network_watchers {
 variable private_endpoints {
   default = {}
 }
+variable dns_zones {
+  default = {}
+}
+variable dns_zone_records {
+  default = {}
+}
