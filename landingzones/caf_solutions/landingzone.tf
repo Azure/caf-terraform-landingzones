@@ -1,6 +1,7 @@
 module "caf" {
-  source  = "aztfmod/caf/azurerm"
-  version = "~>5.1.0"
+  source = "../../public"
+  # source  = "aztfmod/caf/azurerm"
+  # version = "~>5.1.0"
 
   azuread_api_permissions      = var.azuread_api_permissions
   azuread_apps                 = var.azuread_apps
@@ -120,6 +121,7 @@ module "caf" {
 
   security = {
     keyvault_keys                 = var.keyvault_keys
+    keyvault_certificates         = var.keyvault_certificates
     keyvault_certificate_requests = var.keyvault_certificate_requests
     keyvault_certificate_issuers  = var.keyvault_certificate_issuers
   }
