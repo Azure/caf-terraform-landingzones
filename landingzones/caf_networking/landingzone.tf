@@ -32,6 +32,7 @@ module "networking" {
     public_ip_addresses                                     = var.public_ip_addresses
     route_tables                                            = var.route_tables
     vhub_peerings                                           = var.vhub_peerings
+    virtual_network_gateways                                = var.virtual_network_gateways
     virtual_wans                                            = var.virtual_wans
     vnet_peerings                                           = var.vnet_peerings
     vnets                                                   = var.vnets

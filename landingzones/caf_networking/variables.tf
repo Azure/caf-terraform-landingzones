@@ -139,3 +139,6 @@ variable dns_zones {
 variable dns_zone_records {
   default = {}
 }
+variable virtual_network_gateways {
+  default = {}
+}
