@@ -13,10 +13,10 @@ landingzone = {
 
 enterprise_scale = {
   #path to the policies definition and assignment repo
-  library_path = "/scenario/200/lib"
+  library_path = "/tf/caf/public/landingzones/caf_eslz/scenario/200/lib"
 
   #management groups hierarchy configuration
-  management_groups = {
+  custom_landing_zones = {
     caf = {
       display_name               = "CAF-RootManagementGroup"
       parent_management_group_id = ""

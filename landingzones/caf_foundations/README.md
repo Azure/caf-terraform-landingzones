@@ -2,8 +2,6 @@
 
 The foundations landing zone allows you to manage the core components of an environment:
 
-* Management groups
-* Policies
 * Auditing and Accounting, deployment or connection to existing ones.
 
 Foundations landing zone operates at **level 1**.
@@ -29,27 +27,6 @@ rover -lz /tf/caf/public/landingzones/caf_foundations \
 # If the tfstates are stored in a different subscription you need to execute the following command
 rover -lz /tf/caf/public/landingzones/caf_foundations \
   -tfstate_subscription_id <ID of the subscription> \
-  -level level1 \
-  -a apply
-```
-
-## Deploying CAF foundations with enterprise-scale (experimental)
-
-For full description on enterprise_scale module usage, please refer to https://github.com/Azure/terraform-azurerm-caf-enterprise-scale
-
-This is currently work in progress.
-Use the following configuration file in order to get started with the enterprise-scale module integration:
-
-```bash
-rover -lz /tf/caf/public/landingzones/caf_foundations \
-  -var-folder /tf/caf/public/landingzones/caf_foundations/scenario/200 \
-  -level level1 \
-  -a apply
-
-# If the tfstates are stored in a different subscription you need to execute the following command
-rover -lz /tf/caf/public/landingzones/caf_foundations \
-  -tfstate_subscription_id <ID of the subscription> \
-  -var-folder /tf/caf/public/landingzones/caf_foundations/scenario/200 \
   -level level1 \
   -a apply
 ```

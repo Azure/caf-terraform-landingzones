@@ -59,14 +59,13 @@ vhub_peerings = {
     }
     vnet = {
       # If the virtual network is stored in another another landing zone, use the following attributes to refer the state file:
-      # tfstate_key = "networking"
       # lz_key      = "networking"
       # output_key  = "vnets"
       vnet_key = "vnet_re1"
     }
     name                                           = "vhub_peering_hub_sg"
-    hub_to_vitual_network_traffic_allowed          = true
-    vitual_network_to_hub_gateways_traffic_allowed = true
+    hub_to_virtual_network_traffic_allowed          = true
+    virtual_network_to_hub_gateways_traffic_allowed = true
     internet_security_enabled                      = true
   }
 }
