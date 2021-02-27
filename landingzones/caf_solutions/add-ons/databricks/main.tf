@@ -6,7 +6,7 @@ terraform {
     }
     azurecaf = {
       source  = "aztfmod/azurecaf"
-      version = "1.0.0"
+      version = "~> 1.2.0"
     }
     databricks = {
       source  = "databrickslabs/databricks"
