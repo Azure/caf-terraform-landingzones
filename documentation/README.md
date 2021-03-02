@@ -12,7 +12,7 @@ In this series of articles, we describe the development, code architecture, the 
 
 [Introduction to Azure landing zones architecture](./code_architecture/intro_architecture.md)
 
-[Entreprise landing zones hierarchy model](./code_architecture/hierarchy.md)
+[Enterprise landing zones hierarchy model](./code_architecture/hierarchy.md)
 
 ## Delivery of landing zones
 
