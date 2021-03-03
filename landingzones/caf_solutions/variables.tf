@@ -267,3 +267,6 @@ variable dns_zone_records {
 variable keyvault_keys {
   default = {}
 }
+variable load_balancers {
+  default = {}
+}

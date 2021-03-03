@@ -58,17 +58,17 @@ module "caf" {
   }
 
   networking = {
-
     application_gateway_applications     = var.application_gateway_applications
     application_gateways                 = var.application_gateways
     azurerm_routes                       = var.azurerm_routes
-    dns_zones                            = var.dns_zones
     dns_zone_records                     = var.dns_zone_records
+    dns_zones                            = var.dns_zones
     domain_name_registrations            = var.domain_name_registrations
     express_route_circuit_authorizations = var.express_route_circuit_authorizations
     express_route_circuits               = var.express_route_circuits
     front_door_waf_policies              = var.front_door_waf_policies
     front_doors                          = var.front_doors
+    load_balancers                       = var.load_balancers
     local_network_gateways               = var.local_network_gateways
     network_security_group_definition    = var.network_security_group_definition
     network_watchers                     = var.network_watchers
@@ -119,10 +119,10 @@ module "caf" {
   }
 
   security = {
-    keyvault_keys                 = var.keyvault_keys
-    keyvault_certificates         = var.keyvault_certificates
-    keyvault_certificate_requests = var.keyvault_certificate_requests
     keyvault_certificate_issuers  = var.keyvault_certificate_issuers
+    keyvault_certificate_requests = var.keyvault_certificate_requests
+    keyvault_certificates         = var.keyvault_certificates
+    keyvault_keys                 = var.keyvault_keys
   }
 
   shared_services = {

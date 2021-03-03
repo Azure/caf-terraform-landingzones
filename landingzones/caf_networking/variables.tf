@@ -142,3 +142,6 @@ variable dns_zone_records {
 variable virtual_network_gateways {
   default = {}
 }
+variable load_balancers {
+  default = {}
+}
