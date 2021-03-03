@@ -29,7 +29,7 @@ jobs:
           random_length: ['5']
 
     container:
-      image: aztfmod/roveralpha:0.15.0-alpha20210127-2102.090746
+      image: aztfmod/rover:0.15.0-alpha20210210-2103.0304
       options: --user 0
 
     steps:
@@ -78,7 +78,7 @@ jobs:
           ]
 
     container:
-      image: aztfmod/roveralpha:0.15.0-alpha20210127-2102.090746
+      image: aztfmod/rover:0.15.0-alpha20210210-2103.0304
       options: --user 0
 
     steps:
@@ -122,7 +122,7 @@ jobs:
           random_length: ['5']
 
     container:
-      image: aztfmod/roveralpha:0.15.0-alpha20210127-2102.090746
+      image: aztfmod/rover:0.15.0-alpha20210210-2103.0304
       options: --user 0
 
     steps:
@@ -169,7 +169,7 @@ jobs:
           ]
 
     container:
-      image: aztfmod/roveralpha:0.15.0-alpha20210127-2102.090746
+      image: aztfmod/rover:0.15.0-alpha20210210-2103.0304
       options: --user 0
 
     steps:
@@ -212,7 +212,7 @@ jobs:
         random_length: ['5']
 
     container:
-      image: aztfmod/roveralpha:0.15.0-alpha20210127-2102.090746
+      image: aztfmod/rover:0.15.0-alpha20210210-2103.0304
       options: --user 0
 
     steps:
