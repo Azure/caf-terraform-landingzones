@@ -30,6 +30,7 @@ module "networking" {
     private_dns                                             = var.private_dns
     private_endpoints                                       = var.private_endpoints
     public_ip_addresses                                     = var.public_ip_addresses
+    load_balancers                                          = var.load_balancers
     route_tables                                            = var.route_tables
     vhub_peerings                                           = var.vhub_peerings
     virtual_network_gateways                                = var.virtual_network_gateways
