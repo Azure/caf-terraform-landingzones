@@ -41,7 +41,7 @@ Modules must have a strong versioning, in the CAF modules, we use semantic versi
 
 ## Landing zone
 
-[Source here](https://github.com/aztfmod/landginzones)
+[Source here](https://github.com/aztfmod/landingzones)
 
 A landing zone is a composition of multiple resources (modules, blueprints/services) that deliver a full application environment.
 
