@@ -137,6 +137,9 @@ locals {
     synapse_workspaces = {
       for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.synapse_workspaces[key], {}))
     }
+    virtual_machines = {
+      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.virtual_machines[key], {}))
+    }
     vnets = {
       for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.vnets[key], {}))
     }
@@ -153,6 +156,8 @@ locals {
     mssql_servers                    = merge(local.remote.mssql_servers, tomap({ (var.landingzone.key) = module.caf.mssql_servers }))
     private_dns                      = merge(local.remote.private_dns, tomap({ (var.landingzone.key) = module.caf.private_dns }))
     public_ip_addresses              = merge(local.remote.public_ip_addresses, tomap({ (var.landingzone.key) = module.caf.public_ip_addresses }))
+    resource_groups                  = merge(local.remote.resource_groups, tomap({ (var.landingzone.key) = module.caf.resource_groups }))
+    virtual_machines                 = merge(local.remote.virtual_machines, tomap({ (var.landingzone.key) = module.caf.virtual_machines }))
     vnets                            = merge(local.remote.vnets, tomap({ (var.landingzone.key) = module.caf.vnets }))
   }
 }
