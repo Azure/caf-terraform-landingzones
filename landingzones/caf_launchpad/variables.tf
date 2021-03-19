@@ -47,7 +47,7 @@ variable enable {
 }
 
 variable prefix {
-  default = ""
+  default = null
 }
 
 variable use_slug {
