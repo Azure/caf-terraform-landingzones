@@ -118,3 +118,6 @@ output resource_groups {
   value   = local.combined.resource_groups
 }
 
+output vnets {
+  value   = local.combined.vnets
+}
