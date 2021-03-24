@@ -90,7 +90,7 @@ output aks_clusters {
 }
 
 output virtual_machines {
-  value     = module.caf.virtual_machines
+  value     = local.combined.virtual_machines
   sensitive = false
 }
 
@@ -110,5 +110,14 @@ output synapse_workspaces {
   sensitive = true
 }
 
+output public_ip_addresses {
+  value   = local.combined.public_ip_addresses
+}
 
+output resource_groups {
+  value   = local.combined.resource_groups
+}
 
+output vnets {
+  value   = local.combined.vnets
+}
