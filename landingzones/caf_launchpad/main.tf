@@ -6,7 +6,7 @@ terraform {
     }
     azuread = {
       source  = "hashicorp/azuread"
-      version = "~> 1.0.0"
+      version = "~> 1.4.0"
     }
     random = {
       source  = "hashicorp/random"
@@ -41,8 +41,8 @@ provider "azurerm" {
   }
 }
 
-
 resource "random_string" "prefix" {
+  count   = var.prefix == null ? 1 : 0
   length  = 4
   special = false
   upper   = false
@@ -50,6 +50,7 @@ resource "random_string" "prefix" {
 }
 
 resource "random_string" "alpha1" {
+  count   = var.prefix == null ? 1 : 0
   length  = 1
   special = false
   upper   = false
@@ -62,20 +63,18 @@ locals {
   }
   tags = merge(local.landingzone_tag, { "level" = var.landingzone.level }, { "environment" = var.environment }, { "rover_version" = var.rover_version }, var.tags)
 
-  prefix = var.prefix == null ? random_string.prefix.result : var.prefix
-
   global_settings = {
-    prefix             = local.prefix
-    prefix_with_hyphen = local.prefix == "" ? "" : "${local.prefix}-"
-    prefix_start_alpha = local.prefix == "" ? "" : "${random_string.alpha1.result}${local.prefix}"
     default_region     = var.default_region
     environment        = var.environment
-    regions            = var.regions
-    passthrough        = var.passthrough
-    random_length      = var.random_length
     inherit_tags       = var.inherit_tags
-    use_slug           = var.use_slug
+    passthrough        = var.passthrough
+    prefix             = var.prefix
+    prefixes           = var.prefix == "" ? null : [try(var.prefix, random_string.prefix.0.result)]
+    prefix_with_hyphen = var.prefix == "" ? "" : try(format("%s-", var.prefix) , format("%s-", random_string.prefix.0.result))
+    random_length      = var.random_length
+    regions            = var.regions
     tags               = var.tags
+    use_slug           = var.use_slug
   }
 
   tfstates = map(
