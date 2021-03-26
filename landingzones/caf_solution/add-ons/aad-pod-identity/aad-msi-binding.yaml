@@ -1,0 +1,16 @@
+apiVersion: aadpodidentity.k8s.io/v1
+kind: AzureIdentity
+metadata:
+    name: podmi-caf-rover-platform-level0
+spec:
+    type: 0
+    resourceID: ${resource_id}
+    clientID: ${client_id}
+---
+apiVersion: aadpodidentity.k8s.io/v1
+kind: AzureIdentityBinding
+metadata:
+    name: podmi-gitlab-runner-binding
+spec:
+    azureIdentity: podmi-caf-rover-platform-level0
+    selector: podmi-caf-rover-platform-level0
