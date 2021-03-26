@@ -279,10 +279,6 @@ variable "event_hubs" {
   default = {}
 }
 
-variable "automations" {
-  default = {}
-}
-
 variable "event_hub_auth_rules" {
   default = {}
 }
