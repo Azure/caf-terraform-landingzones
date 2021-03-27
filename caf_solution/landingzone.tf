@@ -6,7 +6,7 @@ module "solution" {
   azuread_groups                        = var.azuread_groups
   azuread_roles                         = var.azuread_roles
   azuread_users                         = var.azuread_users
-  compute                               = var.compute
+  compute                               = local.compute
   current_landingzone_key               = var.landingzone.key
   custom_role_definitions               = var.custom_role_definitions
   database                              = var.database
@@ -23,8 +23,9 @@ module "solution" {
   remote_objects                        = local.remote_objects
   resource_groups                       = var.resource_groups
   role_mapping                          = var.role_mapping
-  security                              = var.security
+  security                              = local.security
   shared_services                       = local.shared_services
+  storage                               = local.storage
   storage_accounts                      = var.storage_accounts
   subscription_billing_role_assignments = var.subscription_billing_role_assignments
   subscriptions                         = var.subscriptions

@@ -2,8 +2,8 @@ locals {
   shared_services = merge(
     var.shared_services,
     {
-      automations     = var.automations
-      recovery_vaults = var.recovery_vaults
+      automations              = var.automations
+      recovery_vaults          = var.recovery_vaults
       monitoring               = var.monitoring
       shared_image_galleries   = var.shared_image_galleries
       image_definitions        = var.image_definitions

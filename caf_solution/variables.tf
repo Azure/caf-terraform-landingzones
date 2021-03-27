@@ -158,14 +158,6 @@ variable "azuread_api_permissions" {
   default = {}
 }
 
-## Compute variables
-variable "compute" {
-  description = "Compute configuration objects"
-  default = {
-    virtual_machines = {}
-  }
-}
-
 variable "webapp" {
   description = "Web applications configuration objects"
   default = {
@@ -173,6 +165,7 @@ variable "webapp" {
     # app_service_environments     = {}
     # app_service_plans            = {}
     # azurerm_application_insights = {}
+    # ...
   }
 }
 
@@ -184,10 +177,6 @@ variable "database" {
 }
 
 
-## Security variables
-variable "security" {
-  default = {}
-}
 
 variable "managed_identities" {
   description = "Managed Identity configuration objects"
@@ -222,22 +211,12 @@ variable "dynamic_keyvault_secrets" {
   default = {}
 }
 
-## Storage variables
-variable "storage_accounts" {
-  default = {}
-}
-variable "storage" {
-  description = "Storage configuration objects"
-  default     = {}
-}
+
 variable "diagnostic_storage_accounts" {
   default = {}
 }
 
 
-variable "keyvault_certificate_issuers" {
-  default = {}
-}
 variable "cosmos_dbs" {
   default = {}
 }
