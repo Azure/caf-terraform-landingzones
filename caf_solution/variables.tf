@@ -217,9 +217,6 @@ variable "diagnostic_storage_accounts" {
 }
 
 
-variable "cosmos_dbs" {
-  default = {}
-}
 variable "event_hubs" {
   default = {}
 }

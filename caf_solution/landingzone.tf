@@ -9,7 +9,7 @@ module "solution" {
   compute                               = local.compute
   current_landingzone_key               = var.landingzone.key
   custom_role_definitions               = var.custom_role_definitions
-  database                              = var.database
+  database                              = local.database
   event_hub_namespaces                  = var.event_hub_namespaces
   global_settings                       = local.global_settings
   keyvault_access_policies              = var.keyvault_access_policies
