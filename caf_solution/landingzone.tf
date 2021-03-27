@@ -24,7 +24,7 @@ module "solution" {
   resource_groups                       = var.resource_groups
   role_mapping                          = var.role_mapping
   security                              = var.security
-  shared_services                       = var.shared_services
+  shared_services                       = local.shared_services
   storage_accounts                      = var.storage_accounts
   subscription_billing_role_assignments = var.subscription_billing_role_assignments
   subscriptions                         = var.subscriptions

@@ -5,6 +5,9 @@ variable "application_gateways" {
 variable "application_gateway_applications" {
   default = {}
 }
+variable "application_security_groups" {
+  default = {}
+}
 variable "azurerm_firewalls" {
   default = {}
 }
@@ -29,6 +32,9 @@ variable "dns_zones" {
 variable "dns_zone_records" {
   default = {}
 }
+variable "domain_name_registrations" {
+  default = {}
+}
 variable "express_route_circuits" {
   default = {}
 }
@@ -45,6 +51,21 @@ variable "networking" {
   default = {}
   type    = map(any)
 }
+variable "front_door_waf_policies" {
+  default = {}
+}
+variable "front_doors" {
+  default = {}
+}
+variable "ip_groups" {
+  default = {}
+}
+variable "local_network_gateways" {
+  default = {}
+}
+variable "networking_interface_asg_associations" {
+  default = {}
+}
 variable "network_security_group_definition" {
   default = {}
 }
@@ -58,6 +79,9 @@ variable "public_ip_addresses" {
   default = {}
 }
 variable "route_tables" {
+  default = {}
+}
+variable "virtual_network_gateway_connections" {
   default = {}
 }
 variable "virtual_network_gateways" {
