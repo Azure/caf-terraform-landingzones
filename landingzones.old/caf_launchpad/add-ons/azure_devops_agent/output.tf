@@ -1,34 +1,34 @@
-output managed_identities {
+output "managed_identities" {
   value     = local.combined.managed_identities
   sensitive = false
 }
 
-output azuread_groups {
+output "azuread_groups" {
   value     = local.combined.azuread_groups
   sensitive = true
 }
 
-output keyvaults {
+output "keyvaults" {
   value     = local.combined.keyvaults
   sensitive = false
 }
 
-output vnets {
+output "vnets" {
   value     = local.remote.vnets
   sensitive = false
 }
 
-output global_settings {
+output "global_settings" {
   value     = local.global_settings
   sensitive = true
 }
 
-output diagnostics {
+output "diagnostics" {
   value     = local.diagnostics
   sensitive = true
 }
 
-output tfstates {
+output "tfstates" {
   value     = local.tfstates
   sensitive = true
 }

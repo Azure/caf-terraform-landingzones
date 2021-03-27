@@ -9,3 +9,4 @@
 **/*.log
 **/backend.azurerm.tf
 public
+**/*.lock.*

@@ -83,10 +83,10 @@ locals {
   }
 
   combined = {
-    managed_identities    = merge(local.remote.managed_identities, tomap({ (var.landingzone.key) = module.foundations.managed_identities }))
-    azuread_groups        = merge(local.remote.azuread_groups, tomap({ (var.landingzone.key) = module.foundations.azuread_groups }))
-    aad_apps              = merge(local.remote.azuread_applications, tomap({ (var.landingzone.key) = module.foundations.aad_apps }))
-    azuread_users         = merge(local.remote.azuread_users, tomap({ (var.landingzone.key) = module.foundations.azuread_users }))
+    managed_identities = merge(local.remote.managed_identities, tomap({ (var.landingzone.key) = module.foundations.managed_identities }))
+    azuread_groups     = merge(local.remote.azuread_groups, tomap({ (var.landingzone.key) = module.foundations.azuread_groups }))
+    aad_apps           = merge(local.remote.azuread_applications, tomap({ (var.landingzone.key) = module.foundations.aad_apps }))
+    azuread_users      = merge(local.remote.azuread_users, tomap({ (var.landingzone.key) = module.foundations.azuread_users }))
   }
 
 }

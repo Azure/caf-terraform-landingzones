@@ -1,115 +1,115 @@
 # Map of the remote data state for lower level
-variable lower_storage_account_name {}
-variable lower_container_name {}
-variable lower_resource_group_name {}
+variable "lower_storage_account_name" {}
+variable "lower_container_name" {}
+variable "lower_resource_group_name" {}
 
-variable tfstate_storage_account_name {}
-variable tfstate_container_name {}
-variable tfstate_key {}
-variable tfstate_resource_group_name {}
+variable "tfstate_storage_account_name" {}
+variable "tfstate_container_name" {}
+variable "tfstate_key" {}
+variable "tfstate_resource_group_name" {}
 
-variable global_settings {
+variable "global_settings" {
   default = {}
 }
 
-variable landingzone {
+variable "landingzone" {
   default = ""
 }
 
-variable environment {
+variable "environment" {
   default = "sandpit"
 }
-variable rover_version {
+variable "rover_version" {
   default = null
 }
-variable max_length {
+variable "max_length" {
   default = 40
 }
-variable logged_user_objectId {
+variable "logged_user_objectId" {
   default = null
 }
-variable logged_aad_app_objectId {
+variable "logged_aad_app_objectId" {
   default = null
 }
-variable tags {
+variable "tags" {
   default = null
-  type    = map
+  type    = map(any)
 }
-variable app_service_environments {
+variable "app_service_environments" {
   default = {}
 }
-variable app_service_plans {
+variable "app_service_plans" {
   default = {}
 }
-variable app_services {
+variable "app_services" {
   default = {}
 }
-variable diagnostics_definition {
-  default = null
-}
-variable resource_groups {
+variable "diagnostics_definition" {
   default = null
 }
-variable network_security_group_definition {
+variable "resource_groups" {
   default = null
 }
-variable vnets {
+variable "network_security_group_definition" {
+  default = null
+}
+variable "vnets" {
   default = {}
 }
-variable azurerm_redis_caches {
+variable "azurerm_redis_caches" {
   default = {}
 }
-variable mssql_servers {
+variable "mssql_servers" {
   default = {}
 }
-variable storage_accounts {
+variable "storage_accounts" {
   default = {}
 }
-variable azuread_groups {
+variable "azuread_groups" {
   default = {}
 }
-variable keyvaults {
+variable "keyvaults" {
   default = {}
 }
-variable keyvault_access_policies {
+variable "keyvault_access_policies" {
   default = {}
 }
-variable virtual_machines {
+variable "virtual_machines" {
   default = {}
 }
-variable azure_container_registries {
+variable "azure_container_registries" {
   default = {}
 }
-variable bastion_hosts {
+variable "bastion_hosts" {
   default = {}
 }
-variable public_ip_addresses {
+variable "public_ip_addresses" {
   default = {}
 }
-variable diagnostic_storage_accounts {
+variable "diagnostic_storage_accounts" {
   default = {}
 }
-variable managed_identities {
+variable "managed_identities" {
   default = {}
 }
-variable private_dns {
+variable "private_dns" {
   default = {}
 }
-variable synapse_workspaces {
+variable "synapse_workspaces" {
   default = {}
 }
-variable azurerm_application_insights {
+variable "azurerm_application_insights" {
   default = {}
 }
-variable role_mapping {
+variable "role_mapping" {
   default = {}
 }
-variable aks_clusters {
+variable "aks_clusters" {
   default = {}
 }
-variable databricks_workspaces {
+variable "databricks_workspaces" {
   default = {}
 }
-variable databricks {
+variable "databricks" {
   default = {}
 }

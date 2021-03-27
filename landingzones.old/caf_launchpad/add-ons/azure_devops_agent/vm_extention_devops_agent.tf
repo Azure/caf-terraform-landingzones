@@ -13,7 +13,7 @@ data "azurerm_key_vault_secret" "agent_pat" {
 }
 
 
-module vm_extensions {
+module "vm_extensions" {
   source     = "./extensions"
   depends_on = [module.caf]
   for_each = {

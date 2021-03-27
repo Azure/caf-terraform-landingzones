@@ -70,7 +70,7 @@ locals {
     passthrough        = var.passthrough
     prefix             = var.prefix
     prefixes           = var.prefix == "" ? null : [try(var.prefix, random_string.prefix.0.result)]
-    prefix_with_hyphen = var.prefix == "" ? "" : try(format("%s-", var.prefix) , format("%s-", random_string.prefix.0.result))
+    prefix_with_hyphen = var.prefix == "" ? "" : try(format("%s-", var.prefix), format("%s-", random_string.prefix.0.result))
     random_length      = var.random_length
     regions            = var.regions
     tags               = var.tags

@@ -1,4 +1,4 @@
-variable azure_workspace_resource_id {
+variable "azure_workspace_resource_id" {
   default = {}
 }
-variable settings {}
+variable "settings" {}

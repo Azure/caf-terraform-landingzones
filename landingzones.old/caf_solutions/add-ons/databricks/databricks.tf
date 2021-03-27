@@ -9,13 +9,13 @@ provider "databricks" {
   # azure_tenant_id             = var.tenant_id
 }
 
-module databricks {
+module "databricks" {
   source = "../../modules/databricks"
 
   settings = var.databricks
 }
 
-output databricks {
+output "databricks" {
   value     = module.databricks
   sensitive = false
 }

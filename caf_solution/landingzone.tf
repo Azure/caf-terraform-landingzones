@@ -19,7 +19,7 @@ module "solution" {
   logged_aad_app_objectId               = var.logged_aad_app_objectId
   logged_user_objectId                  = var.logged_user_objectId
   managed_identities                    = var.managed_identities
-  networking                            = var.networking
+  networking                            = local.networking
   remote_objects                        = local.remote_objects
   resource_groups                       = var.resource_groups
   role_mapping                          = var.role_mapping

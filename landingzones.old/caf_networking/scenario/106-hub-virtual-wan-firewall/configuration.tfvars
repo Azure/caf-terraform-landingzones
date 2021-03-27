@@ -63,9 +63,9 @@ vhub_peerings = {
       # output_key  = "vnets"
       vnet_key = "vnet_re1"
     }
-    name                                           = "vhub_peering_hub_sg"
+    name                                            = "vhub_peering_hub_sg"
     hub_to_virtual_network_traffic_allowed          = true
     virtual_network_to_hub_gateways_traffic_allowed = true
-    internet_security_enabled                      = true
+    internet_security_enabled                       = true
   }
 }

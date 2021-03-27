@@ -1,5 +1,5 @@
-variable cluster {}
+variable "cluster" {}
 
-variable namespaces {}
+variable "namespaces" {}
 
-variable helm_charts {}
+variable "helm_charts" {}

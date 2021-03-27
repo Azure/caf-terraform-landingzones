@@ -17,11 +17,12 @@ variable "global_settings" {
   default = {}
 }
 
-variable provider_azurerm_features_keyvault {
+variable "provider_azurerm_features_keyvault" {
   default = {
     purge_soft_delete_on_destroy = false
   }
 }
+
 
 variable "rover_version" {
   default = {}
@@ -182,11 +183,6 @@ variable "database" {
   default     = {}
 }
 
-## Networking variables
-variable "networking" {
-  description = "Networking configuration objects"
-  default     = {}
-}
 
 ## Security variables
 variable "security" {
@@ -249,14 +245,6 @@ variable "shared_services" {
 }
 
 variable "automations" {
-  default = {}
-}
-
-variable "virtual_network_gateways" {
-  default = {}
-}
-
-variable "virtual_network_gateway_connections" {
   default = {}
 }
 

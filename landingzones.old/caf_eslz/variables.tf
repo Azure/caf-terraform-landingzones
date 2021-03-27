@@ -1,25 +1,25 @@
 # Map of the remote data state
-variable lower_storage_account_name {}
-variable lower_container_name {}
-variable lower_resource_group_name {}
+variable "lower_storage_account_name" {}
+variable "lower_container_name" {}
+variable "lower_resource_group_name" {}
 
-variable tfstate_subscription_id {
+variable "tfstate_subscription_id" {
   description = "This value is propulated by the rover. subscription id hosting the remote tfstates"
 }
-variable tfstate_storage_account_name {
+variable "tfstate_storage_account_name" {
   description = "This value is propulated by the rover"
 }
-variable tfstate_container_name {
+variable "tfstate_container_name" {
   description = "This value is propulated by the rover"
 }
-variable tfstate_key {
+variable "tfstate_key" {
   description = "This value is propulated by the rover"
 }
-variable tfstate_resource_group_name {
+variable "tfstate_resource_group_name" {
   description = "This value is propulated by the rover"
 }
 
-variable landingzone {
+variable "landingzone" {
   default = {
     backend_type        = "azurerm"
     global_settings_key = "launchpad"
@@ -34,50 +34,50 @@ variable landingzone {
   }
 }
 
-variable tenant_id {}
-variable rover_version {}
-variable logged_user_objectId {
+variable "tenant_id" {}
+variable "rover_version" {}
+variable "logged_user_objectId" {
   default = null
 }
-variable logged_aad_app_objectId {
+variable "logged_aad_app_objectId" {
   default = null
 }
-variable tags {
-  type    = map
+variable "tags" {
+  type    = map(any)
   default = {}
 }
 
-variable enterprise_scale {
+variable "enterprise_scale" {
   default = {}
 }
 
-variable diagnostics_definition {
+variable "diagnostics_definition" {
   default = {}
 }
-variable keyvaults {
+variable "keyvaults" {
   default = {}
 }
-variable resource_groups {
+variable "resource_groups" {
   default = {}
 }
-variable log_analytics {
+variable "log_analytics" {
   default = {}
 }
-variable event_hub_namespaces {
+variable "event_hub_namespaces" {
   default = {}
 }
-variable diagnostic_storage_accounts {
+variable "diagnostic_storage_accounts" {
   default = {}
 }
-variable diagnostic_event_hub_namespaces {
+variable "diagnostic_event_hub_namespaces" {
   default = {}
 }
-variable diagnostic_log_analytics {
+variable "diagnostic_log_analytics" {
   default = {}
 }
-variable diagnostics_destinations {
+variable "diagnostics_destinations" {
   default = {}
 }
-variable dynamic_keyvault_secrets {
+variable "dynamic_keyvault_secrets" {
   default = {}
 }
