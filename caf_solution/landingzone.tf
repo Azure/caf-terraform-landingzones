@@ -9,6 +9,7 @@ module "solution" {
   compute                               = local.compute
   current_landingzone_key               = var.landingzone.key
   custom_role_definitions               = var.custom_role_definitions
+  data_factory                          = local.data_factory
   database                              = local.database
   event_hub_namespaces                  = var.event_hub_namespaces
   global_settings                       = local.global_settings
@@ -18,6 +19,7 @@ module "solution" {
   log_analytics                         = var.log_analytics
   logged_aad_app_objectId               = var.logged_aad_app_objectId
   logged_user_objectId                  = var.logged_user_objectId
+  logic_app                             = var.logic_app
   managed_identities                    = var.managed_identities
   networking                            = local.networking
   remote_objects                        = local.remote_objects
@@ -33,7 +35,7 @@ module "solution" {
   tenant_id                             = var.tenant_id
   tfstates                              = var.tfstates
   user_type                             = var.user_type
-  webapp                                = var.webapp
+  webapp                                = local.webapp
 
   diagnostics = {
     diagnostics_definition          = local.diagnostics.diagnostics_definition

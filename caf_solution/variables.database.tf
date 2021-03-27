@@ -7,6 +7,10 @@ variable "azurerm_redis_caches" {
 variable "cosmos_dbs" {
   default = {}
 }
+variable "database" {
+  description = "Database configuration objects"
+  default     = {}
+}
 variable "databricks_workspaces" {
   default = {}
 }

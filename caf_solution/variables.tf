@@ -158,26 +158,6 @@ variable "azuread_api_permissions" {
   default = {}
 }
 
-variable "webapp" {
-  description = "Web applications configuration objects"
-  default = {
-    # app_services                 = {}
-    # app_service_environments     = {}
-    # app_service_plans            = {}
-    # azurerm_application_insights = {}
-    # ...
-  }
-}
-
-
-## Databases variables
-variable "database" {
-  description = "Database configuration objects"
-  default     = {}
-}
-
-
-
 variable "managed_identities" {
   description = "Managed Identity configuration objects"
   default     = {}
