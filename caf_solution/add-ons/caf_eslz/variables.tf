@@ -1,7 +1,17 @@
+
+variable "landing_zones_variables" {
+  default = {}
+}
 # Map of the remote data state
-variable "lower_storage_account_name" {}
-variable "lower_container_name" {}
-variable "lower_resource_group_name" {}
+variable "lower_storage_account_name" {
+  description = "This value is propulated by the rover"
+}
+variable "lower_container_name" {
+  description = "This value is propulated by the rover"
+}
+variable "lower_resource_group_name" {
+  description = "This value is propulated by the rover"
+}
 
 variable "tfstate_subscription_id" {
   description = "This value is propulated by the rover. subscription id hosting the remote tfstates"
@@ -12,11 +22,12 @@ variable "tfstate_storage_account_name" {
 variable "tfstate_container_name" {
   description = "This value is propulated by the rover"
 }
-variable "tfstate_key" {
-  description = "This value is propulated by the rover"
-}
 variable "tfstate_resource_group_name" {
   description = "This value is propulated by the rover"
+}
+
+variable "diagnostics_definition" {
+  default = {}
 }
 
 variable "landingzone" {
@@ -33,6 +44,7 @@ variable "landingzone" {
     }
   }
 }
+
 
 variable "user_type" {}
 variable "tenant_id" {}
@@ -75,7 +87,7 @@ variable "deploy_core_landing_zones" {
 }
 
 variable "archetype_config_overrides" {
-  type        = map(any)
+  # type        = map(any)
   description = "If specified, will set custom Archetype configurations to the default Enterprise-scale Management Groups."
   default     = {}
 }
