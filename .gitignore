@@ -9,4 +9,4 @@
 **/*.log
 **/backend.azurerm.tf
 public
-**/*.lock.*
+**/.terraform.lock.hcl
