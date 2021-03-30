@@ -11,6 +11,9 @@ module "solution" {
   custom_role_definitions               = var.custom_role_definitions
   data_factory                          = local.data_factory
   database                              = local.database
+  diagnostic_storage_accounts           = var.diagnostic_storage_accounts
+  diagnostics_definition                = var.diagnostics_definition
+  diagnostics_destinations              = var.diagnostics_destinations
   event_hub_namespaces                  = var.event_hub_namespaces
   global_settings                       = local.global_settings
   keyvault_access_policies              = var.keyvault_access_policies
