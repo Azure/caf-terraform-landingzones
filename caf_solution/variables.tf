@@ -219,3 +219,9 @@ variable "diagnostic_event_hub_namespaces" {
 variable "diagnostic_log_analytics" {
   default = {}
 }
+variable "virtual_hub_route_tables" {
+  default = {}
+}
+variable "virtual_hub_connections" {
+  default = {}
+}
