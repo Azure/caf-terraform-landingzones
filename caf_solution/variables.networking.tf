@@ -99,3 +99,6 @@ variable "vhub_peerings" {
 variable "vnet_peerings" {
   default = {}
 }
+variable "virtual_hub_er_gateway_connections" {
+  default = {}
+}
