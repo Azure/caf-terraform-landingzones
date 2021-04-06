@@ -27,7 +27,7 @@ variable "landingzone" {
 }
 
 variable "global_settings" {
-  default = {}
+  default = null
 }
 
 variable "provider_azurerm_features_keyvault" {
