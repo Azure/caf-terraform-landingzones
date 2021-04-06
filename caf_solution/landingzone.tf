@@ -25,7 +25,7 @@ module "solution" {
   logic_app                             = var.logic_app
   managed_identities                    = var.managed_identities
   networking                            = local.networking
-  remote_objects                        = local.remote_objects
+  remote_objects                        = local.remote
   resource_groups                       = var.resource_groups
   role_mapping                          = var.role_mapping
   security                              = local.security
