@@ -11,7 +11,20 @@ variable "tfstate_container_name" {}
 variable "tfstate_key" {}
 variable "tfstate_resource_group_name" {}
 
-variable "landingzone" {}
+variable "landingzone" {
+  default = {
+    backend_type        = "azurerm"
+    global_settings_key = "launchpad"
+    level               = "level1"
+    key                 = "caf_examples"
+    tfstates = {
+      launchpad = {
+        level   = "lower"
+        tfstate = "caf_launchpad.tfstate"
+      }
+    }
+  }
+}
 
 variable "global_settings" {
   default = {}
@@ -224,4 +237,7 @@ variable "virtual_hub_route_tables" {
 }
 variable "virtual_hub_connections" {
   default = {}
+}
+variable "var_folder_path" {
+  default = null
 }
