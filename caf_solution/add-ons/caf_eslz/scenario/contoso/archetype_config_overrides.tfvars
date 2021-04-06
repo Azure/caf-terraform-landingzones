@@ -1,8 +1,8 @@
 archetype_config_overrides = {
 
   root = {
-    archetype_id   = "es_root"
-    parameters     = {
+    archetype_id = "es_root"
+    parameters = {
       "Deploy-Resource-Diag" = {
         "logAnalytics" = {
           # value = "resource_id"
@@ -41,8 +41,8 @@ archetype_config_overrides = {
   # }
 
   landing-zones = {
-    archetype_id   = "es_landing_zones"
-    parameters     = {}
+    archetype_id = "es_landing_zones"
+    parameters   = {}
     access_control = {
       "Contributor" = {
         "managed_identities" = {

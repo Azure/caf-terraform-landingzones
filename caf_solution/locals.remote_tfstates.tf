@@ -33,7 +33,7 @@ locals {
 
   tags            = merge(try(local.global_settings.tags, {}), local.landingzone_tag, { "level" = var.landingzone.level }, try({ "environment" = local.global_settings.environment }, {}), { "rover_version" = var.rover_version }, var.tags)
   global_settings = merge(data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.objects[var.landingzone.global_settings_key].global_settings, var.global_settings)
-  
+
   diagnostics = {
     # Get the diagnostics settings of services to create
     diagnostic_event_hub_namespaces = var.diagnostic_event_hub_namespaces
@@ -57,9 +57,9 @@ locals {
       )
     }
     # Get the remote existing diagnostics objects
-    storage_accounts         = data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.objects[var.landingzone.global_settings_key].diagnostics.storage_accounts
-    log_analytics            = data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.objects[var.landingzone.global_settings_key].diagnostics.log_analytics
-    event_hub_namespaces     = data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.objects[var.landingzone.global_settings_key].diagnostics.event_hub_namespaces
+    storage_accounts     = data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.objects[var.landingzone.global_settings_key].diagnostics.storage_accounts
+    log_analytics        = data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.objects[var.landingzone.global_settings_key].diagnostics.log_analytics
+    event_hub_namespaces = data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.objects[var.landingzone.global_settings_key].diagnostics.event_hub_namespaces
   }
 
 }

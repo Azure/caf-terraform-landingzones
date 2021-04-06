@@ -1,12 +1,12 @@
 locals {
 
-  archetype_config_overrides = {    
-    for mg_id , mg_value in  try(var.archetype_config_overrides, {}) : mg_id => {   
+  archetype_config_overrides = {
+    for mg_id, mg_value in try(var.archetype_config_overrides, {}) : mg_id => {
 
-      archetype_id   = mg_value.archetype_id   
-      
+      archetype_id = mg_value.archetype_id
+
       access_control = {
-        for mapping in 
+        for mapping in
         flatten(
           [
             for role, roles in try(mg_value.access_control, {}) : {
@@ -21,7 +21,7 @@ locals {
                     ]
                   ]
                 ) //flatten
-              ,
+                ,
                 flatten(
                   [
                     for resource_type, value in roles : [
@@ -31,15 +31,15 @@ locals {
                     ]
                   ]
                 ) //flatten
-              ) //coalescelist (ids)
+              )   //coalescelist (ids)
             }
           ]
         ) : mapping.role => mapping.ids
       }
 
-      parameters     = {
+      parameters = {
         for param_key, param_value in try(mg_value.parameters, {}) : param_key => {
-          for key, value in param_value : key =>  jsonencode(try(local.caf[value.output_key][value.lz_key][value.resource_type][value.resource_key][value.attribute_key], value.value))
+          for key, value in param_value : key => jsonencode(try(local.caf[value.output_key][value.lz_key][value.resource_type][value.resource_key][value.attribute_key], value.value))
         }
 
       }

@@ -10,7 +10,7 @@ custom_landing_zones = {
       access_control = {}
     }
   }
-  
+
   contoso-staging = {
     display_name               = "Staging"
     parent_management_group_id = "contoso-landing-zones"
