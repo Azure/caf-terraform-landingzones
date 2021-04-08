@@ -4,12 +4,7 @@
 #
 
 name: landingzones-tf14
-
-on:
-  schedule:
-    - cron:  '0 1 * * *'
-
-    
+  
 on:
   pull_request:
     paths-ignore:
