@@ -154,8 +154,8 @@ vnet_peerings = {
       vnet_key = "hub_rg1"
     }
     to = {
-      tfstate_key = "foundations"
-      lz_key      = "launchpad"
+      tfstate_key = "caf_foundations"
+      lz_key      = "caf_foundations"
       output_key  = "vnets"
       vnet_key    = "devops_region1"
     }
@@ -169,8 +169,8 @@ vnet_peerings = {
   launchpad_devops-TO-hub_rg1 = {
     name = "launchpad_devops-TO-hub_rg1"
     from = {
-      tfstate_key = "foundations"
-      lz_key      = "launchpad"
+      tfstate_key = "caf_foundations"
+      lz_key      = "caf_foundations"
       output_key  = "vnets"
       vnet_key    = "devops_region1"
     }

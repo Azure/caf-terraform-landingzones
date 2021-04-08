@@ -90,7 +90,7 @@ vnet_peerings = {
       vnet_key = "hub_rg1"
     }
     to = {
-      lz_key     = "launchpad"
+      lz_key     = "caf_foundations"
       output_key = "vnets"
       vnet_key   = "devops_region1"
     }
