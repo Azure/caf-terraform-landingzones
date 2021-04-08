@@ -75,8 +75,6 @@ jobs:
             -level level1 \
             -parallelism=30 \
             --environment ${{ github.run_id }} \
-            '-var random_length=${{ matrix.random_length }}' \
-            '-var prefix=g${{ github.run_id }}' \
             '-var tags={testing_job_id="${{ github.run_id }}"}'
 
   networking100:
@@ -173,8 +171,6 @@ jobs:
             -level level1 \
             -parallelism=30 \
             --environment ${{ github.run_id }} \
-            '-var random_length=${{ matrix.random_length }}' \
-            '-var prefix=g${{ github.run_id }}' \
             '-var tags={testing_job_id="${{ github.run_id }}"}'
 
   networking200:
@@ -257,8 +253,6 @@ jobs:
             -level level1 \
             -parallelism=30 \
             --environment ${{ github.run_id }} \
-            '-var random_length=${{ matrix.random_length }}' \
-            '-var prefix=g${{ github.run_id }}' \
             '-var tags={testing_job_id="${{ github.run_id }}"}' \
             -auto-approve
 
