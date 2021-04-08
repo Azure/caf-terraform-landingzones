@@ -1,10 +1,10 @@
 landingzone = {
   backend_type        = "azurerm"
-  global_settings_key = "foundations"
+  global_settings_key = "caf_foundations"
   level               = "level2"
   key                 = "shared_services"
   tfstates = {
-    foundations = {
+    caf_foundations = {
       level   = "lower"
       tfstate = "caf_foundations.tfstate"
     }
