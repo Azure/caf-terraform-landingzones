@@ -8,10 +8,6 @@ landingzone = {
       level   = "lower"
       tfstate = "caf_foundations.tfstate"
     }
-    launchpad = {
-      level   = "lower"
-      tfstate = "caf_foundations.tfstate"
-    }
   }
 }
 
