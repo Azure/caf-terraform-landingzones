@@ -9,6 +9,23 @@ on:
   schedule:
     - cron:  '0 1 * * *'
 
+    
+on:
+  pull_request:
+    paths-ignore:
+      - 'documentation/**'
+      - '_pictures/**'
+      - 'README.md'
+      - 'CHANGELOG.md'
+  push:
+    paths-ignore:
+      - 'documentation/**'
+      - '_pictures/**'
+      - 'README.md'
+      - 'CHANGELOG.md'
+  schedule:
+    - cron:  '0 4 * * *'
+
 env:
   TF_CLI_ARGS: '-no-color'
   TF_CLI_ARGS_destroy: '-auto-approve -refresh=false'
@@ -30,7 +47,7 @@ jobs:
           random_length: ['5']
 
     container:
-      image: aztfmod/rover:0.14.7-2103.0304
+      image: aztfmod/rover:0.14.10-2104.0803
       options: --user 0
 
     steps:
@@ -79,7 +96,7 @@ jobs:
           ]
 
     container:
-      image: aztfmod/rover:0.14.7-2103.0304
+      image: aztfmod/rover:0.14.10-2104.0803
       options: --user 0
 
     steps:
@@ -123,7 +140,7 @@ jobs:
           random_length: ['5']
 
     container:
-      image: aztfmod/rover:0.14.7-2103.0304
+      image: aztfmod/rover:0.14.10-2104.0803
       options: --user 0
 
     steps:
@@ -170,7 +187,7 @@ jobs:
           ]
 
     container:
-      image: aztfmod/rover:0.14.7-2103.0304
+      image: aztfmod/rover:0.14.10-2104.0803
       options: --user 0
 
     steps:
@@ -213,7 +230,7 @@ jobs:
         random_length: ['5']
 
     container:
-      image: aztfmod/rover:0.14.7-2103.0304
+      image: aztfmod/rover:0.14.10-2104.0803
       options: --user 0
 
     steps:

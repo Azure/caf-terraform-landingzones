@@ -3,23 +3,11 @@
 # Licensed under the MIT License.
 #
 
-name: landingzones
+name: landingzones-tf13
 
 on:
-  pull_request:
-    paths-ignore:
-      - 'documentation/**'
-      - '_pictures/**'
-      - 'README.md'
-      - 'CHANGELOG.md'
-  push:
-    paths-ignore:
-      - 'documentation/**'
-      - '_pictures/**'
-      - 'README.md'
-      - 'CHANGELOG.md'
   schedule:
-    - cron:  '0 4 * * *'
+    - cron:  '0 1 * * *'
 
 env:
   TF_CLI_ARGS: '-no-color'
@@ -42,7 +30,7 @@ jobs:
           random_length: ['5']
 
     container:
-      image: aztfmod/rover:0.13.6-2103.0304
+      image: aztfmod/rover:0.13.6-2104.0803
       options: --user 0
 
     steps:
@@ -91,7 +79,7 @@ jobs:
           ]
 
     container:
-      image: aztfmod/rover:0.13.6-2103.0304
+      image: aztfmod/rover:0.13.6-2104.0803
       options: --user 0
 
     steps:
@@ -135,7 +123,7 @@ jobs:
           random_length: ['5']
 
     container:
-      image: aztfmod/rover:0.13.6-2103.0304
+      image: aztfmod/rover:0.13.6-2104.0803
       options: --user 0
 
     steps:
@@ -182,7 +170,7 @@ jobs:
           ]
 
     container:
-      image: aztfmod/rover:0.13.6-2103.0304
+      image: aztfmod/rover:0.13.6-2104.0803
       options: --user 0
 
     steps:
@@ -225,7 +213,7 @@ jobs:
         random_length: ['5']
 
     container:
-      image: aztfmod/rover:0.13.6-2103.0304
+      image: aztfmod/rover:0.13.6-2104.0803
       options: --user 0
 
     steps:
