@@ -4,10 +4,16 @@
 #
 
 name: landingzones-tf14
-
+  
 on:
+  pull_request:
+    paths-ignore:
+      - 'documentation/**'
+      - '_pictures/**'
+      - 'README.md'
+      - 'CHANGELOG.md'
   schedule:
-    - cron:  '0 1 * * *'
+    - cron:  '0 0 * * *'
 
 env:
   TF_CLI_ARGS: '-no-color'
@@ -30,7 +36,7 @@ jobs:
           random_length: ['5']
 
     container:
-      image: aztfmod/rover:0.14.7-2103.0304
+      image: aztfmod/rover:0.14.10-2104.0803
       options: --user 0
 
     steps:
@@ -45,8 +51,8 @@ jobs:
 
       - name: launchpad
         run: |
-          /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/landingzones/caf_launchpad -a apply \
-            -var-folder ${GITHUB_WORKSPACE}/landingzones/caf_launchpad/scenario/100 \
+          /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/caf_launchpad -a apply \
+            -var-folder ${GITHUB_WORKSPACE}/caf_launchpad/scenario/100 \
             -level level0 \
             -launchpad \
             -parallelism=30 \
@@ -57,10 +63,13 @@ jobs:
 
       - name: foundations
         run: |
-          /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/landingzones/caf_foundations -a apply \
+          /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/caf_solution -a apply \
+            -var-folder ${GITHUB_WORKSPACE}/caf_solution/scenario/foundations/100-passthrough \
+            -tfstate caf_foundations.tfstate \
             -level level1 \
             -parallelism=30 \
-            --environment ${{ github.run_id }}
+            --environment ${{ github.run_id }} \
+            '-var tags={testing_job_id="${{ github.run_id }}"}'
 
   networking100:
     name: networking-100
@@ -72,14 +81,14 @@ jobs:
       fail-fast: false
       matrix:
           config_files: [
-            "caf_networking/scenario/100-single-region-hub",
-            "caf_networking/scenario/101-multi-region-hub",
-            "caf_networking/scenario/105-hub-and-spoke",
-            "caf_networking/scenario/106-hub-virtual-wan-firewall"
+            "caf_solution/scenario/networking/100-single-region-hub",
+            "caf_solution/scenario/networking/101-multi-region-hub",
+            "caf_solution/scenario/networking/105-hub-and-spoke",
+            "caf_solution/scenario/networking/106-hub-virtual-wan-firewall"
           ]
 
     container:
-      image: aztfmod/rover:0.14.7-2103.0304
+      image: aztfmod/rover:0.14.10-2104.0803
       options: --user 0
 
     steps:
@@ -92,20 +101,20 @@ jobs:
 
       - name: deploy example
         run: |
-          /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/landingzones/caf_networking/ -a apply \
+          /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/caf_solution/ -a apply \
             -tfstate $(basename ${{ matrix.config_files }}).tfstate \
             -level level2 \
             -parallelism=30 \
-            -var-folder ${GITHUB_WORKSPACE}/landingzones/${{ matrix.config_files }} \
+            -var-folder ${GITHUB_WORKSPACE}/${{ matrix.config_files }} \
             --environment ${{ github.run_id }}
 
       - name: destroy example
         run: |
-          /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/landingzones/caf_networking/ -a destroy \
+          /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/caf_solution/ -a destroy \
             -tfstate $(basename ${{ matrix.config_files }}).tfstate \
             -level level2 \
             -parallelism=30 \
-            -var-folder ${GITHUB_WORKSPACE}/landingzones/${{ matrix.config_files }} \
+            -var-folder ${GITHUB_WORKSPACE}/${{ matrix.config_files }} \
             --environment ${{ github.run_id }} \
             -refresh=false \
             -auto-approve
@@ -123,7 +132,7 @@ jobs:
           random_length: ['5']
 
     container:
-      image: aztfmod/rover:0.14.7-2103.0304
+      image: aztfmod/rover:0.14.10-2104.0803
       options: --user 0
 
     steps:
@@ -138,8 +147,8 @@ jobs:
 
       - name: launchpad-200-upgrade
         run: |
-          /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/landingzones/caf_launchpad -a apply \
-            -var-folder ${GITHUB_WORKSPACE}/landingzones/caf_launchpad/scenario/200 \
+          /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/caf_launchpad -a apply \
+            -var-folder ${GITHUB_WORKSPACE}/caf_launchpad/scenario/200 \
             -level level0 \
             -launchpad \
             -parallelism=30 \
@@ -150,9 +159,13 @@ jobs:
 
       - name: foundations-200-upgrade
         run: |
-          /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/landingzones/caf_foundations -a apply \
-          -level level1 \
-          --environment ${{ github.run_id }}
+          /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/caf_solution -a apply \
+            -var-folder ${GITHUB_WORKSPACE}/caf_solution/scenario/foundations/gitops \
+            -tfstate caf_foundations.tfstate \
+            -level level1 \
+            -parallelism=30 \
+            --environment ${{ github.run_id }} \
+            '-var tags={testing_job_id="${{ github.run_id }}"}'
 
   networking200:
     name: networking-200
@@ -164,13 +177,13 @@ jobs:
       fail-fast: false
       matrix:
           config_files: [
-            "caf_networking/scenario/200-single-region-hub",
-            "caf_networking/scenario/201-multi-region-hub",
-            "caf_networking/scenario/210-aks-private"
+            "caf_solution/scenario/networking/200-single-region-hub",
+            "caf_solution/scenario/networking/201-multi-region-hub",
+            "caf_solution/scenario/networking/210-aks-private"
           ]
 
     container:
-      image: aztfmod/rover:0.14.7-2103.0304
+      image: aztfmod/rover:0.14.10-2104.0803
       options: --user 0
 
     steps:
@@ -183,20 +196,20 @@ jobs:
 
       - name: deploy example
         run: |
-          /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/landingzones/caf_networking/ -a apply \
+          /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/caf_solution/ -a apply \
             -tfstate $(basename ${{ matrix.config_files }}).tfstate \
             -level level2 \
             -parallelism=30 \
-            -var-folder ${GITHUB_WORKSPACE}/landingzones/${{ matrix.config_files }} \
+            -var-folder ${GITHUB_WORKSPACE}/${{ matrix.config_files }} \
             --environment ${{ github.run_id }}
 
       - name: destroy example
         run: |
-          /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/landingzones/caf_networking/ -a destroy \
+          /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/caf_solution/ -a destroy \
             -tfstate $(basename ${{ matrix.config_files }}).tfstate \
             -level level2 \
             -parallelism=30 \
-            -var-folder ${GITHUB_WORKSPACE}/landingzones/${{ matrix.config_files }} \
+            -var-folder ${GITHUB_WORKSPACE}/${{ matrix.config_files }} \
             --environment ${{ github.run_id }} \
             -refresh=false \
             -auto-approve
@@ -213,7 +226,7 @@ jobs:
         random_length: ['5']
 
     container:
-      image: aztfmod/rover:0.14.7-2103.0304
+      image: aztfmod/rover:0.14.10-2104.0803
       options: --user 0
 
     steps:
@@ -228,16 +241,19 @@ jobs:
 
       - name: foundations
         run: |
-          /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/landingzones/caf_foundations -a destroy \
+          /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/caf_solution -a destroy \
+            -var-folder ${GITHUB_WORKSPACE}/caf_solution/scenario/foundations/gitops \
+            -tfstate caf_foundations.tfstate \
             -level level1 \
             -parallelism=30 \
             --environment ${{ github.run_id }} \
+            '-var tags={testing_job_id="${{ github.run_id }}"}' \
             -auto-approve
 
       - name: Remove launchpad
         run: |
-          /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/landingzones/caf_launchpad -a destroy \
-            -var-folder ${GITHUB_WORKSPACE}/landingzones/caf_launchpad/scenario/200 \
+          /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/caf_launchpad -a destroy \
+            -var-folder ${GITHUB_WORKSPACE}/caf_launchpad/scenario/200 \
             -level level0 \
             -launchpad \
             -parallelism=30 \
