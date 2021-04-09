@@ -6,7 +6,7 @@ landingzone = {
   tfstates = {
     caf_gitops = {
       level   = "lower"
-      tfstate = "caf_gitops.tfstate"
+      tfstate = "caf_foundations.tfstate"
     }
   }
 }
