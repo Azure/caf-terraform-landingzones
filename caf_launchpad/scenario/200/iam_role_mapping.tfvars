@@ -50,13 +50,6 @@ role_mapping = {
           }
         }
       }
-      networking = {
-        "Reader" = {
-          azuread_groups = {
-            keys = ["caf_launchpad_Reader"]
-          }
-        }
-      }
       ops = {
         "Reader" = {
           azuread_groups = {

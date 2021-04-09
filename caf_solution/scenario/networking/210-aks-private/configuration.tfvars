@@ -1,12 +1,12 @@
 landingzone = {
   backend_type        = "azurerm"
-  global_settings_key = "caf_foundations"
+  global_settings_key = "caf_gitops"
   level               = "level2"
   key                 = "networking_hub"
   tfstates = {
-    caf_foundations = {
+    caf_gitops = {
       level   = "lower"
-      tfstate = "caf_foundations.tfstate"
+      tfstate = "caf_gitops.tfstate"
     }
   }
 }
@@ -90,7 +90,7 @@ vnet_peerings = {
       vnet_key = "hub_rg1"
     }
     to = {
-      lz_key     = "caf_foundations"
+      lz_key     = "caf_gitops"
       output_key = "vnets"
       vnet_key   = "devops_region1"
     }

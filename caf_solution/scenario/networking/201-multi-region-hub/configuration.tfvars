@@ -1,12 +1,12 @@
 landingzone = {
   backend_type        = "azurerm"
-  global_settings_key = "caf_foundations"
+  global_settings_key = "caf_gitops"
   level               = "level2"
   key                 = "networking_hub"
   tfstates = {
-    caf_foundations = {
+    caf_gitops = {
       level   = "lower"
-      tfstate = "caf_foundations.tfstate"
+      tfstate = "caf_gitops.tfstate"
     }
   }
 }
@@ -154,8 +154,7 @@ vnet_peerings = {
       vnet_key = "hub_rg1"
     }
     to = {
-      tfstate_key = "caf_foundations"
-      lz_key      = "caf_foundations"
+      lz_key      = "caf_gitops"
       output_key  = "vnets"
       vnet_key    = "devops_region1"
     }
@@ -169,8 +168,7 @@ vnet_peerings = {
   launchpad_devops-TO-hub_rg1 = {
     name = "launchpad_devops-TO-hub_rg1"
     from = {
-      tfstate_key = "caf_foundations"
-      lz_key      = "caf_foundations"
+      lz_key      = "caf_gitops"
       output_key  = "vnets"
       vnet_key    = "devops_region1"
     }
@@ -191,8 +189,7 @@ vnet_peerings = {
       vnet_key = "hub_rg2"
     }
     to = {
-      tfstate_key = "foundations"
-      lz_key      = "launchpad"
+      lz_key      = "caf_gitops"
       output_key  = "vnets"
       vnet_key    = "devops_region1"
     }
@@ -206,8 +203,7 @@ vnet_peerings = {
   launchpad_devops-TO-hub_rg2 = {
     name = "launchpad_devops-TO-hub_rg2"
     from = {
-      tfstate_key = "foundations"
-      lz_key      = "launchpad"
+      lz_key      = "caf_gitops"
       output_key  = "vnets"
       vnet_key    = "devops_region1"
     }

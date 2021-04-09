@@ -12,12 +12,6 @@ on:
       - '_pictures/**'
       - 'README.md'
       - 'CHANGELOG.md'
-  push:
-    paths-ignore:
-      - 'documentation/**'
-      - '_pictures/**'
-      - 'README.md'
-      - 'CHANGELOG.md'
   schedule:
     - cron:  '0 0 * * *'
 
@@ -70,7 +64,7 @@ jobs:
       - name: foundations
         run: |
           /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/caf_solution -a apply \
-            -var-folder ${GITHUB_WORKSPACE}/caf_solution/scenario/foundations/100-passthrough \
+            -var-folder ${GITHUB_WORKSPACE}/caf_solution/scenario/foundations/gitops \
             -tfstate caf_foundations.tfstate \
             -level level1 \
             -parallelism=30 \
@@ -166,7 +160,7 @@ jobs:
       - name: foundations-200-upgrade
         run: |
           /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/caf_solution -a apply \
-            -var-folder ${GITHUB_WORKSPACE}/caf_solution/scenario/foundations/100-passthrough \
+            -var-folder ${GITHUB_WORKSPACE}/caf_solution/scenario/foundations/gitops \
             -tfstate caf_foundations.tfstate \
             -level level1 \
             -parallelism=30 \
@@ -248,7 +242,7 @@ jobs:
       - name: foundations
         run: |
           /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/caf_solution -a destroy \
-            -var-folder ${GITHUB_WORKSPACE}/caf_solution/scenario/foundations/100-passthrough \
+            -var-folder ${GITHUB_WORKSPACE}/caf_solution/scenario/foundations/gitops \
             -tfstate caf_foundations.tfstate \
             -level level1 \
             -parallelism=30 \

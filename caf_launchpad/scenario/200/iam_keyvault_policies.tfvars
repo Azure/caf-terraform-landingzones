@@ -43,14 +43,6 @@ keyvault_access_policies_azuread_apps = {
       secret_permissions = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
     }
   }
-
-
-  secrets = {
-    caf_launchpad_level0 = {
-      azuread_app_key    = "caf_launchpad_level0"
-      secret_permissions = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
-    }
-  }
 }
 
 keyvault_access_policies = {
@@ -100,15 +92,4 @@ keyvault_access_policies = {
     }
   }
 
-
-  secrets = {
-    keyvault_level0_rw = {
-      azuread_group_key  = "keyvault_level0_rw"
-      secret_permissions = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
-    }
-    keyvault_password_rotation = {
-      azuread_group_key  = "keyvault_password_rotation"
-      secret_permissions = ["Set", "Get", "List", "Delete", ]
-    }
-  }
 }

@@ -5,9 +5,9 @@
 **/terraform.tfstate.d
 **/terraform.tfstate.backup
 **/.terraform.tfstate.lock.info
+**/.terraform.lock.hcl
 **/~*.*
 **/*.log
 **/backend.azurerm.tf
 public
-**/.terraform.lock.hcl
 aztfmod

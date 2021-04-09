@@ -85,12 +85,13 @@ virtual_machines = {
           version   = "latest"
         }
 
-        identity = {
-          type = "UserAssigned"
-          managed_identity_keys = [
-            "level0", "level1", "level2", "level3", "level4"
-          ]
-        }
+        # identity = {
+        #   type                  = "UserAssigned"
+        #   lz_key                = "launchpad"
+        #   managed_identity_keys = [
+        #     "level0", "level1", "level2", "level3", "level4"
+        #   ]
+        # }
 
       }
     }

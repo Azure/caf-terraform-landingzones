@@ -84,17 +84,11 @@ resource_groups = {
   security = {
     name = "launchpad-security"
   }
-  networking = {
-    name = "launchpad-networking"
-  }
   ops = {
     name = "operations"
   }
   siem = {
     name = "siem-logs"
-  }
-  bastion_launchpad = {
-    name = "launchpad-bastion"
   }
 }
 
