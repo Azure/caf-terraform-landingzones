@@ -145,3 +145,9 @@ variable "default_location" {
 
   # Need to add validation covering all Azure locations
 }
+
+variable "reconcile_vending_subscriptions" {
+  type        = bool
+  default     = false
+  description = "Will reconcile the subrisciptions created outside of enterprise scale to prevent them to be revoved by the execution of this module."
+}

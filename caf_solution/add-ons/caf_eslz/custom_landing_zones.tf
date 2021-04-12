@@ -1,17 +1,45 @@
-locals {
+data "azurerm_management_group" "id" {
+  for_each = var.reconcile_vending_subscriptions ? var.custom_landing_zones : {}
 
-  custom_landing_zones = {
-    for lz_key, lz_value in var.custom_landing_zones : lz_key => {
-      display_name               = lz_value.display_name
-      parent_management_group_id = lz_value.parent_management_group_id
-      subscription_ids           = lz_value.subscription_ids
-      archetype_config           = local.custom_landing_zones_archetype_config[lz_key]
-    }
-  }
-
+  name = each.key
 }
 
 locals {
+
+  custom_landing_zones = {
+    for mg_id, mg_value in var.custom_landing_zones : mg_id => {
+      display_name               = mg_value.display_name
+      parent_management_group_id = mg_value.parent_management_group_id
+      subscription_ids           = local.custom_landing_zones_subscription_ids[mg_id].subscription_ids
+      archetype_config           = local.custom_landing_zones_archetype_config[mg_id]
+    }
+  }
+
+  custom_landing_zones_subscription_ids = {
+    for mg_id, mg_value in try(var.custom_landing_zones, {}) : mg_id => {
+
+      subscription_ids = try(
+        coalescelist(
+          try(
+            flatten(
+              [
+                data.azurerm_management_group.id[mg_id].subscription_ids
+              ]
+            ), 
+            []
+          ),
+          flatten(
+            [
+              for subscription_id in mg_value.subscription_ids : subscription_id
+            ]
+          )
+        ),
+        []
+      )
+
+    }
+  }
+
   custom_landing_zones_archetype_config = {
     for mg_id, mg_value in try(var.custom_landing_zones, {}) : mg_id => {
 
@@ -53,8 +81,8 @@ locals {
         for param_key, param_value in try(mg_value.archetype_config.parameters, {}) : param_key => {
           for key, value in param_value : key => jsonencode(try(local.caf[value.output_key][value.lz_key][value.resource_type][value.resource_key][value.attribute_key], value.value))
         }
-
       }
+
     }
   }
 }
