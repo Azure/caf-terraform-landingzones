@@ -102,3 +102,9 @@ variable "vnet_peerings" {
 variable "virtual_hub_er_gateway_connections" {
   default = {}
 }
+variable "virtual_hub_route_tables" {
+  default = {}
+}
+variable "virtual_hub_connections" {
+  default = {}
+}

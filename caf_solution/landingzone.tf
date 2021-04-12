@@ -15,7 +15,11 @@ module "solution" {
   diagnostic_storage_accounts           = var.diagnostic_storage_accounts
   diagnostics_definition                = var.diagnostics_definition
   diagnostics_destinations              = var.diagnostics_destinations
+  event_hub_auth_rules                  = var.event_hub_auth_rules
+  event_hub_consumer_groups             = var.event_hub_consumer_groups
+  event_hub_namespace_auth_rules        = var.event_hub_namespace_auth_rules
   event_hub_namespaces                  = var.event_hub_namespaces
+  event_hubs                            = var.event_hubs
   global_settings                       = local.global_settings
   keyvault_access_policies              = var.keyvault_access_policies
   keyvault_certificate_issuers          = var.keyvault_certificate_issuers
