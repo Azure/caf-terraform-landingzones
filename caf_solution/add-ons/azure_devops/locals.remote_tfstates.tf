@@ -44,10 +44,10 @@ locals {
 
 
   combined = {
-    aad_apps           = merge(local.remote.aad_apps, map(var.landingzone.key, module.caf.aad_apps))
-    azuread_groups     = merge(local.remote.azuread_groups, map(var.landingzone.key, module.caf.azuread_groups))
-    keyvaults          = merge(local.remote.keyvaults, map(var.landingzone.key, module.caf.keyvaults))
-    managed_identities = merge(local.remote.managed_identities, map(var.landingzone.key, module.caf.managed_identities))
+    aad_apps           = merge(local.remote.aad_apps, tomap({(var.landingzone.key) = module.caf.aad_apps}))
+    azuread_groups     = merge(local.remote.azuread_groups, tomap({(var.landingzone.key) = module.caf.azuread_groups}))
+    keyvaults          = merge(local.remote.keyvaults, tomap({(var.landingzone.key) = module.caf.keyvaults}))
+    managed_identities = merge(local.remote.managed_identities, tomap({(var.landingzone.key) = module.caf.managed_identities}))
   }
 
   remote = {

@@ -39,13 +39,24 @@ provider "azurerm" {
 data "azurerm_client_config" "current" {}
 
 locals {
+
+  # Update the tfstates map
   tfstates = merge(
-    map(var.landingzone.backend_type,
-      map(
-        "level", var.landingzone.level,
-        "tenant_id", data.azurerm_client_config.current.tenant_id,
-        "subscription_id", data.azurerm_client_config.current.subscription_id
-      )
+    tomap(
+      {
+        (var.landingzone.key) =local.backend["tfc"]
+      }
     )
+    ,
+    data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.tfstates
   )
+
+  
+  backend = {
+    tfc = {
+      level           = var.landingzone.level,
+      tenant_id       = data.azurerm_client_config.current.tenant_id,
+      subscription_id = data.azurerm_client_config.current.subscription_id
+    }
+  }
 }
