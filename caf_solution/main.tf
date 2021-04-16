@@ -1,9 +1,6 @@
 terraform {
   required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "~> 2.55"
-    }
+    // azurerm version driven bt the caf module
     azuread = {
       source  = "hashicorp/azuread"
       version = "~> 1.4.0"
