@@ -64,10 +64,10 @@ locals {
   }
 
   tfstates = tomap(
-      {
-        (var.landingzone.key) = local.backend[var.landingzone.backend_type]
-      }
-    )
+    {
+      (var.landingzone.key) = local.backend[var.landingzone.backend_type]
+    }
+  )
 
   backend = {
     azurerm = {

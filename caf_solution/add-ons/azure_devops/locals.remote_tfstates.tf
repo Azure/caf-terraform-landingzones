@@ -37,10 +37,10 @@ locals {
   diagnostics     = data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.objects[var.landingzone.global_settings_key].diagnostics
 
   combined = {
-    aad_apps           = merge(local.remote.aad_apps, tomap({(var.landingzone.key) = module.caf.aad_apps}))
-    azuread_groups     = merge(local.remote.azuread_groups, tomap({(var.landingzone.key) = module.caf.azuread_groups}))
-    keyvaults          = merge(local.remote.keyvaults, tomap({(var.landingzone.key) = module.caf.keyvaults}))
-    managed_identities = merge(local.remote.managed_identities, tomap({(var.landingzone.key) = module.caf.managed_identities}))
+    aad_apps           = merge(local.remote.aad_apps, tomap({ (var.landingzone.key) = module.caf.aad_apps }))
+    azuread_groups     = merge(local.remote.azuread_groups, tomap({ (var.landingzone.key) = module.caf.azuread_groups }))
+    keyvaults          = merge(local.remote.keyvaults, tomap({ (var.landingzone.key) = module.caf.keyvaults }))
+    managed_identities = merge(local.remote.managed_identities, tomap({ (var.landingzone.key) = module.caf.managed_identities }))
   }
 
   remote = {

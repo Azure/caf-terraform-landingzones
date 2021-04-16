@@ -44,14 +44,14 @@ locals {
   tfstates = merge(
     tomap(
       {
-        (var.landingzone.key) =local.backend["tfc"]
+        (var.landingzone.key) = local.backend["tfc"]
       }
     )
     ,
     data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.tfstates
   )
 
-  
+
   backend = {
     tfc = {
       level           = var.landingzone.level,

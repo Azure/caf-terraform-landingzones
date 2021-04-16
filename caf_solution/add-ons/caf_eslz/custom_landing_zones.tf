@@ -25,7 +25,7 @@ locals {
               [
                 data.azurerm_management_group.id[mg_id].subscription_ids
               ]
-            ), 
+            ),
             []
           ),
           flatten(
