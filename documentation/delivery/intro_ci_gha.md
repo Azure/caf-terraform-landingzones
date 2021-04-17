@@ -127,7 +127,7 @@ caf_foundations:
       - name: workspace
         run: |
           /tf/rover/launchpad.sh workspace create ${TF_VAR_workspace}
-  
+
       - name: deploy caf_foundations
         run: |
             /tf/rover/rover.sh /tf/caf/landingzones/${{ matrix.landingzone }} apply \
