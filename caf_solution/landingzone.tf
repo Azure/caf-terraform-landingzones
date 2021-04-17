@@ -35,7 +35,7 @@ module "solution" {
   storage_accounts                      = var.storage_accounts
   subscription_billing_role_assignments = var.subscription_billing_role_assignments
   subscriptions                         = var.subscriptions
-  tags                                  = var.tags
+  tags                                  = local.tags
   tenant_id                             = var.tenant_id
   tfstates                              = var.tfstates
   user_type                             = var.user_type
