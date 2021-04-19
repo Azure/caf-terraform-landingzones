@@ -1,8 +1,8 @@
 module "solution" {
-  # source  = "aztfmod/caf/azurerm"
-  # version = "~>5.3.0"
+  source  = "aztfmod/caf/azurerm"
+  version = "~>5.3.0"
   
-  source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=master"
+  # source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=master"
 
 
   azuread_api_permissions               = var.azuread_api_permissions
@@ -43,7 +43,7 @@ module "solution" {
   storage_accounts                      = var.storage_accounts
   subscription_billing_role_assignments = var.subscription_billing_role_assignments
   subscriptions                         = var.subscriptions
-  tags                                  = var.tags
+  tags                                  = local.tags
   tenant_id                             = var.tenant_id
   tfstates                              = var.tfstates
   user_type                             = var.user_type
