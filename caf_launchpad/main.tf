@@ -1,9 +1,6 @@
 terraform {
   required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "~> 2.50"
-    }
+    // azurerm version driven by the caf module
     azuread = {
       source  = "hashicorp/azuread"
       version = "~> 1.4.0"
@@ -66,10 +63,11 @@ locals {
     use_slug           = var.use_slug
   }
 
-  tfstates = map(
-    var.landingzone.key,
-    local.backend[var.landingzone.backend_type]
-  )
+  tfstates = tomap(
+      {
+        (var.landingzone.key) = local.backend[var.landingzone.backend_type]
+      }
+    )
 
   backend = {
     azurerm = {
