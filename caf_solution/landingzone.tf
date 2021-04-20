@@ -25,6 +25,7 @@ module "solution" {
   event_hubs                            = var.event_hubs
   global_settings                       = local.global_settings
   keyvault_access_policies              = var.keyvault_access_policies
+  keyvault_access_policies_azuread_apps = var.keyvault_access_policies_azuread_apps
   keyvault_certificate_issuers          = var.keyvault_certificate_issuers
   keyvaults                             = var.keyvaults
   log_analytics                         = var.log_analytics
@@ -42,7 +43,7 @@ module "solution" {
   storage_accounts                      = var.storage_accounts
   subscription_billing_role_assignments = var.subscription_billing_role_assignments
   subscriptions                         = var.subscriptions
-  tags                                  = var.tags
+  tags                                  = local.tags
   tenant_id                             = var.tenant_id
   tfstates                              = var.tfstates
   user_type                             = var.user_type
