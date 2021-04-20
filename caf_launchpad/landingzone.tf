@@ -1,7 +1,8 @@
 module "launchpad" {
-  source  = "aztfmod/caf/azurerm"
-  version = "~>5.3.0"
-  # source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=master"
+  # source  = "aztfmod/caf/azurerm"
+  # version = "~>5.3.0"
+
+  source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=master"
 
 
   azuread_api_permissions               = var.azuread_api_permissions
