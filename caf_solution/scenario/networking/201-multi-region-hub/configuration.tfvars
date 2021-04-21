@@ -154,9 +154,9 @@ vnet_peerings = {
       vnet_key = "hub_rg1"
     }
     to = {
-      lz_key      = "caf_gitops"
-      output_key  = "vnets"
-      vnet_key    = "devops_region1"
+      lz_key     = "caf_gitops"
+      output_key = "vnets"
+      vnet_key   = "devops_region1"
     }
     allow_virtual_network_access = true
     allow_forwarded_traffic      = false
@@ -168,9 +168,9 @@ vnet_peerings = {
   launchpad_devops-TO-hub_rg1 = {
     name = "launchpad_devops-TO-hub_rg1"
     from = {
-      lz_key      = "caf_gitops"
-      output_key  = "vnets"
-      vnet_key    = "devops_region1"
+      lz_key     = "caf_gitops"
+      output_key = "vnets"
+      vnet_key   = "devops_region1"
     }
     to = {
       vnet_key = "hub_rg1"
@@ -189,9 +189,9 @@ vnet_peerings = {
       vnet_key = "hub_rg2"
     }
     to = {
-      lz_key      = "caf_gitops"
-      output_key  = "vnets"
-      vnet_key    = "devops_region1"
+      lz_key     = "caf_gitops"
+      output_key = "vnets"
+      vnet_key   = "devops_region1"
     }
     allow_virtual_network_access = true
     allow_forwarded_traffic      = false
@@ -203,9 +203,9 @@ vnet_peerings = {
   launchpad_devops-TO-hub_rg2 = {
     name = "launchpad_devops-TO-hub_rg2"
     from = {
-      lz_key      = "caf_gitops"
-      output_key  = "vnets"
-      vnet_key    = "devops_region1"
+      lz_key     = "caf_gitops"
+      output_key = "vnets"
+      vnet_key   = "devops_region1"
     }
     to = {
       vnet_key = "hub_rg2"

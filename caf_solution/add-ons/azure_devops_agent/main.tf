@@ -1,9 +1,5 @@
 terraform {
   required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "~> 2.55"
-    }
     azuread = {
       source  = "hashicorp/azuread"
       version = "~> 1.4.0"
@@ -53,14 +49,14 @@ locals {
   tfstates = merge(
     tomap(
       {
-        (var.landingzone.key) =local.backend[var.landingzone.backend_type]
+        (var.landingzone.key) = local.backend[var.landingzone.backend_type]
       }
     )
     ,
     data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.tfstates
   )
 
-  
+
   backend = {
     azurerm = {
       storage_account_name = var.tfstate_storage_account_name
