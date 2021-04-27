@@ -5,6 +5,9 @@ variable "application_gateways" {
 variable "application_gateway_applications" {
   default = {}
 }
+variable "application_gateway_waf_policies" {
+  default = {}
+}
 variable "application_security_groups" {
   default = {}
 }
