@@ -8,6 +8,7 @@ locals {
       azurerm_firewall_application_rule_collection_definition = var.azurerm_firewall_application_rule_collection_definition
       azurerm_firewall_nat_rule_collection_definition         = var.azurerm_firewall_nat_rule_collection_definition
       azurerm_firewall_network_rule_collection_definition     = var.azurerm_firewall_network_rule_collection_definition
+      azurerm_firewall_policies                               = var.azurerm_firewall_policies
       azurerm_firewalls                                       = var.azurerm_firewalls
       azurerm_routes                                          = var.azurerm_routes
       ddos_services                                           = var.ddos_services

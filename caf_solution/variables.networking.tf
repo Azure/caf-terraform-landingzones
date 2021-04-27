@@ -20,6 +20,9 @@ variable "azurerm_firewall_nat_rule_collection_definition" {
 variable "azurerm_firewall_network_rule_collection_definition" {
   default = {}
 }
+variable "azurerm_firewall_policies" {
+  default = {}
+}
 variable "azurerm_routes" {
   default = {}
 }
