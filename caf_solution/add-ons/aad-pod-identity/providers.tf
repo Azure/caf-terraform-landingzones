@@ -13,6 +13,10 @@ provider "kubernetes" {
   cluster_ca_certificate = local.k8sconfigs[var.aks_cluster_key].cluster_ca_certificate
 }
 
+provider "kustomization" {
+  kubeconfig_raw = local.k8sconfigs[var.aks_cluster_key].kube_admin_config_raw
+}
+
 locals {
   k8sconfigs = {
     for key, value in var.aks_clusters : key => {
