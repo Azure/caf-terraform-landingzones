@@ -3,6 +3,7 @@ locals {
     var.networking,
     {
       application_gateway_applications                        = var.application_gateway_applications
+      application_gateway_waf_policies                        = var.application_gateway_waf_policies
       application_gateways                                    = var.application_gateways
       application_security_groups                             = var.application_security_groups
       azurerm_firewall_application_rule_collection_definition = var.azurerm_firewall_application_rule_collection_definition
