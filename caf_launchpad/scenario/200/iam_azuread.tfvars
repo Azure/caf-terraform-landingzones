@@ -146,38 +146,38 @@ azuread_roles = {
   azuread_apps = {
     caf_launchpad_level0 = {
       roles = [
-        "Application Administrator",
-        "Application Developer",
-        "User Administrator"
+        "Application administrator",
+        "Application developer",
+        "User administrator"
       ]
     }
   }
   managed_identities = {
     level0 = {
       roles = [
-        "Directory Readers",
-        "Application Developer",
-        "User Administrator"
+        "Directory readers",
+        "Application developer",
+        "User administrator"
       ]
     }
     level1 = {
       roles = [
-        "Directory Readers"
+        "Directory readers"
       ]
     }
     level2 = {
       roles = [
-        "Directory Readers"
+        "Directory readers"
       ]
     }
     level3 = {
       roles = [
-        "Directory Readers"
+        "Directory readers"
       ]
     }
     level4 = {
       roles = [
-        "Directory Readers"
+        "Directory readers"
       ]
     }
   }
