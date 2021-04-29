@@ -20,8 +20,6 @@ Depending on what you are trying to achieve, we provide you with different level
 |-----------------------|------------------------------------------------------------------------------------------------------------------|--------------------------------------------|
 | [100](./scenario/100) | Start with this one! basic functionalities and features, no RBAC or security hardening - for demo and simple POC | working on AIRS subscriptions              |
 | [200](./scenario/200) | intermediate functionalities includes diagnostics features                                                       | may not work in AIRS, need AAD permissions |
-| [300](./scenario/300) | advanced functionalities, includes RBAC features                                                                 | not working in AIRS, need AAD permissions  |
-| [400](./scenario/400) | advanced functionalities, includes RBAC features and security hardening                                          | not working in AIRS, need AAD permissions  |
 
 You can pick your scenario and use one of the following commands:
 
