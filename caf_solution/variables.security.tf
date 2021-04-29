@@ -13,6 +13,9 @@ variable "keyvault_certificates" {
 variable "keyvault_keys" {
   default = {}
 }
+variable "lighthouse_definitions" {
+  default = {}
+}
 ## Security variables
 variable "security" {
   default = {}
