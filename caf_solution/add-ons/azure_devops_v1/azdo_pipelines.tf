@@ -4,13 +4,9 @@ data "azuredevops_git_repositories" "repos" {
   project_id = data.azuredevops_project.project[each.key].id
 }
 
-output "repos"{
-  value = data.azuredevops_git_repositories.repos
-}
-
 resource "azuredevops_build_definition" "build_definition" {
-
   for_each   = var.pipelines
+
   project_id = data.azuredevops_project.project[each.value.project_key].id
   name       = each.value.name
   path       = each.value.folder
@@ -20,12 +16,19 @@ resource "azuredevops_build_definition" "build_definition" {
     azuredevops_variable_group.variable_group[key].id
   ]
 
-  repository {
-    repo_id     = data.azuredevops_git_repositories.repos[each.value.project_key].repositories[0].id
-    repo_type   = each.value.repo_type
-    yml_path    = each.value.yaml
-    branch_name = lookup(each.value, "branch_name", null)
-    # service_connection_id = lookup(each.value, "repo_type", null) == "github" ? null : azuredevops_serviceendpoint_azurerm.github[each.value.service_connection_key].id
+  dynamic "repository" {
+    for_each = {
+      for key, value in try(data.azuredevops_git_repositories.repos[each.value.project_key].repositories, {}) : key => value
+      if value.name == each.value.git_repo_name
+    }
+
+    content {
+      repo_id     = repository.value.id
+      repo_type   = each.value.repo_type
+      yml_path    = each.value.yaml
+      branch_name = lookup(each.value, "branch_name", null)
+      # service_connection_id = lookup(each.value, "repo_type", null) == "github" ? null : azuredevops_serviceendpoint_azurerm.github[each.value.service_connection_key].id
+    }
   }
 
   ci_trigger {

@@ -15,10 +15,7 @@ resource "azuredevops_project" "project" {
 data "azuredevops_project" "project" {
   depends_on = [azuredevops_project.project]
 
-  for_each = {
-    for key, value in var.projects : key => value
-    if try(value.features, null) != null
-  }
+  for_each = var.projects
 
   name = each.value.name
 }
