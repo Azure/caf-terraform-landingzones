@@ -115,3 +115,9 @@ variable "project_agent_pools" {
 variable "service_endpoints" {
   default = {}
 }
+variable "variable_groups" {
+  default = {}
+}
+variable "pipelines" {
+  default = {}
+}
