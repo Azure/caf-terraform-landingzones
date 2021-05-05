@@ -16,6 +16,11 @@ resource "azuredevops_agent_pool" "pool" {
   pool_type      = try(each.value.pool_type, null)
 }
 
+output agent_pools {
+  value       = azuredevops_agent_pool.pool
+}
+
+
 #
 # add the agent pools into the project
 #
