@@ -27,3 +27,15 @@ variable "proximity_placement_groups" {
 variable "virtual_machines" {
   default = {}
 }
+variable "wvd_application_groups" {
+  default = {}
+}
+variable "wvd_host_pools" {
+  default = {}
+}
+variable "wvd_session_hosts" {
+  default = {}
+}
+variable "wvd_workspaces" {
+  default = {}
+}

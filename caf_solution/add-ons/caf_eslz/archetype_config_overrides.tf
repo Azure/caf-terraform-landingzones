@@ -24,10 +24,8 @@ locals {
                 ,
                 flatten(
                   [
-                    for resource_type, value in roles : [
-                      for principal_id in try(value.principal_ids, []) : [
-                        principal_id
-                      ]
+                    for principal_id in try(roles.principal_ids, []) : [
+                      principal_id
                     ]
                   ]
                 ) //flatten
