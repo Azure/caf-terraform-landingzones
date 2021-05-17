@@ -3,7 +3,8 @@
 #
 
 module "vm_extension_monitoring_agent" {
-  source     = "../../modules/compute/virtual_machine_extensions"
+  source  = "aztfmod/caf/azurerm//modules/compute/virtual_machine_extensions"
+  version = "~>5.3.2"
   # if you are not running CAF modules locally, change the source to "github.com/aztfmod/terraform-azurerm-caf/modules/compute/virtual_machine_extensions"
   depends_on = [module.solution] #refer landingzone.tf for the correct module name.
 
@@ -22,7 +23,8 @@ module "vm_extension_monitoring_agent" {
 }
 
 module "vm_extension_diagnostics" {
-  source     = "../../modules/compute/virtual_machine_extensions"
+  source  = "aztfmod/caf/azurerm//modules/compute/virtual_machine_extensions"
+  version = "~>5.3.2"
   # if you are not running CAF modules locally, change the source to "github.com/aztfmod/terraform-azurerm-caf/modules/compute/virtual_machine_extensions"
   depends_on = [module.solution] #refer landingzone.tf for the correct module name.
 
