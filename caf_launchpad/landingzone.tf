@@ -5,6 +5,7 @@ module "launchpad" {
   # source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=master"
 
 
+  azuread                               = var.azuread
   azuread_api_permissions               = var.azuread_api_permissions
   azuread_apps                          = var.azuread_apps
   azuread_groups                        = var.azuread_groups

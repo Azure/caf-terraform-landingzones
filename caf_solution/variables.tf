@@ -151,6 +151,10 @@ variable "user_type" {
 }
 
 ## Azure AD
+variable "azuread" {
+  default = {}
+}
+
 variable "azuread_apps" {
   default = {}
 }
