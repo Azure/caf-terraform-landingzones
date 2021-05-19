@@ -3,11 +3,13 @@ locals {
     var.networking,
     {
       application_gateway_applications                        = var.application_gateway_applications
+      application_gateway_waf_policies                        = var.application_gateway_waf_policies
       application_gateways                                    = var.application_gateways
       application_security_groups                             = var.application_security_groups
       azurerm_firewall_application_rule_collection_definition = var.azurerm_firewall_application_rule_collection_definition
       azurerm_firewall_nat_rule_collection_definition         = var.azurerm_firewall_nat_rule_collection_definition
       azurerm_firewall_network_rule_collection_definition     = var.azurerm_firewall_network_rule_collection_definition
+      azurerm_firewall_policies                               = var.azurerm_firewall_policies
       azurerm_firewalls                                       = var.azurerm_firewalls
       azurerm_routes                                          = var.azurerm_routes
       ddos_services                                           = var.ddos_services

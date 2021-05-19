@@ -8,8 +8,8 @@ data "azurerm_key_vault_secret" "agent_pat" {
     if try(value.virtual_machine_extensions, null) != null
   }
 
-  name         = var.azure_devops.pats.agent.secret_name
-  key_vault_id = try(var.azure_devops.pats["agent"].lz_key, null) == null ? local.combined.keyvaults[var.landingzone.key][var.azure_devops.pats["agent"].keyvault_key].id : local.combined.keyvaults[var.azure_devops.pats["agent"].lz_key][var.azure_devops.pats["agent"].keyvault_key].id
+  name         = var.azure_devops[each.key].pats.agent.secret_name
+  key_vault_id = try(var.azure_devops[each.key].pats["agent"].lz_key, null) == null ? local.combined.keyvaults[var.landingzone.key][var.azure_devops[each.key].pats["agent"].keyvault_key].id : local.combined.keyvaults[var.azure_devops[each.key].pats["agent"].lz_key][var.azure_devops[each.key].pats["agent"].keyvault_key].id
 }
 
 
@@ -28,7 +28,7 @@ module "vm_extensions" {
       storage_accounts = module.caf.storage_accounts
       agent_pat        = data.azurerm_key_vault_secret.agent_pat[each.key].value
       admin_username   = each.value.virtual_machine_settings[each.value.os_type].admin_username
-      azure_devops     = var.azure_devops
+      azure_devops     = var.azure_devops[each.key]
       storage_account_blobs_urls = [
         for key, value in try(var.storage_account_blobs, []) : module.caf.storage_account_blobs[key].url
       ]

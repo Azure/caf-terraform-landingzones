@@ -18,7 +18,7 @@ resource "azuredevops_build_definition" "build_definition" {
 
   dynamic "repository" {
     for_each = {
-      for key, value in try(data.azuredevops_git_repositories.repos[each.value.repo_project_key].repositories, {}) : key => value
+      for key, value in try(data.azuredevops_git_repositories.repos[try(each.value.repo_project_key, each.value.project_key)].repositories, {}) : key => value
       if value.name == each.value.git_repo_name
     }
 
