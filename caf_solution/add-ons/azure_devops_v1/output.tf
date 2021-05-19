@@ -6,3 +6,7 @@
 #   )
 #   sensitive = true
 # }
+
+output "azure_devops" {
+  value = var.azure_devops
+}
