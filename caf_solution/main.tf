@@ -51,7 +51,7 @@ locals {
       }
     )
     ,
-    data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.tfstates
+    data.terraform_remote_state.remote[local.global_settings_key].outputs.tfstates
   )
 
 
