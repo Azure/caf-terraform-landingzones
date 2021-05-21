@@ -53,7 +53,7 @@ variable "provider_azurerm_features_keyvault" {
 
 
 variable "rover_version" {
-  default = {}
+  default = "caf_standalone"
 }
 
 variable "client_config" {

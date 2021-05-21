@@ -39,11 +39,11 @@ locals {
   global_settings_key = try(var.landingzone.global_settings_key, keys(var.landingzone.tfstates)[0])
 
   tags = merge(
-    # tomap(try(local.global_settings.tags, {})), 
-    # tomap({"landingzone" = var.landingzone.key}), 
-    # tomap({ "level" = var.landingzone.level }),
-    # tomap(try({ "environment" = local.global_settings.environment }, {})), 
-    # tomap({ "rover_version" = var.rover_version }), 
+    try(local.global_settings.tags, {}), 
+    {"landingzone" = var.landingzone.key}, 
+    { "level" = var.landingzone.level },
+    try({ "environment" = local.global_settings.environment }, {}), 
+    { "rover_version" = var.rover_version }, 
     var.tags
   )
 
