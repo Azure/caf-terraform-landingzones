@@ -46,12 +46,18 @@ locals {
     keyvaults = {
       for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].keyvaults, {}))
     }
-    managed_identities = {
-      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].managed_identities, {}))
+    azure_devops = {
+      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.azure_devops, {}))
     }
-    vnets = {
-      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].vnets, {}))
+    agent_pools = {
+      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs[var.agent_pools.key], {}))
     }
   }
 
+}
+output "keyvaults" {
+  value = local.remote.keyvaults
+}
+output "azure_devops" {
+  value = local.remote.azure_devops
 }

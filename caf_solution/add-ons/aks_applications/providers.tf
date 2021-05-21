@@ -1,23 +1,26 @@
-
 provider "azurerm" {
-  features {
-  }
-}
-
-provider "azurerm" {
-  alias = "launchpad"
-  subscription_id = var.tfstate_subscription_id
   features {
   }
 }
 
 provider "kubernetes" {
-  host                   = local.k8sconfigs[var.aks_cluster_key].host
-  username               = local.k8sconfigs[var.aks_cluster_key].username
-  password               = local.k8sconfigs[var.aks_cluster_key].password
-  client_certificate     = local.k8sconfigs[var.aks_cluster_key].client_certificate
-  client_key             = local.k8sconfigs[var.aks_cluster_key].client_key
-  cluster_ca_certificate = local.k8sconfigs[var.aks_cluster_key].cluster_ca_certificate
+  host                   = try(local.k8sconfigs[var.aks_cluster_key].host, null)
+  username               = try(local.k8sconfigs[var.aks_cluster_key].username, null)
+  password               = try(local.k8sconfigs[var.aks_cluster_key].password, null)
+  client_certificate     = try(local.k8sconfigs[var.aks_cluster_key].client_certificate, null)
+  client_key             = try(local.k8sconfigs[var.aks_cluster_key].client_key, null)
+  cluster_ca_certificate = try(local.k8sconfigs[var.aks_cluster_key].cluster_ca_certificate, null)
+}
+
+provider "helm" {
+  kubernetes {
+    host                   = local.k8sconfigs[var.aks_cluster_key].host
+    username               = local.k8sconfigs[var.aks_cluster_key].username
+    password               = local.k8sconfigs[var.aks_cluster_key].password
+    client_certificate     = local.k8sconfigs[var.aks_cluster_key].client_certificate
+    client_key             = local.k8sconfigs[var.aks_cluster_key].client_key
+    cluster_ca_certificate = local.k8sconfigs[var.aks_cluster_key].cluster_ca_certificate
+  }
 }
 
 provider "kustomization" {
@@ -25,6 +28,10 @@ provider "kustomization" {
 }
 
 locals {
+  aks_clusters = {
+    for key, value in var.aks_clusters : key =>
+      local.remote.aks_clusters[value.lz_key][value.key]
+  }
   k8sconfigs = {
     for key, value in var.aks_clusters : key => {
       kube_admin_config_raw  = data.azurerm_kubernetes_cluster.kubeconfig[key].kube_admin_config_raw
@@ -37,8 +44,6 @@ locals {
     }
   }
 }
-
-data "azurerm_client_config" "current" {}
 
 # Get kubeconfig from AKS clusters
 data "azurerm_kubernetes_cluster" "kubeconfig" {
