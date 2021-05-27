@@ -11,6 +11,7 @@ module "solution" {
   azuread_groups                        = var.azuread_groups
   azuread_roles                         = var.azuread_roles
   azuread_users                         = var.azuread_users
+  cloud                                 = local.cloud
   compute                               = local.compute
   current_landingzone_key               = var.landingzone.key
   custom_role_definitions               = var.custom_role_definitions
