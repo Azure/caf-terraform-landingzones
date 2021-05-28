@@ -11,12 +11,12 @@ output "objects" {
 }
 
 output "global_settings" {
-  value = local.global_settings
+  value = module.solution.global_settings
   sensitive = true
 }
 
 output "diagnostics" {
-  value = local.diagnostics
+  value = module.solution.diagnostics
   sensitive = true
 }
 
