@@ -1,5 +1,3 @@
-variable "cluster" {}
-
 variable "namespaces" {
   default = {}
 }

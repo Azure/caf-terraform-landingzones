@@ -1,7 +1,5 @@
 module "app" {
-  source   = "./app"
-
-  cluster     = local.aks_clusters[var.aks_cluster_key]
+  source   = "../aks_applications/app"
   namespaces  = var.namespaces
   helm_charts = var.helm_charts
 }

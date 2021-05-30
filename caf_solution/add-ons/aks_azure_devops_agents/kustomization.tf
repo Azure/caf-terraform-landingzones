@@ -50,7 +50,7 @@ output "manifests" {
 # }
 
 module "kustomization_azdopat-secret" {
-  source   = "./kustomize"
+  source   = "../aks_applications/kustomize"
 
   settings    = data.kustomization_overlay.azdopat-secret
   
