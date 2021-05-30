@@ -58,28 +58,26 @@ Blueprints/Services can be stored either inside the landing zones (as a subdirec
 The delivery of a full landing zone might be decomposed in multiples levels in order to manage different personas and contain the blast radius that a mistake might incur in one landing zone.
 
 ### Launchpad
-[Source here](https://github.com/aztfmod/level0)
+[Source here](https://github.com/Azure/caf-terraform-landingzones/tree/master/caf_launchpad)
 
-A special landing zone is called launchpad and it acts as your toolbox to deploy the resources that in turn helps manage the fundamentals of a full landing zone deployment:
+The launchpad is a special landing zone and is the first landing zone you will create for your environment (**level 0**).
+This landing zone acts as your toolbox to deploy the resources that in turn helps manage the fundamentals of a full landing zone deployment:
 
-* Manage the Terraform states of the deployed landing zones
-* Manage different setup (subscriptions, accounts, etc.) and environment (DEV, UAT, PROD)
-* Bootstraps the initial blueprints
-
-![Launchpad](../../_pictures/code_architecture/launchpad.png)
-
-To manage different subscriptions and environment, the launchpad relies
-on a **level0 landing zone:**
-
-A level0 landing zone is the foundation of account and subscription management. As such it defines:
+A level0 landing zone is the foundation of account and subscription management. As such it is responsible for:
 
 * Defining how to store and retrieve the Terraform state.
 * Defining the core of secrets protection for the Terraform state.
 * Defining the management of the principals or identities for a complex environment.
 * Defining how to access/partition the different subscriptions.
+* Defining the DevOps foundations.
+* Defining initial blueprints
 
-Currently we support an open source version of [level0 blueprints](https://github.com/aztfmod/level0).
+Currently we support an open source version of [level0 launchpad](https://github.com/Azure/caf-terraform-landingzones/tree/master/caf_launchpad).
 
 We are currently working on a [Terraform Cloud](https://www.terraform.io/docs/cloud/index.html) edition of level0 blueprint.
 
 [Back to summary](../README.md)
+
+![Launchpad](../../_pictures/code_architecture/launchpad.png)
+
+
