@@ -16,6 +16,10 @@ variable "tenant_id" {}
 variable "landingzone" {
   description = "The landing zone name is used to reference the tfstate in configuration files. Therefore while set it is recommended not to change"
 }
+variable "sas_token" {
+  description = "SAS Token to access the remote state in another Azure AD tenant."
+  default     = null
+}
 
 variable "passthrough" {
   default = false

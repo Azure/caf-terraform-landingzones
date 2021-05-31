@@ -31,6 +31,7 @@ locals {
         storage_account_name = try(value.storage_account_name, local.landingzone[try(value.level, "current")].storage_account_name)
         subscription_id      = try(value.subscription_id, var.tfstate_subscription_id)
         tenant_id            = try(value.tenant_id, data.azurerm_client_config.current.tenant_id)
+        sas_token            = try(value.sas_token, null) == "" ? var.sas_token : null
       }
     }
 

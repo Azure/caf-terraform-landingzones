@@ -3,7 +3,7 @@ module "solution" {
   # version = "~>5.3.2"
 
   source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=azuread_serviceprincipal"
-
+  # source = "../../aztfmod"
 
   azuread                               = local.azuread
   azuread_api_permissions               = var.azuread_api_permissions

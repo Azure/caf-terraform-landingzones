@@ -3,7 +3,7 @@ module "launchpad" {
   # version = "~>5.3.2"
 
   source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=azuread_serviceprincipal"
-
+  # source = "../../aztfmod"
 
   azuread_api_permissions               = var.azuread_api_permissions
   azuread_apps                          = var.azuread_apps
@@ -22,6 +22,7 @@ module "launchpad" {
   logged_aad_app_objectId               = var.logged_aad_app_objectId
   logged_user_objectId                  = var.logged_user_objectId
   managed_identities                    = var.managed_identities
+  remote_objects                        = local.remote
   resource_groups                       = var.resource_groups
   role_mapping                          = var.role_mapping
   storage_accounts                      = var.storage_accounts
