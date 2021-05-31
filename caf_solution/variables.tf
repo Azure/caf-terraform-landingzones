@@ -25,6 +25,10 @@ variable "tfstate_key" {
 variable "tfstate_resource_group_name" {
   default = null
 }
+variable "sas_token" {
+  description = "SAS Token to access the remote state in another Azure AD tenant."
+  default     = null
+}
 
 variable "landingzone" {
   default = {

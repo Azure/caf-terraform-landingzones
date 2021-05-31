@@ -27,7 +27,7 @@ locals {
         storage_account_name = value.storage_account_name
         subscription_id      = value.subscription_id
         tenant_id            = value.tenant_id
-        sas_token            = try(value.sas_token, null) == "" ? var.sas_token : null
+        sas_token            = try(value.sas_token, null) != null ? var.sas_token : null
       }
     }
 
