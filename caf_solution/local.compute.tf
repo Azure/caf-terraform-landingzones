@@ -11,7 +11,6 @@ locals {
       virtual_machines           = var.virtual_machines
       wvd_application_groups     = var.wvd_application_groups
       wvd_host_pools             = var.wvd_host_pools
-      wvd_session_hosts          = var.wvd_session_hosts
       wvd_workspaces             = var.wvd_workspaces
     }
   )
