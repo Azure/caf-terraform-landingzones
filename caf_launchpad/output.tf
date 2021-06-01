@@ -25,15 +25,6 @@ output "tfstates" {
   sensitive = true
 }
 
-output "global_settings" {
-  value = module.launchpad.global_settings
-  sensitive = true
-}
-
-output "diagnostics" {
-  value = module.launchpad.diagnostics
-  sensitive = true
-}
 
 output "launchpad_identities" {
   value = var.propagate_launchpad_identities ? {
