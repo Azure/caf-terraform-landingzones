@@ -33,9 +33,6 @@ variable "wvd_application_groups" {
 variable "wvd_host_pools" {
   default = {}
 }
-variable "wvd_session_hosts" {
-  default = {}
-}
 variable "wvd_workspaces" {
   default = {}
 }

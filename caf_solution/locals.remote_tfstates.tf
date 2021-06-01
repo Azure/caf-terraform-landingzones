@@ -32,7 +32,12 @@ locals {
   }
 
   tags            = merge(try(local.global_settings.tags, {}), local.landingzone_tag, { "level" = var.landingzone.level }, try({ "environment" = local.global_settings.environment }, {}), { "rover_version" = var.rover_version }, var.tags)
-  global_settings = merge(data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.global_settings, var.global_settings)
+  global_settings = merge(
+    data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.objects[var.landingzone.global_settings_key].global_settings, 
+    data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.global_settings, 
+    var.global_settings
+    )
+
 
   diagnostics = {
     # Get the diagnostics settings of services to create
