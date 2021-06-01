@@ -47,9 +47,9 @@ module "vm_extension_diagnostics" {
 
 module "vm_extension_microsoft_azure_domainjoin" {
   
-  source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git//modules/compute/virtual_machine_extensions?ref=master"
-  # source  = "aztfmod/caf/azurerm//modules/compute/virtual_machine_extensions"
-  # version = "~>5.3.7"
+  # source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git//modules/compute/virtual_machine_extensions?ref=master"
+  source  = "aztfmod/caf/azurerm//modules/compute/virtual_machine_extensions"
+  version = "~>5.3.7"
 
   depends_on = [module.solution] #refer landingzone.tf for the correct module name.
 
@@ -66,10 +66,10 @@ module "vm_extension_microsoft_azure_domainjoin" {
 }
 
 module "vm_extension_session_host_dscextension" {
-  # source  = "aztfmod/caf/azurerm//modules/compute/virtual_machine_extensions"
-  # version = "~>5.3.7"
+  source  = "aztfmod/caf/azurerm//modules/compute/virtual_machine_extensions"
+  version = "~>5.3.7"
 
-  source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git//modules/compute/virtual_machine_extensions?ref=master"
+  # source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git//modules/compute/virtual_machine_extensions?ref=master"
 
   depends_on = [module.solution, module.vm_extension_microsoft_azure_domainjoin, module.solution.wvd_host_pools] #refer landingzone.tf for the correct module name.
 
