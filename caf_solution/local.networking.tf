@@ -37,6 +37,7 @@ locals {
       virtual_network_gateway_connections                     = var.virtual_network_gateway_connections
       virtual_network_gateways                                = var.virtual_network_gateways
       virtual_wans                                            = var.virtual_wans
+      virtual_hubs                                            = var.virtual_hubs
       vnet_peerings                                           = var.vnet_peerings
       vnets                                                   = var.vnets
     }
