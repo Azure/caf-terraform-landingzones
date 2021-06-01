@@ -37,7 +37,7 @@ locals {
     data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.global_settings, 
     var.global_settings
     )
-    
+
 
   diagnostics = {
     # Get the diagnostics settings of services to create

@@ -212,3 +212,7 @@ variable "azurerm_routes" {
 variable "route_tables" {
   default = {}
 }
+
+variable "propagate_launchpad_identities" {
+  default = false
+}

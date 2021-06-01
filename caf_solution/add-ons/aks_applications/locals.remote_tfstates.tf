@@ -36,7 +36,7 @@ locals {
 
   remote = {
     aks_clusters = {
-      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.aks_clusters[key], {}))
+      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].aks_clusters, {}))
     }
   }
 

@@ -3,9 +3,14 @@ locals {
     azuread_apps = {
       for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].azuread_apps, {}))
     }
-    azuread_groups = {
-      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].azuread_groups, {}))
-    }
+    azuread_groups = merge(
+      tomap({"launchpad" = try(data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.launchpad_identities["launchpad"].azuread_groups, {})}),
+      {
+        for key, value in try(var.landingzone.tfstates, {}) : key => merge(
+          try(data.terraform_remote_state.remote[key].outputs.objects[key].azuread_groups, {})
+        )
+      }
+    )
     azuread_users = {
       for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].azuread_users, {}))
     }
@@ -41,9 +46,6 @@ locals {
     }
     azuread_applications = {
       for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].azuread_applications, {}))
-    }
-    azuread_groups = {
-      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].azuread_groups, {}))
     }
     azuread_users = {
       for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].azuread_users, {}))
@@ -87,9 +89,14 @@ locals {
     machine_learning_workspaces = {
       for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].machine_learning_workspaces, {}))
     }
-    managed_identities = {
-      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].managed_identities, {}))
-    }
+    managed_identities = merge(
+      tomap({"launchpad" = try(data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.launchpad_identities["launchpad"].managed_identities, {})}),
+      {
+        for key, value in try(var.landingzone.tfstates, {}) : key => merge(
+          try(data.terraform_remote_state.remote[key].outputs.objects[key].managed_identities, {})
+        )
+      }
+    )    
     mssql_databases = {
       for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].mssql_databases, {}))
     }
