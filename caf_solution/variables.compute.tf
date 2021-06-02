@@ -27,6 +27,9 @@ variable "proximity_placement_groups" {
 variable "virtual_machines" {
   default = {}
 }
+variable "virtual_machine_scale_sets" {
+  default = {}
+}
 variable "wvd_application_groups" {
   default = {}
 }
