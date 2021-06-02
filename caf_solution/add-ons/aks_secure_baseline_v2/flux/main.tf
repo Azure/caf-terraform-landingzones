@@ -3,11 +3,11 @@ terraform {
     kubernetes = {
       source  = "hashicorp/kubernetes"
     }
-    helm = {
-      source  = "hashicorp/helm"
+    kubectl = {
+      source  = "gavinbunney/kubectl"
     }
-    kustomization = {
-      source = "kbst/kustomization"
+    flux = {
+      source  = "fluxcd/flux"
     }
   }
 }

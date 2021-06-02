@@ -50,7 +50,7 @@ output "manifests" {
 # }
 
 module "kustomization_azdopat-secret" {
-  source   = "./kustomize"
+  source   = "../aks_applications/kustomize"
 
   settings    = data.kustomization_overlay.azdopat-secret
   
@@ -203,7 +203,7 @@ data "kustomization_overlay" "placeholderjob" {
     patch = <<-EOF
       - op: replace
         path: /spec/template/spec/containers/0/env/0/value
-        value: "https://dev.azure.com/afopssre"
+        value: ${var.agent_pools.org_url}
     EOF
     target = {
       kind = "Job"
