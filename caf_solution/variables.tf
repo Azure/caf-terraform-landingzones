@@ -151,6 +151,10 @@ variable "user_type" {
 }
 
 ## Azure AD
+variable "azuread" {
+  default = {}
+}
+
 variable "azuread_apps" {
   default = {}
 }
@@ -234,4 +238,7 @@ variable "diagnostic_log_analytics" {
 }
 variable "var_folder_path" {
   default = null
+}
+variable "propagate_launchpad_identities" {
+  default = false
 }

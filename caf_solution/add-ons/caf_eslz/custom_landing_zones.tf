@@ -51,25 +51,22 @@ locals {
           [
             for role, roles in try(mg_value.archetype_config.access_control, {}) : {
               role = role
-              ids = coalescelist(
-                flatten(
+              ids = flatten(
+                [
                   [
                     for resource_type, value in roles : [
                       for resource_key in try(value.resource_keys, []) : [
                         local.caf[resource_type][value.lz_key][resource_key][value.attribute_key]
                       ]
                     ]
-                  ]
-                ) //flatten
-                ,
-                flatten(
+                  ],
                   [
                     for principal_id in try(roles.principal_ids, []) : [
                       principal_id
                     ]
                   ]
-                ) //flatten
-              )   //coalescelist (ids)
+                ]
+              )   //flatten (ids)
             }
           ]
         ) : mapping.role => mapping.ids
