@@ -88,7 +88,7 @@ data "kustomization_overlay" "azdopat-secret" {
 }
 
 module "kustomization" {
-  source   = "./kustomize"
+  source   = "../aks_applications/kustomize"
   for_each   = try(data.kustomization_overlay.roverjob, {})
 
   settings    = each.value
@@ -172,7 +172,7 @@ data "kustomization_overlay" "roverjob" {
 
 
 module "kustomization_placeholderagent" {
-  source   = "./kustomize"
+  source   = "../aks_applications/kustomize"
   for_each   = try(data.kustomization_overlay.placeholderjob, {})
 
   settings    = each.value
