@@ -129,7 +129,7 @@ data "kustomization_overlay" "roverjob" {
     patch = <<-EOF
       - op: replace
         path: /spec/jobTargetRef/template/spec/containers/0/env/0/value
-        value: "https://dev.azure.com/afopssre"
+        value: ${var.agent_pools.org_url}
     EOF
     target = {
       kind = "ScaledJob"
