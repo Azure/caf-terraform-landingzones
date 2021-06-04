@@ -11,12 +11,12 @@ output "objects" {
 }
 
 output "global_settings" {
-  value = local.global_settings
+  value     = local.global_settings
   sensitive = true
 }
 
 output "diagnostics" {
-  value = merge(module.solution.diagnostics, local.diagnostics)
+  value     = merge(module.solution.diagnostics, local.diagnostics)
   sensitive = true
 }
 

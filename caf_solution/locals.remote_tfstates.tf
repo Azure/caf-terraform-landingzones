@@ -31,12 +31,12 @@ locals {
     "landingzone" = var.landingzone.key
   }
 
-  tags            = merge(try(local.global_settings.tags, {}), local.landingzone_tag, { "level" = var.landingzone.level }, try({ "environment" = local.global_settings.environment }, {}), { "rover_version" = var.rover_version }, var.tags)
+  tags = merge(try(local.global_settings.tags, {}), local.landingzone_tag, { "level" = var.landingzone.level }, try({ "environment" = local.global_settings.environment }, {}), { "rover_version" = var.rover_version }, var.tags)
   global_settings = merge(
-    try(data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.objects[var.landingzone.global_settings_key].global_settings, null), 
-    try(data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.global_settings, null), 
+    try(data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.objects[var.landingzone.global_settings_key].global_settings, null),
+    try(data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.global_settings, null),
     var.global_settings
-    )
+  )
 
 
   diagnostics = {
@@ -69,12 +69,12 @@ locals {
       )
     }
     # Get the remote existing diagnostics objects
-    storage_accounts     = coalesce(
+    storage_accounts = coalesce(
       try(data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.diagnostics.storage_accounts, null),
       try(data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.objects[var.landingzone.global_settings_key].diagnostics.storage_accounts, null)
     )
 
-    log_analytics        = coalesce(
+    log_analytics = coalesce(
       try(data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.diagnostics.log_analytics, null),
       try(data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.objects[var.landingzone.global_settings_key].diagnostics.log_analytics, null)
     )
