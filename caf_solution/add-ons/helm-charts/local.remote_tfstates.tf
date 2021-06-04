@@ -35,7 +35,8 @@ locals {
     try(data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.objects[var.landingzone.global_settings_key].global_settings, null),
     try(data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.global_settings, null)
   )
-  diagnostics     = merge(
+
+  diagnostics = merge(
     try(data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.objects[var.landingzone.global_settings_key].diagnostics, null),
     try(data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.diagnostics, null)
   )
