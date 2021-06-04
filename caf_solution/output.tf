@@ -16,7 +16,7 @@ output "global_settings" {
 }
 
 output "diagnostics" {
-  value     = merge(module.solution.diagnostics, local.diagnostics)
+  value     = module.solution.diagnostics
   sensitive = true
 }
 
