@@ -1,10 +1,10 @@
 data "flux_install" "main" {
-  target_path = var.setting.target_install_path
+  target_path = var.setting.target_path
   namespace   = var.setting.namespace
 }
 
 data "flux_sync" "main" {
-  target_path = var.setting.target_sync_path
+  target_path = var.setting.target_path
   url         = var.setting.url
   branch      = var.setting.branch
   secret      = try(var.setting.flux_auth_secret, null)
