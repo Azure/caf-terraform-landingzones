@@ -169,26 +169,6 @@ variable "user_type" {
   default     = {}
 }
 
-## Azure AD
-variable "azuread_apps" {
-  default = {}
-}
-
-variable "azuread_groups" {
-  default = {}
-}
-
-variable "azuread_roles" {
-  default = {}
-}
-
-variable "azuread_users" {
-  default = {}
-}
-
-variable "azuread_api_permissions" {
-  default = {}
-}
 
 variable "managed_identities" {
   description = "Managed Identity configuration objects"
@@ -253,4 +233,7 @@ variable "diagnostic_log_analytics" {
 }
 variable "var_folder_path" {
   default = null
+}
+variable "propagate_launchpad_identities" {
+  default = false
 }

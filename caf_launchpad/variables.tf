@@ -89,6 +89,9 @@ variable "subscriptions" {
 }
 
 ## Azure Active Directory
+variable "azuread" {
+  default = {}
+}
 variable "azuread_apps" {
   default = {}
 }
@@ -212,4 +215,8 @@ variable "azurerm_routes" {
 
 variable "route_tables" {
   default = {}
+}
+
+variable "propagate_launchpad_identities" {
+  default = false
 }

@@ -2,15 +2,11 @@ module "solution" {
   # source  = "aztfmod/caf/azurerm"
   # version = "~>5.3.2"
 
-  source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=azuread_serviceprincipal"
-  # source = "../../aztfmod"
+  # source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=azuread_serviceprincipal"
+  source = "../../aztfmod"
 
   azuread                               = local.azuread
-  azuread_api_permissions               = var.azuread_api_permissions
-  azuread_apps                          = var.azuread_apps
-  azuread_groups                        = var.azuread_groups
-  azuread_roles                         = var.azuread_roles
-  azuread_users                         = var.azuread_users
+  cloud                                 = local.cloud
   compute                               = local.compute
   current_landingzone_key               = var.landingzone.key
   custom_role_definitions               = var.custom_role_definitions

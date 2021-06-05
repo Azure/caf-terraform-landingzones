@@ -16,12 +16,13 @@ You can deploy it easily on Windows and MacOS with the following software manage
 
 Once installed, open **Visual Studio Code** and install "**Remote Development**" extension as follow: ![RemoteDevelopment](../../_pictures/caf_setup_remotedev.png)
 
-## Cloning the repository
+## Cloning the starter repository
 
-Cloning your first repository:
+The starter repository contains the basic configuration files and scenarios. It will allow you to compose your configuration files in the integrated environment.
+Clone the repository using the following command:
 
 ```bash
-git clone https://github.com/Azure/caf-terraform-landingzones.git
+git clone https://github.com/Azure/caf-terraform-landingzones-starter.git
 ```
 
 ## Open the repository in Visual Studio Code
@@ -53,53 +54,9 @@ We recommend that you verify the output of the login and make sure the subscript
 az account set --subscription <subscription_GUID>
 ```
 
-## Deploying the DevOps requirements
+## Enjoy the starter kit
 
-On the first run, you need to use the launchpad to create the foundations for Terraform environment. This will set storage accounts to store the state files, and key vaults to get you started with a secure environment. It can eventually be upgraded to support your DevOps environment (pipelines, etc.)
-
-You can find more information on the launchpad settings [Here](../../landingzones/caf_launchpad)
-
-```bash
-rover -lz /tf/caf/landingzones/caf_launchpad \
--launchpad \
--var-folder /tf/caf/landingzones/caf_launchpad/scenario/100 \
--a apply
-```
-
-## Deploying the foundations
-
-Next step is to deploy the foundations (this typically could include management groups, policies, etc.). We can start with it empty, and enrich it later.
-
-You can find more information on the launchpad settings [Here](../../landingzones/caf_launchpad)
-
-
-Get started with the basic foundations:
-
-```bash
-rover -lz /tf/caf/landingzones/caf_foundations \
--level level1 \
--a apply
-```
-
-## Deploying a networking scenario
-
-You can deploy one of the typical Azure network topologies (hub, hub and spoke, Virtual WAN).
-
-Have a look at the example scenario [Here](../../landingzones/caf_networking) and pick one you want to deploy.
-
-You can deploy a simple hub networking using:
-
-```bash
-rover -lz /tf/caf/landingzones/caf_networking \
--level level2 \
--var-folder /tf/caf/landingzones/caf_networking/scenario/100-single-region-hub \
--a apply
-```
-
-## Destroying your test
-
-Once you are done testing, just use the same commands as before, juste replace the last line ```-a apply``` by ```-a destroy```.
-
+Follow the instructions in the readme files of the starter repo to bring up different environments.
 
 ## Updating your development environment
 
