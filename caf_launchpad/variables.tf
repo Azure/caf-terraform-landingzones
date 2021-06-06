@@ -104,7 +104,7 @@ variable "azuread_users" {
 variable "azuread_roles" {
   default = {}
 }
-variable "azuread_password_policies" {
+variable "azuread_credential_policies" {
   default = {}
 }
 variable "azuread_service_principals" {

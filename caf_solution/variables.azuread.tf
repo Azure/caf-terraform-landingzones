@@ -10,10 +10,13 @@ variable "azuread_applications" {
 variable "azuread_apps" {
   default = {}
 }
+variable "azuread_credentials" {
+  default = {}
+}
 variable "azuread_groups" {
   default = {}
 }
-variable "azuread_password_policies" {
+variable "azuread_credential_policies" {
   default = {}
 }
 variable "azuread_roles" {

@@ -75,16 +75,16 @@ locals {
       )
     }
     # Get the remote existing diagnostics objects
-    storage_accounts = coalesce(
+    storage_accounts = merge(
       try(data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.diagnostics.storage_accounts, null),
       try(data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.objects[var.landingzone.global_settings_key].diagnostics.storage_accounts, null)
     )
 
-    log_analytics = coalesce(
+    log_analytics = merge(
       try(data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.diagnostics.log_analytics, null),
       try(data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.objects[var.landingzone.global_settings_key].diagnostics.log_analytics, null)
     )
-    event_hub_namespaces = coalesce(
+    event_hub_namespaces = merge(
       try(data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.diagnostics.event_hub_namespaces, null),
       try(data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.objects[var.landingzone.global_settings_key].diagnostics.event_hub_namespaces, null)
     )
