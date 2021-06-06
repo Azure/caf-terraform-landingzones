@@ -104,6 +104,15 @@ variable "azuread_users" {
 variable "azuread_roles" {
   default = {}
 }
+variable "azuread_password_policies" {
+  default = {}
+}
+variable "azuread_service_principals" {
+  default = {}
+}
+variable "azuread_service_principal_passwords" {
+  default = {}
+}
 variable "managed_identities" {
   default = {}
 }
@@ -153,6 +162,10 @@ variable "aad_roles" {
 }
 
 variable "azuread_api_permissions" {
+  default = {}
+}
+
+variable "azuread_applications" {
   default = {}
 }
 
