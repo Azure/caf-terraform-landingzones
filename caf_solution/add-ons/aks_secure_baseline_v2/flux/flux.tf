@@ -32,7 +32,8 @@ resource "kubernetes_namespace" "flux_system" {
 }
 
 locals {
-  install = [for v in data.kubectl_file_documents.install.documents : {
+  flux_install_yaml_documents_without_namespace = [for x in data.kubectl_file_documents.install.documents: x if length(regexall("kind: Namespace", x)) == 0]
+  install = [for v in local.flux_install_yaml_documents_without_namespace : {
     data : yamldecode(v)
     content : v
     }
