@@ -1,10 +1,10 @@
 data "flux_install" "main" {
-  target_path = var.setting.target_install_path
+  target_path = var.setting.target_path
   namespace   = var.setting.namespace
 }
 
 data "flux_sync" "main" {
-  target_path = var.setting.target_sync_path
+  target_path = var.setting.target_path
   url         = var.setting.url
   branch      = var.setting.branch
   secret      = try(var.setting.flux_auth_secret, null)
@@ -26,13 +26,14 @@ resource "kubernetes_namespace" "flux_system" {
 
   lifecycle {
     ignore_changes = [
-      metadata[0].labels,
+      metadata[0].labels, metadata[0].annotations
     ]
   }
 }
 
 locals {
-  install = [for v in data.kubectl_file_documents.install.documents : {
+  flux_install_yaml_documents_without_namespace = [for x in data.kubectl_file_documents.install.documents: x if length(regexall("kind: Namespace", x)) == 0]
+  install = [for v in local.flux_install_yaml_documents_without_namespace : {
     data : yamldecode(v)
     content : v
     }
@@ -52,7 +53,7 @@ resource "kubectl_manifest" "install" {
 
 resource "kubectl_manifest" "sync" {
   for_each   = { for v in local.sync : lower(join("/", compact([v.data.apiVersion, v.data.kind, lookup(v.data.metadata, "namespace", ""), v.data.metadata.name]))) => v.content }
-  depends_on = [kubernetes_namespace.flux_system]
+  depends_on = [kubernetes_namespace.flux_system, kubectl_manifest.install]
   yaml_body  = each.value
 }
 
