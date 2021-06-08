@@ -1,4 +1,4 @@
-module "vault_secret" {
+module "dynamic_vault_secret" {
   source     = "./secret"
   depends_on = [module.caf]
   for_each = {
