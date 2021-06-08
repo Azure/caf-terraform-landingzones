@@ -5,7 +5,7 @@ Deploys dynamic hashicop vault secrets.
 
 ## Prerequisites
 
-Before running the add-on please make sure you set your vault backend, you can do this by exporting below environment variables.
+Before running the add-on please make sure you are [authenticated](https://learn.hashicorp.com/tutorials/vault/getting-started-authentication) to vault, one of the way is to set the below environment variables. For more information visit : https://www.vaultproject.io/docs/commands#environment-variables
 
 ``` bash
 export VAULT_ADDR = "vault address"
@@ -15,7 +15,7 @@ export VAULT_TOKEN= "vault token"
 
 ## Example
 
-The example configurations to deploy this add-on can be found [here](./scenario/100-simple-dynamic-vault-secrets/configuration.tfvars)
+An example of the configurations to deploy this add-on feature can be found [here](./scenario/100-simple-dynamic-vault-secrets/configuration.tfvars)
 
 Ensure the below is set prior to apply or destroy.
 

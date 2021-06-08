@@ -11,10 +11,11 @@ landingzone = {
   }
 }
 dynamic_vault_secrets = {
-  vmadmin-username = {
-    path = "secret/test"
+  secret1 = {
+    path         = "secret/test"
+    disable_read = true # optional
     secrets = {
-      username = {
+      username = { # key will be used for secret name in vault
         value = "vmadmin"
       }
       password = {
@@ -39,8 +40,9 @@ dynamic_vault_secrets = {
       }
     }
   }
-  vmadmin-password = {
-    path = "secret/password"
+  secret2 = {
+    path         = "secret/password"
+    disable_read = true # optional
     secrets = {
       username = {
         value = "vmadmin"
