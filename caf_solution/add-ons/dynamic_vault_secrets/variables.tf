@@ -21,7 +21,6 @@ variable "landingzone" {
 variable "rover_version" {
   default = null
 }
-
 variable "logged_user_objectId" {
   default = null
 }
