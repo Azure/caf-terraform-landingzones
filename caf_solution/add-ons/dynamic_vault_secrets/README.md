@@ -1,6 +1,6 @@
 # CAF landing zones for Terraform - Dynamic Hashicorp Vault Secrets Add-on
 
-Deploys dynamic hashicop vault secrets to a given path
+Deploys dynamic hashicop vault secrets.
 
 
 ## Prerequisites
@@ -15,7 +15,7 @@ export VAULT_TOKEN= "vault token"
 
 ## Example
 
-The example configurations to deploy this add-on can be found [here](./scenario/100-simple-vault-secrets/configuration.tfvars)
+The example configurations to deploy this add-on can be found [here](./scenario/100-simple-dynamic-vault-secrets/configuration.tfvars)
 
 Ensure the below is set prior to apply or destroy.
 
@@ -31,7 +31,7 @@ export environment=[YOUR_ENVIRONMENT]
 ```bash
 rover \
   -lz /tf/caf/landingzones/caf_solution/add-ons/dynamic_vault_secrets \
-  -var-folder /tf/caf/landingzones/caf_solution/add-ons/dynamic_vault_secrets/scenario/100-simple-vault-secrets \
+  -var-folder /tf/caf/landingzones/caf_solution/add-ons/dynamic_vault_secrets/scenario/100-simple-dynamic-vault-secrets \
   -tfstate vault.tfstate \
     -env ${environment}} \
     -level level1 \
