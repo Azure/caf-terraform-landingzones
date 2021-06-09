@@ -38,6 +38,11 @@ dynamic_vault_secrets = {
         resource_key  = "level1"
         attribute_key = "name"
       }
+      client_secret = {
+        secretname   = "sp-client-secret"
+        lz_key       = "launchpad"
+        keyvault_key = "level1"
+      }
     }
   }
   secret2 = {
