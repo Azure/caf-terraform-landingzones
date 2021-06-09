@@ -38,7 +38,7 @@ dynamic_vault_secrets = {
         resource_key  = "level1"
         attribute_key = "name"
       }
-      client_secret = { # scenario to push secrets from key vault to hashicorp vault applicable mostly for Service Principal paswords.
+      client_secret = { # scenario to push secrets from key vault to hashicorp vault applicable mostly for Service Principal passwords.
         secretname   = "sp-client-secret"
         lz_key       = "launchpad"
         keyvault_key = "level1"
