@@ -15,8 +15,8 @@ module "vm_extension_monitoring_agent" {
     if try(value.virtual_machine_extensions.microsoft_enterprise_cloud_monitoring, null) != null
   }
 
-  client_config      = module.solution.client_config                 
-  virtual_machine_id = module.solution.virtual_machines[each.key].id 
+  client_config      = module.solution.client_config
+  virtual_machine_id = module.solution.virtual_machines[each.key].id
   extension          = each.value.virtual_machine_extensions.microsoft_enterprise_cloud_monitoring
   extension_name     = "microsoft_enterprise_cloud_monitoring"
   settings = {
@@ -37,8 +37,8 @@ module "vm_extension_diagnostics" {
     if try(value.virtual_machine_extensions.microsoft_azure_diagnostics, null) != null
   }
 
-  client_config      = module.solution.client_config                 
-  virtual_machine_id = module.solution.virtual_machines[each.key].id 
+  client_config      = module.solution.client_config
+  virtual_machine_id = module.solution.virtual_machines[each.key].id
   extension          = each.value.virtual_machine_extensions.microsoft_azure_diagnostics
   extension_name     = "microsoft_azure_diagnostics"
   settings = {

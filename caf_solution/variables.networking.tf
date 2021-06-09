@@ -96,6 +96,9 @@ variable "virtual_network_gateways" {
 variable "virtual_wans" {
   default = {}
 }
+variable "virtual_hubs" {
+  default = {}
+}
 variable "vnets" {
   default = {}
 }
