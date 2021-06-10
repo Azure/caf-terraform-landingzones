@@ -10,7 +10,7 @@ landingzone = {
     }
   }
 }
-dynamic_vault_secrets = {
+hashicorp_vault_secrets = {
   secret1 = {
     path         = "secret/test"
     disable_read = true # optional
