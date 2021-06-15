@@ -2,8 +2,8 @@ module "solution" {
   # source  = "aztfmod/caf/azurerm"
   # version = "~>5.3.2"
 
-  # source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=mtms"
-  source = "../../aztfmod"
+  source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=mtms"
+  # source = "../../aztfmod"
 
   azuread                               = local.azuread
   cloud                                 = local.cloud
