@@ -120,3 +120,6 @@ variable "virtual_hub_connections" {
 variable "vpn_sites" {
   default = {}
 }
+variable "vpn_gateway_connections" {
+  default = {}
+}
