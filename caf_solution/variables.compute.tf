@@ -21,6 +21,12 @@ variable "compute" {
 variable "container_groups" {
   default = {}
 }
+variable "dedicated_host_groups" {
+  default = {}
+}
+variable "dedicated_hosts" {
+  default = {}
+}
 variable "proximity_placement_groups" {
   default = {}
 }
