@@ -58,7 +58,7 @@ locals {
 }
 
 resource "azurerm_key_vault_access_policy" "keyvault_policy" {
-  provider = azurerm.launchpad
+  # provider = azurerm.launchpad
   for_each = var.keyvaults
 
   key_vault_id = local.remote.keyvaults[each.value.lz_key][each.value.key].id

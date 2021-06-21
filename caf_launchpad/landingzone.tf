@@ -3,7 +3,7 @@ module "launchpad" {
   # version = "~>5.3.2"
 
   # source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=mtms"
-  source = "../../aztfmod"
+  source = "/tf/caf/aztfmod"
 
   current_landingzone_key               = var.landingzone.key
   custom_role_definitions               = var.custom_role_definitions

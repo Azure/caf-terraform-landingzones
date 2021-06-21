@@ -1,9 +1,15 @@
 
-data "azurerm_key_vault_secret" "client_secret" {
+# To support cross subscription
+data "external" "client_secret" {
   for_each   = var.service_endpoints
-
-  name         = each.value.keyvault.secret_name
-  key_vault_id = local.remote.keyvaults[each.value.keyvault.lz_key][each.value.keyvault.key].id
+  program = [
+    "bash", "-c",
+    format(
+      "az keyvault secret show --id '%s'secrets/'%s' --query '{value: value}' -o json",
+      local.remote.keyvaults[each.value.keyvault.lz_key][each.value.keyvault.key].vault_uri,
+      each.value.keyvault.secret_name
+    )
+  ]
 }
 
 resource "azuredevops_serviceendpoint_azurerm" "azure" {
@@ -13,7 +19,7 @@ resource "azuredevops_serviceendpoint_azurerm" "azure" {
   service_endpoint_name = each.value.endpoint_name
   credentials {
     serviceprincipalid  = local.remote.azuread_applications[each.value.azuread_application.lz_key][each.value.azuread_application.key].application_id
-    serviceprincipalkey = data.azurerm_key_vault_secret.client_secret[each.key].value
+    serviceprincipalkey = data.external.client_secret[each.key].result.value
   }
   azurerm_spn_tenantid      = local.remote.azuread_applications[each.value.azuread_application.lz_key][each.value.azuread_application.key].tenant_id
   azurerm_subscription_id   = each.value.subscription.id

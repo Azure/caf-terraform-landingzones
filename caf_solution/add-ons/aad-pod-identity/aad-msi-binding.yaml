@@ -1,3 +1,5 @@
+# https://github.com/Azure/aad-pod-identity/blob/b3ee1d07209f26c47a96abf3ba20749932763de6/website/content/en/docs/Concepts/azureidentity.md
+
 apiVersion: aadpodidentity.k8s.io/v1
 kind: AzureIdentity
 metadata:
@@ -14,3 +16,4 @@ metadata:
 spec:
     azureIdentity: podmi-caf-rover-platform-level0
     selector: podmi-caf-rover-platform-level0
+
