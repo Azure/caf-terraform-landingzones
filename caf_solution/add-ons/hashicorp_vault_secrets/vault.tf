@@ -9,3 +9,6 @@ module "hashicorp_vault_secrets" {
   disable_read = try(each.value.disable_read, false)
   objects      = local.remote.objects
 }
+output name {
+  value       = local.remote.objects
+}
