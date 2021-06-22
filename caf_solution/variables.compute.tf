@@ -39,6 +39,9 @@ variable "virtual_machine_scale_sets" {
 variable "wvd_application_groups" {
   default = {}
 }
+variable "wvd_applications" {
+  default = {}
+}
 variable "wvd_host_pools" {
   default = {}
 }
