@@ -242,3 +242,7 @@ variable "var_folder_path" {
 variable "propagate_launchpad_identities" {
   default = false
 }
+
+variable "random_strings" {
+  default = {}
+}
