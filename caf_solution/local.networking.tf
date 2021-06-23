@@ -10,6 +10,7 @@ locals {
       azurerm_firewall_nat_rule_collection_definition         = var.azurerm_firewall_nat_rule_collection_definition
       azurerm_firewall_network_rule_collection_definition     = var.azurerm_firewall_network_rule_collection_definition
       azurerm_firewall_policies                               = var.azurerm_firewall_policies
+      azurerm_firewall_policy_rule_collection_groups          = var.azurerm_firewall_policy_rule_collection_groups
       azurerm_firewalls                                       = var.azurerm_firewalls
       azurerm_routes                                          = var.azurerm_routes
       ddos_services                                           = var.ddos_services
@@ -34,12 +35,14 @@ locals {
       virtual_hub_connections                                 = var.virtual_hub_connections
       virtual_hub_er_gateway_connections                      = var.virtual_hub_er_gateway_connections
       virtual_hub_route_tables                                = var.virtual_hub_route_tables
+      virtual_hubs                                            = var.virtual_hubs
       virtual_network_gateway_connections                     = var.virtual_network_gateway_connections
       virtual_network_gateways                                = var.virtual_network_gateways
       virtual_wans                                            = var.virtual_wans
-      virtual_hubs                                            = var.virtual_hubs
       vnet_peerings                                           = var.vnet_peerings
       vnets                                                   = var.vnets
+      vpn_sites                                               = var.vpn_sites
+      vpn_gateway_connections                                 = var.vpn_gateway_connections
     }
   )
 }

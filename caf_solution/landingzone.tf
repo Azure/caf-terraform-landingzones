@@ -5,12 +5,7 @@ module "solution" {
   source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=5.4.0"
   # source = "../../aztfmod"
 
-  # azuread                               = var.azuread
-  azuread_api_permissions               = var.azuread_api_permissions
-  azuread_apps                          = var.azuread_apps
-  azuread_groups                        = var.azuread_groups
-  azuread_roles                         = var.azuread_roles
-  azuread_users                         = var.azuread_users
+  azuread                               = local.azuread
   cloud                                 = local.cloud
   compute                               = local.compute
   current_landingzone_key               = var.landingzone.key

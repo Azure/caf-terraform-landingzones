@@ -1,0 +1,70 @@
+parameters:
+  - name: timeoutInMinutes
+    displayName: 'Timeout in minutes'
+    type: number
+    default: 60
+
+  variables:
+  - group: release-global
+
+  resources:
+    containers:
+    - container: rover
+      image: $(ROVER_IMAGE)
+      options: --user 0:0 -e TF_PLUGIN_CACHE_DIR="/home/$(HOME_FOLDER_USER)/plugin-cache" -e TF_DATA_DIR="/home/$(HOME_FOLDER_USER)"
+
+  trigger: none
+
+  jobs:
+  - job: CAF_Rover
+
+    displayName: Azure Landing Zone
+
+    pool: $(AGENT_POOL)
+
+    continueOnError: false
+
+    workspace:
+          clean: all
+
+    container: rover
+
+    timeoutInMinutes: ${{ parameters.timeoutInMinutes }}
+
+    steps:
+    - checkout: self
+
+    - bash: |
+        git clone --branch $(LANDINGZONE_BRANCH) https://github.com/Azure/caf-terraform-landingzones.git ${BUILD_REPOSITORY_LOCALPATH}/public 2>/dev/null
+
+        az login --identity -u $(msi-resource-id)
+
+        /tf/rover/rover.sh -lz ${BUILD_REPOSITORY_LOCALPATH}$(landingZonePath) \
+          -tfstate $(tfstateName) \
+          -var-folder ${BUILD_REPOSITORY_LOCALPATH}$(configPath) \
+          -parallelism=30 \
+          -level $(level) \
+          -a $(terraformAction) \
+          -env $(ENVIRONMENT)
+
+      condition: ne(variables['terraformAction'], 'destroy')
+      failOnStderr: true
+      displayName: 'Terraform $(terraformAction)'
+
+    - bash: |
+        git clone --branch $(LANDINGZONE_BRANCH) https://github.com/Azure/caf-terraform-landingzones.git ${BUILD_REPOSITORY_LOCALPATH}/public 2>/dev/null
+
+        az login --identity -u $(msi-resource-id)
+
+        /tf/rover/rover.sh -lz ${BUILD_REPOSITORY_LOCALPATH}$(landingZonePath) \
+          -tfstate $(tfstateName) \
+          -var-folder ${BUILD_REPOSITORY_LOCALPATH}$(configPath) \
+          -parallelism=30 \
+          -level $(level) \
+          -a $(terraformAction) \
+          -auto-approve \
+          -env $(ENVIRONMENT)
+
+      condition: eq(variables['terraformAction'], 'destroy')
+      failOnStderr: true
+      displayName: 'Terraform destroy'

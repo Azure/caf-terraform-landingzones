@@ -16,6 +16,10 @@ variable "tenant_id" {}
 variable "landingzone" {
   description = "The landing zone name is used to reference the tfstate in configuration files. Therefore while set it is recommended not to change"
 }
+variable "sas_token" {
+  description = "SAS Token to access the remote state in another Azure AD tenant."
+  default     = null
+}
 
 variable "passthrough" {
   default = false
@@ -100,6 +104,15 @@ variable "azuread_users" {
 variable "azuread_roles" {
   default = {}
 }
+variable "azuread_credential_policies" {
+  default = {}
+}
+variable "azuread_service_principals" {
+  default = {}
+}
+variable "azuread_service_principal_passwords" {
+  default = {}
+}
 variable "managed_identities" {
   default = {}
 }
@@ -149,6 +162,10 @@ variable "aad_roles" {
 }
 
 variable "azuread_api_permissions" {
+  default = {}
+}
+
+variable "azuread_applications" {
   default = {}
 }
 
