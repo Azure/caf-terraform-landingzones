@@ -2,7 +2,7 @@ module "solution" {
   # source  = "aztfmod/caf/azurerm"
   # version = "~>5.3.2"
 
-  source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=mtms"
+  source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=5.4.0"
   # source = "../../aztfmod"
 
   azuread                               = local.azuread
@@ -31,6 +31,7 @@ module "solution" {
   logic_app                             = var.logic_app
   managed_identities                    = var.managed_identities
   networking                            = local.networking
+  random_strings                        = var.random_strings
   remote_objects                        = local.remote
   resource_groups                       = var.resource_groups
   role_mapping                          = var.role_mapping
