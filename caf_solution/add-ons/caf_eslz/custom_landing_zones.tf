@@ -18,23 +18,18 @@ locals {
   custom_landing_zones_subscription_ids = {
     for mg_id, mg_value in try(var.custom_landing_zones, {}) : mg_id => {
 
-      subscription_ids = try(
-        coalescelist(
-          try(
-            flatten(
-              [
-                data.azurerm_management_group.id[mg_id].subscription_ids
-              ]
-            ),
-            []
-          ),
+      subscription_ids = compact(
+        concat(
           flatten(
             [
-              for subscription_id in mg_value.subscription_ids : subscription_id
+              for key, value in try(mg_value.subscriptions, []) : [
+                local.caf.subscriptions[value.lz_key][value.key].subscription_id
+              ]
             ]
-          )
-        ),
-        []
+          ),
+          try(tolist(data.azurerm_management_group.id[mg_id].subscription_ids), []),
+          try(mg_value.subscription_ids, [])
+        )
       )
 
     }
@@ -61,9 +56,7 @@ locals {
                     ]
                   ],
                   [
-                    for principal_id in try(roles.principal_ids, []) : [
-                      principal_id
-                    ]
+                    try(roles.principal_ids, [])
                   ]
                 ]
               )   //flatten (ids)
