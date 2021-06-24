@@ -53,8 +53,8 @@ resource "azuredevops_variable_group" "variable_group" {
     for_each = try(each.value.variables_objects, {})
 
     content {
-      name  = variable.value.name
-      value = variable.value.value
+      name  = variable.key
+      value = jsonencode(variable.value)
     }
   }
 
