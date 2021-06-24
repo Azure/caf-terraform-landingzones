@@ -49,4 +49,13 @@ resource "azuredevops_variable_group" "variable_group" {
     }
   }
 
+  dynamic "variable" {
+    for_each = try(each.value.variables_objects, {})
+
+    content {
+      name  = variable.value.name
+      value = variable.value.value
+    }
+  }
+
 }
