@@ -115,6 +115,12 @@ variable "custom_landing_zones" {
       display_name               = string
       parent_management_group_id = string
       subscription_ids           = list(string)
+      subscriptions = map(
+        object({
+          lz_key = string
+          key    = string
+        })
+      )
       archetype_config = object({
         archetype_id   = string
         parameters     = any

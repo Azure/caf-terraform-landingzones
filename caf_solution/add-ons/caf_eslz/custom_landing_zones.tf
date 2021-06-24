@@ -20,13 +20,9 @@ locals {
 
       subscription_ids = compact(
         concat(
-          flatten(
-            [
-              for key, value in try(mg_value.subscriptions, []) : [
-                local.caf.subscriptions[value.lz_key][value.key].subscription_id
-              ]
-            ]
-          ),
+          [
+            for key, value in mg_value.subscriptions : local.caf.subscriptions[value.lz_key][value.key].subscription_id
+          ],
           try(tolist(data.azurerm_management_group.id[mg_id].subscription_ids), []),
           try(mg_value.subscription_ids, [])
         )
