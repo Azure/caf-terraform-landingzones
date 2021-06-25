@@ -6,6 +6,7 @@
 name: landingzones-tf14
 
 on:
+  workflow_dispatch:
   schedule:
     - cron:  '0 0 * * *'
 
