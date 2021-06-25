@@ -4,16 +4,10 @@
 #
 
 name: landingzones-tf15
-  
+
 on:
-  pull_request:
-    paths-ignore:
-      - 'documentation/**'
-      - '_pictures/**'
-      - 'README.md'
-      - 'CHANGELOG.md'
   schedule:
-    - cron:  '0 3 * * *'
+    - cron:  '0 1 * * *'
 
 env:
   TF_CLI_ARGS: '-no-color'
@@ -36,7 +30,7 @@ jobs:
           random_length: ['5']
 
     container:
-      image: aztfmod/rover:0.15.4-2105.2603
+      image: aztfmod/rover:0.15.5-2106.2503
       options: --user 0
 
     steps:
@@ -88,7 +82,7 @@ jobs:
           ]
 
     container:
-      image: aztfmod/rover:0.15.4-2105.2603
+      image: aztfmod/rover:0.15.5-2106.2503
       options: --user 0
 
     steps:
@@ -132,7 +126,7 @@ jobs:
           random_length: ['5']
 
     container:
-      image: aztfmod/rover:0.15.4-2105.2603
+      image: aztfmod/rover:0.15.5-2106.2503
       options: --user 0
 
     steps:
@@ -183,7 +177,7 @@ jobs:
           ]
 
     container:
-      image: aztfmod/rover:0.15.4-2105.2603
+      image: aztfmod/rover:0.15.5-2106.2503
       options: --user 0
 
     steps:
@@ -226,7 +220,7 @@ jobs:
         random_length: ['5']
 
     container:
-      image: aztfmod/rover:0.15.4-2105.2603
+      image: aztfmod/rover:0.15.5-2106.2503
       options: --user 0
 
     steps:

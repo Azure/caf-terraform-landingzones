@@ -4,7 +4,7 @@
 #
 
 name: landingzones-tf13
-  
+
 on:
   schedule:
     - cron:  '0 2 * * *'
@@ -30,7 +30,7 @@ jobs:
           random_length: ['5']
 
     container:
-      image: aztfmod/rover:0.13.7-2105.2603
+      image: aztfmod/rover:0.13.7-2106.2503
       options: --user 0
 
     steps:
@@ -82,7 +82,7 @@ jobs:
           ]
 
     container:
-      image: aztfmod/rover:0.13.7-2105.2603
+      image: aztfmod/rover:0.13.7-2106.2503
       options: --user 0
 
     steps:
@@ -126,7 +126,7 @@ jobs:
           random_length: ['5']
 
     container:
-      image: aztfmod/rover:0.13.7-2105.2603
+      image: aztfmod/rover:0.13.7-2106.2503
       options: --user 0
 
     steps:
@@ -177,7 +177,7 @@ jobs:
           ]
 
     container:
-      image: aztfmod/rover:0.13.7-2105.2603
+      image: aztfmod/rover:0.13.7-2106.2503
       options: --user 0
 
     steps:
@@ -220,7 +220,7 @@ jobs:
         random_length: ['5']
 
     container:
-      image: aztfmod/rover:0.13.7-2105.2603
+      image: aztfmod/rover:0.13.7-2106.2503
       options: --user 0
 
     steps:
