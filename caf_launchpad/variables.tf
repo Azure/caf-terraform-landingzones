@@ -98,6 +98,9 @@ variable "azuread_apps" {
 variable "azuread_groups" {
   default = {}
 }
+variable "azuread_groups_membership" {
+  default = {}
+}
 variable "azuread_users" {
   default = {}
 }
