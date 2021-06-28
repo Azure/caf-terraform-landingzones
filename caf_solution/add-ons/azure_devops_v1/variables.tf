@@ -54,7 +54,7 @@ variable "variable_groups" {
 variable "pipelines" {
   default = {}
 }
-variable "azdo_admin_pat" {
+variable "azdo_pat_admin" {
   type        = string
   default     = null
   description = "(Optional). Azure Devops PAT Token. If not provided with this value must be retrieved from the Keyvault secret."
