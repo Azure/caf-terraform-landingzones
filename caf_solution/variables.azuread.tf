@@ -16,6 +16,9 @@ variable "azuread_credentials" {
 variable "azuread_groups" {
   default = {}
 }
+variable "azuread_groups_membership" {
+  default = {}
+}
 variable "azuread_credential_policies" {
   default = {}
 }
