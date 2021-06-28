@@ -1,11 +1,12 @@
 # The PAT token must be provisioned in a different deployment
 provider "azuredevops" {
   org_service_url       = var.azure_devops.url
-  personal_access_token = data.external.pat.result.value
+  personal_access_token = var.azdo_admin_pat == null ? data.external.pat[0].result.value : var.azdo_admin_pat
 }
 
 # To support cross subscrpition reference
 data "external" "pat" {
+  count = var.azdo_admin_pat == null ? 1 : 0
   program = [
     "bash", "-c",
     format(
