@@ -31,7 +31,10 @@ variable "logged_aad_app_objectId" {
 variable "azure_devops" {
   default = {}
 }
-
+variable "tags" {
+  type        = map(any)
+  default     = null
+}
 variable "organization_agent_pools" {
   default = {}
 }
