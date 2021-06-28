@@ -28,80 +28,13 @@ variable "logged_user_objectId" {
 variable "logged_aad_app_objectId" {
   default = null
 }
-variable "tags" {
-  default = null
-}
-variable "app_service_environments" {
-  default = {}
-}
-variable "app_service_plans" {
-  default = {}
-}
-variable "app_services" {
-  default = {}
-}
-variable "diagnostics_definition" {
-  default = {}
-}
-variable "resource_groups" {
-  default = {}
-}
-variable "network_security_group_definition" {
-  default = {}
-}
-variable "vnets" {
-  default = {}
-}
-variable "azurerm_redis_caches" {
-  default = {}
-}
-variable "mssql_servers" {
-  default = {}
-}
-variable "storage_accounts" {
-  default = {}
-}
-variable "storage_account_blobs" {
-  default = {}
-}
-variable "azuread_groups" {
-  default = {}
-}
-variable "keyvaults" {
-  default = {}
-}
-variable "keyvault_access_policies" {
-  default = {}
-}
-variable "keyvault_access_policies_azuread_apps" {
-  default = {}
-}
-variable "virtual_machines" {
-  default = {}
-}
-variable "diagnostic_storage_accounts" {
-  default = {}
-}
-variable "virtual_machine_extension_scripts" {
-  default = {}
-}
 variable "azure_devops" {
   default = {}
 }
-variable "role_mapping" {
-  default = {}
+variable "tags" {
+  type        = map(any)
+  default     = null
 }
-variable "custom_role_definitions" {
-  default = {}
-}
-variable "azuread_apps" {
-  default = {}
-}
-variable "dynamic_keyvault_secrets" {
-  default = {}
-}
-
-### new
 variable "organization_agent_pools" {
   default = {}
 }
@@ -120,4 +53,9 @@ variable "variable_groups" {
 }
 variable "pipelines" {
   default = {}
+}
+variable "azdo_admin_pat" {
+  type        = string
+  default     = null
+  description = "(Optional). Azure Devops PAT Token. If not provided with this value must be retrieved from the Keyvault secret."
 }
