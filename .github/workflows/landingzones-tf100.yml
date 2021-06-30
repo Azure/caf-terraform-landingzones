@@ -7,6 +7,12 @@ name: landingzones-tf100
 
 on:
   workflow_dispatch:
+  pull_request:
+    paths-ignore:
+      - 'documentation/**'
+      - '_pictures/**'
+      - 'README.md'
+      - 'CHANGELOG.md'
   schedule:
     - cron:  '0 3 * * *'
 
@@ -31,7 +37,7 @@ jobs:
           random_length: ['5']
 
     container:
-      image: aztfmod/rover:1.0.0-2106.2503
+      image: aztfmod/rover:1.0.1-2106.3007
       options: --user 0
 
     steps:
@@ -83,7 +89,7 @@ jobs:
           ]
 
     container:
-      image: aztfmod/rover:1.0.0-2106.2503
+      image: aztfmod/rover:1.0.1-2106.3007
       options: --user 0
 
     steps:
@@ -127,7 +133,7 @@ jobs:
           random_length: ['5']
 
     container:
-      image: aztfmod/rover:1.0.0-2106.2503
+      image: aztfmod/rover:1.0.1-2106.3007
       options: --user 0
 
     steps:
@@ -178,7 +184,7 @@ jobs:
           ]
 
     container:
-      image: aztfmod/rover:1.0.0-2106.2503
+      image: aztfmod/rover:1.0.1-2106.3007
       options: --user 0
 
     steps:
@@ -221,7 +227,7 @@ jobs:
         random_length: ['5']
 
     container:
-      image: aztfmod/rover:1.0.0-2106.2503
+      image: aztfmod/rover:1.0.1-2106.3007
       options: --user 0
 
     steps:
