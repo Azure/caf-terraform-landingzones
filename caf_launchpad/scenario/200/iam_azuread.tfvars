@@ -147,8 +147,8 @@ azuread_roles = {
     caf_launchpad_level0 = {
       roles = [
         "Application Administrator",
-        "Application Developer",
-        "User Administrator"
+        "Groups Administrator",
+        "Privileged Role Administrator"
       ]
     }
   }
