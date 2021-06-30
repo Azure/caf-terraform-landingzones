@@ -37,7 +37,7 @@ jobs:
           random_length: ['5']
 
     container:
-      image: aztfmod/rover-preview:1.0.1-2106.301050
+      image: aztfmod/rover-preview:1.0.1-2106.301114
       options: --user 0
 
     steps:
@@ -89,7 +89,7 @@ jobs:
           ]
 
     container:
-      image: aztfmod/rover-preview:1.0.1-2106.301050
+      image: aztfmod/rover-preview:1.0.1-2106.301114
       options: --user 0
 
     steps:
@@ -133,7 +133,7 @@ jobs:
           random_length: ['5']
 
     container:
-      image: aztfmod/rover-preview:1.0.1-2106.301050
+      image: aztfmod/rover-preview:1.0.1-2106.301114
       options: --user 0
 
     steps:
@@ -184,7 +184,7 @@ jobs:
           ]
 
     container:
-      image: aztfmod/rover-preview:1.0.1-2106.301050
+      image: aztfmod/rover-preview:1.0.1-2106.301114
       options: --user 0
 
     steps:
@@ -227,7 +227,7 @@ jobs:
         random_length: ['5']
 
     container:
-      image: aztfmod/rover-preview:1.0.1-2106.301050
+      image: aztfmod/rover-preview:1.0.1-2106.301114
       options: --user 0
 
     steps:
