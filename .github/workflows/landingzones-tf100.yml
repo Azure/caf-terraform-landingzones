@@ -84,8 +84,8 @@ jobs:
           config_files: [
             "caf_solution/scenario/networking/100-single-region-hub",
             "caf_solution/scenario/networking/101-multi-region-hub",
-            "caf_solution/scenario/networking/105-hub-and-spoke",
-            "caf_solution/scenario/networking/106-hub-virtual-wan-firewall"
+            "caf_solution/scenario/networking/105-hub-and-spoke"
+            # "caf_solution/scenario/networking/106-hub-virtual-wan-firewall"
           ]
 
     container:
