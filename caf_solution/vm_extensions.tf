@@ -4,7 +4,7 @@
 
 module "vm_extension_monitoring_agent" {
   source  = "aztfmod/caf/azurerm//modules/compute/virtual_machine_extensions"
-  version = "~>5.3.2"
+  version = "~>5.4.0"
   
   # source = "/tf/caf/aztfmod/modules/compute/virtual_machine_extensions"
   
@@ -26,7 +26,7 @@ module "vm_extension_monitoring_agent" {
 
 module "vm_extension_diagnostics" {
   source  = "aztfmod/caf/azurerm//modules/compute/virtual_machine_extensions"
-  version = "~>5.3.2"
+  version = "~>5.4.0"
   
   # source = "/tf/caf/aztfmod/modules/compute/virtual_machine_extensions"
 
@@ -51,7 +51,7 @@ module "vm_extension_diagnostics" {
 
 module "vm_extension_microsoft_azure_domainjoin" {
   source  = "aztfmod/caf/azurerm//modules/compute/virtual_machine_extensions"
-  version = "~>5.3.7"
+  version = "~>5.4.0"
 
   # source = "/tf/caf/aztfmod/modules/compute/virtual_machine_extensions"
 
@@ -73,7 +73,7 @@ module "vm_extension_microsoft_azure_domainjoin" {
 
 module "vm_extension_session_host_dscextension" {
   source  = "aztfmod/caf/azurerm//modules/compute/virtual_machine_extensions"
-  version = "~>5.3.7"
+  version = "~>5.4.0"
 
   # source = "/tf/caf/aztfmod/modules/compute/virtual_machine_extensions"
 
