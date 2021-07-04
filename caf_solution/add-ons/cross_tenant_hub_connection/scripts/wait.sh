@@ -11,6 +11,7 @@ API_VERSION=2021-02-01
 RAW_URL=${resourceManager}/${VIRTUAL_HUB_ID}?api-version=${API_VERSION}
 
 URL=$(canonicalize ${RAW_URL})
+echo ${URL}
 
 PROVISIONING_STATE=$(az rest --method GET --uri ${URL} --query properties.provisioningState -o tsv)
 
