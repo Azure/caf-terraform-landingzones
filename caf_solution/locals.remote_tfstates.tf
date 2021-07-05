@@ -17,7 +17,7 @@ data "terraform_remote_state" "remote" {
   for_each = try(var.landingzone.tfstates, {})
 
   backend = var.landingzone.backend_type
-  config = local.remote_state[try(each.value.backend_type, var.landingzone.backend_type, "azurerm")][each.key]
+  config  = local.remote_state[try(each.value.backend_type, var.landingzone.backend_type, "azurerm")][each.key]
 }
 
 locals {
@@ -38,7 +38,7 @@ locals {
   }
 
   tags = merge(try(local.global_settings.tags, {}), { "level" = var.landingzone.level }, try({ "environment" = local.global_settings.environment }, {}), { "rover_version" = var.rover_version }, var.tags)
-  
+
   global_settings = merge(
     try(data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.objects[var.landingzone.global_settings_key].global_settings, null),
     try(data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.global_settings, null),

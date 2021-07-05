@@ -23,7 +23,7 @@ variable "tfstate_resource_group_name" {
 }
 
 variable "tfstate_subscription_id" {
-  default = null
+  default     = null
   description = "This value is propulated by the rover. subscription id hosting the remote tfstates"
 }
 
@@ -49,8 +49,8 @@ variable "azure_devops" {
   default = {}
 }
 variable "tags" {
-  type        = map(any)
-  default     = null
+  type    = map(any)
+  default = null
 }
 variable "organization_agent_pools" {
   default = {}

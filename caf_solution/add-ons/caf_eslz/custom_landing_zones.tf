@@ -55,7 +55,7 @@ locals {
                     try(roles.principal_ids, [])
                   ]
                 ]
-              )   //flatten (ids)
+              ) //flatten (ids)
             }
           ]
         ) : mapping.role => mapping.ids
