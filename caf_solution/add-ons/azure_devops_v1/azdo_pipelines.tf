@@ -44,4 +44,14 @@ resource "azuredevops_build_definition" "build_definition" {
     }
   }
 
+  dynamic "variable" {
+    for_each = try(each.value.variables_objects, {})
+
+    content {
+      name  = variable.key
+      value = jsonencode(variable.value)
+      # value = yamlencode(variable.value)
+    }
+  }
+
 }
