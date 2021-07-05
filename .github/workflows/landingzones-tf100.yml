@@ -7,6 +7,12 @@ name: landingzones-tf100
 
 on:
   workflow_dispatch:
+  pull_request:
+    paths-ignore:
+      - 'documentation/**'
+      - '_pictures/**'
+      - 'README.md'
+      - 'CHANGELOG.md'
   schedule:
     - cron:  '0 3 * * *'
 
