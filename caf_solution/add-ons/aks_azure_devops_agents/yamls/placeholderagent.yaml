@@ -21,7 +21,7 @@ spec:
           image: aztfmod/rover-agent:0.15.1-2105.041640-preview-azdo
           env:
             - name: VSTS_AGENT_INPUT_URL
-              value: "https://dev.azure.com/afopssre"
+              value: "https://dev.azure.com/contoso_sre"
             - name: VSTS_AGENT_INPUT_TOKEN
               valueFrom:
                 secretKeyRef:
