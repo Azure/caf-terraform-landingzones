@@ -50,7 +50,6 @@ resource "azuredevops_build_definition" "build_definition" {
     content {
       name  = variable.key
       value = jsonencode(variable.value)
-      # value = yamlencode(variable.value)
     }
   }
 
