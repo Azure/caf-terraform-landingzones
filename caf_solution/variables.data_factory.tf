@@ -10,12 +10,12 @@ variable "data_factory_trigger_schedule" {
 variable "datasets" {
   default = {
     # azure_blob
-    # cosmosdb_sqlapi 
-    # delimited_text 
-    # http  
-    # json  
-    # mysql  
-    # postgresql 
+    # cosmosdb_sqlapi
+    # delimited_text
+    # http
+    # json
+    # mysql
+    # postgresql
     # sql_server_table
   }
 }

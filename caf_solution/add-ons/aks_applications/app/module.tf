@@ -6,7 +6,6 @@ resource "kubernetes_namespace" "namespaces" {
     name        = each.value.name
   }
 
-  provider = kubernetes.k8s
 }
 
 # https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release
@@ -22,6 +21,7 @@ resource "helm_release" "charts" {
   timeout          = try(each.value.timeout, 900)
   skip_crds        = try(each.value.skip_crds, false)
   create_namespace = try(each.value.create_namespace, false)
+  values           = try(each.value.values, null)
 
   dynamic "set" {
     for_each = try(each.value.sets, {})
@@ -39,9 +39,8 @@ resource "helm_release" "charts" {
     }
   }
 
-  provider = helm.helm
 
-  depends_on = [kubernetes_namespace.namespaces]
+  # depends_on = [kubernetes_namespace.namespaces]
   #   values = [
   #     "${file("values.yaml")}"
   #   ]

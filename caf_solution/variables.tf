@@ -1,15 +1,34 @@
 # Map of the remote data state for lower level
-variable "lower_storage_account_name" {}
-variable "lower_container_name" {}
-variable "lower_resource_group_name" {}
+variable "lower_storage_account_name" {
+  default = null
+}
+variable "lower_container_name" {
+  default = null
+}
+variable "lower_resource_group_name" {
+  default = null
+}
 
 variable "tfstate_subscription_id" {
   description = "This value is propulated by the rover. subscription id hosting the remote tfstates"
+  default     = null
 }
-variable "tfstate_storage_account_name" {}
-variable "tfstate_container_name" {}
-variable "tfstate_key" {}
-variable "tfstate_resource_group_name" {}
+variable "tfstate_storage_account_name" {
+  default = null
+}
+variable "tfstate_container_name" {
+  default = null
+}
+variable "tfstate_key" {
+  default = null
+}
+variable "tfstate_resource_group_name" {
+  default = null
+}
+variable "sas_token" {
+  description = "SAS Token to access the remote state in another Azure AD tenant."
+  default     = null
+}
 
 variable "landingzone" {
   default = {
@@ -38,7 +57,7 @@ variable "provider_azurerm_features_keyvault" {
 
 
 variable "rover_version" {
-  default = {}
+  default = "caf_standalone"
 }
 
 variable "client_config" {
@@ -93,7 +112,7 @@ variable "use_msi" {
 variable "tags" {
   description = "Tags to be used for this resource deployment."
   type        = map(any)
-  default     = null
+  default     = {}
 }
 
 variable "resource_groups" {
@@ -150,30 +169,6 @@ variable "user_type" {
   default     = {}
 }
 
-## Azure AD
-variable "azuread" {
-  default = {}
-}
-
-variable "azuread_apps" {
-  default = {}
-}
-
-variable "azuread_groups" {
-  default = {}
-}
-
-variable "azuread_roles" {
-  default = {}
-}
-
-variable "azuread_users" {
-  default = {}
-}
-
-variable "azuread_api_permissions" {
-  default = {}
-}
 
 variable "managed_identities" {
   description = "Managed Identity configuration objects"
@@ -241,4 +236,8 @@ variable "var_folder_path" {
 }
 variable "propagate_launchpad_identities" {
   default = false
+}
+
+variable "random_strings" {
+  default = {}
 }

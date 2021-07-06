@@ -3,11 +3,18 @@
 # Licensed under the MIT License.
 #
 
-name: landingzones-tf13
-  
+name: landingzones-tf100
+
 on:
+  workflow_dispatch:
+  pull_request:
+    paths-ignore:
+      - 'documentation/**'
+      - '_pictures/**'
+      - 'README.md'
+      - 'CHANGELOG.md'
   schedule:
-    - cron:  '0 2 * * *'
+    - cron:  '0 3 * * *'
 
 env:
   TF_CLI_ARGS: '-no-color'
@@ -30,7 +37,7 @@ jobs:
           random_length: ['5']
 
     container:
-      image: aztfmod/rover:0.13.7-2105.2603
+      image: aztfmod/rover:1.0.1-2106.3012
       options: --user 0
 
     steps:
@@ -82,7 +89,7 @@ jobs:
           ]
 
     container:
-      image: aztfmod/rover:0.13.7-2105.2603
+      image: aztfmod/rover:1.0.1-2106.3012
       options: --user 0
 
     steps:
@@ -126,7 +133,7 @@ jobs:
           random_length: ['5']
 
     container:
-      image: aztfmod/rover:0.13.7-2105.2603
+      image: aztfmod/rover:1.0.1-2106.3012
       options: --user 0
 
     steps:
@@ -159,7 +166,7 @@ jobs:
             -level level1 \
             -parallelism=30 \
             --environment ${{ github.run_id }} \
-            '-var tags={testing_job_id="${{ github.run_id }}"}'
+             '-var tags={testing_job_id="${{ github.run_id }}"}'
 
   networking200:
     name: networking-200
@@ -177,7 +184,7 @@ jobs:
           ]
 
     container:
-      image: aztfmod/rover:0.13.7-2105.2603
+      image: aztfmod/rover:1.0.1-2106.3012
       options: --user 0
 
     steps:
@@ -220,7 +227,7 @@ jobs:
         random_length: ['5']
 
     container:
-      image: aztfmod/rover:0.13.7-2105.2603
+      image: aztfmod/rover:1.0.1-2106.3012
       options: --user 0
 
     steps:

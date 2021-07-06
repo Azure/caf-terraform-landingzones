@@ -1,16 +1,11 @@
 module "solution" {
   source  = "aztfmod/caf/azurerm"
-  version = "~>5.3.2"
+  version = "~>5.4.0"
 
-  # source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=master"
+  # source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=5.4.0"
   # source = "../../aztfmod"
 
-  # azuread                               = var.azuread
-  azuread_api_permissions               = var.azuread_api_permissions
-  azuread_apps                          = var.azuread_apps
-  azuread_groups                        = var.azuread_groups
-  azuread_roles                         = var.azuread_roles
-  azuread_users                         = var.azuread_users
+  azuread                               = local.azuread
   cloud                                 = local.cloud
   compute                               = local.compute
   current_landingzone_key               = var.landingzone.key
@@ -36,6 +31,7 @@ module "solution" {
   logic_app                             = var.logic_app
   managed_identities                    = var.managed_identities
   networking                            = local.networking
+  random_strings                        = var.random_strings
   remote_objects                        = local.remote
   resource_groups                       = var.resource_groups
   role_mapping                          = var.role_mapping

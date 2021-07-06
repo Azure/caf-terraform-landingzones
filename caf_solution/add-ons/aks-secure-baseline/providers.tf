@@ -4,6 +4,13 @@ provider "azurerm" {
   }
 }
 
+provider "azurerm" {
+  alias           = "launchpad"
+  subscription_id = var.tfstate_subscription_id
+  features {
+  }
+}
+
 provider "kubernetes" {
   host                   = local.k8sconfigs[var.aks_cluster_key].host
   username               = local.k8sconfigs[var.aks_cluster_key].username
@@ -30,6 +37,8 @@ locals {
     }
   }
 }
+
+data "azurerm_client_config" "current" {}
 
 # Get kubeconfig from AKS clusters
 data "azurerm_kubernetes_cluster" "kubeconfig" {

@@ -1,5 +1,11 @@
-variable "cluster" {}
+variable "namespaces" {
+  default = {}
+}
 
-variable "namespaces" {}
+variable "helm_charts" {
+  default = {}
+}
 
-variable "helm_charts" {}
+variable "kuztomization_settings" {
+  default = {}
+}

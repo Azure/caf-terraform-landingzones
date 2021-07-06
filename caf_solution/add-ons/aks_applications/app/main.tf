@@ -1,7 +1,13 @@
-provider "kubernetes" {
-  alias = "k8s"
-}
-
-provider "helm" {
-  alias = "helm"
+terraform {
+  required_providers {
+    kubernetes = {
+      source = "hashicorp/kubernetes"
+    }
+    helm = {
+      source = "hashicorp/helm"
+    }
+    kustomization = {
+      source = "kbst/kustomization"
+    }
+  }
 }

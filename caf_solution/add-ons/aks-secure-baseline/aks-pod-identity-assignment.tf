@@ -56,3 +56,13 @@ locals {
     ) : format("%s-%s", msi.key, msi.msi_key) => msi
   }
 }
+
+resource "azurerm_key_vault_access_policy" "keyvault_policy" {
+  # provider = azurerm.launchpad
+  for_each = var.keyvaults
+
+  key_vault_id       = local.remote.keyvaults[each.value.lz_key][each.value.key].id
+  tenant_id          = data.azurerm_client_config.current.tenant_id
+  object_id          = local.remote.aks_clusters[var.aks_clusters[var.aks_cluster_key].lz_key][var.aks_clusters[var.aks_cluster_key].key].kubelet_identity[0].object_id
+  secret_permissions = each.value.secret_permissions
+}

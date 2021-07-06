@@ -4,8 +4,9 @@
 #
 
 name: landingzones-tf14
-  
+
 on:
+  workflow_dispatch:
   schedule:
     - cron:  '0 0 * * *'
 
@@ -30,7 +31,7 @@ jobs:
           random_length: ['5']
 
     container:
-      image: aztfmod/rover:0.14.11-2105.2603
+      image: aztfmod/rover:0.14.11-2106.3012
       options: --user 0
 
     steps:
@@ -82,7 +83,7 @@ jobs:
           ]
 
     container:
-      image: aztfmod/rover:0.14.11-2105.2603
+      image: aztfmod/rover:0.14.11-2106.3012
       options: --user 0
 
     steps:
@@ -126,7 +127,7 @@ jobs:
           random_length: ['5']
 
     container:
-      image: aztfmod/rover:0.14.11-2105.2603
+      image: aztfmod/rover:0.14.11-2106.3012
       options: --user 0
 
     steps:
@@ -177,7 +178,7 @@ jobs:
           ]
 
     container:
-      image: aztfmod/rover:0.14.11-2105.2603
+      image: aztfmod/rover:0.14.11-2106.3012
       options: --user 0
 
     steps:
@@ -220,7 +221,7 @@ jobs:
         random_length: ['5']
 
     container:
-      image: aztfmod/rover:0.14.11-2105.2603
+      image: aztfmod/rover:0.14.11-2106.3012
       options: --user 0
 
     steps:

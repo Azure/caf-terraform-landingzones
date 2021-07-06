@@ -1,0 +1,48 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledJob
+metadata:
+  name: ${azdevops-scaledjob}
+spec:
+  jobTargetRef:
+    ttlSecondsAfterFinished: 100
+    template:
+      metadata:
+        labels:
+          aadpodidbinding: podmi-caf-rover-platform-level0
+          app: rover-agent
+      spec:
+        containers:
+        - name: azdevops-agent-job
+          image: ${image}
+          imagePullPolicy: Always
+          env:
+            - name: VSTS_AGENT_INPUT_URL
+              value: ${VSTS_AGENT_INPUT_URL}
+            - name: VSTS_AGENT_INPUT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: pat-secret-sync
+                  key: personalAccessToken
+            - name: VSTS_AGENT_INPUT_POOL
+              value: ${VSTS_AGENT_INPUT_POOL}
+            - name: VSTS_AGENT_INPUT_AUTH
+              value: "pat"
+            - name: VSTS_AGENT_INPUT_RUN_ARGS
+              value: "--once"
+          # lifecycle:
+          #   preStop:
+          #     exec:
+          #       # SIGTERM triggers a quick exit; gracefully terminate instead
+          #       command: ["/home/vscode/agent/config.sh","remove","--unattended"]
+  pollingInterval: 30
+  successfulJobsHistoryLimit: 5
+  failedJobsHistoryLimit: 5
+  maxReplicaCount: 10
+  scalingStrategy:
+    strategy: "default"
+  triggers:
+  - type: azure-pipelines
+    metadata:
+      poolID: ${poolID}
+      organizationURLFromEnv: "VSTS_AGENT_INPUT_URL"
+      personalAccessTokenFromEnv: "VSTS_AGENT_INPUT_TOKEN"

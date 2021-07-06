@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rover-deployment
+  labels:
+    aadpodidbinding: podmi-caf-rover-platform-level0
+    app: rover-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rover-agent
+  template:
+    metadata:
+      labels:
+        aadpodidbinding: podmi-caf-rover-platform-level0
+        app: rover-agent
+    spec:
+      containers:
+        - name: rover-agent
+          image: aztfmod/rover-agent:0.15.1-2105.041640-preview-azdo
+          env:
+            - name: VSTS_AGENT_INPUT_URL
+              value: "https://dev.azure.com/contoso_sre"
+            - name: VSTS_AGENT_INPUT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: azdopat-secret
+                  key: personalAccessToken
+            - name: VSTS_AGENT_INPUT_POOL
+              value: "aks-agents"
+            - name: VSTS_AGENT_INPUT_AUTH
+              value: "pat"
+            - name: VSTS_AGENT_INPUT_RUN_ONCE
+              value: "--once"
+          volumeMounts:
+          - name: secrets-store01-inline
+            mountPath: "/mnt/secrets-store"
+            readOnly: true
+          lifecycle:
+            preStop:
+              exec:
+                # SIGTERM triggers a quick exit; gracefully terminate instead
+                command: ["/home/vscode/agent/config.sh","remove","--unattended"]
+      volumes:
+        - name: secrets-store01-inline
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "azure-sync"
+
+      # terminationGracePeriodSeconds: 60

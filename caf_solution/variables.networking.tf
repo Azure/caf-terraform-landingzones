@@ -26,6 +26,9 @@ variable "azurerm_firewall_network_rule_collection_definition" {
 variable "azurerm_firewall_policies" {
   default = {}
 }
+variable "azurerm_firewall_policy_rule_collection_groups" {
+  default = {}
+}
 variable "azurerm_routes" {
   default = {}
 }
@@ -115,5 +118,11 @@ variable "virtual_hub_route_tables" {
   default = {}
 }
 variable "virtual_hub_connections" {
+  default = {}
+}
+variable "vpn_sites" {
+  default = {}
+}
+variable "vpn_gateway_connections" {
   default = {}
 }

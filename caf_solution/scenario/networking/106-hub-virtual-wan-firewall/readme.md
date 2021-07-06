@@ -16,7 +16,7 @@ For a review of the hierarchy approach of Cloud Adoption Framework for Azure lan
 
 This example allows you to deploy the following topology:
 
-![virtual_wan_lz](../../documentation/img/106-hub-virtual-wan-firewall.png)
+![virtual_wan_lz](../../../../_pictures/hub_spoke/virtual_wan_lz.png)
 
 
 ## Components deployed by this example
@@ -24,7 +24,7 @@ This example allows you to deploy the following topology:
 | Component                    | Type of resource                                      | Purpose                                                                                                                                                          |
 |------------------------------|-------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | vnet-spoke-re1, vnet-hub-re1 | Resource group                                        | resource group to host the virtual network and virtual WAN                                                                                                       |
-| vnet_re1                     | Virtual network with subnets, network security groups | virtual network used as a spoke, attached to the virtual hub from Azure Virtual WAN                                                                              |
+| vnet_re1, vnet_re2           | Virtual network with subnets, network security groups | virtual network used as a spoke, attached to the virtual hub from Azure Virtual WAN                                                                              |
 | contosovWAN-re1              | Virtual WAN                                           | virtual WAN infrastructure                                                                                                                                       |
 | hub-re1, hub-re2             | Virtual Hubs                                          | virtual hubs to be deployed in region, the hubs can be configured to deploy point-to-site connectivity, site-to-site connectivity or Express Route connectivity. |
 | hub_fw_re1, hub_fw_re2       | Azure Firewall                                        | traffic filtering between hubs and outside                                                                                                                       |
@@ -40,8 +40,8 @@ Please review the configuration files and make sure you are deploying in the exp
 Once you have picked a scenario for test, you can deploy it using:
 
 ```bash
-rover -lz /tf/caf/landingzones/caf_networking \
+rover -lz /tf/caf/landingzones/caf_solution \
 -level level2 \
--var-folder /tf/caf/landingzones/caf_networking/scenario/106-hub-virtual-wan-firewall \
+-var-folder /tf/caf/landingzones/caf_solution/scenario/networking/106-hub-virtual-wan-firewall \
 -a apply
 ```

@@ -21,12 +21,10 @@ locals {
                     ]
                   ],
                   [
-                    for principal_id in try(roles.principal_ids, []) : [
-                      principal_id
-                    ]
+                    try(roles.principal_ids, [])
                   ]
                 ]
-              )   //flatten (ids)
+              ) //flatten (ids)
             }
           ]
         ) : mapping.role => mapping.ids
