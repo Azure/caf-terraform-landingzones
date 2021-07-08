@@ -1,0 +1,2 @@
+variable settings {} 
+variable objects {} 
