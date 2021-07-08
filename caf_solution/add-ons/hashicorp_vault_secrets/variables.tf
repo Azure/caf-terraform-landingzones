@@ -30,4 +30,9 @@ variable "logged_aad_app_objectId" {
 variable "tags" {
   default = null
 }
-variable "hashicorp_vault_secrets" {}
+variable "hashicorp_vault_secrets" {
+  default = {}
+}
+variable "hashicorp_secret_backend_roles" {
+  default = {}
+}
