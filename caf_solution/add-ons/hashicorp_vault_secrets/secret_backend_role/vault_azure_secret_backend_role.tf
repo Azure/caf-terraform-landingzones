@@ -1,5 +1,5 @@
-resource "vault_azure_secret_backend" "azuresp" {
-  path            = var.settings.backend
+resource "vault_azure_auth_backend_config" "azure_auth_config" {
+  backend         = var.settings.backend
   subscription_id = "7e01ba9c-ef41-4252-92e7-5716d7995ad2"
   tenant_id       = "3217d691-edcd-490d-b5ec-dc724087b782"
   client_id       = "9c355896-bab8-4412-b850-700a9d69ca4c"
@@ -9,7 +9,7 @@ resource "vault_azure_secret_backend" "azuresp" {
 
 resource "vault_azure_secret_backend_role" "existing_object_id" {
 
-  backend               = vault_azure_secret_backend.azuresp.path
+  backend               = var.settings.backend
   role                  = var.settings.role
   application_object_id = var.objects[var.settings.azuread_application.lz_key][var.settings.azuread_application.output_key][var.settings.azuread_application.resource_key][var.settings.azuread_application.attribute_key]
   ttl                   = try(var.settings.ttl, null)
