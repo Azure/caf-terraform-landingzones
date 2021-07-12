@@ -21,7 +21,9 @@ variable "rover_version" {
   default = null
 }
 variable "tags" {
-  default = {}
+  description = "Tags to be used for this resource deployment."
+  type        = map(any)
+  default     = {}
 }
 variable "namespaces" {
   default = {}
