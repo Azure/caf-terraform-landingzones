@@ -53,6 +53,9 @@ variable "express_route_circuit_authorizations" {
 variable "load_balancers" {
   default = {}
 }
+variable "nat_gateway" {
+  default = {}
+}
 variable "network_watchers" {
   default = {}
 }
