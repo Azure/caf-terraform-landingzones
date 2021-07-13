@@ -3,7 +3,8 @@ resource "vault_azure_secret_backend" "azure" {
   subscription_id = var.settings.subscription_id
   tenant_id       = var.settings.tenant_id
   client_id       = var.settings.client_id
-  client_secret   = var.settings.client_secret
+  # client_secret   = var.settings.client_secret
+  client_secret   = "7vKOwO3hsMCZWjKnG8jpGpTeg9Pd4YadM5QPbkLLW9e718e5Fw6iv5hWF4YFVEjKrCMQxqXvLqcVqWuYyWpx5faMvxUx70u1m7CNvKsYQGnW2GRs6pHSj8C37FDfIGzwGDTUXjyXqFU3PqTrl280aVJSaxh8mV8M2WjEyWoPl4exnwuf4F8eGAc0swYD0agZabPX64kdIDnae81ThpOqz9GjTCdPYtoMUInCJ8ciXoZSeS7ZeohpomAk0o"
 }
 
 resource "vault_azure_secret_backend_role" "existing_object_id" {
