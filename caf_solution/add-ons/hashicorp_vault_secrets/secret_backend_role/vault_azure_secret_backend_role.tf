@@ -8,7 +8,7 @@
 # }
 
 resource "null_resource" "set_backend_secret_config" {
-  for_each = try(var.settings.service_principal_secrets, {}) != {} ? [1] : []
+  # for_each = try(var.settings.service_principal_secrets, {}) != {} ? [1] : []
 
   triggers = {
     subscription_id = var.settings.subscription_id
