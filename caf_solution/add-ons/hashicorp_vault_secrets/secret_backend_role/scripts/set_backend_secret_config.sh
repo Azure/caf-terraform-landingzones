@@ -2,6 +2,8 @@
 echo 'Configure vault backend secret config'
 set -e
 # VAULT_ADDR and VAULT_TOKEN is defined in azure pipelines, refactor to handle here.
+vault secrets enable -path=${VAULT_SECRET_BACKEND} azure
+
 vault write ${VAULT_SECRET_BACKEND}/config \
   subscription_id=${AZURE_SUBSCRIPTION_ID} \
   tenant_id=${AZURE_TENANT_ID} \
