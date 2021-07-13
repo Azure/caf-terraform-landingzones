@@ -1,5 +1,5 @@
 resource "vault_azure_secret_backend" "azure" {
-  backend         = var.settings.backend
+  path            = var.settings.backend
   subscription_id = "7e01ba9c-ef41-4252-92e7-5716d7995ad2"
   tenant_id       = "3217d691-edcd-490d-b5ec-dc724087b782"
   client_id       = "9c355896-bab8-4412-b850-700a9d69ca4c"
