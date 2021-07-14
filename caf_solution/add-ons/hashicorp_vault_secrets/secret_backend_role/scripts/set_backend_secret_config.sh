@@ -1,8 +1,11 @@
 #!/bin/bash
 echo 'Configure vault backend secret config'
 set -e
-# VAULT_ADDR and VAULT_TOKEN is defined in azure pipelines, refactor to handle here.
 # vault secrets enable -path=${VAULT_SECRET_BACKEND} azure
+
+export VAULT_ADDR=${HASHICORP_VAULT_URL}
+export VAULT_TOKEN=$(curl --insecure -X POST -d '{"role_id": "'"${HASHICORP_VAULT_ROLE_ID}"'", "secret_id": "'"${HASHICORP_VAULT_SECRET_ID}"'"}' ${HASHICORP_VAULT_URL}/v1/auth/approle/login  | jq -r '.auth.client_token')
+export VAULT_SKIP_VERIFY=true
 
 vault write ${VAULT_SECRET_BACKEND}/config \
   subscription_id=${AZURE_SUBSCRIPTION_ID} \
