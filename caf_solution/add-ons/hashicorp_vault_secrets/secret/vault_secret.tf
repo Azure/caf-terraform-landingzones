@@ -1,6 +1,6 @@
 locals {
   transposed = {
-    for key, value in var.sp_secrets : key => coalesce(
+    for key, value in var.settings.sp_secrets : key => coalesce(
       try(value.value, null),
       try(var.objects[value.lz_key][value.output_key][value.resource_key][value.attribute_key], null),
       try(var.objects[value.lz_key][value.output_key][value.attribute_key], null),
