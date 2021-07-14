@@ -45,7 +45,7 @@ resource "null_resource" "set_backend_secret_config" {
 resource "vault_azure_secret_backend_role" "existing_object_id" {
   backend               = var.settings.backend
   role                  = var.settings.role
-  application_object_id = var.objects[var.settings.sp_secrets.application_id.lz_key][var.settings.sp_secrets.application_id.output_key][var.settings.application_id.resource_key][var.settings.sp_secrets.application_id.attribute_key]
+  application_object_id = var.objects[var.settings.sp_secrets.application_id.lz_key][var.settings.sp_secrets.application_id.output_key][var.settings.sp_secrets.application_id.resource_key][var.settings.sp_secrets.application_id.attribute_key]
   ttl                   = try(var.settings.ttl, null)
   max_ttl               = try(var.settings.max_ttl, null)
   depends_on = [
