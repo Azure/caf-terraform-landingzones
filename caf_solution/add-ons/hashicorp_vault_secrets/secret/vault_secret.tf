@@ -24,8 +24,6 @@ resource "null_resource" "set_vault_access" {
   triggers = {
     client_secrets            = local.transposed
     HASHICORP_VAULT_URL       = local.vault_url
-    HASHICORP_VAULT_ROLE_ID   = local.vault_role_id
-    HASHICORP_VAULT_SECRET_ID = local.vault_secret_id
   }
 
   provisioner "local-exec" {

@@ -4,3 +4,4 @@ variable "disable_read" {}
 variable "objects" {
   default = {}
 }
+variable "settings" {}
