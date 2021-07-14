@@ -10,9 +10,6 @@ locals {
   tenant_id       = data.azurerm_key_vault_secret.tenant_id.value
   client_id       = data.azurerm_key_vault_secret.client_id.value
   client_secret   = data.azurerm_key_vault_secret.client_secret.value
-  vault_url       = data.azurerm_key_vault_secret.vault_url.value
-  vault_role_id   = data.azurerm_key_vault_secret.vault_role_id.value
-  vault_secret_id = data.azurerm_key_vault_secret.vault_secret_id.value
 }
 
 resource "null_resource" "set_backend_secret_config" {
