@@ -21,7 +21,6 @@ resource "null_resource" "set_backend_secret_config" {
     tenant_id       = local.tenant_id
     client_id       = local.client_id
     client_secret   = local.client_secret
-    vault_url       = local.vault_url
   }
 
   provisioner "local-exec" {
@@ -35,9 +34,6 @@ resource "null_resource" "set_backend_secret_config" {
       AZURE_TENANT_ID           = local.tenant_id
       AZURE_CLIENT_ID           = local.client_id
       AZURE_CLIENT_SECRET       = local.client_secret
-      HASHICORP_VAULT_URL       = local.vault_url
-      HASHICORP_VAULT_ROLE_ID   = local.vault_role_id
-      HASHICORP_VAULT_SECRET_ID = local.vault_secret_id
     }
   }
 }
@@ -48,9 +44,7 @@ resource "vault_azure_secret_backend_role" "existing_object_id" {
   application_object_id = var.objects[var.settings.sp_secrets.application_id.lz_key][var.settings.sp_secrets.application_id.output_key][var.settings.sp_secrets.application_id.resource_key][var.settings.sp_secrets.application_id.attribute_key]
   ttl                   = try(var.settings.ttl, null)
   max_ttl               = try(var.settings.max_ttl, null)
-  depends_on = [
-    null_resource.set_backend_secret_config
-  ]
+  depends_on            = [null_resource.set_backend_secret_config]
 }
 
 # Service principal secrets
@@ -67,20 +61,4 @@ data "azurerm_key_vault_secret" "client_id" {
 data "azurerm_key_vault_secret" "client_secret" {
   name         = var.settings.sp_secrets.client_secret.secret_name
   key_vault_id = var.objects[var.settings.sp_secrets.client_secret.lz_key].keyvaults[var.settings.sp_secrets.client_secret.keyvault_key].id
-}
-
-# Hashicorp vault secrets
-data "azurerm_key_vault_secret" "vault_url" {
-  name         = var.settings.hashicorp_secrets.vault_url.secret_name
-  key_vault_id = var.objects[var.settings.hashicorp_secrets.vault_url.lz_key].keyvaults[var.settings.hashicorp_secrets.vault_url.keyvault_key].id
-}
-
-data "azurerm_key_vault_secret" "vault_role_id" {
-  name         = var.settings.hashicorp_secrets.vault_role_id.secret_name
-  key_vault_id = var.objects[var.settings.hashicorp_secrets.vault_role_id.lz_key].keyvaults[var.settings.hashicorp_secrets.vault_role_id.keyvault_key].id
-}
-
-data "azurerm_key_vault_secret" "vault_secret_id" {
-  name         = var.settings.hashicorp_secrets.vault_secret_id.secret_name
-  key_vault_id = var.objects[var.settings.hashicorp_secrets.vault_secret_id.lz_key].keyvaults[var.settings.hashicorp_secrets.vault_secret_id.keyvault_key].id
 }
