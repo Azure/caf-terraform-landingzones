@@ -11,7 +11,6 @@ variable "tfstate_resource_group_name" {}
 variable "tfstate_subscription_id" {
   description = "This value is propulated by the rover. subscription id hosting the remote tfstates"
 }
-
 variable "global_settings" {
   default = {}
 }
