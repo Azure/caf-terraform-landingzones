@@ -23,8 +23,8 @@ resource "vault_generic_secret" "azuresecrets" {
 
 resource "null_resource" "set_vault_access" {
   triggers = {
-    client_secrets            = local.transposed
-    HASHICORP_VAULT_URL       = local.vault_url
+    client_secrets            = jsonencode(local.transposed)
+    vault_url                 = local.vault_url
   }
 
   provisioner "local-exec" {
