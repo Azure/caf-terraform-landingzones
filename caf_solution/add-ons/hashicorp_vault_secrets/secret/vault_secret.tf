@@ -12,8 +12,8 @@ locals {
 }
 
 resource "vault_generic_secret" "azuresecrets" {
-  path         = var.path
-  disable_read = try(var.disable_read, false)
+  path         = var.settings.path
+  disable_read = try(var.settings.disable_read, false)
   data_json    = jsonencode(local.transposed)
   depends_on = [
     null_resource.set_vault_access
