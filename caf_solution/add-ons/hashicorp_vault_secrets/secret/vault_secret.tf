@@ -42,7 +42,7 @@ resource "null_resource" "set_vault_access" {
 # Service Principal secrets
 data "azurerm_key_vault_secret" "client_secret" {
   for_each = {
-    for key, value in var.sp_secrets : key => value
+    for key, value in var.settings.sp_secrets : key => value
     if try(value.secretname, null) != null && try(value.secretname, null) != ""
   }
   name         = each.value.secretname
