@@ -63,7 +63,7 @@ locals {
 
       parameters = {
         for param_key, param_value in try(mg_value.archetype_config.parameters, {}) : param_key => {
-          for key, value in param_value : key => jsonencode(try(local.caf[value.output_key][value.lz_key][value.resource_type][value.resource_key][value.attribute_key], value.value))
+          for key, value in param_value : key => try(local.caf[value.output_key][value.lz_key][value.resource_type][value.resource_key][value.attribute_key], value.value)
         }
       }
 
