@@ -88,7 +88,11 @@ azuread_credentials = {
 
 
 hashicorp_secret_backend_roles = {
+<<<<<<< HEAD
   secret_backend1 = {
+=======
+  iampru_afrtss = {
+>>>>>>> 6475cb563fcc8606edad89cec274c9896a8b174f
     backend = "azure/test"
     role    = "my-role"
     ttl     = 300
