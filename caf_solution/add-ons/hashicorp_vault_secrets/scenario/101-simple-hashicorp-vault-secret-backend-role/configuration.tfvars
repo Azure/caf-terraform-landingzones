@@ -1,5 +1,5 @@
 # NOTE: required VAULT_ADDR and VAULT_TOKEN for vault provider
-
+# NOTE: Subscription Id and tenant ID needs to be explicitly input to work
 landingzone = {
   backend_type        = "azurerm"
   global_settings_key = "launchpad"
