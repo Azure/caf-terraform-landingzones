@@ -1,9 +1,9 @@
 module "kustomization" {
   source   = "./kustomize"
-  for_each   = try(data.kustomization_overlay.manifest, {})
+  for_each = try(data.kustomization_overlay.manifest, {})
 
-  settings    = each.value
-  
+  settings = each.value
+
 }
 
 data "kustomization_overlay" "manifest" {
@@ -13,10 +13,10 @@ data "kustomization_overlay" "manifest" {
 
   namespace = each.value.namespace
 
-  dynamic "patches"{
+  dynamic "patches" {
     for_each = try(each.value.patches, {})
     content {
-      patch = patches.value.patch
+      patch  = patches.value.patch
       target = patches.value.target
     }
   }

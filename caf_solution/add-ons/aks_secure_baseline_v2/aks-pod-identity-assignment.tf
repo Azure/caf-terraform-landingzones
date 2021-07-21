@@ -26,9 +26,9 @@ resource "azurerm_role_assignment" "kubelet_noderg_vmcontrib" {
 
 # Separate subnet
 resource "azurerm_role_assignment" "kubelet_subnets_networkcontrib" {
-  for_each = lookup(var.vnets[var.aks_cluster_vnet_key],"subnet_keys",{vnet=true})
+  for_each = lookup(var.vnets[var.aks_cluster_vnet_key], "subnet_keys", { vnet = true })
 
-  scope                = try(each.value==true, false) ? local.remote.vnets[var.vnets[var.aks_cluster_vnet_key].lz_key][var.vnets[var.aks_cluster_vnet_key].key].id : local.remote.vnets[var.vnets[var.aks_cluster_vnet_key].lz_key][var.vnets[var.aks_cluster_vnet_key].key].subnets[each.value].id
+  scope                = try(each.value == true, false) ? local.remote.vnets[var.vnets[var.aks_cluster_vnet_key].lz_key][var.vnets[var.aks_cluster_vnet_key].key].id : local.remote.vnets[var.vnets[var.aks_cluster_vnet_key].lz_key][var.vnets[var.aks_cluster_vnet_key].key].subnets[each.value].id
   role_definition_name = "Network Contributor"
   principal_id         = local.remote.aks_clusters[var.aks_clusters[var.aks_cluster_key].lz_key][var.aks_cluster_key].identity[0].principal_id
 }

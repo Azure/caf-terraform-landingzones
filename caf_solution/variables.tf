@@ -11,7 +11,7 @@ variable "lower_resource_group_name" {
 
 variable "tfstate_subscription_id" {
   description = "This value is propulated by the rover. subscription id hosting the remote tfstates"
-  default = null
+  default     = null
 }
 variable "tfstate_storage_account_name" {
   default = null

@@ -50,14 +50,14 @@ locals {
       for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.azure_devops, {}))
     }
     agent_pools = {
-      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs[var.agent_pools.key], {}))
+      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs[var.agent_pools.output_key], {}))
     }
   }
 
-}
-output "keyvaults" {
-  value = local.remote.keyvaults
-}
-output "azure_devops" {
-  value = local.remote.azure_devops
+  filtered_agent_pools = try(var.agent_pools.agent_keys, null) == null ? local.remote.agent_pools[var.agent_pools.lz_key] : {
+    for key, value in local.remote.agent_pools[var.agent_pools.lz_key] : key => value
+      if contains(try(var.agent_pools.agent_keys, []), key)
+  }
+  
+
 }

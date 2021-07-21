@@ -28,7 +28,9 @@ variable "aks_cluster_vnet_key" {
 
 }
 variable "aks_clusters" {}
-variable "vnets" {}
+variable "vnets" {
+  default = {}
+}
 variable "managed_identities" {
   description = "Map of the user managed identities."
 }

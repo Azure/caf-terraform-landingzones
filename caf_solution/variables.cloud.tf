@@ -3,7 +3,7 @@ variable "cloud" {
   default     = {}
 }
 
-# Azure Public Cloud defaults for non-Rover use 
+# Azure Public Cloud defaults for non-Rover use
 # Rover updates values based on active cloud
 
 variable "acrLoginServerEndpoint" {

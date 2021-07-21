@@ -5,10 +5,10 @@ data "kustomization_overlay" "manifest" {
 
   namespace = each.value.namespace
 
-  dynamic "patches"{
+  dynamic "patches" {
     for_each = try(each.value.patches, {})
     content {
-      patch = patches.value.patch
+      patch  = patches.value.patch
       target = patches.value.target
     }
   }
@@ -26,7 +26,7 @@ output "manifests" {
 #   source   = "./kustomize"
 
 #   settings    = data.kustomization_overlay.azdopat-secret
-  
+
 # }
 
 # data "kustomization_overlay" "azdopat-secret" {
@@ -50,10 +50,10 @@ output "manifests" {
 # }
 
 module "kustomization_azdopat-secret" {
-  source   = "../aks_applications/kustomize"
+  source = "../aks_applications/kustomize"
 
-  settings    = data.kustomization_overlay.azdopat-secret
-  
+  settings = data.kustomization_overlay.azdopat-secret
+
 }
 
 data "kustomization_overlay" "azdopat-secret" {
@@ -89,13 +89,14 @@ data "kustomization_overlay" "azdopat-secret" {
 
 module "kustomization" {
   source   = "../aks_applications/kustomize"
-  for_each   = try(data.kustomization_overlay.roverjob, {})
+  for_each = try(data.kustomization_overlay.roverjob, {})
 
-  settings    = each.value
-  
+  settings = each.value
+
 }
 data "kustomization_overlay" "roverjob" {
-  for_each = local.remote.agent_pools[var.agent_pools.lz_key]
+  # for_each = local.remote.agent_pools[var.agent_pools.lz_key]
+  for_each = local.filtered_agent_pools
 
   resources = [
     "yamls/roverjob.yaml",
@@ -107,7 +108,7 @@ data "kustomization_overlay" "roverjob" {
     patch = <<-EOF
       - op: replace
         path: /metadata/name
-        value: "azdevops-${replace(each.key,"_","-")}"
+        value: "azdevops-${replace(each.key, "_", "-")}"
     EOF
     target = {
       kind = "ScaledJob"
@@ -173,14 +174,15 @@ data "kustomization_overlay" "roverjob" {
 
 module "kustomization_placeholderagent" {
   source   = "../aks_applications/kustomize"
-  for_each   = try(data.kustomization_overlay.placeholderjob, {})
+  for_each = try(data.kustomization_overlay.placeholderjob, {})
 
-  settings    = each.value
-  
+  settings = each.value
+
 }
 
 data "kustomization_overlay" "placeholderjob" {
-  for_each = local.remote.agent_pools[var.agent_pools.lz_key]
+  # for_each = local.remote.agent_pools[var.agent_pools.lz_key]
+  for_each = local.filtered_agent_pools
 
   resources = [
     "yamls/placeholderjob.yaml",
@@ -192,7 +194,7 @@ data "kustomization_overlay" "placeholderjob" {
     patch = <<-EOF
       - op: replace
         path: /metadata/name
-        value: "placeholder-job-${replace(each.key,"_","-")}"
+        value: "placeholder-job-${replace(each.key, "_", "-")}"
     EOF
     target = {
       kind = "Job"

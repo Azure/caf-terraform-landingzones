@@ -1,5 +1,5 @@
 module "flux" {
-  source = "./flux"
+  source   = "./flux"
   for_each = var.flux_settings
-  setting = each.value
+  setting  = each.value
 }

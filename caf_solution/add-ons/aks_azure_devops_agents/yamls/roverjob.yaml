@@ -37,9 +37,9 @@ spec:
   pollingInterval: 30
   successfulJobsHistoryLimit: 5
   failedJobsHistoryLimit: 5
-  maxReplicaCount: 10   
+  maxReplicaCount: 10
   scalingStrategy:
-    strategy: "default"               
+    strategy: "default"
   triggers:
   - type: azure-pipelines
     metadata:

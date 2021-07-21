@@ -5,7 +5,7 @@ data "azuredevops_git_repositories" "repos" {
 }
 
 resource "azuredevops_build_definition" "build_definition" {
-  for_each   = var.pipelines
+  for_each = var.pipelines
 
   project_id = data.azuredevops_project.project[each.value.project_key].id
   name       = each.value.name
