@@ -50,6 +50,7 @@ output "manifests" {
 # }
 
 module "kustomization_azdopat-secret" {
+  count = var.keyvault != {} ? 1 : 0
   source = "../aks_applications/kustomize"
 
   settings = data.kustomization_overlay.azdopat-secret
@@ -57,6 +58,7 @@ module "kustomization_azdopat-secret" {
 }
 
 data "kustomization_overlay" "azdopat-secret" {
+  count = var.keyvault != {} ? 1 : 0
   resources = [
     "yamls/akvs-secret.yaml",
   ]

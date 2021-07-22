@@ -1,6 +1,8 @@
 # https://github.com/Azure/aad-pod-identity/blob/b3ee1d07209f26c47a96abf3ba20749932763de6/website/content/en/docs/Concepts/azureidentity.md
 
 resource "kubernetes_namespace" "ns" {
+  count = var.aad_pod_identity.namespace != {} && try(var.aad_pod_identity.create, true) ? 1 : 0
+
   metadata {
     name = var.aad_pod_identity.namespace
   }
