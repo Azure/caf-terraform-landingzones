@@ -53,7 +53,7 @@ module "kustomization_azdopat-secret" {
   count = var.keyvault != {} ? 1 : 0
   source = "../aks_applications/kustomize"
 
-  settings = data.kustomization_overlay.azdopat-secret
+  settings = data.kustomization_overlay.azdopat-secret[0]
 
 }
 
