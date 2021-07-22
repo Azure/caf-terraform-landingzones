@@ -11,7 +11,6 @@ variable "tfstate_resource_group_name" {}
 variable "tfstate_subscription_id" {
   description = "This value is propulated by the rover. subscription id hosting the remote tfstates"
 }
-
 variable "global_settings" {
   default = {}
 }
@@ -30,4 +29,9 @@ variable "logged_aad_app_objectId" {
 variable "tags" {
   default = null
 }
-variable "hashicorp_vault_secrets" {}
+variable "hashicorp_vault_secrets" {
+  default = {}
+}
+variable "hashicorp_secret_backend_roles" {
+  default = {}
+}
