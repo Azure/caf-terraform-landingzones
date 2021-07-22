@@ -1,23 +1,3 @@
-
-
-data "azurerm_virtual_hub" "vhub-glrtss-phb-sanhub" {
-  for_each = var.virtual_hub_connections
-
-  name                = data.terraform_remote_state.remote[each.value.virtual_hub.lz_key].outputs.objects[each.value.virtual_hub.lz_key].virtual_hubs[each.value.virtual_hub.key].name
-  resource_group_name = data.terraform_remote_state.remote[each.value.virtual_hub.lz_key].outputs.objects[each.value.virtual_hub.lz_key].virtual_hubs[each.value.virtual_hub.key].object.resource_group_name
-
-  provider = azurerm.virtual_hub
-}
-
-data "azurerm_virtual_network" "vnw-uglife-dev-az1-aks" {
-  for_each = var.virtual_hub_connections
-
-  name                = data.terraform_remote_state.remote[each.value.vnet.lz_key].outputs.objects[each.value.vnet.lz_key].vnets[each.value.vnet.vnet_key].name
-  resource_group_name = data.terraform_remote_state.remote[each.value.vnet.lz_key].outputs.objects[each.value.vnet.lz_key].vnets[each.value.vnet.vnet_key].resource_group_name
-
-  provider = azurerm.vnet
-}
-
 resource "null_resource" "wait_for_virtual_hub_state" {
   for_each = var.virtual_hub_connections
 
@@ -40,7 +20,7 @@ resource "azurerm_virtual_hub_connection" "conn" {
 
   name                      = each.value.name
   virtual_hub_id            = data.terraform_remote_state.remote[each.value.virtual_hub.lz_key].outputs.objects[each.value.virtual_hub.lz_key].virtual_hubs[each.value.virtual_hub.key].id
-  remote_virtual_network_id = data.terraform_remote_state.remote[each.value.vnet.lz_key].outputs.objects[each.value.vnet.lz_key].vnets[each.value.vnet.vnet_key].id
+  remote_virtual_network_id = try(each.value.vnet.id, null) != null ? each.value.vnet.id : data.terraform_remote_state.remote[each.value.vnet.lz_key].outputs.objects[each.value.vnet.lz_key].vnets[each.value.vnet.vnet_key].id
   internet_security_enabled = try(each.value.internet_security_enabled, false)
 
   dynamic "routing" {
