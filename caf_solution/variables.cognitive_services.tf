@@ -1,11 +1,11 @@
 # Cognitive Servies
-variable "cognitive_service" {
+variable "cognitive_services" {
   description = "cognitive service configuration objects"
   default = {
-    # cognitive_service_account = {}
+    # cognitive_services_account = {}
   }
 }
 
-variable "cognitive_service_account" {
+variable "cognitive_services_account" {
   default = {}
 }
