@@ -52,12 +52,19 @@ locals {
     agent_pools = {
       for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs[var.agent_pools.output_key], {}))
     }
+    managed_identities = merge(
+      tomap({ "launchpad" = try(data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.launchpad_identities["launchpad"].managed_identities, {}) }),
+      {
+        for key, value in try(var.landingzone.tfstates, {}) : key => merge(
+          try(data.terraform_remote_state.remote[key].outputs.objects[key].managed_identities, {})
+        )
+      }
+    )
   }
 
-  filtered_agent_pools = try(var.agent_pools.agent_keys, null) == null ? local.remote.agent_pools[var.agent_pools.lz_key] : {
+  filtered_agent_pools = try(var.agent_pools.agents, null) == null ? local.remote.agent_pools[var.agent_pools.lz_key] : {
     for key, value in local.remote.agent_pools[var.agent_pools.lz_key] : key => value
-      if contains(try(var.agent_pools.agent_keys, []), key)
+      if lookup(try(var.agent_pools.agents, {}), key, null) == null ? false : true
   }
-  
 
 }
