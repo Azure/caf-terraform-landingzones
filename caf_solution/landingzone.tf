@@ -8,7 +8,7 @@ module "solution" {
   azuread                               = local.azuread
   cloud                                 = local.cloud
   compute                               = local.compute
-  cognitive_services                    = var.cognitive_services
+  cognitive_services                    = local.cognitive_services
   current_landingzone_key               = var.landingzone.key
   custom_role_definitions               = var.custom_role_definitions
   data_factory                          = local.data_factory
