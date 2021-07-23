@@ -5,4 +5,3 @@ output "aks_clusters_kubeconfig" {
   }
   sensitive = false
 }
-

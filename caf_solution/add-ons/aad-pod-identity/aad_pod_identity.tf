@@ -1,6 +1,8 @@
 # https://github.com/Azure/aad-pod-identity/blob/b3ee1d07209f26c47a96abf3ba20749932763de6/website/content/en/docs/Concepts/azureidentity.md
 
 resource "kubernetes_namespace" "ns" {
+  count = var.aad_pod_identity.namespace != {} && try(var.aad_pod_identity.create, true) ? 1 : 0
+
   metadata {
     name = var.aad_pod_identity.namespace
   }
@@ -53,7 +55,7 @@ data "kustomization_overlay" "aad_pod_identity" {
     patch = <<-EOF
       - op: replace
         path: /metadata/name
-        value: ${each.value.azureIdentity}
+        value: ${each.value.name}
     EOF
 
     target = {
@@ -65,7 +67,7 @@ data "kustomization_overlay" "aad_pod_identity" {
     patch = <<-EOF
       - op: replace
         path: /metadata/name
-        value: ${each.value.azureIdentity}-binding
+        value: ${each.value.name}-binding
     EOF
 
     target = {
@@ -77,7 +79,7 @@ data "kustomization_overlay" "aad_pod_identity" {
     patch = <<-EOF
       - op: replace
         path: /spec/azureIdentity
-        value: ${each.value.azureIdentity}
+        value: ${each.value.name}
     EOF
 
     target = {
@@ -89,7 +91,7 @@ data "kustomization_overlay" "aad_pod_identity" {
     patch = <<-EOF
       - op: replace
         path: /spec/selector
-        value: ${each.value.selector}
+        value: ${each.value.name}
     EOF
 
     target = {
@@ -112,8 +114,7 @@ locals {
             msi_key       = msi_key
             client_id     = local.remote.managed_identities[value.lz_key][msi_key].client_id
             id            = local.remote.managed_identities[value.lz_key][msi_key].id
-            azureIdentity = value["aad_msi_bindings"][msi_key].azureIdentity
-            selector      = value["aad_msi_bindings"][msi_key].selector
+            name          = local.remote.managed_identities[value.lz_key][msi_key].name
           }
         ]
       ]

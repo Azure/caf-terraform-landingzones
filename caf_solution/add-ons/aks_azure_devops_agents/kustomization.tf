@@ -22,41 +22,16 @@ output "manifests" {
 }
 
 
-# module "kustomization_azdopat-secret" {
-#   source   = "./kustomize"
-
-#   settings    = data.kustomization_overlay.azdopat-secret
-
-# }
-
-# data "kustomization_overlay" "azdopat-secret" {
-#   resources = [
-#     "yamls/azdopat-secret.yaml",
-#   ]
-
-#   namespace = var.agent_pools.namespace
-
-#   patches {
-#     patch = <<-EOF
-#       - op: replace
-#         path: /data/personalAccessToken
-#         value: "dDVjYmljc2R0Y3Juc2RlZmh1cnU2bHBueHdzZ2hxbjdhc2JnMjVkZ2E0bW16dGdldHgzYQ=="
-#     EOF
-#     target = {
-#       kind = "Secret"
-#       name = "azdopat-secret"
-#     }
-#   }
-# }
-
 module "kustomization_azdopat-secret" {
+  for_each = var.keyvaults
   source = "../aks_applications/kustomize"
 
-  settings = data.kustomization_overlay.azdopat-secret
+  settings = data.kustomization_overlay.azdopat-secret[each.key]
 
 }
 
 data "kustomization_overlay" "azdopat-secret" {
+  for_each = var.keyvaults
   resources = [
     "yamls/akvs-secret.yaml",
   ]
@@ -67,7 +42,7 @@ data "kustomization_overlay" "azdopat-secret" {
     patch = <<-EOF
       - op: replace
         path: /spec/vault/name
-        value: "${local.remote.keyvaults[var.keyvault.lz_key][var.keyvault.key].name}"
+        value: "${local.remote.keyvaults[each.value.lz_key][each.value.key].name}"
     EOF
     target = {
       kind = "AzureKeyVaultSecret"
@@ -78,7 +53,18 @@ data "kustomization_overlay" "azdopat-secret" {
     patch = <<-EOF
       - op: replace
         path: /spec/vault/object/name
-        value: "${var.keyvault.secret_name}"
+        value: "${each.value.secret_name}"
+    EOF
+    target = {
+      kind = "AzureKeyVaultSecret"
+    }
+  }
+
+  patches {
+    patch = <<-EOF
+      - op: replace
+        path: /spec/output/secret/name
+        value: "${each.key}-${each.value.secret_name}"
     EOF
     target = {
       kind = "AzureKeyVaultSecret"
@@ -95,7 +81,7 @@ module "kustomization" {
 
 }
 data "kustomization_overlay" "roverjob" {
-  for_each = local.remote.agent_pools[var.agent_pools.lz_key]
+  for_each = local.filtered_agent_pools
 
   resources = [
     "yamls/roverjob.yaml",
@@ -118,7 +104,7 @@ data "kustomization_overlay" "roverjob" {
     patch = <<-EOF
       - op: replace
         path: /spec/jobTargetRef/template/metadata/labels/aadpodidbinding
-        value: ${each.value.name}
+        value: ${local.remote.managed_identities[var.agent_pools.agents[each.key].lz_key][var.agent_pools.agents[each.key].msi_key].name}
     EOF
     target = {
       kind = "ScaledJob"
@@ -130,6 +116,17 @@ data "kustomization_overlay" "roverjob" {
       - op: replace
         path: /spec/jobTargetRef/template/spec/containers/0/env/0/value
         value: ${var.agent_pools.org_url}
+    EOF
+    target = {
+      kind = "ScaledJob"
+    }
+  }
+
+  patches {
+    patch = <<-EOF
+      - op: replace
+        path: /spec/jobTargetRef/template/spec/containers/0/env/1/valueFrom/secretKeyRef/name
+        value: "${var.agent_pools.keyvault_key}-${var.keyvaults[var.agent_pools.keyvault_key].secret_name}"
     EOF
     target = {
       kind = "ScaledJob"
@@ -180,7 +177,7 @@ module "kustomization_placeholderagent" {
 }
 
 data "kustomization_overlay" "placeholderjob" {
-  for_each = local.remote.agent_pools[var.agent_pools.lz_key]
+  for_each = local.filtered_agent_pools
 
   resources = [
     "yamls/placeholderjob.yaml",
@@ -213,8 +210,19 @@ data "kustomization_overlay" "placeholderjob" {
   patches {
     patch = <<-EOF
       - op: replace
+        path: /spec/template/spec/containers/0/env/1/valueFrom/secretKeyRef/name
+        value: "${var.agent_pools.keyvault_key}-${var.keyvaults[var.agent_pools.keyvault_key].secret_name}"
+    EOF
+    target = {
+      kind = "Job"
+    }
+  }
+
+  patches {
+    patch = <<-EOF
+      - op: replace
         path: /spec/template/metadata/labels/aadpodidbinding
-        value: ${each.value.name}
+        value: ${local.remote.managed_identities[var.agent_pools.agents[each.key].lz_key][var.agent_pools.agents[each.key].msi_key].name}
     EOF
     target = {
       kind = "Job"

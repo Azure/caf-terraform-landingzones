@@ -50,14 +50,21 @@ locals {
       for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.azure_devops, {}))
     }
     agent_pools = {
-      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs[var.agent_pools.key], {}))
+      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs[var.agent_pools.output_key], {}))
     }
+    managed_identities = merge(
+      tomap({ "launchpad" = try(data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.launchpad_identities["launchpad"].managed_identities, {}) }),
+      {
+        for key, value in try(var.landingzone.tfstates, {}) : key => merge(
+          try(data.terraform_remote_state.remote[key].outputs.objects[key].managed_identities, {})
+        )
+      }
+    )
   }
 
-}
-output "keyvaults" {
-  value = local.remote.keyvaults
-}
-output "azure_devops" {
-  value = local.remote.azure_devops
+  filtered_agent_pools = try(var.agent_pools.agents, null) == null ? local.remote.agent_pools[var.agent_pools.lz_key] : {
+    for key, value in local.remote.agent_pools[var.agent_pools.lz_key] : key => value
+      if lookup(try(var.agent_pools.agents, {}), key, null) == null ? false : true
+  }
+
 }

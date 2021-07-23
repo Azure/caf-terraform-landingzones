@@ -55,7 +55,9 @@ variable "tags" {
 variable "organization_agent_pools" {
   default = {}
 }
-variable "organization_url" {}
+variable "organization_url" {
+  default = null
+}
 variable "projects" {
   default = {}
 }
