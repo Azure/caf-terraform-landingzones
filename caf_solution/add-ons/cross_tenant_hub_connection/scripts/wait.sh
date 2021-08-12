@@ -16,7 +16,7 @@ PROVISIONING_STATE=$(az rest --method GET --uri ${URL} --query properties.provis
 
 while ${PROVISIONING_STATE} != "Succeeded"
 do
-  sleep 30
+  /usr/bin/sleep 30
   PROVISIONING_STATE=$(az rest --method GET --uri ${URL} --query properties.provisioningState -o tsv)
 done
 
