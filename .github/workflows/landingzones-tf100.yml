@@ -37,7 +37,7 @@ jobs:
           random_length: ['5']
 
     container:
-      image: aztfmod/rover:1.0.1-2106.3012
+      image: aztfmod/rover:1.0.4-2108.1305
       options: --user 0
 
     steps:
@@ -84,12 +84,12 @@ jobs:
           config_files: [
             "caf_solution/scenario/networking/100-single-region-hub",
             "caf_solution/scenario/networking/101-multi-region-hub",
-            "caf_solution/scenario/networking/105-hub-and-spoke"
-            # "caf_solution/scenario/networking/106-hub-virtual-wan-firewall"
+            "caf_solution/scenario/networking/105-hub-and-spoke",
+            "caf_solution/scenario/networking/106-hub-virtual-wan-firewall"
           ]
 
     container:
-      image: aztfmod/rover:1.0.1-2106.3012
+      image: aztfmod/rover:1.0.4-2108.1305
       options: --user 0
 
     steps:
@@ -133,7 +133,7 @@ jobs:
           random_length: ['5']
 
     container:
-      image: aztfmod/rover:1.0.1-2106.3012
+      image: aztfmod/rover:1.0.4-2108.1305
       options: --user 0
 
     steps:
@@ -184,7 +184,7 @@ jobs:
           ]
 
     container:
-      image: aztfmod/rover:1.0.1-2106.3012
+      image: aztfmod/rover:1.0.4-2108.1305
       options: --user 0
 
     steps:
@@ -227,7 +227,7 @@ jobs:
         random_length: ['5']
 
     container:
-      image: aztfmod/rover:1.0.1-2106.3012
+      image: aztfmod/rover:1.0.4-2108.1305
       options: --user 0
 
     steps:
