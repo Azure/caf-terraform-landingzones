@@ -14,6 +14,11 @@ storage_accounts = {
       launchpad   = "launchpad"
       ##
     }
+    blob_properties = {
+      versioning_enabled                = true
+      container_delete_retention_policy = 7
+      delete_retention_policy           = 7
+    }
     containers = {
       tfstate = {
         name = "tfstate"
@@ -34,6 +39,11 @@ storage_accounts = {
       environment = "sandpit"
       launchpad   = "launchpad"
     }
+    blob_properties = {
+      versioning_enabled                = true
+      container_delete_retention_policy = 7
+      delete_retention_policy           = 7
+    }
     containers = {
       tfstate = {
         name = "tfstate"
@@ -52,6 +62,11 @@ storage_accounts = {
       tfstate     = "level2"
       environment = "sandpit"
       launchpad   = "launchpad"
+    }
+    blob_properties = {
+      versioning_enabled                = true
+      container_delete_retention_policy = 7
+      delete_retention_policy           = 7
     }
     containers = {
       tfstate = {
@@ -72,6 +87,11 @@ storage_accounts = {
       environment = "sandpit"
       launchpad   = "launchpad"
     }
+    blob_properties = {
+      versioning_enabled                = true
+      container_delete_retention_policy = 7
+      delete_retention_policy           = 7
+    }
     containers = {
       tfstate = {
         name = "tfstate"
@@ -90,6 +110,11 @@ storage_accounts = {
       tfstate     = "level4"
       environment = "sandpit"
       launchpad   = "launchpad"
+    }
+    blob_properties = {
+      versioning_enabled                = true
+      container_delete_retention_policy = 7
+      delete_retention_policy           = 7
     }
     containers = {
       tfstate = {

@@ -2,7 +2,7 @@ module "launchpad" {
   # source  = "aztfmod/caf/azurerm"
   # version = "~>5.4.0"
 
-  source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=ssh_host_rover_support"
+  source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=patch_5.4.2"
   #source = "../../aztfmod"
 
   current_landingzone_key               = var.landingzone.key

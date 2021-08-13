@@ -30,7 +30,11 @@ resource "azurerm_role_assignment" "kubelet_vnet_networkcontrib" {
 
   scope                = local.remote.vnets[var.vnets[var.aks_cluster_vnet_key].lz_key][var.vnets[var.aks_cluster_vnet_key].key].subnets[each.value].id
   role_definition_name = "Network Contributor"
-  principal_id         = local.remote.aks_clusters[var.aks_clusters[var.aks_cluster_key].lz_key][var.aks_cluster_key].identity[0].principal_id
+  principal_id         = coalesce(
+    try(local.remote.aks_clusters[var.aks_clusters[var.aks_cluster_key].lz_key][var.aks_cluster_key].identity[0].principal_id, null),
+    try(local.remote.managed_identities[var.aks_clusters[var.aks_cluster_key].identity.lz_key][var.aks_clusters[var.aks_cluster_key].identity.managed_identity_key].principal_id, null),
+    try(var.aks_clusters[var.aks_cluster_key].identity.principal_id, null)
+  )
 }
 
 resource "azurerm_role_assignment" "kubelet_user_msi" {
@@ -47,9 +51,10 @@ locals {
       [
         for key, value in var.managed_identities : [
           for msi_key in value.msi_keys : {
-            key     = key
-            msi_key = msi_key
-            id      = local.remote.managed_identities[value.lz_key][msi_key].id
+            key          = key
+            msi_key      = msi_key
+            id           = local.remote.managed_identities[value.lz_key][msi_key].id
+            principal_id = local.remote.managed_identities[value.lz_key][msi_key].principal_id
           }
         ]
       ]
