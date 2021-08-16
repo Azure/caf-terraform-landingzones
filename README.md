@@ -1,4 +1,5 @@
-![landingzones](https://github.com/Azure/caf-terraform-landingzones/workflows/landingzones/badge.svg)
+[![landingzones](https://github.com/Azure/caf-terraform-landingzones/actions/workflows/landingzones-tf100.yml/badge.svg)](https://github.com/Azure/caf-terraform-landingzones/actions/workflows/landingzones-tf100.yml)
+
 [![Gitter](https://badges.gitter.im/aztfmod/community.svg)](https://gitter.im/aztfmod/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 # Cloud Adoption Framework for Azure landing zones on Terraform
