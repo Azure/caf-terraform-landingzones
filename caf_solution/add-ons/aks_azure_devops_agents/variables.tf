@@ -47,6 +47,10 @@ variable "agent_pools" {
 
 }
 
-variable "keyvault" {
+variable "keyvaults" {
+  default = {}
+}
+
+variable "managed_identities" {
   default = {}
 }

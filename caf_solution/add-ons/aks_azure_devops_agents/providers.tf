@@ -30,7 +30,7 @@ provider "kustomization" {
 locals {
   aks_clusters = {
     for key, value in var.aks_clusters : key =>
-      local.remote.aks_clusters[value.lz_key][value.key]
+    local.remote.aks_clusters[value.lz_key][value.key]
   }
   k8sconfigs = {
     for key, value in var.aks_clusters : key => {

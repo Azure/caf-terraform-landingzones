@@ -5,7 +5,7 @@ provider "azurerm" {
 }
 
 provider "azurerm" {
-  alias = "launchpad"
+  alias           = "launchpad"
   subscription_id = var.tfstate_subscription_id
   features {
   }

@@ -39,14 +39,14 @@ provider "azurerm" {
   skip_provider_registration = true
   subscription_id            = var.virtual_hub_subscription_id
   tenant_id                  = var.virtual_hub_tenant_id
-  
+
   # Source tenants for virtual networks.
   # Client ID must have permissions on those virtual_networks
   auxiliary_tenant_ids = var.landingzone.tfstates[var.virtual_hub_lz_key].auxiliary_tenant_ids
 }
 provider "azurerm" {
   features {}
-  alias = "vnet"
+  alias                      = "vnet"
   skip_provider_registration = true
   subscription_id            = var.virtual_network_subscription_id
   tenant_id                  = var.virtual_network_tenant_id

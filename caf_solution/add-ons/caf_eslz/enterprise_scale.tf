@@ -14,5 +14,5 @@ module "enterprise_scale" {
   deploy_core_landing_zones  = var.deploy_core_landing_zones
   root_id                    = var.root_id
   root_name                  = var.root_name
-  subscription_id_overrides  = var.subscription_id_overrides
+  subscription_id_overrides  = local.subscription_id_overrides
 }

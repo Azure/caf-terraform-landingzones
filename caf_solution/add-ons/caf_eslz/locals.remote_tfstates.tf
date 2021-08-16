@@ -17,7 +17,7 @@ data "terraform_remote_state" "remote" {
   for_each = try(var.landingzone.tfstates, {})
 
   backend = var.landingzone.backend_type
-  config = local.remote_state[try(each.value.backend_type, var.landingzone.backend_type, "azurerm")][each.key]
+  config  = local.remote_state[try(each.value.backend_type, var.landingzone.backend_type, "azurerm")][each.key]
 }
 
 locals {
@@ -68,6 +68,9 @@ locals {
     }
     azuread_applications = {
       for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].azuread_applications, {}))
+    }
+    subscriptions = {
+      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].subscriptions, {}))
     }
   }
 

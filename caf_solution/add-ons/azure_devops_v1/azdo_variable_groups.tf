@@ -23,7 +23,7 @@ resource "azuredevops_variable_group" "variable_group" {
 
   dynamic "variable" {
     for_each = {
-      for key, variable in each.value.variables : key => {
+      for key, variable in try(each.value.variables, {}) : key => {
         name  = key == "name" ? variable : key
         value = key == "name" ? null : variable
       }
@@ -39,13 +39,22 @@ resource "azuredevops_variable_group" "variable_group" {
 
   dynamic "variable" {
     for_each = {
-      for key, value in each.value.variables : key => value 
+      for key, value in try(each.value.variables, {}) : key => value
       if try(each.value.remote_objects, false) == true
-    } 
+    }
 
     content {
       name  = variable.value.name
       value = local.remote[variable.value.output_key][variable.value.lz_key][variable.value.resource_key][variable.value.attribute_key]
+    }
+  }
+
+  dynamic "variable" {
+    for_each = try(each.value.variables_objects, {})
+
+    content {
+      name  = variable.key
+      value = jsonencode(variable.value)
     }
   }
 

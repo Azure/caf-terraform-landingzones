@@ -16,6 +16,11 @@ variable "lower_resource_group_name" {
 variable "tfstate_subscription_id" {
   description = "This value is propulated by the rover. subscription id hosting the remote tfstates"
 }
+variable "subscription_id_overrides_by_keys" {
+  default     = {}
+  description = "Map of subscription_id_overrides_by_keys to reference subscriptions created by CAF module."
+}
+
 variable "tfstate_storage_account_name" {
   description = "This value is propulated by the rover"
 }
@@ -110,6 +115,12 @@ variable "custom_landing_zones" {
       display_name               = string
       parent_management_group_id = string
       subscription_ids           = list(string)
+      subscriptions = map(
+        object({
+          lz_key = string
+          key    = string
+        })
+      )
       archetype_config = object({
         archetype_id   = string
         parameters     = any

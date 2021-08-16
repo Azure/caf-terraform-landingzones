@@ -17,7 +17,7 @@ data "terraform_remote_state" "remote" {
   for_each = try(var.landingzone.tfstates, {})
 
   backend = var.landingzone.backend_type
-  config = local.remote_state[try(each.value.backend_type, var.landingzone.backend_type, "azurerm")][each.key]
+  config  = local.remote_state[try(each.value.backend_type, var.landingzone.backend_type, "azurerm")][each.key]
 }
 
 locals {
@@ -57,9 +57,14 @@ locals {
     keyvaults = {
       for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].keyvaults, {}))
     }
-    managed_identities = {
-      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].managed_identities, {}))
-    }
+    managed_identities = merge(
+      tomap({ "launchpad" = try(data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.launchpad_identities["launchpad"].managed_identities, {}) }),
+      {
+        for key, value in try(var.landingzone.tfstates, {}) : key => merge(
+          try(data.terraform_remote_state.remote[key].outputs.objects[key].managed_identities, {})
+        )
+      }
+    )
     vnets = {
       for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].vnets, {}))
     }

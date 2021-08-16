@@ -5,7 +5,7 @@ data "azuredevops_git_repositories" "repos" {
 }
 
 resource "azuredevops_build_definition" "build_definition" {
-  for_each   = var.pipelines
+  for_each = var.pipelines
 
   project_id = data.azuredevops_project.project[each.value.project_key].id
   name       = each.value.name
@@ -41,6 +41,15 @@ resource "azuredevops_build_definition" "build_definition" {
     content {
       name  = variable.key
       value = variable.value
+    }
+  }
+
+  dynamic "variable" {
+    for_each = try(each.value.variables_objects, {})
+
+    content {
+      name  = variable.key
+      value = jsonencode(variable.value)
     }
   }
 

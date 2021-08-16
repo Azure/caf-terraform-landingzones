@@ -1,7 +1,7 @@
 
 # To support cross subscription
 data "external" "client_secret" {
-  for_each   = var.service_endpoints
+  for_each = var.service_endpoints
   program = [
     "bash", "-c",
     format(
@@ -13,7 +13,7 @@ data "external" "client_secret" {
 }
 
 resource "azuredevops_serviceendpoint_azurerm" "azure" {
-  for_each   = var.service_endpoints
+  for_each = var.service_endpoints
 
   project_id            = data.azuredevops_project.project[each.value.project_key].id
   service_endpoint_name = each.value.endpoint_name
@@ -31,7 +31,7 @@ resource "azuredevops_serviceendpoint_azurerm" "azure" {
 #
 
 resource "azuredevops_resource_authorization" "endpoint" {
-  for_each   = var.service_endpoints
+  for_each = var.service_endpoints
 
   project_id  = data.azuredevops_project.project[each.value.project_key].id
   resource_id = azuredevops_serviceendpoint_azurerm.azure[each.key].id
