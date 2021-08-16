@@ -7,9 +7,9 @@
 # }
 
 locals {
-  tenant_id       = data.azurerm_key_vault_secret.tenant_id.value
-  client_id       = data.azurerm_key_vault_secret.client_id.value
-  client_secret   = data.azurerm_key_vault_secret.client_secret.value
+  tenant_id     = data.azurerm_key_vault_secret.tenant_id.value
+  client_id     = data.azurerm_key_vault_secret.client_id.value
+  client_secret = data.azurerm_key_vault_secret.client_secret.value
 }
 
 resource "null_resource" "set_backend_secret_config" {
@@ -26,11 +26,11 @@ resource "null_resource" "set_backend_secret_config" {
     on_failure  = fail
 
     environment = {
-      VAULT_SECRET_BACKEND      = var.settings.backend
-      AZURE_SUBSCRIPTION_ID     = var.settings.subscription_id
-      AZURE_TENANT_ID           = local.tenant_id
-      AZURE_CLIENT_ID           = local.client_id
-      AZURE_CLIENT_SECRET       = local.client_secret
+      VAULT_SECRET_BACKEND  = var.settings.backend
+      AZURE_SUBSCRIPTION_ID = var.settings.subscription_id
+      AZURE_TENANT_ID       = local.tenant_id
+      AZURE_CLIENT_ID       = local.client_id
+      AZURE_CLIENT_SECRET   = local.client_secret
     }
   }
 }

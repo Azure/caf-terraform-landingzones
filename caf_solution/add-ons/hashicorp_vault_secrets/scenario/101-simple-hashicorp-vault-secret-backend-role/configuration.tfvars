@@ -20,17 +20,17 @@ resource_groups = {
 
 keyvaults = {
   app1_sp = {
-    name = "app1spkv"
+    name               = "app1spkv"
     resource_group_key = "rg1"
-    sku_name = "premium"
+    sku_name           = "premium"
 
     creation_policies = {
       logged_in_user = {
-        secret_permissions      = ["Set", "Get", "List", "Delete", "Purge"]
+        secret_permissions = ["Set", "Get", "List", "Delete", "Purge"]
       }
+    }
   }
 }
-
 
 azuread_applications = {
   azuread_app1 = {
@@ -75,7 +75,7 @@ azuread_credentials = {
     azuread_credential_policy_key = "default_policy"
 
     azuread_application = {
-      key    = "azuread_app1"
+      key = "azuread_app1"
     }
     keyvaults = {
       app1_sp = {
@@ -89,10 +89,10 @@ azuread_credentials = {
 
 hashicorp_secret_backend_roles = {
   secret_backend1 = {
-    backend = "azure/test"
-    role    = "my-role"
-    ttl     = 300
-    max_ttl = 600
+    backend         = "azure/test"
+    role            = "my-role"
+    ttl             = 300
+    max_ttl         = 600
     subscription_id = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 
     sp_secrets = {
