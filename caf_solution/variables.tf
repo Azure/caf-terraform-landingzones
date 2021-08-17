@@ -241,3 +241,9 @@ variable "propagate_launchpad_identities" {
 variable "random_strings" {
   default = {}
 }
+variable "vmware_private_clouds" {
+  default = {}
+}
+variable "vmware_clusters" {
+  default = {}
+}
