@@ -237,13 +237,6 @@ variable "var_folder_path" {
 variable "propagate_launchpad_identities" {
   default = false
 }
-
 variable "random_strings" {
-  default = {}
-}
-variable "vmware_private_clouds" {
-  default = {}
-}
-variable "vmware_clusters" {
   default = {}
 }
