@@ -24,7 +24,7 @@ output "manifests" {
 
 module "kustomization_azdopat-secret" {
   for_each = var.keyvaults
-  source = "../aks_applications/kustomize"
+  source   = "../aks_applications/kustomize"
 
   settings = data.kustomization_overlay.azdopat-secret[each.key]
 

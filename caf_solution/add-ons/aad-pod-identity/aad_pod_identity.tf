@@ -110,11 +110,11 @@ locals {
       [
         for key, value in var.managed_identities : [
           for msi_key in value.msi_keys : {
-            key           = key
-            msi_key       = msi_key
-            client_id     = local.remote.managed_identities[value.lz_key][msi_key].client_id
-            id            = local.remote.managed_identities[value.lz_key][msi_key].id
-            name          = local.remote.managed_identities[value.lz_key][msi_key].name
+            key       = key
+            msi_key   = msi_key
+            client_id = local.remote.managed_identities[value.lz_key][msi_key].client_id
+            id        = local.remote.managed_identities[value.lz_key][msi_key].id
+            name      = local.remote.managed_identities[value.lz_key][msi_key].name
           }
         ]
       ]

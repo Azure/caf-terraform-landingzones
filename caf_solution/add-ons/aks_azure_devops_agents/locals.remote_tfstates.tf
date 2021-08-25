@@ -64,7 +64,7 @@ locals {
 
   filtered_agent_pools = try(var.agent_pools.agents, null) == null ? local.remote.agent_pools[var.agent_pools.lz_key] : {
     for key, value in local.remote.agent_pools[var.agent_pools.lz_key] : key => value
-      if lookup(try(var.agent_pools.agents, {}), key, null) == null ? false : true
+    if lookup(try(var.agent_pools.agents, {}), key, null) == null ? false : true
   }
 
 }

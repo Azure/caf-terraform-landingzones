@@ -1,2 +1,2 @@
-variable settings {} 
-variable objects {} 
+variable "settings" {}
+variable "objects" {}

@@ -36,6 +36,15 @@ variable "virtual_machines" {
 variable "virtual_machine_scale_sets" {
   default = {}
 }
+variable "vmware_private_clouds" {
+  default = {}
+}
+variable "vmware_clusters" {
+  default = {}
+}
+variable "vmware_express_route_authorizations" {
+  default = {}
+}
 variable "wvd_application_groups" {
   default = {}
 }
