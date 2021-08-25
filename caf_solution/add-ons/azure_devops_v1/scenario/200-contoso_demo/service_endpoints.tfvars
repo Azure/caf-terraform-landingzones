@@ -7,7 +7,7 @@ service_endpoints = {
       id   = "" # key in subscription id
     }
 
-    project_key  = "contoso_demo"
+    project_key = "contoso_demo"
 
     keyvault = {
       lz_key      = "launchpad"
