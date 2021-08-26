@@ -63,6 +63,17 @@ data "kustomization_overlay" "azdopat-secret" {
   patches {
     patch = <<-EOF
       - op: replace
+        path: /metadata/name
+        value: "${each.key}-${each.value.secret_name}"
+    EOF
+    target = {
+      kind = "AzureKeyVaultSecret"
+    }
+  }
+
+  patches {
+    patch = <<-EOF
+      - op: replace
         path: /spec/output/secret/name
         value: "${each.key}-${each.value.secret_name}"
     EOF
