@@ -87,7 +87,7 @@ variable "private_endpoints" {
 variable "private_dns" {
   default = {}
 }
-variable "private_dns_vnet_link" {
+variable "private_dns_vnet_links" {
   default = {}
 }
 variable "public_ip_addresses" {
