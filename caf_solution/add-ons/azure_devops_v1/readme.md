@@ -3,15 +3,11 @@
 The Azure Devops add-ons allow you to setup you Azure Devops environment as a platform to automate all your subsequent landing zone deployment from level 0 until level 4 through Azure pipelines with self hosted agents.
 
 * Azure Devops:
+  - Projects
   - Agent Pools (Organization and Project Level)
-  - Service Endpoint
+  - Service Endpoints
   - Variables and Variable Groups
   - Pipelines
-
-* Azure (Connection with Azure Devops):
-  - Azure AD Application
-  - Custom Role
-  - Keyvault and access policies for Azure AD App
 
 Azure Devops add-on landing zone operates at **level 0**
 
@@ -37,9 +33,9 @@ Azure:
 ## Deployment
 
 ```bash
-rover -lz /tf/caf/landingzones/caf_launchpad/add-ons/azure_devops \
+rover -lz /tf/caf/landingzones/caf_solution/add-ons/azure_devops_v1 \
   -tfstate azure_devops-contoso_demo.tfstate \
-  -var-folder /tf/caf/landingzones/caf_launchpad/add-ons/azure_devops/scenario/200-contoso_demo \
+  -var-folder /tf/caf/landingzones/caf_solution/add-ons/azure_devops_v1/scenario/200-contoso_demo \
   -parallelism 30 \
   -level level0 \
   -env sandpit \
@@ -47,10 +43,10 @@ rover -lz /tf/caf/landingzones/caf_launchpad/add-ons/azure_devops \
 
 
 # If the tfstates are stored in a different subscription you need to execute the following command
-rover -lz /tf/caf/landingzones/caf_launchpad/add-ons/azure_devops \
+rover -lz /tf/caf/landingzones/caf_solution/add-ons/azure_devops_v1 \
   -tfstate_subscription_id <ID of the subscription> \
   -tfstate azure_devops-contoso_demo.tfstate \
-  -var-folder /tf/caf/landingzones/caf_launchpad/add-ons/azure_devops/scenario/200-contoso_demo \
+  -var-folder /tf/caf/landingzones/caf_solution/add-ons/azure_devops_v1/scenario/200-contoso_demo \
   -parallelism 30 \
   -level level0 \
   -env sandpit \

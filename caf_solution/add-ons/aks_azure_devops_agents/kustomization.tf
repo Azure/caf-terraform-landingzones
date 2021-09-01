@@ -24,7 +24,7 @@ output "manifests" {
 
 module "kustomization_azdopat-secret" {
   for_each = var.keyvaults
-  source = "../aks_applications/kustomize"
+  source   = "../aks_applications/kustomize"
 
   settings = data.kustomization_overlay.azdopat-secret[each.key]
 
@@ -54,6 +54,17 @@ data "kustomization_overlay" "azdopat-secret" {
       - op: replace
         path: /spec/vault/object/name
         value: "${each.value.secret_name}"
+    EOF
+    target = {
+      kind = "AzureKeyVaultSecret"
+    }
+  }
+
+  patches {
+    patch = <<-EOF
+      - op: replace
+        path: /metadata/name
+        value: "${each.key}-${each.value.secret_name}"
     EOF
     target = {
       kind = "AzureKeyVaultSecret"

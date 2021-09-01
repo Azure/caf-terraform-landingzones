@@ -1,13 +1,14 @@
 module "solution" {
   source  = "aztfmod/caf/azurerm"
-  version = "~>5.4.0"
+  version = "~>5.4.2"
 
-  # source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=5.4.0"
+  # source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=master"
   # source = "../../aztfmod"
 
   azuread                               = local.azuread
   cloud                                 = local.cloud
   compute                               = local.compute
+  cognitive_services                    = local.cognitive_services
   current_landingzone_key               = var.landingzone.key
   custom_role_definitions               = var.custom_role_definitions
   data_factory                          = local.data_factory
