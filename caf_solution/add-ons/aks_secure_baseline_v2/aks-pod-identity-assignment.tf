@@ -26,7 +26,7 @@ resource "azurerm_role_assignment" "kubelet_noderg_vmcontrib" {
 
 # Separate subnet
 resource "azurerm_role_assignment" "kubelet_subnets_networkcontrib" {
-  for_each = try(toset(var.vnets[var.aks_cluster_vnet_key].subnet_keys), toset([var.vnets[var.aks_cluster_vnet_key].key]))
+  for_each = toset(try(var.vnets[var.aks_cluster_vnet_key].subnet_keys, [var.vnets[var.aks_cluster_vnet_key].key]))
 
   scope                =  try(var.vnets[var.aks_cluster_vnet_key].subnet_keys != null, false) ? local.remote.vnets[var.vnets[var.aks_cluster_vnet_key].lz_key][var.vnets[var.aks_cluster_vnet_key].key].subnets[each.value].id : local.remote.vnets[var.vnets[var.aks_cluster_vnet_key].lz_key][var.vnets[var.aks_cluster_vnet_key].key].id
   role_definition_name = "Network Contributor"
