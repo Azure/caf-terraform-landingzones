@@ -96,6 +96,7 @@ variable "archetype_config_overrides" {
     object({
       archetype_id   = string
       parameters     = map(map(object({
+        object        = optional(any)
         value         = optional(string)
         values        = optional(list(string))
         lz_key        = optional(string)
@@ -138,6 +139,7 @@ variable "custom_landing_zones" {
       archetype_config = object({
         archetype_id   = string
         parameters     = map(map(object({
+          object        = optional(any)
           value         = optional(string)
           values        = optional(list(string))
           lz_key        = optional(string)

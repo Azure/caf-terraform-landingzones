@@ -37,8 +37,9 @@ locals {
   aco_parameters_combined = {
     for mg_id, mg_value in try(var.archetype_config_overrides, {}) : mg_id => {
       for param_key, param_value in try(mg_value.parameters, {}) : param_key => merge(
-        local.aco_parameters_value[mg_id][param_key], 
-        local.aco_parameters_values[mg_id][param_key], 
+        local.aco_parameters_value[mg_id][param_key],
+        local.aco_parameters_values[mg_id][param_key],
+        local.aco_parameters_object[mg_id][param_key],
         local.aco_parameters_remote_lz[mg_id][param_key]
       )
     } 
@@ -58,6 +59,15 @@ locals {
       for param_key, param_value in try(mg_value.parameters, {}) : param_key => {
         for key, value in param_value : key => value.values
          if value.values != null
+      }
+    } 
+  }
+
+  aco_parameters_object = {
+    for mg_id, mg_value in try(var.archetype_config_overrides, {}) : mg_id => {
+      for param_key, param_value in try(mg_value.parameters, {}) : param_key => {
+        for key, value in param_value : key => value.object
+         if value.object != null
       }
     } 
   }
