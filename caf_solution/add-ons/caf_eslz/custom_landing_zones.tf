@@ -71,7 +71,7 @@ locals {
       for param_key, param_value in try(mg_value.archetype_config.parameters, {}) : param_key => merge(
         local.clz_parameters_value[mg_id][param_key], 
         local.clz_parameters_values[mg_id][param_key], 
-        local.clz_parameters_object[mg_id][param_key], 
+        local.clz_parameters_hcl_jsonencoded[mg_id][param_key], 
         local.clz_parameters_remote_lz[mg_id][param_key]
       )
     } 
@@ -95,11 +95,11 @@ locals {
     } 
   }
 
-  clz_parameters_object = {
+  clz_parameters_hcl_jsonencoded = {
     for mg_id, mg_value in try(var.custom_landing_zones, {}) : mg_id => {
       for param_key, param_value in try(mg_value.archetype_config.parameters, {}) : param_key => {
-        for key, value in param_value : key => value.object
-         if value.object != null
+        for key, value in param_value : key => jsondecode(value.hcl_jsonencoded)
+         if value.hcl_jsonencoded != null
       }
     } 
   }
