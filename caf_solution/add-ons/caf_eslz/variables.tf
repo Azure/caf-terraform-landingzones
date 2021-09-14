@@ -92,7 +92,21 @@ variable "deploy_core_landing_zones" {
 }
 
 variable "archetype_config_overrides" {
-  # type        = map(any)
+  type = map(
+    object({
+      archetype_id   = string
+      parameters     = map(map(object({
+        value         = optional(string)
+        values        = optional(list(string))
+        lz_key        = optional(string)
+        output_key    = optional(string)
+        resource_type = optional(string)
+        resource_key  = optional(string)
+        attribute_key = optional(string)
+      })))
+      access_control = any
+    })
+  )
   description = "If specified, will set custom Archetype configurations to the default Enterprise-scale Management Groups."
   default     = {}
 }

@@ -97,7 +97,7 @@ locals {
   clz_parameters_remote_lz = {
     for mg_id, mg_value in try(var.custom_landing_zones, {}) : mg_id => {
       for param_key, param_value in try(mg_value.archetype_config.parameters, {}) : param_key => {
-        for key, value in param_value : key => local.caf[value.output_key][value.lz_key][value.resource_type][value.resource_key][value.key]
+        for key, value in param_value : key => local.caf[value.output_key][value.lz_key][value.resource_type][value.resource_key][value.attribute_key]
          if value.output_key != null
       }
     } 
