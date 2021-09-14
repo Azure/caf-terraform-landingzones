@@ -123,7 +123,15 @@ variable "custom_landing_zones" {
       )
       archetype_config = object({
         archetype_id   = string
-        parameters     = any
+        parameters     = map(map(object({
+          value         = optional(string)
+          values        = optional(list(string))
+          lz_key        = optional(string)
+          output_key    = optional(string)
+          resource_type = optional(string)
+          resource_key  = optional(string)
+          attribute_key = optional(string)
+        })))
         access_control = any
       })
     })
