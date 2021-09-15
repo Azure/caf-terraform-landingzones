@@ -21,7 +21,7 @@ locals {
                     ]
                   ],
                   [
-                    try(roles.principal_ids, [])
+                    roles.principal_ids != null ? try(roles.principal_ids, []) : []
                   ]
                 ]
               ) //flatten (ids)

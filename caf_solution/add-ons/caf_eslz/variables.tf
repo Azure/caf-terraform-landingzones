@@ -106,8 +106,30 @@ variable "archetype_config_overrides" {
         resource_type   = optional(string)
         resource_key    = optional(string)
         attribute_key   = optional(string)
-      })))
-      access_control = any
+      }))),
+      access_control = map(object({
+        managed_identities = optional(object({
+          lz_key        = string,
+          attribute_key = string,
+          resource_keys = list(string) 
+        }))
+        azuread_groups = optional(object({
+          lz_key        = string,
+          attribute_key = string,
+          resource_keys = list(string) 
+        }))
+        azuread_service_principals = optional(object({
+          lz_key        = string,
+          attribute_key = string,
+          resource_keys = list(string) 
+        }))
+        azuread_applications = optional(object({
+          lz_key        = string,
+          attribute_key = string,
+          resource_keys = list(string) 
+        }))
+        principal_ids = optional(list(string))
+      }))
     })
   )
   description = "If specified, will set custom Archetype configurations to the default Enterprise-scale Management Groups."
@@ -151,8 +173,30 @@ variable "custom_landing_zones" {
           resource_type   = optional(string)
           resource_key    = optional(string)
           attribute_key   = optional(string)
-        })))
-        access_control = any
+        }))),
+        access_control = map(object({
+          managed_identities         = optional(object({
+            lz_key        = string,
+            attribute_key = string,
+            resource_keys = list(string) 
+          }))
+          azuread_groups = optional(object({
+            lz_key        = string,
+            attribute_key = string,
+            resource_keys = list(string) 
+          }))
+          azuread_service_principals = optional(object({
+            lz_key        = string,
+            attribute_key = string,
+            resource_keys = list(string) 
+          }))
+          azuread_applications = optional(object({
+            lz_key        = string,
+            attribute_key = string,
+            resource_keys = list(string) 
+          }))
+          principal_ids = optional(list(string))
+        }))
       })
     })
   )
