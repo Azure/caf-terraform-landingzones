@@ -69,9 +69,11 @@ locals {
   clz_parameters_combined = {
     for mg_id, mg_value in try(var.custom_landing_zones, {}) : mg_id => {
       for param_key, param_value in try(mg_value.archetype_config.parameters, {}) : param_key => merge(
-        local.clz_parameters_value[mg_id][param_key], 
-        local.clz_parameters_values[mg_id][param_key], 
-        local.clz_parameters_hcl_jsonencoded[mg_id][param_key], 
+        local.clz_parameters_value[mg_id][param_key],
+        local.clz_parameters_values[mg_id][param_key],
+        local.clz_parameters_integer[mg_id][param_key],
+        local.clz_parameters_boolean[mg_id][param_key],
+        local.clz_parameters_hcl_jsonencoded[mg_id][param_key],
         local.clz_parameters_remote_lz[mg_id][param_key]
       )
     } 
@@ -91,6 +93,24 @@ locals {
       for param_key, param_value in try(mg_value.archetype_config.parameters, {}) : param_key => {
         for key, value in param_value : key => value.values
          if value.values != null
+      }
+    } 
+  }
+
+  clz_parameters_integer = {
+    for mg_id, mg_value in try(var.custom_landing_zones, {}) : mg_id => {
+      for param_key, param_value in try(mg_value.archetype_config.parameters, {}) : param_key => {
+        for key, value in param_value : key => value.integer
+         if value.integer != null
+      }
+    } 
+  }
+
+  clz_parameters_boolean = {
+    for mg_id, mg_value in try(var.custom_landing_zones, {}) : mg_id => {
+      for param_key, param_value in try(mg_value.archetype_config.parameters, {}) : param_key => {
+        for key, value in param_value : key => value.boolean
+         if value.boolean != null
       }
     } 
   }
