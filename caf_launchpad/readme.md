@@ -8,7 +8,7 @@ The launchpad allows you to manage the foundations of landing zone environments 
 
 Launchpad operates at **level 0**.
 
-For a review of the hierarchy approach of Cloud Adoption Framework for Azure landing zones on Terraform, you can refer to [the following documentation](../../documentation/code_architecture/hierarchy.md).
+For a review of the hierarchy approach of Cloud Adoption Framework for Azure landing zones on Terraform, you can refer to [the following documentation](https://github.com/Azure/caf-terraform-landingzones/blob/master/documentation/code_architecture/hierarchy.md).
 
 </BR>
 
