@@ -2,7 +2,9 @@
 
 module "enterprise_scale" {
   source  = "Azure/caf-enterprise-scale/azurerm"
-  version = "~> 0.1.0"
+  version = "~> 0.3.0"
+
+  # source = "../../../../eslz"
 
   root_parent_id   = data.azurerm_client_config.current.tenant_id
   default_location = local.global_settings.regions[local.global_settings.default_region]
