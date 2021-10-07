@@ -2,8 +2,8 @@ module "solution" {
   # source  = "aztfmod/caf/azurerm"
   # version = "~>5.4.2"
 
-  # source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=patch.5.4.4"
-  source = "../../aztfmod"
+  source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=patch.vhub_peering"
+  # source = "../../aztfmod"
 
   azuread                               = local.azuread
   cloud                                 = local.cloud
