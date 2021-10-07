@@ -2,13 +2,13 @@ module "solution" {
   # source  = "aztfmod/caf/azurerm"
   # version = "~>5.4.2"
 
-  source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=patch.5.4.4"
-  # source = "../../aztfmod"
+  # source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=patch.5.4.4"
+  source = "../../aztfmod"
 
   azuread                               = local.azuread
   cloud                                 = local.cloud
-  compute                               = local.compute
   cognitive_services                    = local.cognitive_services
+  compute                               = local.compute
   current_landingzone_key               = var.landingzone.key
   custom_role_definitions               = var.custom_role_definitions
   data_factory                          = local.data_factory
@@ -44,8 +44,9 @@ module "solution" {
   subscriptions                         = var.subscriptions
   tags                                  = local.tags
   tenant_id                             = var.tenant_id
-  tfstates                              = var.tfstates
+  tfstates                              = local.tfstates
   user_type                             = var.user_type
+  virtual_hub_lz_key                    = var.virtual_hub_lz_key
   webapp                                = local.webapp
 
   diagnostics = {

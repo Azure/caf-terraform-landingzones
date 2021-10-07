@@ -50,6 +50,9 @@ variable "express_route_circuits" {
 variable "express_route_circuit_authorizations" {
   default = {}
 }
+variable "virtual_hub_lz_key" {
+  default = null
+}
 variable "load_balancers" {
   default = {}
 }
