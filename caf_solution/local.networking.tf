@@ -18,6 +18,7 @@ locals {
       dns_zones                                               = var.dns_zones
       domain_name_registrations                               = var.domain_name_registrations
       express_route_circuit_authorizations                    = var.express_route_circuit_authorizations
+      express_route_circuit_peerings                          = var.express_route_circuit_peerings
       express_route_circuits                                  = var.express_route_circuits
       front_door_waf_policies                                 = var.front_door_waf_policies
       front_doors                                             = var.front_doors
@@ -43,8 +44,8 @@ locals {
       virtual_wans                                            = var.virtual_wans
       vnet_peerings                                           = var.vnet_peerings
       vnets                                                   = var.vnets
-      vpn_sites                                               = var.vpn_sites
       vpn_gateway_connections                                 = var.vpn_gateway_connections
+      vpn_sites                                               = var.vpn_sites
     }
   )
 }
