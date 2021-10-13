@@ -34,7 +34,6 @@ locals {
         sas_token            = try(value.sas_token, null) != null ? var.sas_token : null
       }
     }
-
   }
 
   tags = merge(try(local.global_settings.tags, {}), { "level" = var.landingzone.level }, try({ "environment" = local.global_settings.environment }, {}), { "rover_version" = var.rover_version }, var.tags)

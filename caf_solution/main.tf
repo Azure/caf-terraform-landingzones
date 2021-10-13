@@ -35,6 +35,14 @@ provider "azurerm" {
   }
 }
 
+provider "azurerm" {
+  alias = "vhub"
+  skip_provider_registration = true
+  features {}
+  subscription_id = local.connectivity_subscription_id
+  tenant_id       = local.connectivity_tenant_id
+}
+
 data "azurerm_client_config" "current" {}
 
 
@@ -65,3 +73,4 @@ locals {
   }
 
 }
+
