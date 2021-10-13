@@ -1,14 +1,14 @@
-variable "service_bus" {
+variable "servicebus" {
   description = "Service Bus configurations"
   default = {}
 }
-variable "service_bus_namespaces" {
+variable "servicebus_namespaces" {
   description = "Service Bus Namespace configuration objects"
   default = {}
 }
-variable "service_bus_topics" {
+variable "servicebus_topics" {
   default = {}
 }
-variable "service_bus_queues" {
+variable "servicebus_queues" {
   default = {}
 }
