@@ -13,10 +13,6 @@ locals {
 
 }
 
-output remote_custom_variables {
-  value = local.remote_custom_variables
-}
-
 output custom_variables {
   value = local.custom_variables
 }
