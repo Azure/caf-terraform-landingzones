@@ -20,6 +20,7 @@ locals {
       express_route_circuit_authorizations                    = var.express_route_circuit_authorizations
       express_route_circuit_peerings                          = var.express_route_circuit_peerings
       express_route_circuits                                  = var.express_route_circuits
+      express_route_connections                               = var.express_route_connections
       front_door_waf_policies                                 = var.front_door_waf_policies
       front_doors                                             = var.front_doors
       ip_groups                                               = var.ip_groups

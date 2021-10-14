@@ -53,6 +53,9 @@ variable "express_route_circuit_authorizations" {
 variable "express_route_circuit_peerings" {
   default = {}
 }
+variable "express_route_connections" {
+  default = {}
+}
 variable "load_balancers" {
   default = {}
 }
