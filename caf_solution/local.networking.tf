@@ -2,6 +2,7 @@ locals {
   networking = merge(
     var.networking,
     {
+      application_gateway_platforms                           = var.application_gateway_platforms
       application_gateway_applications_v1                     = var.application_gateway_applications_v1
       application_gateway_applications                        = var.application_gateway_applications
       application_gateway_waf_policies                        = var.application_gateway_waf_policies
