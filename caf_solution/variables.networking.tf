@@ -1,4 +1,7 @@
 
+variable "application_gateway_platforms" {
+  default = {}
+}
 variable "application_gateways" {
   default = {}
 }
