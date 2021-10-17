@@ -13,6 +13,7 @@ locals {
       azurerm_firewall_policy_rule_collection_groups          = var.azurerm_firewall_policy_rule_collection_groups
       azurerm_firewalls                                       = var.azurerm_firewalls
       azurerm_routes                                          = var.azurerm_routes
+      cdn_profiles                                            = var.cdn_profiles
       ddos_services                                           = var.ddos_services
       dns_zone_records                                        = var.dns_zone_records
       dns_zones                                               = var.dns_zones
