@@ -7,7 +7,7 @@ locals {
   }
   
   custom_variables = merge(
-    local.remote_custom_variables.deep_merged_l1[0],
+    try(local.remote_custom_variables.deep_merged_l1[0], {}),
     var.custom_variables
   )
 
