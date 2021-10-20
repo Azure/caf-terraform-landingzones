@@ -1,5 +1,3 @@
-organization_url = "https://dev.azure.com/azure-terraform"
-
 projects = {
   contoso_demo = {
     create      = true
