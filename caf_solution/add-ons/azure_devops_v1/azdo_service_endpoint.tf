@@ -18,10 +18,16 @@ resource "azuredevops_serviceendpoint_azurerm" "azure" {
   project_id            = data.azuredevops_project.project[each.value.project_key].id
   service_endpoint_name = each.value.endpoint_name
   credentials {
-    serviceprincipalid  = local.remote.azuread_applications[each.value.azuread_application.lz_key][each.value.azuread_application.key].application_id
+    serviceprincipalid = try(
+      local.remote.azuread_applications[each.value.azuread_application.lz_key][each.value.azuread_application.key].application_id,
+      local.remote.aad_apps[each.value.azuread_application.lz_key][each.value.azuread_application.key].azuread_application.application_id
+    )
     serviceprincipalkey = data.external.client_secret[each.key].result.value
   }
-  azurerm_spn_tenantid      = local.remote.azuread_applications[each.value.azuread_application.lz_key][each.value.azuread_application.key].tenant_id
+  azurerm_spn_tenantid = try(
+    local.remote.azuread_applications[each.value.azuread_application.lz_key][each.value.azuread_application.key].tenant_id,
+    local.remote.aad_apps[each.value.azuread_application.lz_key][each.value.azuread_application.key].tenant_id
+  )
   azurerm_subscription_id   = each.value.subscription.id
   azurerm_subscription_name = each.value.subscription.name
 }
