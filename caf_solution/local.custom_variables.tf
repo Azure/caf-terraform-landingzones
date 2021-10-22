@@ -6,8 +6,23 @@ locals {
     for key, value in try(var.landingzone.tfstates, {}) : "deep_merged_l1" => merge(try(data.terraform_remote_state.remote[key].outputs.custom_variables, {})) ...
   }
   
+  deep_merged_l1 = {
+    for mapping in
+    flatten(
+      [
+        for key, value in try(local.remote_custom_variables.deep_merged_l1, {}) : 
+        [
+          for lkey in keys(value) : {
+            value = lookup(value, lkey)
+            key = lkey
+          }
+        ]
+      ]
+    ) : mapping.key => mapping.value
+  }
+
   custom_variables = merge(
-    try(local.remote_custom_variables.deep_merged_l1[0], {}),
+    try(local.deep_merged_l1, {}),
     var.custom_variables
   )
 
