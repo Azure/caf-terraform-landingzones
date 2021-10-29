@@ -111,6 +111,9 @@ variable "virtual_hubs" {
 variable "vnets" {
   default = {}
 }
+variable "virtual_subnets" {
+  default = {}
+}
 variable "vhub_peerings" {
   default = {}
 }
