@@ -55,7 +55,7 @@ data "kustomization_overlay" "aad_pod_identity" {
     patch = <<-EOF
       - op: replace
         path: /metadata/name
-        value: ${each.value.name}
+        value: ${each.value.pod_aad_name}
     EOF
 
     target = {
@@ -67,7 +67,7 @@ data "kustomization_overlay" "aad_pod_identity" {
     patch = <<-EOF
       - op: replace
         path: /metadata/name
-        value: ${each.value.name}-binding
+        value: ${each.value.pod_aad_name}
     EOF
 
     target = {
@@ -79,7 +79,7 @@ data "kustomization_overlay" "aad_pod_identity" {
     patch = <<-EOF
       - op: replace
         path: /spec/azureIdentity
-        value: ${each.value.name}
+        value: ${each.value.pod_aad_name}
     EOF
 
     target = {
@@ -91,17 +91,13 @@ data "kustomization_overlay" "aad_pod_identity" {
     patch = <<-EOF
       - op: replace
         path: /spec/selector
-        value: ${each.value.name}
+        value: ${each.value.pod_aad_name}
     EOF
 
     target = {
       kind = "AzureIdentityBinding"
     }
   }
-}
-
-output "manifests" {
-  value = data.kustomization_overlay.aad_pod_identity
 }
 
 locals {
@@ -111,10 +107,12 @@ locals {
         for key, value in var.managed_identities : [
           for msi_key in value.msi_keys : {
             key       = key
+            lz_key    = value.lz_key
             msi_key   = msi_key
             client_id = local.remote.managed_identities[value.lz_key][msi_key].client_id
             id        = local.remote.managed_identities[value.lz_key][msi_key].id
             name      = local.remote.managed_identities[value.lz_key][msi_key].name
+            pod_aad_name  = local.remote.managed_identities[value.lz_key][msi_key].name
           }
         ]
       ]
