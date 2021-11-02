@@ -35,6 +35,9 @@ variable "azurerm_routes" {
 variable "cdn_profiles" {
   default = {}
 }
+variable "cdn_endpoints" {
+  default = {}
+}
 variable "ddos_services" {
   default = {}
 }
