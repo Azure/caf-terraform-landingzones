@@ -14,3 +14,6 @@ variable "storage_accounts" {
 variable "storage_account_queues" {
   default = {}
 }
+variable "storage_containers" {
+  default = {}
+}
