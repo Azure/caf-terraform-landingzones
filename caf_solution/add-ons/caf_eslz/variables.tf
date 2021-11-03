@@ -94,8 +94,8 @@ variable "deploy_core_landing_zones" {
 variable "archetype_config_overrides" {
   type = map(
     object({
-      archetype_id   = string
-      parameters     = map(map(object({
+      archetype_id = string
+      parameters = map(map(object({
         hcl_jsonencoded = optional(string)
         integer         = optional(number)
         boolean         = optional(bool)
@@ -111,22 +111,22 @@ variable "archetype_config_overrides" {
         managed_identities = optional(object({
           lz_key        = string,
           attribute_key = string,
-          resource_keys = list(string) 
+          resource_keys = list(string)
         }))
         azuread_groups = optional(object({
           lz_key        = string,
           attribute_key = string,
-          resource_keys = list(string) 
+          resource_keys = list(string)
         }))
         azuread_service_principals = optional(object({
           lz_key        = string,
           attribute_key = string,
-          resource_keys = list(string) 
+          resource_keys = list(string)
         }))
         azuread_applications = optional(object({
           lz_key        = string,
           attribute_key = string,
-          resource_keys = list(string) 
+          resource_keys = list(string)
         }))
         principal_ids = optional(list(string))
       }))
@@ -161,8 +161,8 @@ variable "custom_landing_zones" {
         })
       )
       archetype_config = object({
-        archetype_id   = string
-        parameters     = map(map(object({
+        archetype_id = string
+        parameters = map(map(object({
           hcl_jsonencoded = optional(string)
           integer         = optional(number)
           boolean         = optional(bool)
@@ -175,25 +175,25 @@ variable "custom_landing_zones" {
           attribute_key   = optional(string)
         }))),
         access_control = map(object({
-          managed_identities         = optional(object({
+          managed_identities = optional(object({
             lz_key        = string,
             attribute_key = string,
-            resource_keys = list(string) 
+            resource_keys = list(string)
           }))
           azuread_groups = optional(object({
             lz_key        = string,
             attribute_key = string,
-            resource_keys = list(string) 
+            resource_keys = list(string)
           }))
           azuread_service_principals = optional(object({
             lz_key        = string,
             attribute_key = string,
-            resource_keys = list(string) 
+            resource_keys = list(string)
           }))
           azuread_applications = optional(object({
             lz_key        = string,
             attribute_key = string,
-            resource_keys = list(string) 
+            resource_keys = list(string)
           }))
           principal_ids = optional(list(string))
         }))
