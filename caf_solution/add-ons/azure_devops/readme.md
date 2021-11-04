@@ -1,5 +1,7 @@
 # Cloud Adoption Framework for Azure - Landing zones on Terraform - Azure Devops add-on
 
+**:warning: This add-on is here for backward compatibility and will no longer be maintained. For new deployments, we recommend that you leverage the latest version available [azure_devops_v1](../azure_devops_v1)**
+
 The Azure Devops add-ons allow you to setup you Azure Devops environment as a platform to automate all your subsequent landing zone deployment from level 0 until level 4 through Azure pipelines with self hosted agents.
 
 * Azure Devops:
