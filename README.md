@@ -10,7 +10,7 @@ A landing zone is a segment of a cloud environment, that has been pre-provisione
 
 We leverage Azure enterprise-scale landing zones and propose a Terraform-native structure, set of mechanisms and artifacts to get started to deploy workloads fast. 
 
-You can review the different components parts of the Cloud Adoption Framework for Azure Terraform landing zones and look at the quick intro :vhs: below:
+You can review the different components parts of the Cloud Adoption Framework for Azure Terraform landing zones and look at the quick intro :vhs:  below:
 
 [![caf_elements](./_pictures/caf_elements.png)](https://www.youtube.com/watch?v=FlQ17u4NNts "CAF Introduction")
 
@@ -37,7 +37,7 @@ The documentation on this repo is  on how to develop, deploy and operate with la
 
 ## Repositories
 
-In CAF Terraform landing zones, we use multiple projects in a modular way so you can leverage all of them or some of them depending on where you are in your DevOps and GitOps journey. The main repository are listed below, feel free to evaluate, use them and contribute to them also!
+In CAF Terraform landing zones, we use multiple projects in a modular way so you can leverage all of them or some of them depending on where you are in your DevOps and GitOps journey. The main repositories are listed below, feel free to evaluate, use them and contribute to them also!
 
 | Repo                                                                                              | Description                                                |
 |---------------------------------------------------------------------------------------------------|------------------------------------------------------------|
