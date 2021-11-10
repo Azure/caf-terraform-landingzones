@@ -1,5 +1,5 @@
 module "vmss_extension_microsoft_azure_domainjoin" {
-  source  = "github.com/volkerwessels/terraform-azurerm-caf//modules/compute/virtual_machine_scale_set_extensions?ref=vmss-custom-extensions"
+  source  = "github.com/volkerwessels/terraform-azurerm-caf.git//modules/compute/virtual_machine_scale_set_extensions?ref=vmss-custom-extensions"
   #version = "~>5.4.0"
 
   # source = "/tf/caf/aztfmod/modules/compute/virtual_machine_extensions"
@@ -22,7 +22,7 @@ module "vmss_extension_microsoft_azure_domainjoin" {
 
 
 module "vmss_extension_custom_scriptextension" {
-  source  = "github.com/volkerwessels/terraform-azurerm-caf//modules/compute/virtual_machine_scale_set_extensions?ref=vmss-custom-extensions"
+  source  = "github.com/volkerwessels/terraform-azurerm-caf.git//modules/compute/virtual_machine_scale_set_extensions?ref=vmss-custom-extensions"
   #version = "~>5.4.0"
 
   depends_on = [module.solution]
