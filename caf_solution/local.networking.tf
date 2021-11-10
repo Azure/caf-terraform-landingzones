@@ -2,6 +2,8 @@ locals {
   networking = merge(
     var.networking,
     {
+      application_gateway_platforms                           = var.application_gateway_platforms
+      application_gateway_applications_v1                     = var.application_gateway_applications_v1
       application_gateway_applications                        = var.application_gateway_applications
       application_gateway_waf_policies                        = var.application_gateway_waf_policies
       application_gateways                                    = var.application_gateways
@@ -29,6 +31,7 @@ locals {
       network_watchers                                        = var.network_watchers
       networking_interface_asg_associations                   = var.networking_interface_asg_associations
       private_dns                                             = var.private_dns
+      private_dns_vnet_links                                  = var.private_dns_vnet_links
       private_endpoints                                       = var.private_endpoints
       public_ip_addresses                                     = var.public_ip_addresses
       route_tables                                            = var.route_tables
@@ -42,6 +45,7 @@ locals {
       virtual_wans                                            = var.virtual_wans
       vnet_peerings                                           = var.vnet_peerings
       vnets                                                   = var.vnets
+      virtual_subnets                                         = var.virtual_subnets
       vpn_sites                                               = var.vpn_sites
       vpn_gateway_connections                                 = var.vpn_gateway_connections
     }

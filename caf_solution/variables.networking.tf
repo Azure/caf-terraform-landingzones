@@ -1,5 +1,11 @@
 
+variable "application_gateway_platforms" {
+  default = {}
+}
 variable "application_gateways" {
+  default = {}
+}
+variable "application_gateway_applications_v1" {
   default = {}
 }
 variable "application_gateway_applications" {
@@ -87,6 +93,9 @@ variable "private_endpoints" {
 variable "private_dns" {
   default = {}
 }
+variable "private_dns_vnet_links" {
+  default = {}
+}
 variable "public_ip_addresses" {
   default = {}
 }
@@ -106,6 +115,9 @@ variable "virtual_hubs" {
   default = {}
 }
 variable "vnets" {
+  default = {}
+}
+variable "virtual_subnets" {
   default = {}
 }
 variable "vhub_peerings" {

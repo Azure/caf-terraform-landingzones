@@ -3,16 +3,18 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 2.55.0"
+      version = "~> 2.65.0"
     }
   }
-  required_version = ">= 0.13"
+  required_version = ">= 0.14"
+  experiments      = [module_variable_optional_attrs]
 }
 
 
 provider "azurerm" {
+  partner_id = "ca4078f8-9bc4-471b-ab5b-3af6b86a42c8"
+  # partner identifier for CAF Terraform landing zones.
   features {}
 }
 
 data "azurerm_client_config" "current" {}
-

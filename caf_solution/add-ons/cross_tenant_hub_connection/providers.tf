@@ -42,7 +42,7 @@ provider "azurerm" {
 
   # Source tenants for virtual networks.
   # Client ID must have permissions on those virtual_networks
-  auxiliary_tenant_ids = var.landingzone.tfstates[var.virtual_hub_lz_key].auxiliary_tenant_ids
+  auxiliary_tenant_ids = try(var.landingzone.tfstates[var.virtual_hub_lz_key].auxiliary_tenant_ids, null)
 }
 provider "azurerm" {
   features {}

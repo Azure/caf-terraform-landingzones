@@ -92,7 +92,46 @@ variable "deploy_core_landing_zones" {
 }
 
 variable "archetype_config_overrides" {
-  # type        = map(any)
+  type = map(
+    object({
+      archetype_id = string
+      parameters = map(map(object({
+        hcl_jsonencoded = optional(string)
+        integer         = optional(number)
+        boolean         = optional(bool)
+        value           = optional(string)
+        values          = optional(list(string))
+        lz_key          = optional(string)
+        output_key      = optional(string)
+        resource_type   = optional(string)
+        resource_key    = optional(string)
+        attribute_key   = optional(string)
+      }))),
+      access_control = map(object({
+        managed_identities = optional(object({
+          lz_key        = string,
+          attribute_key = string,
+          resource_keys = list(string)
+        }))
+        azuread_groups = optional(object({
+          lz_key        = string,
+          attribute_key = string,
+          resource_keys = list(string)
+        }))
+        azuread_service_principals = optional(object({
+          lz_key        = string,
+          attribute_key = string,
+          resource_keys = list(string)
+        }))
+        azuread_applications = optional(object({
+          lz_key        = string,
+          attribute_key = string,
+          resource_keys = list(string)
+        }))
+        principal_ids = optional(list(string))
+      }))
+    })
+  )
   description = "If specified, will set custom Archetype configurations to the default Enterprise-scale Management Groups."
   default     = {}
 }
@@ -122,9 +161,42 @@ variable "custom_landing_zones" {
         })
       )
       archetype_config = object({
-        archetype_id   = string
-        parameters     = any
-        access_control = any
+        archetype_id = string
+        parameters = map(map(object({
+          hcl_jsonencoded = optional(string)
+          integer         = optional(number)
+          boolean         = optional(bool)
+          value           = optional(string)
+          values          = optional(list(string))
+          lz_key          = optional(string)
+          output_key      = optional(string)
+          resource_type   = optional(string)
+          resource_key    = optional(string)
+          attribute_key   = optional(string)
+        }))),
+        access_control = map(object({
+          managed_identities = optional(object({
+            lz_key        = string,
+            attribute_key = string,
+            resource_keys = list(string)
+          }))
+          azuread_groups = optional(object({
+            lz_key        = string,
+            attribute_key = string,
+            resource_keys = list(string)
+          }))
+          azuread_service_principals = optional(object({
+            lz_key        = string,
+            attribute_key = string,
+            resource_keys = list(string)
+          }))
+          azuread_applications = optional(object({
+            lz_key        = string,
+            attribute_key = string,
+            resource_keys = list(string)
+          }))
+          principal_ids = optional(list(string))
+        }))
       })
     })
   )
