@@ -64,6 +64,9 @@ variable "storage_accounts" {
 variable "storage_account_blobs" {
   default = {}
 }
+variable "azuread" {
+  default = {}
+}
 variable "azuread_groups" {
   default = {}
 }
