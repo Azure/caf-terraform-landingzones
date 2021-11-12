@@ -24,3 +24,20 @@ variable "linked_services" {
     # azure_blob_storage
   }
 }
+variable "data_factory_datasets" {
+  default = {
+    # azure_blob
+    # cosmosdb_sqlapi
+    # delimited_text
+    # http
+    # json
+    # mysql
+    # postgresql
+    # sql_server_table
+  }
+}
+variable "data_factory_linked_services" {
+  default = {
+    # azure_blob_storage
+  }
+}
