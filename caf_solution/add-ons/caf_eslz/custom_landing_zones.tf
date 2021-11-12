@@ -76,15 +76,15 @@ locals {
         local.clz_parameters_hcl_jsonencoded[mg_id][param_key],
         local.clz_parameters_remote_lz[mg_id][param_key]
       )
-    } 
+    }
   }
 
   clz_parameters_value = {
     for mg_id, mg_value in try(var.custom_landing_zones, {}) : mg_id => {
       for param_key, param_value in try(mg_value.archetype_config.parameters, {}) : param_key => {
         for key, value in param_value : key => value.value
-         if value.value != null
-      } 
+        if value.value != null
+      }
     }
   }
 
@@ -92,45 +92,45 @@ locals {
     for mg_id, mg_value in try(var.custom_landing_zones, {}) : mg_id => {
       for param_key, param_value in try(mg_value.archetype_config.parameters, {}) : param_key => {
         for key, value in param_value : key => value.values
-         if value.values != null
+        if value.values != null
       }
-    } 
+    }
   }
 
   clz_parameters_integer = {
     for mg_id, mg_value in try(var.custom_landing_zones, {}) : mg_id => {
       for param_key, param_value in try(mg_value.archetype_config.parameters, {}) : param_key => {
         for key, value in param_value : key => value.integer
-         if value.integer != null
+        if value.integer != null
       }
-    } 
+    }
   }
 
   clz_parameters_boolean = {
     for mg_id, mg_value in try(var.custom_landing_zones, {}) : mg_id => {
       for param_key, param_value in try(mg_value.archetype_config.parameters, {}) : param_key => {
         for key, value in param_value : key => value.boolean
-         if value.boolean != null
+        if value.boolean != null
       }
-    } 
+    }
   }
 
   clz_parameters_hcl_jsonencoded = {
     for mg_id, mg_value in try(var.custom_landing_zones, {}) : mg_id => {
       for param_key, param_value in try(mg_value.archetype_config.parameters, {}) : param_key => {
         for key, value in param_value : key => jsondecode(value.hcl_jsonencoded)
-         if value.hcl_jsonencoded != null
+        if value.hcl_jsonencoded != null
       }
-    } 
+    }
   }
 
   clz_parameters_remote_lz = {
     for mg_id, mg_value in try(var.custom_landing_zones, {}) : mg_id => {
       for param_key, param_value in try(mg_value.archetype_config.parameters, {}) : param_key => {
         for key, value in param_value : key => local.caf[value.output_key][value.lz_key][value.resource_type][value.resource_key][value.attribute_key]
-         if value.output_key != null
+        if value.output_key != null
       }
-    } 
+    }
   }
 
 }
