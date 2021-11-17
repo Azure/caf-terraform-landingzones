@@ -41,3 +41,6 @@ variable "data_factory_linked_services" {
     # azure_blob_storage
   }
 }
+variable "data_factory_integration_runtime_self_hosted" {
+  default = {}
+}

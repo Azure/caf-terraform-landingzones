@@ -222,3 +222,10 @@ locals {
     }
   }
 }
+
+output managed_identities {
+  value       = local.remote.managed_identities
+}
+output azuread_groups {
+  value       = local.remote.azuread_groups
+}

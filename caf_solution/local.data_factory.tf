@@ -1,8 +1,9 @@
 locals {
   data_factory = {
-    data_factory                  = var.data_factory
-    data_factory_pipeline         = var.data_factory_pipeline
-    data_factory_trigger_schedule = var.data_factory_trigger_schedule
+    data_factory                                 = var.data_factory
+    data_factory_pipeline                        = var.data_factory_pipeline
+    data_factory_trigger_schedule                = var.data_factory_trigger_schedule
+    data_factory_integration_runtime_self_hosted = var.data_factory_integration_runtime_self_hosted
     datasets = {
       azure_blob       = merge(try(var.datasets.azure_blob, {}), try(var.data_factory_datasets.azure_blob, {}))
       cosmosdb_sqlapi  = merge(try(var.datasets.cosmosdb_sqlapi, {}), try(var.data_factory_datasets.cosmosdb_sqlapi, {}))
