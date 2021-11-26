@@ -15,13 +15,14 @@ locals {
       sql_server_table = merge(try(var.datasets.sql_server_table, {}), try(var.data_factory_datasets.sql_server_table, {}))
     }
     linked_services = {
-      azure_blob_storage = merge(try(var.linked_services.azure_blob_storage, {}), try(var.data_factory_linked_services.azure_blob_storage, {}))
-      cosmosdb           = try(var.data_factory_linked_services.cosmosdb, {})
-      web                = try(var.data_factory_linked_services.web, {})
-      mysql              = try(var.data_factory_linked_services.mysql, {})
-      postgresql         = try(var.data_factory_linked_services.postgresql, {})
-      sql_server         = try(var.data_factory_linked_services.sql_server, {})
-      azure_databricks   = try(var.data_factory_linked_services.azure_databricks, {})
+      azure_blob_storage = merge(try(var.linked_services.azure_blob_storage, {}), try(var.data_factory_linked_services.azure_blob_storage, {}), var.data_factory_linked_services_azure_blob_storages)
+      azure_databricks   = merge(try(var.data_factory_linked_services.azure_databricks, {}), try(var.data_factory_linked_services.azure_databricks, var.data_factory_linked_service_azure_databricks))
+      cosmosdb           = merge(try(var.data_factory_linked_services.cosmosdb, {}), try(var.data_factory_linked_services.cosmosdb, {}))
+      key_vault          = var.data_factory_linked_service_key_vaults
+      mysql              = merge(try(var.data_factory_linked_services.mysql, {}), try(var.data_factory_linked_services.mysql, {}))
+      postgresql         = merge(try(var.data_factory_linked_services.postgresql, {}), try(var.data_factory_linked_services.postgresql, {}))
+      sql_server         = merge(try(var.data_factory_linked_services.sql_server, {}), try(var.data_factory_linked_services.sql_server, {}))
+      web                = merge(try(var.data_factory_linked_services.web, {}), try(var.data_factory_linked_services.web, {}))
     }
   }
 }
