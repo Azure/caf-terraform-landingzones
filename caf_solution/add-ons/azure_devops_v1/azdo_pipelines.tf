@@ -52,5 +52,15 @@ resource "azuredevops_build_definition" "build_definition" {
       value = jsonencode(variable.value)
     }
   }
+}
 
+# See https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/build_definition_permissions#permissions for a list of available permissions.
+resource "azuredevops_build_definition_permissions" "permissions" {
+  for_each = try(var.permissions.build_definitions, {})
+
+  project_id = data.azuredevops_project.project[each.value.project_key].id
+  principal  = azuredevops_group.group[each.value.group_key].id
+  build_definition_id = azuredevops_build_definition.build_definition[each.key].id
+
+  permissions = each.value.permissions
 }
