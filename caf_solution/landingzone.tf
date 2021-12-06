@@ -26,6 +26,7 @@ module "solution" {
   event_hub_namespaces                  = var.event_hub_namespaces
   event_hubs                            = var.event_hubs
   global_settings                       = local.global_settings
+  identity                              = local.identity
   keyvault_access_policies              = var.keyvault_access_policies
   keyvault_access_policies_azuread_apps = var.keyvault_access_policies_azuread_apps
   keyvault_certificate_issuers          = var.keyvault_certificate_issuers
