@@ -2,6 +2,8 @@ locals {
   networking = merge(
     var.networking,
     {
+      application_gateway_platforms                           = var.application_gateway_platforms
+      application_gateway_applications_v1                     = var.application_gateway_applications_v1
       application_gateway_applications                        = var.application_gateway_applications
       application_gateway_waf_policies                        = var.application_gateway_waf_policies
       application_gateways                                    = var.application_gateways
@@ -18,7 +20,9 @@ locals {
       dns_zones                                               = var.dns_zones
       domain_name_registrations                               = var.domain_name_registrations
       express_route_circuit_authorizations                    = var.express_route_circuit_authorizations
+      express_route_circuit_peerings                          = var.express_route_circuit_peerings
       express_route_circuits                                  = var.express_route_circuits
+      express_route_connections                               = var.express_route_connections
       front_door_waf_policies                                 = var.front_door_waf_policies
       front_doors                                             = var.front_doors
       ip_groups                                               = var.ip_groups
@@ -43,8 +47,8 @@ locals {
       virtual_wans                                            = var.virtual_wans
       vnet_peerings                                           = var.vnet_peerings
       vnets                                                   = var.vnets
+      virtual_subnets                                         = var.virtual_subnets
       vpn_sites                                               = var.vpn_sites
-      vpn_gateway_connections                                 = var.vpn_gateway_connections
     }
   )
 }

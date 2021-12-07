@@ -5,7 +5,6 @@
     "dockerComposeFile": "docker-compose.yml",
 
     // Container user to use in VSCode Online and GitHub Codespaces
-    "containerUser" : "vscode",
     "remoteUser" : "vscode",
 
     // The 'service' property is the name of the service for the container that VS Code should

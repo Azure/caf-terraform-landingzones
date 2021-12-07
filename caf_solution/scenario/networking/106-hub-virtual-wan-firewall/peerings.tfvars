@@ -1,9 +1,8 @@
 virtual_hub_connections = {
   # Establish the peering with Virtual Hubs
   hub_rg1-TO-vnet_rg1 = {
-    vhub = {
-      virtual_wan_key = "vwan_re1"
-      virtual_hub_key = "hub_re1"
+    virtual_hub = {
+      key = "hub_re1"
     }
     vnet = {
       # If the virtual network is stored in another another landing zone, use the following attributes to refer the state file:
@@ -17,9 +16,8 @@ virtual_hub_connections = {
     internet_security_enabled                       = true
   }
   hub_rg2-TO-vnet_rg2 = {
-    vhub = {
-      virtual_wan_key = "vwan_re1"
-      virtual_hub_key = "hub_re2"
+    virtual_hub = {
+      key = "hub_re2"
     }
     vnet = {
       # If the virtual network is stored in another another landing zone, use the following attributes to refer the state file:

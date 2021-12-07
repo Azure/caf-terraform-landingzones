@@ -8,7 +8,10 @@ variable "lower_container_name" {
 variable "lower_resource_group_name" {
   default = null
 }
-
+variable "custom_variables" {
+  description = "Global custom variables to allow sharing variables between tfstates."
+  default     = {}
+}
 variable "tfstate_subscription_id" {
   description = "This value is propulated by the rover. subscription id hosting the remote tfstates"
   default     = null

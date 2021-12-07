@@ -25,20 +25,20 @@ This will setup TFC organization, workspaces and variables to host landing zones
 
 ```bash
 # Deploy
-rover -lz /tf/caf/landingzones/caf_launchpad/add-ons/terraform_cloud/ \
--var-folder /tf/caf/landingzones/caf_launchpad/add-ons/terraform_cloud/example/ \
+rover -lz /tf/caf/landingzones/caf_solution/add-ons/terraform_cloud/ \
+-var-folder /tf/caf/landingzones/caf_solution/add-ons/terraform_cloud/example/ \
 -a plan -launchpad
 
 or
-cd /tf/caf/landingzones/caf_launchpad/add-ons/terraform_cloud/
+cd /tf/caf/landingzones/caf_solution/add-ons/terraform_cloud/
 terraform init
 terraform plan \
--var-file /tf/caf/landingzones/caf_launchpad/add-ons/terraform_cloud/example/tfc.tfvars
+-var-file /tf/caf/landingzones/caf_solution/add-ons/terraform_cloud/example/tfc.tfvars
 ```
 
 Once ready, you can create your configuration:
 
 ```bash
 terraform apply \
--var-file /tf/caf/landingzones/caf_launchpad/add-ons/terraform_cloud/example/tfc.tfvars
+-var-file /tf/caf/landingzones/caf_solution/add-ons/terraform_cloud/example/tfc.tfvars
 ```

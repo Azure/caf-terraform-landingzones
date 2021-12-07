@@ -2,48 +2,42 @@
 
 [![Gitter](https://badges.gitter.im/aztfmod/community.svg)](https://gitter.im/aztfmod/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-# Cloud Adoption Framework for Azure landing zones on Terraform
+# Cloud Adoption Framework for Azure Terraform landing zones
 
 Microsoft [Cloud Adoption Framework for Azure](https://docs.microsoft.com/azure/cloud-adoption-framework/overview) provides you with guidance and best practices to adopt Azure.
 
 A landing zone is a segment of a cloud environment, that has been pre-provisioned through code, and is dedicated to the support of one or more workloads. Landing zones provide access to foundational tools and controls to establish a compliant place to innovate and build new workloads in the cloud, or to migrate existing workloads to the cloud. Landing zones use defined sets of cloud services and best practices to set you up for success.
 
-Components parts of the Cloud Adoption Framework for Azure Terraform landing zones:
+We leverage Azure enterprise-scale landing zones and propose a Terraform-native structure, set of mechanisms and artifacts to get started to deploy workloads fast. 
 
-![caf_elements](./_pictures/caf_elements.png)
+You can review the different components parts of the Cloud Adoption Framework for Azure Terraform landing zones and look at the quick intro :vhs:  below:
+
+[![caf_elements](./_pictures/caf_elements.png)](https://www.youtube.com/watch?v=FlQ17u4NNts "CAF Introduction")
 
 ## Goals
 
-Cloud Adoption Framework for Azure Terraform landing zones is an Open Source project with the following objectives:
+Cloud Adoption Framework for Azure Terraform landing zones is an Open Source project equiping the Site Reliability Engineer on Azure with:
 
-* Enable the community with a set of sample reusable landing zones.
+* Enable the community with a set of reusable landing artifacts.
 * Standardize deployments using battlefield-proven components.
 * Accelerate the setup of complex environments on Azure.
-* Propose an enterprise-grade approach to adopting Terraform on Microsoft Azure using Cloud Adoption Framework.
+* Implement Azure enterprise-scale design and approach with native Terraform and DevOps.
 * Propose a prescriptive guidance on how to enable DevOps for infrastructure as code on Microsoft Azure.
 * Foster a community of Azure *Terraformers* using a common set of practices and sharing best practices.
 
-## Getting started
+## :rocket: Getting started
 
 When starting an enterprise deployment, we recommend you start creating a configuration repository where you craft the configuration files for your environments.
 
-You can find the [starter repository here](https://github.com/Azure/caf-terraform-landingzones-starter) and our sample configuration [onboarding video here](https://www.youtube.com/watch?v=M5BXm30IpdY)
+The best way to start is to clone the [starter repository](https://github.com/Azure/caf-terraform-landingzones-starter) and getting started with the configuration files, you can find a quick [onboarding video here](https://www.youtube.com/watch?v=M5BXm30IpdY)
 
 ## Documentation
 
-More details on how to develop, deploy and operate with landing zones can be found in the reference section [here](./documentation/README.md)
-
-## Sample landing zones
-
-Currently we provide you with the following core sample landing zones:
-
-| Name | Level | Purpose |
-|--|--|--|
-| [caf_launchpad](./caf_launchpad) |  0 | provides the state management capabilities and security features leveraging Azure storage for the backend, provides secret management and modular approach to support plugin for Azure DevOps automated pipeline creation (and others) |
-| [caf_solution](./caf_solution) | 1-4 | "universal" landing zone that allow you to compose with any object from the CAF module and beyond. |
-
+The documentation on this repo is  on how to develop, deploy and operate with landing zones can be found in the reference section [here](./documentation/README.md)
 
 ## Repositories
+
+In CAF Terraform landing zones, we use multiple projects in a modular way so you can leverage all of them or some of them depending on where you are in your DevOps and GitOps journey. The main repositories are listed below, feel free to evaluate, use them and contribute to them also!
 
 | Repo                                                                                              | Description                                                |
 |---------------------------------------------------------------------------------------------------|------------------------------------------------------------|

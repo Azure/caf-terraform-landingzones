@@ -18,7 +18,7 @@ on:
 
 env:
   TF_CLI_ARGS: '-no-color'
-  TF_CLI_ARGS_destroy: '-auto-approve -refresh=false'
+  TF_CLI_ARGS_destroy: '-refresh=false'
   ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
   ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
@@ -37,7 +37,7 @@ jobs:
           random_length: ['5']
 
     container:
-      image: aztfmod/rover:1.0.4-2108.1802
+      image: aztfmod/rover:1.0.9-2111.0103
       options: --user 0
 
     steps:
@@ -64,6 +64,7 @@ jobs:
 
       - name: foundations
         run: |
+          sleep 90
           /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/caf_solution -a apply \
             -var-folder ${GITHUB_WORKSPACE}/caf_solution/scenario/foundations/100-passthrough \
             -tfstate caf_foundations.tfstate \
@@ -89,7 +90,7 @@ jobs:
           ]
 
     container:
-      image: aztfmod/rover:1.0.4-2108.1802
+      image: aztfmod/rover:1.0.9-2111.0103
       options: --user 0
 
     steps:
@@ -117,8 +118,7 @@ jobs:
             -parallelism=30 \
             -var-folder ${GITHUB_WORKSPACE}/${{ matrix.config_files }} \
             --environment ${{ github.run_id }} \
-            -refresh=false \
-            -auto-approve
+            -refresh=false 
 
   foundations200:
     name: foundations-200
@@ -133,7 +133,7 @@ jobs:
           random_length: ['5']
 
     container:
-      image: aztfmod/rover:1.0.4-2108.1802
+      image: aztfmod/rover:1.0.9-2111.0103
       options: --user 0
 
     steps:
@@ -184,7 +184,7 @@ jobs:
           ]
 
     container:
-      image: aztfmod/rover:1.0.4-2108.1802
+      image: aztfmod/rover:1.0.9-2111.0103
       options: --user 0
 
     steps:
@@ -212,8 +212,7 @@ jobs:
             -parallelism=30 \
             -var-folder ${GITHUB_WORKSPACE}/${{ matrix.config_files }} \
             --environment ${{ github.run_id }} \
-            -refresh=false \
-            -auto-approve
+            -refresh=false 
 
   foundations_destroy:
     name: foundations_destroy
@@ -227,7 +226,7 @@ jobs:
         random_length: ['5']
 
     container:
-      image: aztfmod/rover:1.0.4-2108.1802
+      image: aztfmod/rover:1.0.9-2111.0103
       options: --user 0
 
     steps:
@@ -248,8 +247,7 @@ jobs:
             -level level1 \
             -parallelism=30 \
             --environment ${{ github.run_id }} \
-            '-var tags={testing_job_id="${{ github.run_id }}"}' \
-            -auto-approve
+            '-var tags={testing_job_id="${{ github.run_id }}"}'
 
       - name: Remove launchpad
         run: |
@@ -261,8 +259,7 @@ jobs:
             --environment ${{ github.run_id }} \
             '-var random_length=${{ matrix.random_length }}' \
             '-var prefix=g${{ github.run_id }}' \
-            '-var tags={testing_job_id="${{ github.run_id }}"}' \
-            -auto-approve
+            '-var tags={testing_job_id="${{ github.run_id }}"}'
 
 
       - name: Complete purge

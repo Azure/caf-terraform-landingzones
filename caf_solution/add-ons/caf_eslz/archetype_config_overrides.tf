@@ -44,15 +44,15 @@ locals {
         local.aco_parameters_hcl_jsonencoded[mg_id][param_key],
         local.aco_parameters_remote_lz[mg_id][param_key]
       )
-    } 
+    }
   }
 
   aco_parameters_value = {
     for mg_id, mg_value in try(var.archetype_config_overrides, {}) : mg_id => {
       for param_key, param_value in try(mg_value.parameters, {}) : param_key => {
         for key, value in param_value : key => value.value
-         if value.value != null
-      } 
+        if value.value != null
+      }
     }
   }
 
@@ -60,17 +60,17 @@ locals {
     for mg_id, mg_value in try(var.archetype_config_overrides, {}) : mg_id => {
       for param_key, param_value in try(mg_value.parameters, {}) : param_key => {
         for key, value in param_value : key => value.values
-         if value.values != null
+        if value.values != null
       }
-    } 
+    }
   }
 
   aco_parameters_integer = {
     for mg_id, mg_value in try(var.archetype_config_overrides, {}) : mg_id => {
       for param_key, param_value in try(mg_value.parameters, {}) : param_key => {
         for key, value in param_value : key => value.integer
-         if value.integer != null
-      } 
+        if value.integer != null
+      }
     }
   }
 
@@ -78,8 +78,8 @@ locals {
     for mg_id, mg_value in try(var.archetype_config_overrides, {}) : mg_id => {
       for param_key, param_value in try(mg_value.parameters, {}) : param_key => {
         for key, value in param_value : key => value.boolean
-         if value.boolean != null
-      } 
+        if value.boolean != null
+      }
     }
   }
 
@@ -87,18 +87,18 @@ locals {
     for mg_id, mg_value in try(var.archetype_config_overrides, {}) : mg_id => {
       for param_key, param_value in try(mg_value.parameters, {}) : param_key => {
         for key, value in param_value : key => jsondecode(value.hcl_jsonencoded)
-         if value.hcl_jsonencoded != null
+        if value.hcl_jsonencoded != null
       }
-    } 
+    }
   }
 
   aco_parameters_remote_lz = {
     for mg_id, mg_value in try(var.archetype_config_overrides, {}) : mg_id => {
       for param_key, param_value in try(mg_value.parameters, {}) : param_key => {
         for key, value in param_value : key => local.caf[value.output_key][value.lz_key][value.resource_type][value.resource_key][value.attribute_key]
-         if value.output_key != null
+        if value.output_key != null
       }
-    } 
+    }
   }
 
 }

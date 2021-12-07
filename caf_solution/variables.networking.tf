@@ -1,5 +1,11 @@
 
+variable "application_gateway_platforms" {
+  default = {}
+}
 variable "application_gateways" {
+  default = {}
+}
+variable "application_gateway_applications_v1" {
   default = {}
 }
 variable "application_gateway_applications" {
@@ -48,6 +54,12 @@ variable "express_route_circuits" {
   default = {}
 }
 variable "express_route_circuit_authorizations" {
+  default = {}
+}
+variable "express_route_circuit_peerings" {
+  default = {}
+}
+variable "express_route_connections" {
   default = {}
 }
 variable "load_balancers" {
@@ -109,6 +121,9 @@ variable "virtual_hubs" {
   default = {}
 }
 variable "vnets" {
+  default = {}
+}
+variable "virtual_subnets" {
   default = {}
 }
 variable "vhub_peerings" {

@@ -1,7 +1,6 @@
 locals {
-  data_factory = merge(
-    var.data_factory,
-    {
+  data_factory = {
+      data_factory                  = var.data_factory
       data_factory_pipeline         = var.data_factory_pipeline
       data_factory_trigger_schedule = var.data_factory_trigger_schedule
       datasets = {
@@ -18,5 +17,4 @@ locals {
         azure_blob_storage = try(var.linked_services.azure_blob_storage, {})
       }
     }
-  )
 }
