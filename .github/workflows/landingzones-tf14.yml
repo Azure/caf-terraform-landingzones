@@ -113,7 +113,8 @@ jobs:
             -parallelism=30 \
             -var-folder ${GITHUB_WORKSPACE}/${{ matrix.config_files }} \
             --environment ${{ github.run_id }} \
-            -refresh=false 
+            -refresh=false \
+            -auto-approve
 
   foundations200:
     name: foundations-200
@@ -207,7 +208,8 @@ jobs:
             -parallelism=30 \
             -var-folder ${GITHUB_WORKSPACE}/${{ matrix.config_files }} \
             --environment ${{ github.run_id }} \
-            -refresh=false 
+            -refresh=false \
+            -auto-approve
 
   foundations_destroy:
     name: foundations_destroy
@@ -242,7 +244,7 @@ jobs:
             -level level1 \
             -parallelism=30 \
             --environment ${{ github.run_id }} \
-            '-var tags={testing_job_id="${{ github.run_id }}"}' 
+            -auto-approve
 
       - name: Remove launchpad
         run: |
@@ -252,9 +254,7 @@ jobs:
             -launchpad \
             -parallelism=30 \
             --environment ${{ github.run_id }} \
-            '-var random_length=${{ matrix.random_length }}' \
-            '-var prefix=g${{ github.run_id }}' \
-            '-var tags={testing_job_id="${{ github.run_id }}"}' 
+            -auto-approve
 
 
       - name: Complete purge
