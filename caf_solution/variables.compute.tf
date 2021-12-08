@@ -27,6 +27,9 @@ variable "dedicated_host_groups" {
 variable "dedicated_hosts" {
   default = {}
 }
+variable "machine_learning_compute_instance" {
+  default = {}
+}
 variable "proximity_placement_groups" {
   default = {}
 }
