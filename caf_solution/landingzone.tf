@@ -42,6 +42,7 @@ module "solution" {
   resource_groups                       = var.resource_groups
   role_mapping                          = var.role_mapping
   security                              = local.security
+  servicebus                            = local.servicebus
   shared_services                       = local.shared_services
   storage                               = local.storage
   storage_accounts                      = var.storage_accounts
