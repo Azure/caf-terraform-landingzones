@@ -33,7 +33,7 @@ jobs:
           random_length: ['5']
 
     container:
-      image: aztfmod/rover:0.15.5-2112.0723
+      image: aztfmod/rover:0.15.5-2112.0809
       options: --user 0
 
     steps:
@@ -85,7 +85,7 @@ jobs:
           ]
 
     container:
-      image: aztfmod/rover:0.15.5-2112.0723
+      image: aztfmod/rover:0.15.5-2112.0809
       options: --user 0
 
     steps:
@@ -113,7 +113,7 @@ jobs:
             -parallelism=30 \
             -var-folder ${GITHUB_WORKSPACE}/${{ matrix.config_files }} \
             --environment ${{ github.run_id }} \
-            -refresh=false 
+            -refresh=false
 
   foundations200:
     name: foundations-200
@@ -128,7 +128,7 @@ jobs:
           random_length: ['5']
 
     container:
-      image: aztfmod/rover:0.15.5-2112.0723
+      image: aztfmod/rover:0.15.5-2112.0809
       options: --user 0
 
     steps:
@@ -179,7 +179,7 @@ jobs:
           ]
 
     container:
-      image: aztfmod/rover:0.15.5-2112.0723
+      image: aztfmod/rover:0.15.5-2112.0809
       options: --user 0
 
     steps:
@@ -207,7 +207,7 @@ jobs:
             -parallelism=30 \
             -var-folder ${GITHUB_WORKSPACE}/${{ matrix.config_files }} \
             --environment ${{ github.run_id }} \
-            -refresh=false 
+            -refresh=false
 
   foundations_destroy:
     name: foundations_destroy
@@ -221,7 +221,7 @@ jobs:
         random_length: ['5']
 
     container:
-      image: aztfmod/rover:0.15.5-2112.0723
+      image: aztfmod/rover:0.15.5-2112.0809
       options: --user 0
 
     steps:
@@ -242,7 +242,7 @@ jobs:
             -level level1 \
             -parallelism=30 \
             --environment ${{ github.run_id }} \
-            '-var tags={testing_job_id="${{ github.run_id }}"}' 
+            '-var tags={testing_job_id="${{ github.run_id }}"}'
 
       - name: Remove launchpad
         run: |
@@ -254,7 +254,7 @@ jobs:
             --environment ${{ github.run_id }} \
             '-var random_length=${{ matrix.random_length }}' \
             '-var prefix=g${{ github.run_id }}' \
-            '-var tags={testing_job_id="${{ github.run_id }}"}' 
+            '-var tags={testing_job_id="${{ github.run_id }}"}'
 
 
       - name: Complete purge
