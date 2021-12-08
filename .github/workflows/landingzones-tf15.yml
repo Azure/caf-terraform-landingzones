@@ -17,6 +17,8 @@ env:
   ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
   ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+  TF_REGISTRY_DISCOVERY_RETRY: 5
+  TF_REGISTRY_CLIENT_TIMEOUT: 15
   ROVER_RUNNER: true
 
 jobs:
@@ -31,7 +33,7 @@ jobs:
           random_length: ['5']
 
     container:
-      image: aztfmod/rover:0.15.5-2112.0701
+      image: aztfmod/rover:0.15.5-2112.0723
       options: --user 0
 
     steps:
@@ -83,7 +85,7 @@ jobs:
           ]
 
     container:
-      image: aztfmod/rover:0.15.5-2112.0701
+      image: aztfmod/rover:0.15.5-2112.0723
       options: --user 0
 
     steps:
@@ -126,7 +128,7 @@ jobs:
           random_length: ['5']
 
     container:
-      image: aztfmod/rover:0.15.5-2112.0701
+      image: aztfmod/rover:0.15.5-2112.0723
       options: --user 0
 
     steps:
@@ -177,7 +179,7 @@ jobs:
           ]
 
     container:
-      image: aztfmod/rover:0.15.5-2112.0701
+      image: aztfmod/rover:0.15.5-2112.0723
       options: --user 0
 
     steps:
@@ -219,7 +221,7 @@ jobs:
         random_length: ['5']
 
     container:
-      image: aztfmod/rover:0.15.5-2112.0701
+      image: aztfmod/rover:0.15.5-2112.0723
       options: --user 0
 
     steps:

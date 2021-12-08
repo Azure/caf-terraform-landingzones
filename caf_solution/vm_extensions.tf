@@ -6,7 +6,7 @@ module "vm_extension_monitoring_agent" {
   # source  = "aztfmod/caf/azurerm//modules/compute/virtual_machine_extensions"
   # version = "~>5.4.0"
 
-  source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git//modules/compute/virtual_machine_extensions?ref=p.remote_rg"
+  source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git//modules/compute/virtual_machine_extensions?ref=master"
 
   depends_on = [module.solution]
 
@@ -28,7 +28,7 @@ module "vm_extension_diagnostics" {
   # source  = "aztfmod/caf/azurerm//modules/compute/virtual_machine_extensions"
   # version = "~>5.4.0"
 
-  source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git//modules/compute/virtual_machine_extensions?ref=p.remote_rg"
+  source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git//modules/compute/virtual_machine_extensions?ref=master"
 
   depends_on = [module.solution]
 
@@ -55,7 +55,7 @@ module "vm_extension_microsoft_azure_domainjoin" {
 
   # source = "/tf/caf/aztfmod/modules/compute/virtual_machine_extensions"
 
-  source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git//modules/compute/virtual_machine_extensions?ref=p.remote_rg"
+  source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git//modules/compute/virtual_machine_extensions?ref=master"
 
   depends_on = [module.solution]
 
@@ -77,7 +77,7 @@ module "vm_extension_session_host_dscextension" {
 
   # source = "/tf/caf/aztfmod/modules/compute/virtual_machine_extensions"
 
-  source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git//modules/compute/virtual_machine_extensions?ref=p.remote_rg"
+  source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git//modules/compute/virtual_machine_extensions?ref=master"
 
   depends_on = [module.vm_extension_microsoft_azure_domainjoin]
 
@@ -99,7 +99,7 @@ module "vm_extension_custom_scriptextension" {
   # source  = "aztfmod/caf/azurerm//modules/compute/virtual_machine_extensions"
   # version = "~>5.4.0"
 
-  source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git//modules/compute/virtual_machine_extensions?ref=p.remote_rg"
+  source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git//modules/compute/virtual_machine_extensions?ref=master"
 
   depends_on = [module.solution, module.vm_extension_microsoft_azure_domainjoin]
 

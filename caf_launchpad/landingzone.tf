@@ -3,7 +3,7 @@ module "launchpad" {
 #   version = "~>5.4.2"
 
 
-  source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=p.remote_rg"
+  source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=master"
   # source = "../../aztfmod"
   
   providers = {
