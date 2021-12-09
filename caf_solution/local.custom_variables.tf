@@ -78,7 +78,8 @@ locals {
 }
 
 output global_settings {
-  value = local.global_settings
+  value     = local.global_settings
+  sensitive = false
 }
 
 output custom_variables {
