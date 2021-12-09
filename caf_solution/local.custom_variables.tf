@@ -77,6 +77,10 @@ locals {
 
 }
 
+output global_settings {
+  value = local.global_settings
+}
+
 output custom_variables {
   value = local.custom_variables
 }
