@@ -1,5 +1,11 @@
 
+variable "application_gateway_platforms" {
+  default = {}
+}
 variable "application_gateways" {
+  default = {}
+}
+variable "application_gateway_applications_v1" {
   default = {}
 }
 variable "application_gateway_applications" {
@@ -32,6 +38,12 @@ variable "azurerm_firewall_policy_rule_collection_groups" {
 variable "azurerm_routes" {
   default = {}
 }
+variable "cdn_profiles" {
+  default = {}
+}
+variable "cdn_endpoints" {
+  default = {}
+}
 variable "ddos_services" {
   default = {}
 }
@@ -48,6 +60,12 @@ variable "express_route_circuits" {
   default = {}
 }
 variable "express_route_circuit_authorizations" {
+  default = {}
+}
+variable "express_route_circuit_peerings" {
+  default = {}
+}
+variable "express_route_connections" {
   default = {}
 }
 variable "load_balancers" {
@@ -87,6 +105,9 @@ variable "private_endpoints" {
 variable "private_dns" {
   default = {}
 }
+variable "private_dns_vnet_links" {
+  default = {}
+}
 variable "public_ip_addresses" {
   default = {}
 }
@@ -106,6 +127,9 @@ variable "virtual_hubs" {
   default = {}
 }
 variable "vnets" {
+  default = {}
+}
+variable "virtual_subnets" {
   default = {}
 }
 variable "vhub_peerings" {

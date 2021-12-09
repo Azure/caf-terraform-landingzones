@@ -30,6 +30,18 @@ data "kustomization_overlay" "aad_pod_identity" {
   patches {
     patch = <<-EOF
       - op: replace
+        path: /metadata/name
+        value: ${each.value.name}
+    EOF
+
+    target = {
+      kind = "AzureIdentity"
+    }
+  }
+
+  patches {
+    patch = <<-EOF
+      - op: replace
         path: /spec/resourceID
         value: ${each.value.id}
     EOF
@@ -55,7 +67,7 @@ data "kustomization_overlay" "aad_pod_identity" {
     patch = <<-EOF
       - op: replace
         path: /metadata/name
-        value: ${each.value.pod_aad_name}
+        value: ${each.value.name}
     EOF
 
     target = {
@@ -67,7 +79,7 @@ data "kustomization_overlay" "aad_pod_identity" {
     patch = <<-EOF
       - op: replace
         path: /metadata/name
-        value: ${each.value.pod_aad_name}
+        value: ${each.value.name}
     EOF
 
     target = {
@@ -79,7 +91,7 @@ data "kustomization_overlay" "aad_pod_identity" {
     patch = <<-EOF
       - op: replace
         path: /spec/azureIdentity
-        value: ${each.value.pod_aad_name}
+        value: ${each.value.name}
     EOF
 
     target = {
@@ -87,17 +99,23 @@ data "kustomization_overlay" "aad_pod_identity" {
     }
   }
 
+  # You can provide a managed_identities.<key>.aadpodidentity_selector to specify the value here,
+  # alternatively provide none to have the MSI name used as the selector.
   patches {
     patch = <<-EOF
       - op: replace
         path: /spec/selector
-        value: ${each.value.pod_aad_name}
+        value: ${each.value.selector}
     EOF
 
     target = {
       kind = "AzureIdentityBinding"
     }
   }
+}
+
+output "manifests" {
+  value = data.kustomization_overlay.aad_pod_identity
 }
 
 locals {
@@ -107,12 +125,11 @@ locals {
         for key, value in var.managed_identities : [
           for msi_key in value.msi_keys : {
             key       = key
-            lz_key    = value.lz_key
             msi_key   = msi_key
+            selector  = try(value.aadpodidentity_selector, local.remote.managed_identities[value.lz_key][msi_key].name)
             client_id = local.remote.managed_identities[value.lz_key][msi_key].client_id
             id        = local.remote.managed_identities[value.lz_key][msi_key].id
             name      = local.remote.managed_identities[value.lz_key][msi_key].name
-            pod_aad_name  = local.remote.managed_identities[value.lz_key][msi_key].name
           }
         ]
       ]

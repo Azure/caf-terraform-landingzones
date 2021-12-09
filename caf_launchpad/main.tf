@@ -1,4 +1,5 @@
 terraform {
+  required_version = ">= 0.15"
   required_providers {
     // azurerm version driven by the caf module
     // azuread version driven by the caf module
@@ -23,11 +24,12 @@ terraform {
       version = "~> 1.2.0"
     }
   }
-  required_version = ">= 0.13"
 }
 
 
 provider "azurerm" {
+  partner_id = "ca4078f8-9bc4-471b-ab5b-3af6b86a42c8"
+  # partner identifier for CAF Terraform landing zones.
   features {}
 }
 

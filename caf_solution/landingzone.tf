@@ -1,9 +1,13 @@
 module "solution" {
-  source  = "aztfmod/caf/azurerm"
-  version = "~>5.4.2"
+#   source  = "aztfmod/caf/azurerm"
+#   version = "~>5.4.2"
 
-  # source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=master"
+  source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=master"
   # source = "../../aztfmod"
+
+  providers = {
+    azurerm.vhub = azurerm.vhub
+  }
 
   azuread                               = local.azuread
   cloud                                 = local.cloud
@@ -22,6 +26,7 @@ module "solution" {
   event_hub_namespaces                  = var.event_hub_namespaces
   event_hubs                            = var.event_hubs
   global_settings                       = local.global_settings
+  identity                              = local.identity
   keyvault_access_policies              = var.keyvault_access_policies
   keyvault_access_policies_azuread_apps = var.keyvault_access_policies_azuread_apps
   keyvault_certificate_issuers          = var.keyvault_certificate_issuers
@@ -37,6 +42,7 @@ module "solution" {
   resource_groups                       = var.resource_groups
   role_mapping                          = var.role_mapping
   security                              = local.security
+  servicebus                            = local.servicebus
   shared_services                       = local.shared_services
   storage                               = local.storage
   storage_accounts                      = var.storage_accounts

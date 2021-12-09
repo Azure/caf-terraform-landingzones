@@ -52,7 +52,7 @@ locals {
                     ]
                   ],
                   [
-                    try(roles.principal_ids, [])
+                    roles.principal_ids != null ? try(roles.principal_ids, []) : []
                   ]
                 ]
               ) //flatten (ids)
@@ -61,12 +61,76 @@ locals {
         ) : mapping.role => mapping.ids
       }
 
-      parameters = {
-        for param_key, param_value in try(mg_value.archetype_config.parameters, {}) : param_key => {
-          for key, value in param_value : key => jsonencode(try(local.caf[value.output_key][value.lz_key][value.resource_type][value.resource_key][value.attribute_key], value.value))
-        }
-      }
+      parameters = local.clz_parameters_combined[mg_id]
 
     }
   }
+
+  clz_parameters_combined = {
+    for mg_id, mg_value in try(var.custom_landing_zones, {}) : mg_id => {
+      for param_key, param_value in try(mg_value.archetype_config.parameters, {}) : param_key => merge(
+        local.clz_parameters_value[mg_id][param_key],
+        local.clz_parameters_values[mg_id][param_key],
+        local.clz_parameters_integer[mg_id][param_key],
+        local.clz_parameters_boolean[mg_id][param_key],
+        local.clz_parameters_hcl_jsonencoded[mg_id][param_key],
+        local.clz_parameters_remote_lz[mg_id][param_key]
+      )
+    }
+  }
+
+  clz_parameters_value = {
+    for mg_id, mg_value in try(var.custom_landing_zones, {}) : mg_id => {
+      for param_key, param_value in try(mg_value.archetype_config.parameters, {}) : param_key => {
+        for key, value in param_value : key => value.value
+        if value.value != null
+      }
+    }
+  }
+
+  clz_parameters_values = {
+    for mg_id, mg_value in try(var.custom_landing_zones, {}) : mg_id => {
+      for param_key, param_value in try(mg_value.archetype_config.parameters, {}) : param_key => {
+        for key, value in param_value : key => value.values
+        if value.values != null
+      }
+    }
+  }
+
+  clz_parameters_integer = {
+    for mg_id, mg_value in try(var.custom_landing_zones, {}) : mg_id => {
+      for param_key, param_value in try(mg_value.archetype_config.parameters, {}) : param_key => {
+        for key, value in param_value : key => value.integer
+        if value.integer != null
+      }
+    }
+  }
+
+  clz_parameters_boolean = {
+    for mg_id, mg_value in try(var.custom_landing_zones, {}) : mg_id => {
+      for param_key, param_value in try(mg_value.archetype_config.parameters, {}) : param_key => {
+        for key, value in param_value : key => value.boolean
+        if value.boolean != null
+      }
+    }
+  }
+
+  clz_parameters_hcl_jsonencoded = {
+    for mg_id, mg_value in try(var.custom_landing_zones, {}) : mg_id => {
+      for param_key, param_value in try(mg_value.archetype_config.parameters, {}) : param_key => {
+        for key, value in param_value : key => jsondecode(value.hcl_jsonencoded)
+        if value.hcl_jsonencoded != null
+      }
+    }
+  }
+
+  clz_parameters_remote_lz = {
+    for mg_id, mg_value in try(var.custom_landing_zones, {}) : mg_id => {
+      for param_key, param_value in try(mg_value.archetype_config.parameters, {}) : param_key => {
+        for key, value in param_value : key => local.caf[value.output_key][value.lz_key][value.resource_type][value.resource_key][value.attribute_key]
+        if value.output_key != null
+      }
+    }
+  }
+
 }

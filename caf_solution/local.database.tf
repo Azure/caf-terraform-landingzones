@@ -5,6 +5,7 @@ locals {
       app_config                         = var.app_config
       azurerm_redis_caches               = var.azurerm_redis_caches
       cosmos_dbs                         = var.cosmos_dbs
+      cosmosdb_sql_databases             = var.cosmosdb_sql_databases
       databricks_workspaces              = var.databricks_workspaces
       machine_learning_workspaces        = var.machine_learning_workspaces
       mariadb_databases                  = var.mariadb_databases

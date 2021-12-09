@@ -24,9 +24,6 @@ variable "tags" {
 variable "aks_cluster_key" {
   description = "AKS cluster key to deploy the Gitlab Helm charts. The key must be defined in the variable aks_clusters"
 }
-variable "aks_cluster_vnet_key" {
-
-}
 variable "aks_clusters" {}
 variable "vnets" {
   default = {}
