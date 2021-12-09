@@ -79,7 +79,7 @@ data "kustomization_overlay" "aad_pod_identity" {
     patch = <<-EOF
       - op: replace
         path: /metadata/name
-        value: ${each.value.name}-binding
+        value: ${each.value.name}
     EOF
 
     target = {
