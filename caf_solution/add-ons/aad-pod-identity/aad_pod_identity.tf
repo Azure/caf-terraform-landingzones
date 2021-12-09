@@ -114,9 +114,6 @@ data "kustomization_overlay" "aad_pod_identity" {
   }
 }
 
-output "manifests" {
-  value = data.kustomization_overlay.aad_pod_identity
-}
 
 locals {
   msi = {
