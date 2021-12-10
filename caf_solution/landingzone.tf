@@ -35,6 +35,7 @@ module "solution" {
   logged_user_objectId                  = var.logged_user_objectId
   logic_app                             = var.logic_app
   managed_identities                    = var.managed_identities
+  messaging                             = local.messaging
   networking                            = local.networking
   random_strings                        = var.random_strings
   remote_objects                        = local.remote
