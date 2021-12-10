@@ -1,10 +1,10 @@
 variable "servicebus" {
   description = "Service Bus configurations"
-  default = {}
+  default     = {}
 }
 variable "servicebus_namespaces" {
   description = "Service Bus Namespace configuration objects"
-  default = {}
+  default     = {}
 }
 variable "servicebus_topics" {
   default = {}

@@ -12,7 +12,7 @@ output "objects" {
 
 output "global_settings" {
   value     = local.global_settings
-  sensitive = false
+  sensitive = true
 }
 
 output "diagnostics" {

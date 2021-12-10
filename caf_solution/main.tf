@@ -38,7 +38,7 @@ provider "azurerm" {
 }
 
 provider "azurerm" {
-  alias = "vhub"
+  alias                      = "vhub"
   skip_provider_registration = true
   features {}
   subscription_id = local.connectivity_subscription_id
