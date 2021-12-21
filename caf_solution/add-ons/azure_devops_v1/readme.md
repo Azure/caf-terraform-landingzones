@@ -81,9 +81,9 @@ pipelines = {
 ## Deployment
 
 ```bash
-rover -lz /tf/caf/landingzones/caf_solution/add-ons/azure_devops_v1 \
+rover -lz /tf/caf/caf_solution/add-ons/azure_devops_v1 \
   -tfstate azure_devops-contoso_demo.tfstate \
-  -var-folder /tf/caf/landingzones/caf_solution/add-ons/azure_devops_v1/scenario/200-contoso_demo \
+  -var-folder /tf/caf/caf_solution/add-ons/azure_devops_v1/scenario/200-contoso_demo \
   -parallelism 30 \
   -level level0 \
   -env sandpit \
@@ -91,10 +91,10 @@ rover -lz /tf/caf/landingzones/caf_solution/add-ons/azure_devops_v1 \
 
 
 # If the tfstates are stored in a different subscription you need to execute the following command
-rover -lz /tf/caf/landingzones/caf_solution/add-ons/azure_devops_v1 \
+rover -lz /tf/caf/caf_solution/add-ons/azure_devops_v1 \
   -tfstate_subscription_id <ID of the subscription> \
   -tfstate azure_devops-contoso_demo.tfstate \
-  -var-folder /tf/caf/landingzones/caf_solution/add-ons/azure_devops_v1/scenario/200-contoso_demo \
+  -var-folder /tf/caf/caf_solution/add-ons/azure_devops_v1/scenario/200-contoso_demo \
   -parallelism 30 \
   -level level0 \
   -env sandpit \

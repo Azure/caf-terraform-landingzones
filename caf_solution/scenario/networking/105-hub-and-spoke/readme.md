@@ -45,8 +45,8 @@ Please review the configuration files and make sure you are deploying in the exp
 Once you have picked a scenario for test, you can deploy it using:
 
 ```bash
-rover -lz /tf/caf/landingzones/caf_networking \
+rover -lz /tf/caf/caf_networking \
 -level level2 \
--var-folder /tf/caf/landingzones/caf_networking/scenario/105-hub-and-spoke \
+-var-folder /tf/caf/caf_networking/scenario/105-hub-and-spoke \
 -a apply
 ```
