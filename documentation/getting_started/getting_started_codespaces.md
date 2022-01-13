@@ -64,8 +64,8 @@ On the first run, you need to use the launchpad to create the foundations for Te
 You can find more information on the launchpad settings [Here](../../landingzones/caf_launchpad)
 
 ```bash
-rover -launchpad -lz /tf/caf/landingzones/caf_launchpad \
--var-folder /tf/caf/landingzones/caf_launchpad/scenario/100 \
+rover -launchpad -lz /tf/caf/caf_launchpad \
+-var-folder /tf/caf/caf_launchpad/scenario/100 \
 -a apply
 ```
 
@@ -79,7 +79,7 @@ You can find more information on the launchpad settings [Here](../../landingzone
 Get started with the basic foundations:
 
 ```bash
-rover -lz /tf/caf/landingzones/caf_foundations \
+rover -lz /tf/caf/caf_foundations \
 -level level1 \
 -a apply
 ```
@@ -93,9 +93,9 @@ Have a look at the example scenario [Here](../../landingzones/caf_networking) an
 You can deploy a simple hub networking using:
 
 ```bash
-rover -lz /tf/caf/landingzones/caf_networking \
+rover -lz /tf/caf/caf_networking \
 -level level2 \
--var-folder /tf/caf/landingzones/caf_networking/scenario/100-single-region-hub \
+-var-folder /tf/caf/caf_networking/scenario/100-single-region-hub \
 -a apply
 ```
 

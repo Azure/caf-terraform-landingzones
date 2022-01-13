@@ -30,6 +30,18 @@ data "kustomization_overlay" "aad_pod_identity" {
   patches {
     patch = <<-EOF
       - op: replace
+        path: /metadata/name
+        value: ${each.value.name}
+    EOF
+
+    target = {
+      kind = "AzureIdentity"
+    }
+  }
+
+  patches {
+    patch = <<-EOF
+      - op: replace
         path: /spec/resourceID
         value: ${each.value.id}
     EOF
@@ -67,7 +79,7 @@ data "kustomization_overlay" "aad_pod_identity" {
     patch = <<-EOF
       - op: replace
         path: /metadata/name
-        value: ${each.value.name}-binding
+        value: ${each.value.name}
     EOF
 
     target = {
@@ -87,11 +99,13 @@ data "kustomization_overlay" "aad_pod_identity" {
     }
   }
 
+  # You can provide a managed_identities.<key>.aadpodidentity_selector to specify the value here,
+  # alternatively provide none to have the MSI name used as the selector.
   patches {
     patch = <<-EOF
       - op: replace
         path: /spec/selector
-        value: ${each.value.name}
+        value: ${each.value.selector}
     EOF
 
     target = {
@@ -100,9 +114,6 @@ data "kustomization_overlay" "aad_pod_identity" {
   }
 }
 
-output "manifests" {
-  value = data.kustomization_overlay.aad_pod_identity
-}
 
 locals {
   msi = {
@@ -112,6 +123,7 @@ locals {
           for msi_key in value.msi_keys : {
             key       = key
             msi_key   = msi_key
+            selector  = try(value.aadpodidentity_selector, local.remote.managed_identities[value.lz_key][msi_key].name)
             client_id = local.remote.managed_identities[value.lz_key][msi_key].client_id
             id        = local.remote.managed_identities[value.lz_key][msi_key].id
             name      = local.remote.managed_identities[value.lz_key][msi_key].name

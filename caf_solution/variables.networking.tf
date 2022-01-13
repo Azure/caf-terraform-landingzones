@@ -38,6 +38,12 @@ variable "azurerm_firewall_policy_rule_collection_groups" {
 variable "azurerm_routes" {
   default = {}
 }
+variable "cdn_profiles" {
+  default = {}
+}
+variable "cdn_endpoints" {
+  default = {}
+}
 variable "ddos_services" {
   default = {}
 }

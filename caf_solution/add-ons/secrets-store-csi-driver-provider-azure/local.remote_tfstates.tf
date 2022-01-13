@@ -19,8 +19,9 @@ data "terraform_remote_state" "remote" {
   backend = var.landingzone.backend_type
   config = {
     storage_account_name = local.landingzone[try(each.value.level, "current")].storage_account_name
-    container_name       = local.landingzone[try(each.value.level, "current")].container_name
+    container_name       = try(each.value.container, local.landingzone[try(each.value.level, "current")].container_name)
     resource_group_name  = local.landingzone[try(each.value.level, "current")].resource_group_name
+    subscription_id      = var.tfstate_subscription_id
     key                  = each.value.tfstate
   }
 }
@@ -30,14 +31,16 @@ locals {
     "landingzone" = var.landingzone.key
   }
 
-  tags = merge(local.global_settings.tags, local.landingzone_tag, { "level" = var.landingzone.level }, { "environment" = local.global_settings.environment }, { "rover_version" = var.rover_version }, var.tags)
-
   global_settings = data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.objects[var.landingzone.global_settings_key].global_settings
+  diagnostics     = data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.objects[var.landingzone.global_settings_key].diagnostics
 
   remote = {
-    databricks_workspaces = {
-      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.databricks_workspaces[key], {}))
+    tags            = merge(local.global_settings.tags, local.landingzone_tag, { "level" = var.landingzone.level }, { "environment" = local.global_settings.environment }, { "rover_version" = var.rover_version }, var.tags)
+    global_settings = local.global_settings
+    diagnostics     = local.diagnostics
+
+    aks_clusters = {
+      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].aks_clusters, {}))
     }
   }
-
 }

@@ -4,9 +4,9 @@
 
 module "vm_extension_monitoring_agent" {
   source  = "aztfmod/caf/azurerm//modules/compute/virtual_machine_extensions"
-  version = "~>5.4.0"
+  version = "~>5.5.0"
 
-  # source = "/tf/caf/aztfmod/modules/compute/virtual_machine_extensions"
+  #source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git//modules/compute/virtual_machine_extensions?ref=master"
 
   depends_on = [module.solution]
 
@@ -26,9 +26,9 @@ module "vm_extension_monitoring_agent" {
 
 module "vm_extension_diagnostics" {
   source  = "aztfmod/caf/azurerm//modules/compute/virtual_machine_extensions"
-  version = "~>5.4.0"
+  version = "~>5.5.0"
 
-  # source = "/tf/caf/aztfmod/modules/compute/virtual_machine_extensions"
+  #source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git//modules/compute/virtual_machine_extensions?ref=master"
 
   depends_on = [module.solution]
 
@@ -51,11 +51,9 @@ module "vm_extension_diagnostics" {
 
 module "vm_extension_microsoft_azure_domainjoin" {
   source  = "aztfmod/caf/azurerm//modules/compute/virtual_machine_extensions"
-  version = "~>5.4.0"
+  version = "~>5.5.0"
 
-  # source = "/tf/caf/aztfmod/modules/compute/virtual_machine_extensions"
-
-  # source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git//modules/compute/virtual_machine_extensions?ref=master"
+  #source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git//modules/compute/virtual_machine_extensions?ref=master"
 
   depends_on = [module.solution]
 
@@ -73,11 +71,9 @@ module "vm_extension_microsoft_azure_domainjoin" {
 
 module "vm_extension_session_host_dscextension" {
   source  = "aztfmod/caf/azurerm//modules/compute/virtual_machine_extensions"
-  version = "~>5.4.0"
+  version = "~>5.5.0"
 
-  # source = "/tf/caf/aztfmod/modules/compute/virtual_machine_extensions"
-
-  # source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git//modules/compute/virtual_machine_extensions?ref=master"
+  #source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git//modules/compute/virtual_machine_extensions?ref=master"
 
   depends_on = [module.vm_extension_microsoft_azure_domainjoin]
 
@@ -92,4 +88,26 @@ module "vm_extension_session_host_dscextension" {
   extension_name     = "session_host_dscextension"
   keyvaults          = merge(tomap({ (var.landingzone.key) = module.solution.keyvaults }), try(local.remote.keyvaults, {}))
   wvd_host_pools     = merge(tomap({ (var.landingzone.key) = module.solution.wvd_host_pools }), try(local.remote.wvd_host_pools, {}))
+}
+
+
+module "vm_extension_custom_scriptextension" {
+  source  = "aztfmod/caf/azurerm//modules/compute/virtual_machine_extensions"
+  version = "~>5.5.0"
+
+  #source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git//modules/compute/virtual_machine_extensions?ref=master"
+
+  depends_on = [module.solution, module.vm_extension_microsoft_azure_domainjoin]
+
+  for_each = {
+    for key, value in try(var.virtual_machines, {}) : key => value
+    if try(value.virtual_machine_extensions.custom_script, null) != null
+  }
+
+  client_config      = module.solution.client_config
+  virtual_machine_id = module.solution.virtual_machines[each.key].id
+  extension          = each.value.virtual_machine_extensions.custom_script
+  extension_name     = "custom_script"
+  managed_identities = merge(tomap({ (var.landingzone.key) = module.solution.managed_identities }), try(local.remote.managed_identities, {}))
+  storage_accounts   = merge(tomap({ (var.landingzone.key) = module.solution.storage_accounts }), try(local.remote.storage_accounts, {}))
 }

@@ -1,0 +1,37 @@
+---
+#-------------------------------------------------------------------------------------------------------------
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License. See https://go.microsoft.com/fwlink/?linkid=2090316 for license information.
+#-------------------------------------------------------------------------------------------------------------
+
+#
+# Docker compose to open the rover in remote ssh shells
+#
+
+version: '3.7'
+services:
+  rover:
+    image: aztfmod/rover:1.0.11-2112.0809
+
+    user: vscode
+
+    labels:
+      - "caf=Azure CAF"
+
+    volumes:
+      # This is where VS Code should expect to find your project's source code
+      # and the value of "workspaceFolder" in .devcontainer/devcontainer.json
+      - .:/tf/caf
+      - volume-caf-vscode:/home/vscode
+      - volume-caf-vscode-bashhistory:/commandhistory
+      - ~/.ssh:/tmp/.ssh-localhost:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+
+    # Overrides default command so things don't shut down after the process ends.
+    command: /bin/sh -c "while sleep 1000; do :; done"
+
+volumes:
+  volume-caf-vscode:
+    labels:
+      - "caf=Azure CAF"
+  volume-caf-vscode-bashhistory:

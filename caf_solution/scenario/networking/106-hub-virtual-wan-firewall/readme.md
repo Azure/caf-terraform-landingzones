@@ -40,8 +40,8 @@ Please review the configuration files and make sure you are deploying in the exp
 Once you have picked a scenario for test, you can deploy it using:
 
 ```bash
-rover -lz /tf/caf/landingzones/caf_solution \
+rover -lz /tf/caf/caf_solution \
 -level level2 \
--var-folder /tf/caf/landingzones/caf_solution/scenario/networking/106-hub-virtual-wan-firewall \
+-var-folder /tf/caf/caf_solution/scenario/networking/106-hub-virtual-wan-firewall \
 -a apply
 ```

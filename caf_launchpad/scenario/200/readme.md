@@ -19,15 +19,15 @@ This scenario require the following privileges:
 ## Deployment
 
 ```bash
-rover -lz /tf/caf/landingzones/caf_launchpad \
+rover -lz /tf/caf/caf_launchpad \
   -launchpad \
-  -var-folder /tf/caf/landingzones/caf_launchpad/scenario/200 \
+  -var-folder /tf/caf/caf_launchpad/scenario/200 \
   -level level0 \
   -a apply
 
-rover -lz /tf/caf/landingzones/caf_launchpad \
+rover -lz /tf/caf/caf_launchpad \
   -launchpad \
-  -var-folder /tf/caf/landingzones/caf_launchpad/scenario/200 \
+  -var-folder /tf/caf/caf_launchpad/scenario/200 \
   -level level0 \
   -a destroy
 ```

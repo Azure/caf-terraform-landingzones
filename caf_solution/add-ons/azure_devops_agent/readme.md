@@ -21,9 +21,9 @@ Landing zone:
 
 ### Deploy the Azure Devops agent for level0
 ```bash
-rover -lz /tf/caf/landingzones/caf_launchpad/add-ons/azure_devops_agent \
+rover -lz /tf/caf/caf_launchpad/add-ons/azure_devops_agent \
   -tfstate level0_azure_devops_agents.tfstate \
-  -var-folder /tf/caf/landingzones/caf_launchpad/add-ons/azure_devops_agent/scenario/200-contoso_demo/level0 \
+  -var-folder /tf/caf/caf_launchpad/add-ons/azure_devops_agent/scenario/200-contoso_demo/level0 \
   -parallelism 30 \
   -level level0 \
   -env sandpit \
@@ -32,9 +32,9 @@ rover -lz /tf/caf/landingzones/caf_launchpad/add-ons/azure_devops_agent \
 
 ### Deploy the Azure Devops agent for level1
 ```bash
-rover -lz /tf/caf/landingzones/caf_launchpad/add-ons/azure_devops_agent \
+rover -lz /tf/caf/caf_launchpad/add-ons/azure_devops_agent \
   -tfstate azdo-agent-level1.tfstate \
-  -var-folder /tf/caf/landingzones/caf_launchpad/add-ons/azure_devops_agent/scenario/200-contoso_demo/level1 \
+  -var-folder /tf/caf/caf_launchpad/add-ons/azure_devops_agent/scenario/200-contoso_demo/level1 \
   -parallelism 30 \
   -level level1 \
   -env sandpit \
@@ -43,10 +43,10 @@ rover -lz /tf/caf/landingzones/caf_launchpad/add-ons/azure_devops_agent \
 
 # If the tfstates are stored in a different subscription you need to execute the following command
 
-rover -lz /tf/caf/landingzones/caf_launchpad/add-ons/azure_devops_agent \
+rover -lz /tf/caf/caf_launchpad/add-ons/azure_devops_agent \
   -tfstate_subscription_id <ID of the subscription> \
   -tfstate azdo-agent-level1.tfstate \
-  -var-folder /tf/caf/landingzones/caf_launchpad/add-ons/azure_devops_agent/scenario/200-contoso_demo/level1 \
+  -var-folder /tf/caf/caf_launchpad/add-ons/azure_devops_agent/scenario/200-contoso_demo/level1 \
   -parallelism 30 \
   -level level1 \
   -env sandpit \

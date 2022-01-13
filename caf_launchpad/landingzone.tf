@@ -3,9 +3,9 @@ module "launchpad" {
   version = "~>5.5.0"
 
 
-  # source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=patch.5.5.0"
-  # source = "../../aztfmod"
-  
+  # source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=master"
+  #source = "../../aztfmod"
+
   providers = {
     azurerm.vhub = azurerm
   }

@@ -23,6 +23,8 @@ env:
   ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
   ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+  TF_REGISTRY_DISCOVERY_RETRY: 5
+  TF_REGISTRY_CLIENT_TIMEOUT: 15
   ROVER_RUNNER: true
 
 jobs:
@@ -37,7 +39,7 @@ jobs:
           random_length: ['5']
 
     container:
-      image: aztfmod/rover:1.0.9-2111.0103
+      image: aztfmod/rover:1.0.11-2112.0809
       options: --user 0
 
     steps:
@@ -90,7 +92,7 @@ jobs:
           ]
 
     container:
-      image: aztfmod/rover:1.0.9-2111.0103
+      image: aztfmod/rover:1.0.11-2112.0809
       options: --user 0
 
     steps:
@@ -118,7 +120,7 @@ jobs:
             -parallelism=30 \
             -var-folder ${GITHUB_WORKSPACE}/${{ matrix.config_files }} \
             --environment ${{ github.run_id }} \
-            -refresh=false 
+            -refresh=false
 
   foundations200:
     name: foundations-200
@@ -133,7 +135,7 @@ jobs:
           random_length: ['5']
 
     container:
-      image: aztfmod/rover:1.0.9-2111.0103
+      image: aztfmod/rover:1.0.11-2112.0809
       options: --user 0
 
     steps:
@@ -184,7 +186,7 @@ jobs:
           ]
 
     container:
-      image: aztfmod/rover:1.0.9-2111.0103
+      image: aztfmod/rover:1.0.11-2112.0809
       options: --user 0
 
     steps:
@@ -212,7 +214,7 @@ jobs:
             -parallelism=30 \
             -var-folder ${GITHUB_WORKSPACE}/${{ matrix.config_files }} \
             --environment ${{ github.run_id }} \
-            -refresh=false 
+            -refresh=false
 
   foundations_destroy:
     name: foundations_destroy
@@ -226,7 +228,7 @@ jobs:
         random_length: ['5']
 
     container:
-      image: aztfmod/rover:1.0.9-2111.0103
+      image: aztfmod/rover:1.0.11-2112.0809
       options: --user 0
 
     steps:

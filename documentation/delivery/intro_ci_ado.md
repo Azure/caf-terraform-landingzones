@@ -124,7 +124,7 @@ jobs:
 
       az login --identity
 
-      /tf/rover/rover.sh /tf/caf/landingzones/landingzone_caf_foundations \
+      /tf/rover/rover.sh /tf/caf/landingzone_caf_foundations \
       apply \
       -w $(TF_VAR_workspace) \
       -tfstate "landingzone_caf_foundations" \
