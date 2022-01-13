@@ -1,0 +1,54 @@
+network_security_group_definition = {
+{% for key, value in resources.subscriptions[subscription_key].network_security_group_definition.items() %}
+  {{ key }} = {
+    version = {{ value.version }}
+    resource_group_key = "{{ value.resource_group_key }}"
+    name = "{{ value.name }}"
+{% if value.nsg is defined %}
+    nsg = [
+{% for direction, l1_value in value.nsg.items() %}
+{% for priority, l2_value in l1_value.items() %}
+      {
+        name                                       = "{{ l2_value.name }}"
+        priority                                   = "{{ priority }}"
+        direction                                  = "{{ direction }}"
+        access                                     = "{{ l2_value.access }}"
+        protocol                                   = "{{ l2_value.protocol }}"
+{% if l2_value.source_port_range is defined %}
+        source_port_range                          = "{{ l2_value.source_port_range }}"
+{% endif %}
+{% if l2_value.source_port_ranges is defined %}
+        source_port_ranges                         = {{ l2_value.source_port_ranges | replace('None','[]') | replace('\'','\"') }}
+{% endif %}
+{% if l2_value.destination_port_range is defined %}
+        destination_port_range                     = "{{ l2_value.destination_port_range }}"
+{% endif %}
+{% if l2_value.destination_port_ranges is defined %}
+        destination_port_ranges                    = {{ l2_value.destination_port_ranges | replace('None','[]') | replace('\'','\"') }}
+{% endif %}
+{% if l2_value.source_address_prefix is defined %}
+        source_address_prefix                      = "{{ l2_value.source_address_prefix }}"
+{% endif %}
+{% if l2_value.source_address_prefixes is defined %}
+        source_address_prefixes                    = {{ l2_value.source_address_prefixes | replace('None','[]') | replace('\'','\"') }}
+{% endif %}
+{% if l2_value.destination_address_prefix is defined %}
+        destination_address_prefix                 = "{{ l2_value.destination_address_prefix }}"
+{% endif %}
+{% if l2_value.destination_address_prefixes is defined %}
+        destination_address_prefixes               = {{ l2_value.destination_address_prefixes | replace('None','[]') | replace('\'','\"') }}
+{% endif %}
+{% if l2_value.source_application_security_group_ids is defined %}
+        source_application_security_group_ids      = "{{ l2_value.source_application_security_group_ids }}"
+{% endif %}
+{% if l2_value.destination_application_security_group_ids is defined %}
+        destination_application_security_group_ids = {{ l2_value.destination_application_security_group_ids | replace('None','[]') | replace('\'','\"') }}
+{% endif %}
+      },
+{% endfor %}
+{% endfor %}
+    ]
+{% endif %}
+  }
+{% endfor %}
+}

@@ -1,0 +1,26 @@
+{
+  "name": "48ec94a9-9a14-488d-928d-5e73f96b335c",
+  "type": "Microsoft.Authorization/roleDefinitions",
+  "apiVersion": "2018-01-01-preview",
+  "properties": {
+      "roleName": "CAF-network-vhub-peering",
+      "description": "Authorize vnet peerings to the vhub.",
+      "type": "customRole",
+      "permissions": [
+          {
+              "actions": [
+                  "Microsoft.Resources/subscriptions/resourceGroups/read",
+                  "Microsoft.Network/virtualHubs/read",
+                  "Microsoft.Network/virtualHubs/hubVirtualNetworkConnections/*"
+              ],
+              "notActions": [
+              ],
+              "dataActions": [],
+              "notDataActions": []
+          }
+      ],
+      "assignableScopes": [
+          "${current_scope_resource_id}"
+      ]
+  }
+}

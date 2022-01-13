@@ -1,0 +1,45 @@
+- name: "[{{ level }}-{{ circuit }}] - express route peering - Clean-up directory"
+  file:
+    path: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/express_route_circuit_peering/{{ circuit }}"
+    state: absent
+  when:
+    - config.configuration_folders.platform.cleanup_destination | bool
+
+- name: "[{{ level }}-{{ circuit }}] - express route peering - Creates directory structure"
+  file:
+    path: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/express_route_circuit_peering/{{ circuit }}"
+    state: directory
+
+- name: "[{{ level }}-{{ circuit }}] - express route peering - variables"
+  set_fact:
+    destination_path_resources: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/express_route_circuit_peering/{{ circuit }}"
+
+- name: "[{{ level }}-{{ circuit }}] - express route peering - readme"
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/express_route_circuit_peering/{{ circuit }}/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{ level }}/{{ base_folder }}/express_route_circuit_peering/*.md"
+
+#
+# landingzone
+#
+- name: "[{{ level }}-{{ circuit }}] - express route peering - landingzone"
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ destination_path_resources }}/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{ level }}/{{ base_folder }}/express_route_circuit_peering/landingzone.tfvars.j2"
+
+#
+# express_route_circuit_peerings
+#
+- name: "[{{ level }}-{{ circuit }}] - express route peering - express_route_circuit_peerings"
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ destination_path_resources }}/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{ level }}/{{ base_folder }}/express_route_circuit_peering/express_route_circuit_peerings.tfvars.j2"

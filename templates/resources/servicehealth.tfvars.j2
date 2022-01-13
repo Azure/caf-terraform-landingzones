@@ -1,0 +1,26 @@
+monitoring = {
+  service_health_alerts = {
+{% for key, sha in resources.subscriptions[subscription_key].service_health_alerts.emails.items() %}
+    enable_service_health_alerts = true
+    name                         = "alerts"
+    action_group_name            = "actiongrp"
+    shortname                    = "HealthAlerts"
+    resource_group_key           = "{{ sha.resource_group_key }}"
+
+    email_alert_settings = {
+
+      {{ key }} = {
+        name                    = "{{ sha.name }}"
+        email_address           = "{{ sha.email_address }}"
+        use_common_alert_schema = false
+      }
+    } #add more email alerts by repeating the block.
+    # webhook = {
+    #   teams = {
+    #     name        = "servicehealth"
+    #     service_uri = ""
+    #   }
+    # }
+  }
+{% endfor %}
+}

@@ -1,0 +1,41 @@
+# Defines different repositories for the diagnostics logs
+# Storage accounts, log analytics, event hubs
+
+diagnostic_storage_accounts = {
+{% for key in config.caf_terraform.launchpad.regions.keys() %}
+  # Stores diagnostic logging for {{key}}
+  diaglogs_{{config.caf_terraform.launchpad.regions[key].slug}} = {
+    name                     = "diaglogs{{ config.caf_terraform.launchpad.regions[key].slug }}"
+    region                   = "{{key}}"
+    resource_group_key       = "{{ resources.subscriptions[subscription_key].diagnostic_storage_accounts.diagnostics.resource_group_key }}"
+    account_kind             = "{{ resources.subscriptions[subscription_key].diagnostic_storage_accounts.diagnostics.account_kind }}"
+    account_tier             = "{{ resources.subscriptions[subscription_key].diagnostic_storage_accounts.diagnostics.account_tier }}"
+    account_replication_type = "{{ config.caf_terraform.launchpad.account_replication_type }}"
+    access_tier              = "{{ resources.subscriptions[subscription_key].diagnostic_storage_accounts.diagnostics.access_tier }}"
+  }
+{% endfor %}
+{% for key in config.caf_terraform.launchpad.regions.keys() %}
+  # Stores security logs for siem for {{key}}
+  diagsiem_{{config.caf_terraform.launchpad.regions[key].slug}} = {
+    name                     = "siem{{ config.caf_terraform.launchpad.regions[key].slug }}"
+    region                   = "{{key}}"
+    resource_group_key       = "{{ resources.subscriptions[subscription_key].diagnostic_storage_accounts.siem.resource_group_key }}"
+    account_kind             = "{{ resources.subscriptions[subscription_key].diagnostic_storage_accounts.siem.account_kind }}"
+    account_tier             = "{{ resources.subscriptions[subscription_key].diagnostic_storage_accounts.siem.account_tier }}"
+    account_replication_type = "{{ config.caf_terraform.launchpad.account_replication_type }}"
+    access_tier              = "{{ resources.subscriptions[subscription_key].diagnostic_storage_accounts.siem.access_tier }}"
+  }
+{% endfor %}
+{% for key in config.caf_terraform.launchpad.regions.keys() %}
+  # Stores boot diagnostic for {{key}}
+  bootdiag_{{config.caf_terraform.launchpad.regions[key].slug}} = {
+    name                     = "boot{{ config.caf_terraform.launchpad.regions[key].slug }}"
+    region                   = "{{key}}"
+    resource_group_key       = "{{ resources.subscriptions[subscription_key].diagnostic_storage_accounts.bootdiagnostics.resource_group_key }}"
+    account_kind             = "{{ resources.subscriptions[subscription_key].diagnostic_storage_accounts.bootdiagnostics.account_kind }}"
+    account_tier             = "{{ resources.subscriptions[subscription_key].diagnostic_storage_accounts.bootdiagnostics.account_tier }}"
+    account_replication_type = "{{ config.caf_terraform.launchpad.account_replication_type }}"
+    access_tier              = "{{ resources.subscriptions[subscription_key].diagnostic_storage_accounts.bootdiagnostics.access_tier }}"
+  }
+{% endfor %}
+}

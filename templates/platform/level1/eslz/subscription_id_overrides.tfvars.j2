@@ -1,0 +1,41 @@
+subscription_id_overrides = {
+{% if config.platform_identity.azuread_identity_mode != 'logged_in_user' %}
+  root           = []
+{% else %}
+  root           = [
+    "{{ config.caf_terraform.launchpad.subscription_id }}"
+  ]
+{% endif %}
+  decommissioned = []
+  sandboxes      = []
+  landing-zones  = []
+  platform       = []
+  connectivity   = []
+  management     = []
+  identity       = []
+}
+
+{% if config.platform_identity.azuread_identity_mode != 'logged_in_user' %}
+subscription_id_overrides_by_keys = {
+  connectivity = {
+    connectivity = {
+      lz_key = "{{ config.tfstates.platform.platform_subscriptions.lz_key_name }}"
+      key    = "connectivity"
+    }
+  }
+  management = {
+    management = {
+      lz_key = "{{ config.tfstates.platform.platform_subscriptions.lz_key_name }}"
+      key    = "management"
+    }
+  }
+  identity = {
+    identity = {
+      lz_key = "{{ config.tfstates.platform.platform_subscriptions.lz_key_name }}"
+      key    = "identity"
+    }
+  }
+}
+{% else %}
+subscription_id_overrides_by_keys = {}
+{% endif %}

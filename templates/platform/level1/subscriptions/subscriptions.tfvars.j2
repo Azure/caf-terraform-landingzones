@@ -1,0 +1,37 @@
+#
+# Execute the following command to get the billing_account_name and management_group_id
+#
+# az rest --method get --uri https://management.azure.com/providers/Microsoft.Billing/billingaccounts/?api-version=2020-05-01
+#
+# To retrieve the first billing account
+#
+# billing_account_name=$(az rest --method get --uri https://management.azure.com/providers/Microsoft.Billing/billingaccounts?api-version=2020-05-01 --query "value[?properties.agreementType=='EnterpriseAgreement'].{name:name}" -o tsv)
+#
+# enrollment_account_name=$(az rest --method get --uri https://management.azure.com/providers/Microsoft.Billing/billingaccounts?api-version=2020-05-01 --query "value[?properties.agreementType=='EnterpriseAgreement'].{name:properties.enrollmentAccounts[0].name}" -o tsv)
+#
+
+subscriptions = {
+
+  {{ config.tfstates.platform.launchpad.lz_key_name }} = {
+    name            = "{{ config.caf_terraform.launchpad.subscription_name }}"
+    subscription_id = "{{ config.caf_terraform.launchpad.subscription_id }}"
+  }
+{% for key in subscriptions.platform_subscriptions.keys() %}
+  {{ key }} = {
+    name                    = "{{ subscriptions.platform_subscriptions[key].name }}"
+{% if subscriptions.platform_subscriptions[key].alias is defined %}
+    alias                   = "{{ config.platform_core_setup.enterprise_scale.management_group_prefix }}-{{ subscriptions.platform_subscriptions[key].alias }}"
+{% endif %}
+{% if subscriptions.platform_subscriptions[key].billing_account_name is defined %}
+    billing_account_name    = "{{ config.caf_terraform.billing_subscription_role_delegations.billing_account_name }}"
+    enrollment_account_name = "{{ config.caf_terraform.billing_subscription_role_delegations.enrollment_account_name }}"
+    workload                = "{{ subscriptions.platform_subscriptions[key].workload | default('DevTest') }}"
+{% else %}
+{% if subscriptions.platform_subscriptions[key].subscription_id is defined  %}
+    subscription_id = "{{ subscriptions.platform_subscriptions[key].subscription_id }}"
+{% endif %}
+{% endif %}
+  }
+{% endfor %}
+
+}

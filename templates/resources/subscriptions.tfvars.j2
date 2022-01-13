@@ -1,0 +1,22 @@
+subscriptions = {
+{% for key, value in resources.subscriptions[subscription_key].items() %}
+  {{ key }} = {
+    name                    = "{{ value.name }}"
+    billing_account_name    = "{{ config.caf_terraform.billing_subscription_role_delegations.billing_account_name }}"
+    enrollment_account_name = "{{ config.caf_terraform.billing_subscription_role_delegations.enrollment_account_name }}"
+{% if value.management_group_suffix is defined %}
+    management_group_id     = "{{ config.platform_core_setup.enterprise_scale.management_group_prefix }}-{{ value.management_group_suffix }}"
+{% else %}
+    management_group_id     = "{{ value.management_group_id }}"
+{% endif %}
+    workload                = "{{ value.workload | default('Production') }}"
+{% if value.tags is defined %}
+    tags                    = {
+{% for tag_key in value.tags %}
+      {{ tag_key }} = "{{ value.tags[tag_key] }}"
+{% endfor %}
+    }
+{% endif %}
+  }
+{% endfor %}
+}

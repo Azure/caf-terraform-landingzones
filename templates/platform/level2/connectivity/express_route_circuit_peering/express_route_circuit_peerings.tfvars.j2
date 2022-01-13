@@ -1,0 +1,17 @@
+express_route_circuit_peerings = {
+{% for key, value in connectivity_express_route_peerings.express_route_circuit_peerings[circuit].items() %}
+  {{ key }} = {
+    express_route = {
+      lz_key = "{{ value.express_route.lz_key }}"
+      key    = "{{ value.express_route.key }}"
+    }
+    peering_type                  = "{{ value.peering_type }}"
+    primary_peer_address_prefix   = "{{ value.primary_peer_address_prefix }}"
+    secondary_peer_address_prefix = "{{ value.secondary_peer_address_prefix }}"
+    vlan_id                       = "{{ value.vlan_id }}"
+{% if value.peer_asn is defined %}
+    peer_asn                      = "{{ value.peer_asn }}"
+{% endif %}
+  }
+{% endfor %}
+}

@@ -1,0 +1,34 @@
+- name: Identity - ADDS - Clean-up directory
+  file:
+    path: "{{ config.configuration_folders.destination_base_path }}{{ config.configuration_folders.destination_relative_path }}/{{ level }}/{{ base_folder }}/adds"
+    state: absent
+  when:
+    - config.configuration_folders.cleanup_destination | bool
+
+- name: Identity - ADDS - Creates directory structure
+  file:
+    path: "{{ config.configuration_folders.destination_base_path }}{{ config.configuration_folders.destination_relative_path }}/{{ level }}/{{ base_folder }}/adds"
+    state: directory
+
+- name: Identity - ADDS - Creates directory structure for diagnostics
+  file:
+    path: "{{ config.configuration_folders.destination_base_path }}{{ config.configuration_folders.destination_relative_path }}/{{ level }}/{{ base_folder }}/adds/diagnostics"
+    state: directory
+
+- name: Identity - ADDS - tfvars
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ config.configuration_folders.destination_base_path }}{{ config.configuration_folders.destination_relative_path }}/{{ level }}/{{ base_folder }}/adds/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{ level }}/{{ base_folder }}/*.j2"
+    - "{{ level }}/{{ base_folder }}/*.md"
+
+- name: Identity - ADDS - diagnostics
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ config.configuration_folders.destination_base_path }}{{ config.configuration_folders.destination_relative_path }}/{{ level }}/{{ base_folder }}/adds/diagnostics/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{ level }}/{{ base_folder }}/diagnostics/*.xml"
+

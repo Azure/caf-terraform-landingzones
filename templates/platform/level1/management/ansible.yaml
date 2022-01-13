@@ -1,0 +1,134 @@
+- name: "[{{ level }}-{{ base_folder }}] Clean-up directory"
+  file:
+    path: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}"
+    state: absent
+  when:
+    - config.configuration_folders.platform.cleanup_destination | bool
+
+- name: "[{{ level }}-{{ base_folder }}] Creates directory"
+  file:
+    path: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}"
+    state: directory
+
+
+- name: "[{{ level }}-{{ base_folder }}] - Set variables"
+  set_fact:
+    destination_path: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}"
+
+- name: "[{{ level }}-{{ base_folder }}] - Load variables"
+  include_vars:
+    name: resources
+    dir: "{{config_folder}}"
+    depth: 1
+    ignore_unknown_extensions: true
+    files_matching: "management.yaml|configuration.caf.platform.yaml"
+
+#
+# resource_groups
+#
+- name: "[{{ level }}-{{ base_folder }}] - resources - resource_groups"
+  when:
+    - resources.subscriptions[subscription_key].resource_groups is defined
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{ resource_template_folder }}/resource_groups.tfvars.j2"
+
+#
+# automation_accounts
+#
+- name: "[{{ level }}-{{ base_folder }}] - resources - automation_accounts"
+  when:
+    - resources.subscriptions[subscription_key].automation_accounts is defined
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{ resource_template_folder }}/automation_accounts.tfvars.j2"
+
+#
+# service_health_alerts
+#
+- name: "[{{ level }}-{{ base_folder }}] - resources - service_health_alerts"
+  when:
+    - resources.subscriptions[subscription_key].service_health_alerts is defined
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{ resource_template_folder }}/servicehealth.tfvars.j2"
+
+#
+# diagnostic_log_analytics
+#
+- name: "[{{ level }}-{{ base_folder }}] - resources - diagnostic_log_analytics"
+  when:
+    - resources.subscriptions[subscription_key].diagnostic_log_analytics is defined
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{ resource_template_folder }}/diagnostic_log_analytics.tfvars.j2"
+
+#
+# diagnostic_storage_accounts
+#
+- name: "[{{ level }}-{{ base_folder }}] - resources - diagnostic_storage_accounts"
+  when:
+    - resources.subscriptions[subscription_key].diagnostic_storage_accounts is defined
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{ resource_template_folder }}/diagnostic_storage_accounts.tfvars.j2"
+
+# diagnostics_definition
+#
+- name: "[{{ level }}-{{ base_folder }}] - resources - diagnostics_definition"
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{ resource_template_folder }}/diagnostics_definition.tfvars.j2"
+
+# diagnostics_destinations
+#
+- name: "[{{ level }}-{{ base_folder }}] - resources - diagnostics_destinations"
+  when:
+    - resources.subscriptions[subscription_key].diagnostics_destinations is defined
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{ resource_template_folder }}/diagnostics_destinations.tfvars.j2"
+
+#
+# Readme
+#
+- name: "[{{ level }}-{{ base_folder }}] - resources - *.md"
+  # when: always
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{ level }}/{{ base_folder }}/*.md"
+
+#
+# Legacy calls
+#
+- name: "[{{ level }}-{{ base_folder }}] - generate configuration files."
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{ level }}/{{ base_folder }}/*.tfvars.j2"

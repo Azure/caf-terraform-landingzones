@@ -1,0 +1,17 @@
+landingzone = {
+  backend_type        = "azurerm"
+  global_settings_key = "{{ config.tfstates.platform.management.lz_key_name }}"
+  level               = "{{ config.tfstates.platform.identity_level2_aadds[deployment].level }}"
+  key                 = "{{ config.tfstates.platform.identity_level2_aadds[deployment].lz_key_name }}"
+  tfstates = {
+    # Virtual Hub
+    {{ config.tfstates.platform.virtual_hubs[deployment].lz_key_name }} = {
+      level   = "current"
+      tfstate = "{{ config.tfstates.platform.virtual_hubs[deployment].tfstate }}"
+    }
+    {{ config.tfstates.platform.management.lz_key_name }} = {
+      level   = "lower"
+      tfstate = "{{ config.tfstates.platform.management.tfstate }}"
+    }
+  }
+}

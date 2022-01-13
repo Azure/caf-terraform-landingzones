@@ -1,0 +1,20 @@
+- name: Virtual_hubs {{ virtual_hub }} - Clean-up directory
+  file:
+    path: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/virtual_hubs/{{ virtual_hub }}"
+    state: absent
+  when:
+    - config.configuration_folders.platform.cleanup_destination | bool
+
+- name: Virtual_hubs {{ virtual_hub }} - Creates directory structure
+  file:
+    path: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/virtual_hubs/{{ virtual_hub }}"
+    state: directory
+
+- name: Virtual_hubs {{ virtual_hub }} - Tfvars
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/virtual_hubs/{{ virtual_hub }}/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{ level }}/{{ base_folder }}/virtual_hub/*.j2"
+    - "{{ level }}/{{ base_folder }}/virtual_hub/*.md"

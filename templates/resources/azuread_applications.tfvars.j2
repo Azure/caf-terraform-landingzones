@@ -1,0 +1,7 @@
+azuread_applications = {
+{% for key, app in resources.subscriptions[subscription_key].azuread_applications.items() %}
+  {{ key }} = {
+    application_name = "{{ app.application_name }}"
+  }
+{% endfor %}
+}

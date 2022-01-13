@@ -1,0 +1,13 @@
+active_directory_domain_service_replica_set = {
+{% for key, value in resources.subscriptions[subscription_key].active_directory_domain_service_replica_set.items() %}
+  {{ key }} = {
+    region = "{{ value.region }}"
+    active_directory_domain_service = {
+      key = "{{ value.active_directory_domain_service.key }}"
+    }
+    subnet = {
+      vnet_key = "{{ value.subnet.vnet_key }}"
+      key = "{{ value.subnet.key }}"
+    }
+  }
+}

@@ -1,0 +1,38 @@
+private_dns = {
+{% for key, value in resources.subscriptions[subscription_key].private_dns.items() %}
+  "{{ key }}" = {
+    name               = "{{ value.name }}"
+    resource_group_key = "{{ value.resource_group_key }}"
+{% if value.tags is defined %}
+    tags = {
+{% for k_tag, tag in value.tags.items() %}
+      "{{ k_tag }}" = "{{ tag }}"
+    }
+{% endfor %}
+{% endif %}
+{% if value.vnet_links is defined %}
+    vnet_links = {
+{% for v_key, v_value in value.vnet_links.items() %}
+    {{ v_key }} = {
+        name     = "{{ v_value.name }}"
+        vnet_key = "{{ v_value.vnet_key }}"
+{% if v_value.registration_enabled is defined %}
+        registration_enabled = {{ v_value.registration_enabled | string | lower }}
+{% endif %}
+{% if v_value.lz_key is defined %}
+        lz_key   = "{{ v_value.lz_key }}"
+{% endif %}
+{% if v_value.tags is defined %}
+        tags = {
+{% for v_tag, v_tag in v_value.tags.items() %}
+         "{{ k_tag }}" = "{{ v_tag }}"
+       }
+{% endfor %}
+{% endif %}
+      }
+{% endfor %}
+    }
+{% endif %}
+  }
+{% endfor %}
+}

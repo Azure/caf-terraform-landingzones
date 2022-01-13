@@ -1,0 +1,54 @@
+keyvaults = {
+{% for key, keyvault in resources.subscriptions[subscription_key].keyvaults.items() %}
+  {{ key }} = {
+    name               = "{{ resources.subscriptions[subscription_key].keyvaults[key].name }}"
+    resource_group_key = "{{ resources.subscriptions[subscription_key].keyvaults[key].resource_group_key }}"
+    sku_name           = "{{ resources.subscriptions[subscription_key].keyvaults[key].sku_name | default('standard')}}"
+{% if keyvault.enabled_for_deployment is defined %}
+    enabled_for_deployment = "{{ keyvault.enabled_for_deployment | string | lower }}"
+{% endif %}
+{% if keyvault.enabled_for_disk_encryption is defined %}
+    enabled_for_disk_encryption = "{{ keyvault.enabled_for_disk_encryption | string | lower }}"
+{% endif %}
+{% if keyvault.enabled_for_template_deployment is defined %}
+    enabled_for_template_deployment = "{{ keyvault.enabled_for_template_deployment | string | lower }}"
+{% endif %}
+{% if keyvault.purge_protection_enabled is defined %}
+    purge_protection_enabled = "{{ keyvault.purge_protection_enabled | string | lower }}"
+{% endif %}
+{% if keyvault.enable_rbac_authorization is defined %}
+    enable_rbac_authorization = "{{ keyvault.enable_rbac_authorization | string | lower }}"
+{% endif %}
+{% if keyvault.soft_delete_retention_days is defined %}
+    soft_delete_retention_days = {{ keyvault.soft_delete_retention_days }}
+{% endif %}
+    
+    creation_policies = {
+{% if config.platform_identity is defined %}
+{% if config.platform_identity.azuread_identity_mode == 'logged_in_user' %}
+      logged_in_user = {
+        secret_permissions = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
+      }
+{% endif %}
+{% endif %}
+{% for p_key, policy in keyvault.creation_policies.items() %}
+      {{ p_key }} = {
+{% if policy.lz_key is defined %}
+        lz_key = "{{ policy.lz_key }}"
+{% endif %}
+{% if policy.azuread_group_key is defined %}
+        azuread_group_key = "{{ policy.azuread_group_key }}"
+{% elif policy.azuread_service_principal_key is defined %}
+        azuread_service_principal_key = "{{ policy.azuread_service_principal_key }}"
+{% elif policy.managed_identity_key is defined %}
+        managed_identity_key = "{{ policy.managed_identity_key }}"
+{% endif %}
+{% if policy.secret_permissions is defined %}
+        secret_permissions = {{ policy.secret_permissions | replace('None','[]') | replace('\'','\"') }}
+{% endif %}
+      }
+{% endfor %}
+    }
+  }
+{% endfor %}
+}

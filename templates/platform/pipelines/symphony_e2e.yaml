@@ -1,0 +1,41 @@
+environment: {{ model }}
+repositories:
+  - name: landingzones
+    uri: https://github.com/Azure/caf-terraform-landingzones.git
+    branch: {{ config.caf_landingzone_branch }}
+
+ # All paths are relative
+levels:
+- level: level0
+  type: platform
+  stacks:
+  - stack: launchpad
+    landingZonePath: landingzones/caf_launchpad
+    configurationPath: "{{ config.configuration_folders.destination_relative_path }}/{{ config.tfstates.platform.launchpad.level }}/{{ config.tfstates.platform.launchpad.base_config_path }}"
+    tfState: {{ config.tfstates.platform.launchpad.tfstate }}
+    repository: landingzones
+  launchpad: true
+
+- level: level1
+  type: platform
+  stacks:
+  - stack: management
+    landingZonePath: landingzones/caf_solution
+    configurationPath: "{{ config.configuration_folders.destination_relative_path }}/{{ config.tfstates.platform.management.level }}/{{ config.tfstates.platform.management.base_config_path }}"
+    tfState: {{ config.tfstates.platform.management.tfstate }}
+    repository: landingzones
+  - stack: eslz
+    landingZonePath: landingzones/caf_solution/add-ons/caf_eslz
+    configurationPath: "{{ config.configuration_folders.destination_relative_path }}/{{ config.tfstates.platform.eslz.level }}/{{ config.tfstates.platform.eslz.base_config_path }}"
+    tfState: {{ config.tfstates.platform.eslz.tfstate }}
+    repository: landingzones
+    branch: "{{ config.eslz.private_lib[config.eslz.private_lib.version_to_deploy].caf_landingzone_branch }}"
+
+- level: level2
+  type: platform
+  stacks:
+  - stack: connectivity_virtual_wan
+    landingZonePath: landingzones/caf_solution
+    configurationPath: "{{ config.configuration_folders.destination_relative_path }}/{{ config.tfstates.platform.management.level }}/{{ config.tfstates.platform.management.base_config_path }}"
+    tfState: {{ config.tfstates.platform.management.tfstate }}
+    repository: landingzones

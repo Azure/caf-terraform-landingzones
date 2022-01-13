@@ -1,0 +1,25 @@
+keyvault_access_policies = {
+  {% for key, policy in resources.subscriptions[subscription_key].keyvault_access_policies.items() %}
+  {{ key }} = {  
+{% for s_key, s_policy in policy.items() %}
+    {{ s_key }} = {
+{% if s_policy.lz_key is defined %}
+        lz_key = "{{ s_policy.lz_key }}"
+{% endif %}
+{% if s_policy.azuread_group_key is defined %}
+        azuread_group_key = "{{ s_policy.azuread_group_key }}"
+{% elif s_policy.azuread_service_principal_key is defined %}
+        azuread_service_principal_key = "{{ s_policy.azuread_service_principal_key }}"
+{% elif s_policy.managed_identity_key is defined %}
+        managed_identity_key = "{{ s_policy.managed_identity_key }}"
+{% endif %}
+{% if s_policy.secret_permissions is defined %}
+        secret_permissions = {{ s_policy.secret_permissions | replace('None','[]') | replace('\'','\"') }}
+{% elif s_policy.certificate_permissions is defined  %}
+        certificate_permissions = {{ s_policy.certificate_permissions | replace('None','[]') | replace('\'','\"') }}
+{% endif %}
+    }
+{% endfor %}
+  }
+{% endfor %}
+}

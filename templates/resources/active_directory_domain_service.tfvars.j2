@@ -1,0 +1,70 @@
+active_directory_domain_service = {
+{% for key, value in resources.subscriptions[subscription_key].active_directory_domain_service.items() %}
+  {{ key }} = {
+    name   =  "{{ value.name }}"
+    region = "{{ value.region }}"
+{% if value.resource_group_key is defined %}
+    resource_group_key = "{{ value.resource_group_key }}"
+{% else %}
+    resource_group = {
+{% if value.resource_group.lz_key is defined %}
+      lz_key = "{{ value.resource_group.lz_key }}"
+{% endif %}
+      key = "{{ value.resource_group.key }}"
+    }
+{% endif %}
+    domain_name = "{{ value.domain_name }}"
+    sku = "{{ value.sku }}"
+    filtered_sync_enabled = {{ value.filtered_sync_enabled | string | lower }}
+    initial_replica_set = {
+      region = "{{ value.initial_replica_set.region }}"
+      subnet = {
+        vnet_key = "{{ value.initial_replica_set.subnet.vnet_key }}"
+        key = "{{ value.initial_replica_set.subnet.key }}"
+{% if value.initial_replica_set.subnet.lz_key is defined %}
+        lz_key = "{{ value.initial_replica_set.subnet.lz_key }}"
+{% endif %}
+      }
+    }
+{% if value.notifications is defined %}
+    notifications = {
+{% if value.notifications.notify_dc_admins is defined %}
+      notify_dc_admins = {{ value.notifications.notify_dc_admins | string | lower }}
+{% endif %}
+{% if value.notifications.notify_global_admins is defined %}
+      notify_global_admins = {{ value.notifications.notify_global_admins | string | lower }}
+{% endif %}
+{% if value.notifications.additional_recipients is defined %}
+      additional_recipients = {{ value.notifications.additional_recipients | replace('None','[]') | replace('\'','\"') }}
+{% endif %}
+    }
+{% endif %}
+{% if value.security is defined %}
+    security = {
+{% if value.security.ntlm_v1_enabled is defined %}
+      ntlm_v1_enabled = {{ value.security.ntlm_v1_enabled | string | lower }}
+{% endif %}
+{% if value.security.sync_kerberos_passwords is defined %}
+      sync_kerberos_passwords = {{ value.security.sync_kerberos_passwords | string | lower }}
+{% endif %}
+{% if value.security.sync_ntlm_passwords is defined %}
+      sync_ntlm_passwords = {{ value.security.sync_ntlm_passwords | string | lower }}
+{% endif %}
+{% if value.security.sync_on_prem_passwords is defined %}
+      sync_on_prem_passwords = {{ value.security.sync_on_prem_passwords | string | lower }}
+{% endif %}
+{% if value.security.tls_v1_enabled is defined %}
+      tls_v1_enabled = {{ value.security.tls_v1_enabled | string | lower }}
+{% endif %}
+    }
+{% endif %}
+{% if value.tags is defined %}
+    tags   = {
+{% for tag_key, tag_value in value.tags.items() %}
+      {{ tag_key }} = "{{ tag_value }}"
+{% endfor %}
+    }
+{% endif %}
+  }
+{% endfor %}
+}

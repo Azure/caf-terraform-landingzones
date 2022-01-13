@@ -1,0 +1,31 @@
+
+- name: "{{display_name}} - {{level}} - {{subscription_key}} - set destination paths"
+  set_fact:
+    destination_path:  "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/{{resource_folder}}/{{ deployment }}"
+
+- name: "{{display_name}} - {{level}} - {{subscription_key}} - Clean-up directory - {{ destination_path }}"
+  file:
+    path: "{{ destination_path }}"
+    state: absent
+  when: config.configuration_folders.asvm.cleanup_destination  | default(true) | bool
+
+- name: "{{display_name}} - {{level}} - {{subscription_key}} - Creates directory - {{ destination_path }}"
+  file:
+    path: "{{ destination_path }}"
+    state: directory
+
+- name: "{{display_name}} - {{level}} - {{subscription_key}} -  {{ deployment }} - Tfvars"
+  include_tasks: "{{ level }}/ansible_resource_type.yaml"
+  loop: "{{ resources.subscriptions[subscription_key].keys() }}"
+  loop_control:
+    loop_var: resource_type
+
+
+- name: "{{display_name}} - {{level}} - {{subscription_key}} -  {{ deployment }} - Overrides"
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{ level }}/{{ base_folder }}/{{resource_folder}}/*.j2"
+    - "{{ level }}/{{ base_folder }}/{{resource_folder}}/*.md"

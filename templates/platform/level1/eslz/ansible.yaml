@@ -1,0 +1,58 @@
+- name: "{{ level }}-{{ base_folder }} |  Clean-up base directory"
+  shell: |
+    rm -rf "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}"
+  when:
+    - config.platform_core_setup.enterprise_scale.enable
+    - config.platform_core_setup.enterprise_scale.clean_up_destination_folder
+
+- name: "{{ level }}-{{ base_folder }} | Creates directory structure"
+  shell: mkdir -p "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/lib/{{ item.path }}"
+  with_filetree: "{{ level }}/{{ base_folder }}/lib/{{ config.platform_core_setup.enterprise_scale.private_lib.version_to_deploy }}"
+  when: item.state == 'directory'
+
+- name: "{{ level }}-{{ base_folder }} |  Tfvars"
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{ level }}/{{ base_folder }}/*.j2"
+    - "{{ level }}/{{ base_folder }}/*.md"
+
+- name: "{{ level }}-{{ base_folder }} |  Lib - archetypes - built-in"
+  ansible.builtin.template:
+      src: "{{ base_templates_folder }}/{{ level }}/eslz/lib/{{ config.platform_core_setup.enterprise_scale.private_lib.version_to_deploy }}/archetype_definitions/archetype_definition_template.json.j2"
+      dest: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/lib/archetype_definitions/archetype_definition_{{ mg.archetype_definitions[item].archetype_id }}.json"
+      force: yes
+  loop: "{{ mg.archetype_definitions.keys() }}"
+  loop_control:
+    loop_var: item
+
+- name: "{{ level }}-{{ base_folder }} |  Lib - archetypes - custom"
+  when:
+    - mg_custom.archetype_definitions is defined
+  ansible.builtin.template:
+      src: "{{ base_templates_folder }}/{{ level }}/eslz/lib/{{ config.platform_core_setup.enterprise_scale.private_lib.version_to_deploy }}/archetype_definitions/custom_landing_zone_template.json.j2"
+      dest: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/lib/archetype_definitions/archetype_definition_{{ mg_custom.archetype_definitions[item].archetype_id }}.json"
+      force: yes
+  loop: "{{ mg_custom.archetype_definitions.keys() }}"
+  loop_control:
+    loop_var: item
+
+- name: "{{ level }}-{{ base_folder }} |  Lib"
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/lib/{{ item.path }}"
+    force: yes
+  with_filetree: "{{ config_folder }}/eslz/lib"
+  when: item.state == 'file' and config.platform_core_setup.enterprise_scale.update_lib_folder
+
+- name: "{{ level }}-{{ base_folder }} |  overrides"
+  when:
+    - mg_custom.archetype_definitions is defined
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{ level }}/{{ base_folder }}/lib/{{ config.platform_core_setup.enterprise_scale.private_lib.version_to_deploy }}/*.tfvars.j2"

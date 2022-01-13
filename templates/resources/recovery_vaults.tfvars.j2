@@ -1,0 +1,64 @@
+recovery_vaults = {
+{% for key, asr in resources.subscriptions[subscription_key].recovery_vaults.items() %}
+  {{ key }} = {
+    name               = "{{ asr.name }}"
+    resource_group_key = "{{ asr.resource_group_key }}"
+
+    region              = "{{ asr.region | default(config.caf_terraform.launchpad.default_region_key) }}"
+    soft_delete_enabled = {{ asr.soft_delete_enabled | default(true) | string | lower }}
+{% if asr.backup_policies is defined %}
+    backup_policies = {
+{% if asr.backup_policies.vms is defined %}
+      vms = {
+{% for bkp_key, bkp in asr.backup_policies.vms.items() %}
+        {{ bkp_key }} = {
+          name      = "{{ bkp.name }}"
+          vault_key = "{{ key }}"
+          rg_key    = "{{ asr.resource_group_key }}"
+          timezone  = "{{ bkp.timezone | default('UTC') }}"
+{% if bkp.backup is defined %}
+          backup = {
+{% if bkp.backup.frequency is defined %}
+            frequency = "{{ bkp.backup.frequency }}"
+{% endif %}
+            time      = "{{ bkp.backup.time | string }}"
+{% if bkp.backup.weekdays is defined %}
+            weekdays  = {{ bkp.backup.weekdays | replace('None','[]') | replace('\'','\"') }}
+{% endif %}
+          }
+{% endif %}
+{% if bkp.retention_daily is defined %}
+          retention_daily = {
+            count = {{ bkp.retention_daily.count }}
+          }
+{% endif %}
+{% if bkp.retention_weekly is defined %}
+          retention_weekly = {
+            count = {{ bkp.retention_weekly.count }}
+            weekdays  = {{ bkp.retention_weekly.weekdays | replace('None','[]') | replace('\'','\"') }}
+          }
+{% endif %}
+{% if bkp.retention_monthly is defined %}
+          retention_monthly = {
+            count = {{ bkp.retention_monthly.count }}
+            weekdays  = {{ bkp.retention_monthly.weekdays | replace('None','[]') | replace('\'','\"') }}
+            weeks  = {{ bkp.retention_monthly.weeks | replace('None','[]') | replace('\'','\"') }}
+          }
+{% endif %}
+{% if bkp.retention_yearly is defined %}
+          retention_yearly = {
+            count = {{ bkp.retention_yearly.count }}
+            weekdays  = {{ bkp.retention_yearly.weekdays | replace('None','[]') | replace('\'','\"') }}
+            weeks  = {{ bkp.retention_yearly.weeks | replace('None','[]') | replace('\'','\"') }}
+            months  = {{ bkp.retention_yearly.months | replace('None','[]') | replace('\'','\"') }}
+          }
+{% endif %}
+        }
+{% endfor %}
+      }
+{% endif %}
+    }
+{% endif %}
+  }
+{% endfor %}
+}

@@ -1,0 +1,30 @@
+# Defines the different destination for the different log profiles
+# Different profiles to target different operational teams
+
+diagnostics_destinations = {
+  # Storage keys must reference the azure region name
+  # For storage, reference "all_regions" and we will send the logs to the storage account
+  # in the region of the deployment
+  storage = {
+    all_regions = {
+{% for key in config.caf_terraform.launchpad.regions.keys() %}
+      "{{ config.caf_terraform.launchpad.regions[key].name }}" = {
+        storage_account_key = "diagsiem_{{config.caf_terraform.launchpad.regions[config.caf_terraform.launchpad.default_region_key].slug}}"
+      }
+{% endfor %}
+    }
+  }
+
+  log_analytics = {
+    central_logs = {
+      log_analytics_key              = "central_logs_{{config.caf_terraform.launchpad.regions[config.caf_terraform.launchpad.default_region_key].slug}}"
+      log_analytics_destination_type = "Dedicated"
+    }
+  }
+
+  event_hub_namespaces = {
+    central_logs = {
+      event_hub_namespace_key = "central_logs_{{config.caf_terraform.launchpad.regions[config.caf_terraform.launchpad.default_region_key].slug}}"
+    }
+  }
+}

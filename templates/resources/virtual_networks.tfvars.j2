@@ -1,0 +1,73 @@
+vnets = {
+{% for key, vnet in resources.subscriptions[subscription_key].virtual_networks.items() %}
+  {{ key }} = {
+    resource_group_key = "{{vnet.resource_group_key}}"
+    vnet = {
+      name          = "{{ vnet.name }}"
+      address_space = {{ vnet.address_space | replace('None','[]') | replace('\'','\"') }}
+{% if vnet.dns_servers is defined %}
+      dns_servers   = {{ vnet.dns_servers | replace('None','[]') | replace('\'','\"') }}
+{% endif %}
+{% if vnet.dns_servers_keys is defined %}
+      dns_servers_keys = [
+{% for dns_key, dns_value in vnet.dns_servers_keys.items() %}
+        {
+                resource_type = "{{ dns_value.resource_type }}"
+                key = "{{ dns_value.key }}"
+                lz_key = "{{ dns_value.lz_key }}"
+{% if dns_value.interface_index is defined %}
+                interface_index = "{{ dns_value.interface_index }}"
+{% endif %}
+        } 
+      ]
+{% endfor %}
+{% endif %}
+    }
+{% if vnet.subnets is defined %}
+    subnets = {
+{% for subnet_key, subnet in vnet.subnets.items() %}
+      {{ subnet_key }} = {
+        name    = "{{subnet.name}}"
+        cidr    = {{ vnet.subnets[subnet_key].cidr | replace('None','[]') | replace('\'','\"') }}
+{% if subnet.nsg_key is defined %}
+        nsg_key = "{{ subnet.nsg_key }}"
+{% endif %}
+{% if subnet.service_endpoints is defined %}
+        service_endpoints = {{ subnet.service_endpoints | replace('None','[]') | replace('\'','\"')  }}
+{% endif %}
+{% if subnet.enforce_private_link_service_network_policies is defined %}
+        enforce_private_link_service_network_policies = true
+{% endif %}
+{% if subnet.enforce_private_link_endpoint_network_policies is defined %}
+        enforce_private_link_endpoint_network_policies = true
+{% else %}
+{% if subnet.nsg_key is not defined %}
+        nsg_key = "empty_nsg"
+{% endif %}
+{% endif %}
+{% if subnet.delegation is defined %}
+        delegation = {
+          name               = "{{ subnet.delegation.name }}"
+          service_delegation = "{{ subnet.delegation.service_delegation }}"
+{% if subnet.delegation.actions is defined %}
+          actions            = {{ subnet.delegation.actions | replace('None','[]') | replace('\'','\"') }}
+{% endif %}
+        }
+{% endif %}
+      }
+{% endfor %}
+    }
+{% endif %}
+{% if vnet.specialsubnets is defined %}
+    specialsubnets = {
+{% for subnet_key, subnet in vnet.specialsubnets.items() %}
+      {{ subnet_key }} = {
+        name = "{{subnet.name}}"
+        cidr = {{ vnet.specialsubnets[subnet_key].cidr | replace('None','[]') | replace('\'','\"') }}
+      }
+{% endfor %}
+    }
+{% endif %}
+  }
+{% endfor %}
+}
