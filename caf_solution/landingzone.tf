@@ -37,13 +37,13 @@ module "solution" {
   logged_user_objectId                  = var.logged_user_objectId
   logic_app                             = var.logic_app
   managed_identities                    = var.managed_identities
+  messaging                             = local.messaging
   networking                            = local.networking
   random_strings                        = var.random_strings
   remote_objects                        = local.remote
   resource_groups                       = var.resource_groups
   role_mapping                          = var.role_mapping
   security                              = local.security
-  messaging                             = local.messaging
   shared_services                       = local.shared_services
   storage                               = local.storage
   storage_accounts                      = var.storage_accounts
