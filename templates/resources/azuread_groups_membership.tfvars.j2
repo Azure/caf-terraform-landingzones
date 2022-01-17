@@ -1,0 +1,21 @@
+azuread_groups_membership = {
+{% for key, value in resources.subscriptions[subscription_key].azuread_groups_membership.items() %}
+  {{ key }} = {
+{% for l1_key , l1_value in value.items() %}
+    {{l1_key}} = {
+{% for l2_key, l2_value in l1_value.items() %}
+      {{l2_key}} = {
+{% if l2_value.group_lz_key is defined %}
+        group_lz_key = "{{ l2_value.group_lz_key }}"
+{% endif %}
+{% if l2_value.lz_key is defined %}
+        lz_key = "{{ l2_value.lz_key }}"
+{% endif %}
+        keys   = {{ l2_value['keys'] | replace('None','[]') | replace('\'','\"') }}
+      }
+{% endfor %}
+    }
+{% endfor %}
+  }
+{% endfor %}
+}

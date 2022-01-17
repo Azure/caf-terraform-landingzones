@@ -1,0 +1,277 @@
+- name: CAF Terraform - Generate Azure Subscription Vending Machine (asvm) configuration files
+  hosts: localhost
+  vars:
+    connectivity_virtual_wan: "{{ lookup('file', '{{ config_folder }}/connectivity_virtual_wan.yaml') | from_yaml }}"
+    connectivity_virtual_hub: "{{ lookup('file', '{{ config_folder }}/connectivity_virtual_hub.yaml') | from_yaml }}"
+    connectivity_firewall: "{{ lookup('file', '{{ config_folder }}/connectivity_firewall.yaml') | from_yaml }}"
+    connectivity_firewall_policies: "{{ lookup('file', '{{ config_folder }}/connectivity_firewall_policies.yaml') | from_yaml }}"
+    connectivity_vpn_sites: "{{ lookup('file', '{{ config_folder }}/connectivity_vpn_sites.yaml') | from_yaml }}"
+    connectivity_vpn_gateway_connections: "{{ lookup('file', '{{ config_folder }}/connectivity_vpn_gateway_connections.yaml') | from_yaml }}"
+    connectivity_express_routes: "{{ lookup('file', '{{ config_folder }}/connectivity_express_routes.yaml') | from_yaml }}"
+    connectivity_express_route_peerings: "{{ lookup('file', '{{ config_folder }}/connectivity_express_route_peerings.yaml') | from_yaml }}"
+    identity: "{{ lookup('file', '{{ config_folder }}/identity.yaml') | from_yaml }}"
+    management: "{{ lookup('file', '{{ config_folder }}/management.yaml') | from_yaml }}"
+    subscriptions: "{{ lookup('file', '{{ config_folder }}/subscriptions.yaml') | from_yaml }}"
+    mg: "{{ lookup('file', '{{ config_folder }}/eslz/archetype_config_overrides.caf.platform.yaml') | from_yaml }}"
+    mg_custom: "{{ lookup('file', '{{ config_folder }}/eslz/custom_landing_zones.caf.platform.yaml') | from_yaml }}"
+    mg_struture: "{{ lookup('file', '{{ config_folder }}/eslz/structure.caf.platform.yaml') | from_yaml }}"
+    tfstates: "{{ lookup('file', '{{ config_folder }}/tfstates.yaml') | from_yaml }}"
+    base_templates_folder: "{{ base_templates_folder }}"
+    boostrap_launchpad: boostrap_launchpad | default(false)
+    deploy_subscriptions: deploy_subscriptions | default(false)
+
+
+  tasks:
+    - name: "Get latest cache folder"
+      set_fact:
+        job_cache_base_path: "/home/vscode/.terraform.cache"
+
+    - name: "Creates cache directory"
+      file:
+        path: "{{ job_cache_base_path }}/launchpad"
+        state: directory
+
+    - name: "Load variable for platform config"
+      include_vars:
+        name: config
+        dir: "{{config_folder_platform | default(config_folder)}}"
+        depth: 1
+        ignore_unknown_extensions: true
+        files_matching: "caf.platform.yaml|tfstates.caf.yaml|tfstates.yaml"
+
+    - name: "Content of config"
+      debug:
+        msg: "{{config}}"
+
+#
+# Level 0
+#
+
+## launchpad
+
+    - name: "[{{ level }}-{{ base_folder }}] launchpad"
+      import_tasks: "{{ level }}/{{ base_folder }}/ansible.yaml"
+      vars:
+        base_folder: "launchpad"
+        level: "level0"
+        subscription_key: launchpad
+
+## credentials
+    - name: "[{{ level }}-{{ base_folder }}] Setup credentials"
+      import_tasks: "{{ level }}/{{ base_folder }}/ansible.yaml"
+      when:
+        - config.platform_identity.azuread_identity_mode == "service_principal"
+        - launchpad_tfstate_exists.rc == 0
+      vars:
+        base_folder: "credentials"
+        level: "level0"
+        subscription_key: launchpad_credentials
+
+    - name: "[{{ level }}-{{ base_folder }}] Clean-up directory"
+      file:
+        path: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}"
+        state: absent
+      when:
+        - config.platform_identity.azuread_identity_mode == "logged_in_user"
+        - launchpad_tfstate_exists.rc == 0
+      vars:
+        base_folder: "credentials"
+        level: "level0"
+
+## billing_subscription_role_delegations
+    - name: "[{{ level }}-{{ base_folder }}] Configure subscription role delegations"
+      import_tasks: "{{ level }}/{{ base_folder }}/ansible.yaml"
+      when: ((config.caf_terraform.billing_subscription_role_delegations is defined) and (config.platform_identity.azuread_identity_mode == "service_principal") and (launchpad_tfstate_exists.rc == 0) and (credentials_tfstate_exists is not skipped))
+      vars:
+        base_folder: "billing_subscription_role_delegations"
+        level: "level0"
+
+    - name: "[{{ level }}-{{ base_folder }}] Clean-up directory"
+      file:
+        path: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}"
+        state: absent
+      when:
+        - level0_billing_subscription_role_delegations is skipped
+      vars:
+        base_folder: "billing_subscription_role_delegations"
+        level: "level0"
+
+
+#
+# Level 1
+#
+
+## subscriptions
+    - name: "{{ level }}-{{ base_folder }} | Create platform subscriptions"
+      import_tasks: "{{ level }}/{{ base_folder }}/ansible.yaml"
+      when: (config.platform_core_setup.enterprise_scale.subscription_deployment_mode == "dedicated_new" and config.platform_identity.azuread_identity_mode != "logged_in_user" and launchpad_tfstate_exists is succeeded and credentials_tfstate_exists is succeeded)
+      vars:
+        base_folder: "subscriptions"
+        level: "level1"
+
+    - name: "{{ level }}-{{ base_folder }} | Clean-up directory"
+      file:
+        path: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}"
+        state: absent
+      when:
+        - level1_subscriptions is skipped
+      vars:
+        base_folder: "subscriptions"
+        level: "level1"
+
+## management
+    - name: "{{ level }}-{{ base_folder }} | Management services"
+      import_tasks: "{{ level }}/{{ base_folder }}/ansible.yaml"
+      when:
+        - (config.platform_management.enable | bool)
+        # - (level1_subscriptions is not skipped)
+        # - platform_subscriptions_details is defined
+
+      vars:
+        base_folder: "management"
+        level: "level1"
+        subscription_key: management
+
+## identity
+    - name: "{{ level }}-{{ base_folder }} | Identity services"
+      import_tasks: "{{ level }}/{{ base_folder }}/ansible.yaml"
+      when:
+        # - config.platform_core_setup.enterprise_scale.subscription_deployment_mode != "single_reuse"
+        - launchpad_tfstate_exists is not skipped
+        - credentials_tfstate_exists is not skipped
+        - level1_subscriptions is not skipped
+        - platform_subscriptions_details is defined
+        - identity.level1 is defined
+
+      vars:
+        base_folder: "identity"
+        level: "level1"
+
+## eslz
+    - name: "{{ level }}-{{ base_folder }} | Enterprise-scale services"
+      import_tasks: "{{ level }}/{{ base_folder }}/ansible.yaml"
+      when:
+        - (config.platform_core_setup.enterprise_scale.enable | bool)
+        - ( (config.platform_core_setup.enterprise_scale.enable | bool) and (level1_subscriptions is not skipped) ) or (config.platform_core_setup.enterprise_scale.subscription_deployment_mode == "single_reuse")
+        - (platform_subscriptions_details is defined) or (config.platform_core_setup.enterprise_scale.subscription_deployment_mode == "single_reuse")
+
+      vars:
+        base_folder: "eslz"
+        level: "level1"
+
+
+#
+# Level 2
+#
+
+## asvm
+    - name: "{{ level }}-{{ base_folder }} | Azure Subscription Vending Machine (asvm)"
+      import_tasks: "{{ level }}/{{ base_folder }}/ansible.yaml"
+      when:
+        - config.platform_core_setup.enterprise_scale.enable_azure_subscription_vending_machine
+        - launchpad_azuread_groups is defined
+      vars:
+        base_folder: "asvm"
+        level: "level2"
+        subscription_key: asvm
+
+## Connectivity
+    - name: "{{ level }}-{{ base_folder }} | Connectivity services"
+      import_tasks: "{{ level }}/{{ base_folder }}/ansible.yaml"
+      when:
+        - ( (config.networking_topology.deployment_option == "virtual_wan") or (config.platform_identity.azuread_identity_mode == 'logged_in_user') )
+        - (platform_subscriptions_details is defined) or (config.platform_core_setup.enterprise_scale.subscription_deployment_mode == "single_reuse")
+      vars:
+        base_folder: "connectivity"
+        level: "level2"
+        folders:
+          - virtual_wan
+
+## identity
+    - name: "{{ level }}-{{ base_folder }} | Identity services"
+      import_tasks: "{{ level }}/{{ base_folder }}/ansible.yaml"
+      when:
+        - config.platform_core_setup.enterprise_scale.subscription_deployment_mode != "single_reuse"
+        - launchpad_tfstate_exists is not skipped
+        - credentials_tfstate_exists is not skipped
+        - level1_subscriptions is not skipped
+        - (platform_subscriptions_details is defined) or (config.platform_core_setup.enterprise_scale.subscription_deployment_mode == "single_reuse")
+
+      vars:
+        base_folder: "identity"
+        level: "level2"
+
+## Platform readme
+
+    - name: "[{{ base_templates_folder }}] readme"
+      ansible.builtin.template:
+        src: "{{ base_templates_folder }}/readme.md"
+        dest: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/readme.md"
+        force: yes
+
+#
+# Formatting & Linters
+#
+
+    - name: Terraform Formatting
+      shell: |
+        terraform fmt -recursive {{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}
+
+# - name: Level 2 - identity
+#   hosts: localhost
+#   vars:
+#     config: "{{ lookup('file', '{{ config_folder }}/platform.yaml') | from_yaml }}"
+#     identity: "{{ lookup('file', '{{ config_folder }}/identity.yaml') | from_yaml }}"
+#     connectivity_virtual_wan: "{{ lookup('file', '{{ config_folder }}/connectivity_virtual_wan.yaml') | from_yaml }}"
+#     connectivity_virtual_hub: "{{ lookup('file', '{{ config_folder }}/connectivity_virtual_hub.yaml') | from_yaml }}"
+#     connectivity_firewall: "{{ lookup('file', '{{ config_folder }}/connectivity_firewall.yaml') | from_yaml }}"
+#     connectivity_firewall_policies: "{{ lookup('file', '{{ config_folder }}/connectivity_firewall_policies.yaml') | from_yaml }}"
+#     cidr: "{{ lookup('file', '{{ config_folder }}/cidr.yaml') | from_yaml }}"
+#     tfstates: "{{ lookup('file', '{{ config_folder }}/tfstates.yaml') | from_yaml }}"
+#     base_templates_folder: /tf/caf/templates/platform
+#     base_folder: identity
+#     level: level2
+#     folders:
+#       - virtual_wan
+
+
+#   tasks:
+#     - name: Creates {{ level }} directory
+#       file:
+#         path: "{{ config.configuration_folders.destination_base_path }}{{ config.configuration_folders.destination_relative_path }}/{{ level }}"
+#         state: directory
+
+#     - name: Creates {{ base_folder }} directory strcture
+#       file:
+#         path: "{{ config.configuration_folders.destination_base_path }}{{ config.configuration_folders.destination_relative_path }}/{{ level }}/{{ base_folder }}"
+#         state: directory
+
+#     - name: "{{ base_folder }} - Readme"
+#       ansible.builtin.template:
+#         src: "{{ item }}"
+#         dest: "{{ config.configuration_folders.destination_base_path }}{{ config.configuration_folders.destination_relative_path }}/{{ level }}/{{ base_folder }}/{{ item | basename | regex_replace('.j2$', '') }}"
+#         force: yes
+#       with_fileglob:
+#         - "{{ level }}/{{ base_folder }}/*.md"
+
+#     - name: "{{ base_folder }} - adds"
+#       include_tasks: "{{ base_templates_folder }}/{{ level }}/{{ base_folder }}/platform.yaml"
+
+
+
+# #
+# # Pipelines
+# #
+# - name: Pipelines
+#   hosts: localhost
+#   vars:
+#     config: "{{ lookup('file', '{{ config_folder }}/platform.yaml') | from_yaml }}"
+#     connectivity: "{{ lookup('file', '{{ config_folder }}/connectivity.yaml') | from_yaml }}"
+#     cidr: "{{ lookup('file', '{{ config_folder }}/cidr.yaml') | from_yaml }}"
+#     tfstates: "{{ lookup('file', '{{ config_folder }}/tfstates.yaml') | from_yaml }}"
+#     base_templates_folder: /tf/caf/templates/platform
+#     base_folder: pipelines
+
+#   tasks:
+#     - import_tasks: "{{ base_folder }}/platform.yaml"
+#     - debug: msg="You can now proceed to the next steps and execute the deployment. Refer to the readme in {{ config.configuration_folders.destination_base_path }}{{ config.configuration_folders.destination_relative_path }}/README.md"

@@ -1,0 +1,9 @@
+automations = {
+{% for key, automation in resources.subscriptions[subscription_key].automation_accounts.items() %}
+  {{ key }}  = {
+    name               = "{{ automation.name }}"
+    sku                = "{{ automation.sku }}"
+    resource_group_key = "{{ automation.resource_group_key }}"
+  }
+{% endfor %}
+}

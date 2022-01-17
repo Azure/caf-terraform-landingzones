@@ -1,0 +1,26 @@
+- name: Creates {{ base_folder }} directory structure
+  shell: mkdir -p "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}"
+
+- name: Azure Identity level2
+  include_tasks: "{{ level }}/ansible_deployment.yaml"
+  when:
+    - config.tfstates.platform.identity_level2 is defined
+  loop: "{{ config.tfstates.platform.identity_level2.keys() }}"
+  loop_control:
+    loop_var: deployment
+  vars:
+    files_matching: "identity_level2.yaml|identity_level2.caf.yaml"
+    resource_folder: identity_level2
+    display_name: Azure Identity level2
+
+- name: Azure Active Directory Domain Services (AADDS)
+  include_tasks: "{{ level }}/ansible_deployment.yaml"
+  when:
+    - config.tfstates.platform.identity_level2_aadds is defined
+  loop: "{{ config.tfstates.platform.identity_level2_aadds.keys() }}"
+  loop_control:
+    loop_var: deployment
+  vars:
+    files_matching: "identity_level2_aadds.yaml|identity_level2_aadds.caf.yaml"
+    resource_folder: identity_level2_aadds
+    display_name: Azure Active Directory Domain Services (AADDS)

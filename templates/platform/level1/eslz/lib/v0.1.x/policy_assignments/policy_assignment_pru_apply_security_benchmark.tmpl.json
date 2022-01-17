@@ -1,0 +1,18 @@
+{
+  "name": "CAF-Security-Benchmark",
+  "type": "Microsoft.Authorization/policyAssignments",
+  "apiVersion": "2019-09-01",
+  "properties": {
+    "description": "The Azure Security Benchmark initiative represents the policies and controls implementing security recommendations defined in Azure Security Benchmark v2, see https://aka.ms/azsecbm. This also serves as the Azure Security Center default policy initiative. You can directly assign this initiative, or manage its policies and compliance results within Azure Security Center.",
+    "displayName": "Azure Security BenchMark",
+    "notScopes": [],
+    "parameters": {},
+    "policyDefinitionId": "/providers/Microsoft.Authorization/policySetDefinitions/1f3afdf9-d0c9-4c3d-847f-89da613e70a8",
+    "scope": "${current_scope_resource_id}",
+    "enforcementMode": true
+  },
+  "location": "${default_location}",
+  "identity": {
+    "type": "None"
+  }
+}

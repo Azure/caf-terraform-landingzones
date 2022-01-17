@@ -1,0 +1,15 @@
+managed_identities = {
+{% for key, value in resources.subscriptions[subscription_key].managed_identities.items() %}
+  {{ key }} = {
+    name               =  "{{ value.name }}"
+    resource_group_key = "{{ value.resource_group_key }}"
+{% if resource_group.tags is defined %}
+    tags   = {
+{% for tag_key, tag_value in resource_group.tags.items() %}
+      {{ tag_key }} = "{{ tag_value }}"
+{% endfor %}
+    }
+{% endif %}
+  }
+{% endfor %}
+}

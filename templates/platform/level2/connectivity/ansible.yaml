@@ -1,0 +1,86 @@
+- name: Creates {{ base_folder }} directory structure
+  shell: mkdir -p "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}"
+
+# - name: "{{ base_folder }} - Readme"
+#   ansible.builtin.template:
+#     src: "{{ item }}"
+#     dest: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/{{ item | basename | regex_replace('.j2$', '') }}"
+#     force: yes
+#   with_fileglob:
+#     - "{{ level }}/{{ base_folder }}/*.md"
+
+- name: "{{ base_folder }} - Virtual WAN"
+  include_tasks: "{{ level }}/{{ base_folder }}/{{ folder_name }}/ansible.yaml"
+  loop:
+    - virtual_wan
+  loop_control:
+    loop_var: folder_name
+
+- name: Virtual Hubs
+  include_tasks: "{{ level }}/{{ base_folder }}/virtual_hub/ansible.yaml"
+  when:
+    - connectivity_virtual_hub.virtual_hubs is defined
+  loop: "{{ config.tfstates.platform.virtual_hubs.keys() }}"
+  loop_control:
+    loop_var: virtual_hub
+
+- name: VPN Sites
+  include_tasks: "{{ level }}/{{ base_folder }}/vpn_site/ansible.yaml"
+  when:
+    - connectivity_vpn_sites.vpn_sites is defined
+  loop: "{{ config.tfstates.platform.vpn_sites.keys() }}"
+  loop_control:
+    loop_var: site
+
+- name: Express Route Circuit
+  include_tasks: "{{ level }}/{{ base_folder }}/express_route_circuit/ansible.yaml"
+  when:
+    - connectivity_express_routes.express_route_circuits is defined
+  loop: "{{ config.tfstates.platform.express_route_circuits.keys() }}"
+  loop_control:
+    loop_var: circuit
+
+- name: Express Route Circuit Peerings
+  include_tasks: "{{ level }}/{{ base_folder }}/express_route_circuit_peering/ansible.yaml"
+  when:
+    - connectivity_express_routes.express_route_circuits is defined
+    - connectivity_express_route_peerings.express_route_circuit_peerings is defined
+  loop: "{{ config.tfstates.platform.express_route_circuit_peerings.keys() }}"
+  loop_control:
+    loop_var: circuit
+
+- name: Private DNS Zones
+  include_tasks: "{{ level }}/ansible_deployment.yaml"
+  when:
+    - config.tfstates.platform.private_dns is defined
+  loop: "{{ config.tfstates.platform.private_dns.keys() }}"
+  loop_control:
+    loop_var: deployment
+  vars:
+    files_matching: "connectivity_private_dns.yaml|connectivity_private_dns.caf.yaml"
+    resource_folder: private_dns
+    display_name: Private DNS Zones
+
+- name: Firewall Policies
+  include_tasks: "{{ level }}/ansible_deployment.yaml"
+  when:
+    - config.tfstates.platform.azurerm_firewall_policies is defined
+  loop: "{{ config.tfstates.platform.azurerm_firewall_policies.keys() }}"
+  loop_control:
+    loop_var: deployment
+  vars:
+    files_matching: "connectivity_firewall_policies.yaml|connectivity_firewall_policies.caf.yaml"
+    resource_folder: azurerm_firewall_policies
+    display_name: Firewall Policies
+
+- name: Azure Firewalls
+  include_tasks: "{{ level }}/ansible_deployment.yaml"
+  when:
+    - config.tfstates.platform.azurerm_firewalls is defined
+  loop: "{{ config.tfstates.platform.azurerm_firewalls.keys() }}"
+  loop_control:
+    loop_var: deployment
+  vars:
+    files_matching: "connectivity_firewalls.yaml|connectivity_firewalls.caf.yaml"
+    resource_folder: azurerm_firewalls
+    display_name: Azure Firewalls

@@ -1,0 +1,20 @@
+- name: "[{{ level }}-{{ base_folder }}] Clean-up directory"
+  file:
+    path: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}"
+    state: absent
+  when: config.configuration_folders.platform.cleanup_destination | bool
+
+- name: "[{{ level }}-{{ base_folder }}] Creates directory"
+  file:
+    path: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}"
+    state: directory
+
+- name: "[{{ level }}-{{ base_folder }}] generate configuration files."
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{ level }}/{{ base_folder }}/*.tfvars.j2"
+    - "{{ level }}/{{ base_folder }}/*.md"
+

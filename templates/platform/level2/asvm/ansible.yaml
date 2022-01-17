@@ -1,0 +1,92 @@
+- name: "[{{ level }}-{{ base_folder }}] - Set variables"
+  set_fact:
+    destination_path: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}"
+
+- name: "[{{ level }}-{{ base_folder }}] - Load variable for launchpad"
+  include_vars:
+    name: resources
+    dir: "{{config_folder}}"
+    depth: 1
+    ignore_unknown_extensions: true
+    files_matching: "asvm.yaml"
+
+- debug:
+    msg: "{{resources}}"
+
+- name: "[{{ level }}-{{ base_folder }}] Clean-up directory"
+  file:
+    path: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}"
+    state: absent
+  when: config.configuration_folders.platform.cleanup_destination | bool
+
+- name: "[{{ level }}-{{ base_folder }}] Creates directory"
+  file:
+    path: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}"
+    state: directory
+
+
+- name: "[{{ level }}-{{ base_folder }}] Get level2 tfstate account name"
+  register: level2_storage_account
+  shell: |
+    az storage account list \
+      --subscription {{ config.caf_terraform.launchpad.subscription_id }} \
+      --query "[?tags.caf_tfstate=='{{ config.tfstates.platform.asvm.level }}' && tags.caf_environment=='{{ config.caf_terraform.launchpad.caf_environment }}'].{name:name}[0]" -o json | jq -r .name
+
+- debug:
+    msg: "{{level2_storage_account}}"
+
+
+- name: "[{{ level }}-{{ base_folder }}] Get level2 tfstate account name"
+  register: level2_storage_rg
+  shell: |
+    az storage account list \
+      --subscription {{ config.caf_terraform.launchpad.subscription_id }} \
+      --query "[?tags.caf_tfstate=='{{ config.tfstates.platform.asvm.level }}' && tags.caf_environment=='{{ config.caf_terraform.launchpad.caf_environment }}'].{resourceGroup:resourceGroup}[0]" -o json | jq -r .resourceGroup
+
+- debug:
+    msg: "{{level2_storage_account}}"
+
+
+#
+# resource_groups
+#
+- name: "[{{ level }}-{{ base_folder }}] - resource_groups"
+  when:
+    - resources.subscriptions[subscription_key].resource_groups is defined
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{ resource_template_folder }}/resource_groups.tfvars.j2"
+
+#
+# azuread_groups
+#
+- name: "[{{ level }}-{{ base_folder }}] - azuread_groups"
+  when:
+    - resources.subscriptions[subscription_key].azuread_groups is defined
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{ resource_template_folder }}/azuread_groups.tfvars.j2"
+
+- name: "[{{ level }}-{{ base_folder }}] asvm"
+  ansible.builtin.template:
+    src: "{{ level }}/{{ base_folder }}/{{ item }}.tfvars.j2"
+    dest: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/{{ item }}.tfvars"
+    force: yes
+  loop:
+    - dynamic_secrets
+    - keyvaults
+    - landingzone
+    - role_mappings
+    - storage_accounts
+
+- name: "[{{ level }}-{{ base_folder }}] launchpad - readme"
+  ansible.builtin.template:
+    src: "{{ level }}/{{ base_folder }}/readme.md"
+    dest: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/readme.md"
+    force: yes

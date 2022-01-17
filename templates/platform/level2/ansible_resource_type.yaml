@@ -1,0 +1,7 @@
+- name: "{{display_name}} - {{ level }} - {{subscription_key}} - {{ deployment }} - {{ resource_type }}"
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{ resource_template_folder }}/{{resource_type}}.tfvars.j2"

@@ -1,0 +1,75 @@
+- name: Express_routes {{ circuit }} - Clean-up directory
+  file:
+    path: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/express_route_circuit/{{ circuit }}"
+    state: absent
+  when:
+    - config.configuration_folders.platform.cleanup_destination | bool
+
+- name: Express_routes {{ circuit }} - Creates directory structure
+  file:
+    path: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/express_route_circuit/{{ circuit }}"
+    state: directory
+
+- name: Express_routes {{ circuit }} - variables
+  set_fact:
+    destination_path_resources: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/express_route_circuit/{{ circuit }}"
+
+- name: Express_routes {{ circuit }} - readme
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/express_route_circuit/{{ circuit }}/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{ level }}/{{ base_folder }}/express_route_circuit/*.md"
+
+#
+# landingzone
+#
+- name: "[{{ level }}-{{ circuit }}] - express route - landingzone"
+  when:
+    - connectivity_express_routes.express_route_circuits is defined
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ destination_path_resources }}/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{ level }}/{{ base_folder }}/express_route_circuit/landingzone.tfvars.j2"
+
+#
+# resource_groups
+#
+- name: "[{{ level }}-{{ circuit }}] - express route - resource_groups"
+  when:
+    - connectivity_express_routes.resource_groups is defined
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ destination_path_resources }}/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{ level }}/{{ base_folder }}/express_route_circuit/resource_groups.tfvars.j2"
+
+#
+# express_route_circuits
+#
+- name: "[{{ level }}-{{ circuit }}] - express route - express_route_circuits"
+  when:
+    - connectivity_express_routes.express_route_circuits is defined
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ destination_path_resources }}/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{ level }}/{{ base_folder }}/express_route_circuit/express_route_circuits.tfvars.j2"
+
+#
+# express_route_circuit_authorizations
+#
+- name: "[{{ level }}-{{ circuit }}] - express route - express_route_circuit_authorizations"
+  when:
+    - connectivity_express_routes.express_route_circuit_authorizations is defined
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ destination_path_resources }}/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{ level }}/{{ base_folder }}/express_route_circuit/express_route_circuit_authorizations.tfvars.j2"

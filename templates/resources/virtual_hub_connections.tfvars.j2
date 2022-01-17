@@ -1,0 +1,17 @@
+virtual_hub_connections = {
+{% for key, vhc in resources.subscriptions[subscription_key].virtual_hub_connections.items() %}
+  {{ key }} = {
+    name = "{{ vhc.name }}"
+    virtual_hub = {
+      lz_key = "{{ vhc.virtual_hub.lz_key }}"
+      key    = "{{ vhc.virtual_hub.key }}"
+    }
+    vnet = {
+{% if vhc.vnet.lz_key is defined %}
+      lz_key   = "{{ vhc.vnet.lz_key }}"
+{% endif %}
+      vnet_key = "{{ vhc.vnet.vnet_key }}"
+    }
+  }
+{% endfor %}
+}

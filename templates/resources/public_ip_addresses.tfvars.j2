@@ -1,0 +1,12 @@
+public_ip_addresses = {
+{% for key, value in resources.subscriptions[subscription_key].public_ip_addresses.items() %}
+  {{ key }} = {
+    name = "{{ value.name }}"
+    resource_group_key = "{{ value.resource_group_key }}"
+    sku = "{{ value.sku }}"
+    allocation_method = "{{ value.allocation_method }}"
+    ip_version = "{{ value.ip_version }}"
+    idle_timeout_in_minutes = "{{ value.idle_timeout_in_minutes }}"
+  }
+{% endfor %}
+}

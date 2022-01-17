@@ -60,7 +60,7 @@ jobs:
 
       - name: foundations
         run: |
-          sleep 120
+          sleep 180
           /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/caf_solution -a apply \
             -var-folder ${GITHUB_WORKSPACE}/caf_solution/scenario/foundations/100-passthrough \
             -tfstate caf_foundations.tfstate \

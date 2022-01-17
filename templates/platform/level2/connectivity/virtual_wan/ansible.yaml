@@ -1,0 +1,20 @@
+- name: ({{ folder_name }}) - Clean-up directory
+  file:
+    path: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/{{ folder_name }}"
+    state: absent
+  when:
+    - config.configuration_folders.platform.cleanup_destination | bool
+
+- name: ({{ folder_name }}) - Creates directory structure
+  file:
+    path: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/{{ folder_name }}"
+    state: directory
+
+- name: ({{ folder_name }}) - Tfvars
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/{{ folder_name }}/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{ level }}/{{ base_folder }}/{{ folder_name }}/*.j2"
+    - "{{ level }}/{{ base_folder }}/{{ folder_name }}/*.md"

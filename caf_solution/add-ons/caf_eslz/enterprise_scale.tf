@@ -2,7 +2,7 @@
 
 module "enterprise_scale" {
   source  = "Azure/caf-enterprise-scale/azurerm"
-  version = "~> 1.1.0"
+  version = "1.1.1"
 
   # source = "../../../../eslz"
 

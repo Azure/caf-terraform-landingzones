@@ -1,0 +1,22 @@
+<WadCfg>
+  <DiagnosticMonitorConfiguration overallQuotaInMB="10000">
+    <DiagnosticInfrastructureLogs scheduledTransferLogLevelFilter="Error"/>
+    <Metrics resourceId="${resource_id}">
+      <MetricAggregation scheduledTransferPeriod="PT1H"/>
+      <MetricAggregation scheduledTransferPeriod="PT1M"/>
+    </Metrics>
+    <PerformanceCounters scheduledTransferPeriod="PT1M">
+      <PerformanceCounterConfiguration counterSpecifier="\Processor Information(_Total)\% Processor Time" sampleRate="PT60S" unit="Percent" />
+      <PerformanceCounterConfiguration counterSpecifier="\Processor Information(_Total)\% Privileged Time" sampleRate="PT60S" unit="Percent" />
+      <PerformanceCounterConfiguration counterSpecifier="\Processor Information(_Total)\% User Time" sampleRate="PT60S" unit="Percent" />
+      <PerformanceCounterConfiguration counterSpecifier="\Processor Information(_Total)\Processor Frequency" sampleRate="PT60S" unit="Count" />
+      <PerformanceCounterConfiguration counterSpecifier="\System\Processes" sampleRate="PT60S" unit="Count" />
+      <PerformanceCounterConfiguration counterSpecifier="\SQLServer:SQL Statistics\SQL Re-Compilations/sec" sampleRate="PT60S" unit="Count" />
+    </PerformanceCounters>
+    <WindowsEventLog scheduledTransferPeriod="PT1M">
+      <DataSource name="Application!*[System[(Level = 1 or Level = 2)]]"/>
+      <DataSource name="Security!*[System[(Level = 1 or Level = 2)]"/>
+      <DataSource name="System!*[System[(Level = 1 or Level = 2)]]"/>
+    </WindowsEventLog>
+  </DiagnosticMonitorConfiguration>
+</WadCfg>

@@ -1,0 +1,22 @@
+{% if resources.subscriptions[subscription_key].global_settings is defined %}
+  global_settings = {
+    passthrough = {{ resources.subscriptions[subscription_key].global_settings.passthrough | string | lower }}
+    prefix = "{{ resources.subscriptions[subscription_key].global_settings.prefix }}"
+    use_slug = {{ resources.subscriptions[subscription_key].global_settings.use_slug | string | lower }}
+    inherit_tags = {{ resources.subscriptions[subscription_key].global_settings.inherit_tags | string | lower }}
+    random_length = {{ resources.subscriptions[subscription_key].global_settings.random_length }}
+{% if resources.subscriptions[subscription_key].global_settings.tags is defined %}
+    tags = {
+{% for tag, value in resources.subscriptions[subscription_key].global_settings.tags.items() %}
+      "{{ tag }}" = "{{value}}"
+{% endfor %}
+    }
+{% endif %}
+    default_region = "{{ resources.subscriptions[subscription_key].global_settings.default_region_key }}"
+    regions = {
+{% for key in resources.subscriptions[subscription_key].global_settings.regions.keys() %}
+      {{ key }} = "{{ resources.subscriptions[subscription_key].global_settings.regions[key].name }}"
+{% endfor %}
+    }
+  }
+{% endif %}

@@ -1,0 +1,88 @@
+- name: "[{{ level }}-{{ base_folder }}] Clean-up directory"
+  file:
+    path: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}"
+    state: absent
+  when: config.configuration_folders.platform.cleanup_destination | bool
+
+- name: "[{{ level }}-{{ base_folder }}] Creates directory"
+  register: level1_subscriptions
+  file:
+    path: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}"
+    state: directory
+
+- name: "[{{ level }}-{{ base_folder }}] generate configuration files."
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{ level }}/{{ base_folder }}/*.tfvars.j2"
+    - "{{ level }}/{{ base_folder }}/*.md"
+
+# Create the subscriptions
+- name: "[{{ level }}-{{ base_folder }}] Create subscriptions."
+  when: deploy_subscriptions | bool
+  shell: |
+    /tf/rover/rover.sh \
+      --impersonate-sp-from-keyvault-url {{ keyvaults.cred_subscription_creation_platform.vault_uri }} \
+      -lz /tf/caf/landingzones/caf_solution \
+      -var-folder {{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }} \
+      -tfstate_subscription_id {{ config.caf_terraform.launchpad.subscription_id }} \
+      -target_subscription {{ config.caf_terraform.launchpad.subscription_id }} \
+      -tfstate {{ config.tfstates.platform.platform_subscriptions.tfstate }} \
+      -log-severity {{ config.gitops.rover_log_error }} \
+      -env {{ config.caf_terraform.launchpad.caf_environment }} \
+      -level {{ level }} \
+      -a apply
+
+- name: "[{{ level }}-{{ base_folder }}] Get latest cache folder"
+  set_fact:
+    job_cache_base_path: "/home/vscode/.terraform.cache"
+
+- name: "[{{ level }}-{{ base_folder }}] Get tfstate details"
+  register: subscription_tfstate_file_name
+  shell: |
+    az storage account list \
+      --subscription {{ config.caf_terraform.launchpad.subscription_id }} \
+      --query "[?tags.caf_tfstate=='{{ config.tfstates.platform.platform_subscriptions.level }}' && tags.caf_environment=='{{ config.caf_terraform.launchpad.caf_environment }}'].{name:name}[0]" -o json | jq -r .name
+
+- debug:
+    msg: "{{ subscription_tfstate_file_name.stdout }}"
+
+- name: "[{{ level }}-{{ base_folder }}] Download tfstate details"
+  register: platform_subscriptions_tfstate_exists
+  ignore_errors: true
+  shell: |
+    az storage blob download \
+      --name "{{ config.tfstates.platform.platform_subscriptions.tfstate }}" \
+      --account-name "{{ subscription_tfstate_file_name.stdout }}" \
+      --container-name "tfstate" \
+      --auth-mode "login" \
+      --file "{{ job_cache_base_path }}/{{ config.tfstates.platform.platform_subscriptions.tfstate }}"
+
+- name: "[{{ level }}-{{ base_folder }}] Get platform_subscriptions details"
+  shell: "cat {{ job_cache_base_path }}/{{ config.tfstates.platform.platform_subscriptions.tfstate }}"
+  register: platform_subscriptions
+  when: platform_subscriptions_tfstate_exists.rc == 0
+
+- name: "[{{ level }}-{{ base_folder }}] Get platform_subscriptions json data"
+  when: platform_subscriptions_tfstate_exists.rc == 0
+  set_fact:
+    platform_sub_jsondata: "{{ platform_subscriptions.stdout | from_json }}"
+
+- name: "[{{ level }}-{{ base_folder }}] Get subscriptions list"
+  when: platform_subscriptions_tfstate_exists.rc == 0
+  set_fact:
+    platform_subscriptions_details: "{{ platform_sub_jsondata | json_query(path) }}"
+  vars:
+    path: 'outputs.objects.value.{{ config.tfstates.platform.platform_subscriptions.lz_key_name }}.subscriptions'
+
+- name: "[{{ level }}-{{ base_folder }}] cleanup"
+  when: platform_subscriptions_tfstate_exists.rc == 0
+  file:
+    path: "{{ job_cache_base_path }}/{{ config.tfstates.platform.platform_subscriptions.tfstate }}"
+    state: absent
+
+- debug:
+    msg: "Platform subscriptions - {{ platform_subscriptions_details }}"
+  when: platform_subscriptions_tfstate_exists.rc == 0

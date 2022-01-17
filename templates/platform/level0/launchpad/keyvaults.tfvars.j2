@@ -1,0 +1,89 @@
+
+keyvaults = {
+  level0 = {
+    name               = "{{ resources.subscriptions[subscription_key].keyvaults.level0.name }}"
+    resource_group_key = "{{ resources.subscriptions[subscription_key].keyvaults.level0.resource_group_key }}"
+    sku_name           = "{{ config.platform_core_setup.sku.keyvault}}"
+    tags = {
+      tfstate         = "level0"
+      environment     = "{{ config.caf_terraform.launchpad.caf_environment }}"
+      caf_tfstate     = "level0"
+      caf_environment = "{{ config.caf_terraform.launchpad.caf_environment }}"
+    }
+
+    creation_policies = {
+{% if config.platform_identity.azuread_identity_mode != 'logged_in_user' %}
+      caf_platform_maintainers = {
+        azuread_group_key  = "caf_platform_maintainers"
+        secret_permissions = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
+      }
+{% endif %}
+{% if config.platform_identity.azuread_identity_mode == 'logged_in_user' %}
+      logged_in_user = {
+        # if the key is set to "logged_in_user" add the user running terraform in the keyvault policy
+        # More examples in /examples/keyvault
+        secret_permissions = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
+      }
+{% endif %}
+    }
+
+  }
+
+  level1 = {
+    name               = "{{ resources.subscriptions[subscription_key].keyvaults.level1.name }}"
+    resource_group_key = "{{ resources.subscriptions[subscription_key].keyvaults.level1.resource_group_key }}"
+    sku_name           = "{{ config.platform_core_setup.sku.keyvault}}"
+    tags = {
+      tfstate         = "level1"
+      environment     = "{{ config.caf_terraform.launchpad.caf_environment }}"
+      caf_tfstate     = "level1"
+      caf_environment = "{{ config.caf_terraform.launchpad.caf_environment }}"
+    }
+
+    creation_policies = {
+{% if config.platform_identity.azuread_identity_mode != 'logged_in_user' %}
+      caf_platform_maintainers = {
+        azuread_group_key  = "caf_platform_maintainers"
+        secret_permissions = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
+      }
+{% endif %}
+{% if config.platform_identity.azuread_identity_mode == 'logged_in_user' %}
+      logged_in_user = {
+        # if the key is set to "logged_in_user" add the user running terraform in the keyvault policy
+        # More examples in /examples/keyvault
+        secret_permissions = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
+      }
+{% endif %}
+    }
+
+  }
+
+  level2 = {
+    name               = "{{ resources.subscriptions[subscription_key].keyvaults.level2.name }}"
+    resource_group_key = "{{ resources.subscriptions[subscription_key].keyvaults.level2.resource_group_key }}"
+    sku_name           = "{{ config.platform_core_setup.sku.keyvault}}"
+    tags = {
+      tfstate         = "level2"
+      environment     = "{{ config.caf_terraform.launchpad.caf_environment }}"
+      caf_tfstate     = "level2"
+      caf_environment = "{{ config.caf_terraform.launchpad.caf_environment }}"
+    }
+
+    creation_policies = {
+{% if config.platform_identity.azuread_identity_mode != 'logged_in_user' %}
+      caf_platform_maintainers = {
+        azuread_group_key  = "caf_platform_maintainers"
+        secret_permissions = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
+      }
+{% endif %}
+{% if config.platform_identity.azuread_identity_mode == 'logged_in_user' %}
+      logged_in_user = {
+        # if the key is set to "logged_in_user" add the user running terraform in the keyvault policy
+        # More examples in /examples/keyvault
+        secret_permissions = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
+      }
+{% endif %}
+    }
+
+  }
+}
