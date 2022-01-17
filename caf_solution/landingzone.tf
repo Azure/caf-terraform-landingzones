@@ -1,6 +1,6 @@
 module "solution" {
   source  = "aztfmod/caf/azurerm"
-  version = "5.5.0"
+  version = "5.5.1"
 
   # source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=master"
   # source = "../../aztfmod"
@@ -12,6 +12,7 @@ module "solution" {
   azuread                               = local.azuread
   cloud                                 = local.cloud
   compute                               = local.compute
+  apim                                  = local.apim
   cognitive_services                    = local.cognitive_services
   current_landingzone_key               = var.landingzone.key
   custom_role_definitions               = var.custom_role_definitions
@@ -42,7 +43,7 @@ module "solution" {
   resource_groups                       = var.resource_groups
   role_mapping                          = var.role_mapping
   security                              = local.security
-  servicebus                            = local.servicebus
+  messaging                             = local.messaging
   shared_services                       = local.shared_services
   storage                               = local.storage
   storage_accounts                      = var.storage_accounts
