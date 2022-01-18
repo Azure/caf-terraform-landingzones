@@ -75,9 +75,3 @@ variable "azdo_pat_admin" {
   default     = null
   description = "(Optional). Azure Devops PAT Token. If not provided with this value must be retrieved from the Keyvault secret."
 }
-variable "groups" {
-  default = {}
-}
-variable "permissions" {
-  default = {}
-}
