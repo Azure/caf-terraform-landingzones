@@ -59,6 +59,39 @@ rover \
 
 ```
 
+If the plan is not successfull you need to come back to the yaml contoso.caf.platform.yaml, fix the values, re-execute the rover ignite and then rover plan.
+
+
+```bash 
+# On success plan, execute
+
+rover \
+  -lz /tf/caf/landingzones/caf_launchpad \
+  -var-folder {{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }} \
+  -tfstate_subscription_id {{ config.caf_terraform.launchpad.subscription_id }} \
+  -target_subscription {{ config.caf_terraform.launchpad.subscription_id }} \
+  -tfstate {{ config.tfstates.platform.launchpad.tfstate }} \
+  -log-severity {{ config.gitops.rover_log_error }} \
+  -launchpad \
+  -env {{ config.caf_terraform.launchpad.caf_environment }} \
+  -level {{ level }} \
+  -p ${TF_DATA_DIR}/{{ config.tfstates.platform.launchpad.tfstate }}.tfplan \
+  -a apply
+
+```
+
+```bash
+# On success, re-execute the rover ignite
+
+rover ignite \
+  --playbook /tf/caf/landingzones/templates/platform/ansible.yaml \
+  -e base_templates_folder={{ base_templates_folder }} \
+  -e resource_template_folder={{resource_template_folder}} \
+  -e config_folder={{ config_folder }}
+
+```
+
+
 ## Architecture diagram
 ![Launchpad demo](../../../../../../documentation/img/launchpad-demo.PNG)
 
@@ -67,13 +100,8 @@ rover \
 
 When you have successfully deployed the launchpad you can  move to the next step.
 
-
-{% if config.caf_terraform.billing_subscription_role_delegations is defined %}
-{% if config.caf_terraform.billing_subscription_role_delegations.enable %}
+{% if config.platform_identity.azuread_identity_mode == 'service_principal' %}
  [Deploy the credentials landing zone](../credentials/readme.md)
-{% else %}
- [Deploy the management services](../../level1/management/readme.md)
-{% endif %}
 {% else %}
  [Deploy the management services](../../level1/management/readme.md)
 {% endif %}
