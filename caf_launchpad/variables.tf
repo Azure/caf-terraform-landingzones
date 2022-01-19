@@ -236,3 +236,9 @@ variable "route_tables" {
 variable "propagate_launchpad_identities" {
   default = false
 }
+
+variable "provider_azurerm_features_keyvault" {
+  default = {
+    purge_soft_delete_on_destroy = false
+  }
+}

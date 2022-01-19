@@ -28,9 +28,14 @@ terraform {
 
 
 provider "azurerm" {
-  partner_id = "ca4078f8-9bc4-471b-ab5b-3af6b86a42c8"
   # partner identifier for CAF Terraform landing zones.
-  features {}
+  partner_id = "ca4078f8-9bc4-471b-ab5b-3af6b86a42c8"
+
+  features {
+    key_vault {
+      purge_soft_delete_on_destroy = var.provider_azurerm_features_keyvault.purge_soft_delete_on_destroy
+    }
+  }
 }
 
 resource "random_string" "prefix" {
