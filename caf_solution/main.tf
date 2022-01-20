@@ -4,23 +4,23 @@ terraform {
     // azuread version driven by the caf module
     random = {
       source  = "hashicorp/random"
-      version = "~> 2.2.1"
+      version = "~> 3.1.0"
     }
     external = {
       source  = "hashicorp/external"
-      version = "~> 1.2.0"
+      version = "~> 2.2.0"
     }
     null = {
       source  = "hashicorp/null"
-      version = "~> 2.1.0"
+      version = "~> 3.1.0"
     }
     tls = {
       source  = "hashicorp/tls"
-      version = "~> 2.2.0"
+      version = "~> 3.1.0"
     }
     azurecaf = {
       source  = "aztfmod/azurecaf"
-      version = "~>1.2.0"
+      version = "~> 1.2.0"
     }
   }
   required_version = ">= 0.15"
