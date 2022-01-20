@@ -91,11 +91,6 @@ rover ignite \
 
 ```
 
-
-## Architecture diagram
-![Launchpad demo](../../../../../../documentation/img/launchpad-demo.PNG)
-
-
 # Next steps
 
 When you have successfully deployed the launchpad you can  move to the next step.

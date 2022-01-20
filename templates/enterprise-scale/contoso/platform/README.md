@@ -3,25 +3,11 @@
 
 ## Commands
 
-### clone the starter project
-```bash
-git clone https://github.com:Azure/caf-terraform-landingzones-starter.git /tf/caf/starter
-
-cd /tf/caf/starter
-git pull
-git checkout contoso-2109
-
-
-```
-
 ### clone the landingzone project (Terraform base code)
 ```bash
-git clone https://github.com/Azure/caf-terraform-landingzones.git /tf/caf/landingzones
-
 cd /tf/caf/landingzones
 git pull
 git checkout 2112.int
-
 
 ```
 
@@ -30,7 +16,7 @@ Rover ignite will now process the yaml files and start building the configuratio
 Rover ignite creates the tfvars and also the documentation.
 
 ```bash
-rover login -t tenantname<replace>
+rover login -t tenantname<replace> -s <management subscription guid><replace>
 
 rover ignite \
   --playbook /tf/caf/landingzones/templates/platform/ansible.yaml \
