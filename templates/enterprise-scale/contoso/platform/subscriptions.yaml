@@ -1,0 +1,16 @@
+platform_subscriptions:
+  management:
+    alias: "consoto-management"
+    name: "contoso-management"
+    # Do not set the subscription_id when using the automated subscripiton creation
+    # In that case delete the following attribute.
+    # When re-using an existing subscripiton, set the GUID of the subscripiton.
+    subscription_id: <replace>
+  identity:
+    alias: "contoso-identity"
+    name: "contoso-identity"
+    subscription_id: <replace>
+  connectivity:
+    alias: "contoso-connectivity"
+    name: "contoso-connectivity"
+    subscription_id: <replace>

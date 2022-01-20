@@ -1,0 +1,5 @@
+
+resource_groups:
+  contoso_global_firewall:
+    name: contoso-connectivity-global-firewall
+    region_key: region1

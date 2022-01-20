@@ -1,0 +1,10 @@
+virtual_wans:
+  global_wan:
+    name: vwan
+    resource_group_key: global_wan
+    region_key: region1
+
+resource_groups:
+  global_wan:
+    name: connectivity-global-wan
+    region_key: region1

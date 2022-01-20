@@ -1,0 +1,26 @@
+level1:
+  diagnostic_log_analytics:
+    central_logs_sea:
+      name: log
+
+  azuread_groups:
+    caf_ac_prod_arthemis_management:
+      name: caf ac prod arthemis management
+      members:
+        object_ids:
+          - c3f2a2e9-5c07-4bad-9803-25a5194cdaaa
+    caf_ac_prod_aphrodite_management:
+      name: caf ac prod aphrodite management
+      members:
+        object_ids:
+          - c3f2a2e9-5c07-4bad-9803-25a5194cdaaa
+    caf_ac_non_prod_arthemis_management:
+      name: caf ac non-prod arthemis management
+      members:
+        object_ids:
+          - c3f2a2e9-5c07-4bad-9803-25a5194cdaaa
+    caf_ac_non_prod_aphrodite_management:
+      name: caf ac non-prod aphrodite management
+      members:
+        object_ids:
+          - c3f2a2e9-5c07-4bad-9803-25a5194cdaaa

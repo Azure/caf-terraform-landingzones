@@ -1,0 +1,35 @@
+subscriptions:
+  asvm:
+    resource_groups:
+      level3:
+        name: caf-level3
+        tags:
+          level: level3
+      level4:
+        name: caf-level4
+        tags:
+          level: level4
+
+    storage_accounts:
+      level3:
+        name: l3
+        resource_group_key: level3
+      level4:
+        name: l4
+        resource_group_key: level4
+
+    keyvaults:
+      level3:
+        name: l3
+        resource_group_key: level3
+      level4:
+        name: l4
+        resource_group_key: level4
+
+
+    azuread_groups:
+      caf_ac_landingzone_maintainers_non_prod:
+        name: caf_ac_landingzone_maintainers_non_prod
+
+      caf_ac_landingzone_maintainers_prod:
+        name: caf_ac_landingzone_maintainers_prod

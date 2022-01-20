@@ -1,0 +1,73 @@
+virtual_networks:
+  connectivity_hub1_firewall_egress:
+    name: firewall-egress-re1
+    resource_group_key: contoso_global_firewall
+    region_key: region1
+    address_space:
+      - 10.10.10.0/24
+    specialsubnets:
+      AzureFirewallSubnet:
+        name: AzureFirewallSubnet
+        cidr:
+          - 10.10.10.0/26
+
+
+azurerm_firewalls:
+  egress_fw_region1:
+    name: egress-firewall
+    resource_group_key: contoso_global_firewall
+    region_key: region1
+  # egress_fw_region2:
+  #   name: egress-firewall
+  #   resource_group_key: contoso_global_wan
+  #   region_key: region2
+
+resource_groups:
+  contoso_global_dns:
+    name: contoso-connectivity-global-dns
+    region_key: region1
+  contoso_global_firewall:
+    name: contoso-connectivity-global-firewall
+    region_key: region1
+  contoso_global_er_circuits:
+    name: contoso-connectivity-global-er-circuits
+    region_key: region1
+
+# private_links:
+#   - privatelink.adf.azure.com
+#   - privatelink.afs.azure.net
+#   - privatelink.api.azureml.ms
+#   - privatelink.azconfig.io
+#   - privatelink.azure-automation.net
+#   - privatelink.azure-devices.net
+#   - privatelink.azurecr.io
+#   - privatelink.azurewebsites.net
+#   - privatelink.blob.core.windows.net
+#   - privatelink.cassandra.cosmos.azure.com
+#   - privatelink.cognitiveservices.azure.com
+#   - privatelink.database.windows.net
+#   - privatelink.datafactory.azure.net
+#   # - privatelink.dfs.core.windows.net
+#   # - privatelink.documents.azure.com
+#   # - privatelink.eventgrid.azure.net
+#   # - privatelink.file.core.windows.net
+#   # - privatelink.gremlin.cosmos.azure.com
+#   # - privatelink.mariadb.database.azure.com
+#   # - privatelink.mongo.cosmos.azure.com
+#   # - privatelink.monitor.azure.com
+#   # - privatelink.mysql.database.azure.com
+#   # - privatelink.notebooks.azure.net
+#   # - privatelink.ods.opinsights.azure.com
+#   # - privatelink.oms.opinsights.azure.com
+#   # - privatelink.postgres.database.azure.com
+#   # - privatelink.queue.core.windows.net
+#   # - privatelink.redis.cache.windows.net
+#   # - privatelink.search.windows.net
+#   # - privatelink.service.signalr.net
+#   # - privatelink.servicebus.windows.net
+#   # - privatelink.sql.azuresynapse.net
+#   # - privatelink.table.core.windows.net
+#   # - privatelink.table.cosmos.azure.com
+#   # - privatelink.vaultcore.azure.net
+#   # - privatelink.web.core.windows.net
+

@@ -1,0 +1,148 @@
+tfstates:
+  platform:
+    ### Level0 ###
+    launchpad:
+      lz_key_name: launchpad
+      tfstate: caf_launchpad.tfstate
+      workspace: tfstate
+      base_config_path: launchpad
+      level: level0
+    billing_subscription_role_delegations:
+      lz_key_name: billing_subscription_role_delegations
+      tfstate: billing_subscription_role_delegations.tfstate
+      base_config_path: billing_subscription_role_delegations
+      level: level0
+    launchpad_credentials:
+      lz_key_name: launchpad_credentials_rotation
+      tfstate: launchpad_credentials_rotation.tfstate
+      base_config_path: credentials
+      level: level0
+
+    ### Level1 ###
+    management:
+      lz_key_name: management
+      tfstate: management.tfstate
+      base_config_path: management
+      level: level1
+    identity:
+      lz_key_name: identity
+      tfstate: identity.tfstate
+      base_config_path: identity
+      level: level1
+    eslz:
+      lz_key_name: eslz
+      tfstate: eslz.tfstate
+      base_config_path: eslz
+      level: level1
+    platform_subscriptions:
+      lz_key_name: platform_subscriptions
+      tfstate: platform_subscriptions.tfstate
+      base_config_path: subscriptions
+      level: level1
+
+    ## Level2 ##
+    identity_level2:
+      prod:
+        lz_key_name: identity_level2
+        tfstate: identity_level2.tfstate
+        level: level2
+      non_prod:
+        lz_key_name: identity_level2
+        tfstate: identity_level2.tfstate
+        level: level2
+
+    identity_level2_aadds:
+      prod:
+        lz_key_name: identity_level2_aadds
+        tfstate: identity_level2_aadds.tfstate
+        level: level2
+
+    virtual_wan:
+      lz_key_name: connectivity_virtual_wan
+      tfstate: connectivity_virtual_wan.tfstate
+      base_config_path: connectivity/virtual_wan
+      level: level2
+
+    virtual_hubs:
+      prod:
+        lz_key_name: connectivity_virtual_hub_prod
+        tfstate: connectivity_virtual_hub_prod.tfstate
+        workspace: tfstate
+        base_config_path: connectivity/virtual_hub
+        level: level2
+      non_prod:
+        lz_key_name: connectivity_virtual_hub_non_prod
+        tfstate: connectivity_virtual_hub_non_prod.tfstate
+        workspace: tfstate
+        base_config_path: connectivity/virtual_hub
+        level: level2
+
+    vpn_sites:
+      prod:
+        lz_key_name: connectivity_vpn_sites_prod
+        tfstate: connectivity_vpn_sites_prod.tfstate
+        base_config_path: connectivity/vpn_sites
+        level: level2
+      non_prod:
+        lz_key_name: connectivity_vpn_sites_non_prod
+        tfstate: connectivity_vpn_sites_non_prod.tfstate
+        base_config_path: connectivity/vpn_sites
+        level: level2
+
+    express_route_circuits:
+      prod:
+        lz_key_name: connectivity_express_route_prod
+        tfstate: connectivity_express_route_prod.tfstate
+        base_config_path: connectivity/express_route
+        level: level2
+      non_prod:
+        lz_key_name: connectivity_express_route_non_prod
+        tfstate: connectivity_express_route_non_prod.tfstate
+        base_config_path: connectivity/express_route
+        level: level2
+
+    express_route_circuit_peerings:
+      prod:
+        lz_key_name: connectivity_express_route_peerings_prod
+        tfstate: connectivity_express_route_peerings_prod.tfstate
+        level: level2
+      non_prod:
+        lz_key_name: connectivity_express_route_peerings_non_prod
+        tfstate: connectivity_express_route_peerings_non_prod.tfstate
+        level: level2
+
+    azurerm_firewalls:
+      prod:
+        lz_key_name: connectivity_firewalls_prod
+        tfstate: connectivity_firewalls_prod.tfstate
+        level: level2
+      non_prod:
+        lz_key_name: connectivity_firewalls_non_prod
+        tfstate: connectivity_firewalls_non_prod.tfstate
+        level: level2
+
+    azurerm_firewall_policies:
+      prod:
+        lz_key_name: connectivity_firewall_policies_prod
+        tfstate: connectivity_firewall_policies_prod.tfstate
+        level: level2
+      non_prod:
+        lz_key_name: connectivity_firewall_policies_non_prod
+        tfstate: connectivity_firewall_policies_non_prod.tfstate
+        level: level2
+
+    private_dns:
+      prod:
+        lz_key_name: connectivity_private_dns_prod
+        tfstate: connectivity_private_dns_prod.tfstate
+        level: level2
+      non_prod:
+        lz_key_name: connectivity_private_dns_non_prod
+        tfstate: connectivity_private_dns_non_prod.tfstate
+        level: level2
+
+
+    asvm:
+      lz_key_name: asvm
+      tfstate: asvm_subscription_vending_machine.tfstate
+      level: level2

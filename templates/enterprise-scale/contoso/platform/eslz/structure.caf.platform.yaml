@@ -1,0 +1,15 @@
+management_group_hierarchy:
+  root:
+    decommissioned:
+    sandboxes:
+    platform:
+      connectivity:
+      identity:
+      management:
+    landing-zones:
+      corp:
+        corp-prod:
+        corp-non-prod:
+      online:
+        online-prod:
+        online-non-prod:

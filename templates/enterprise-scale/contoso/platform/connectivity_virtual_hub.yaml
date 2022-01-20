@@ -1,0 +1,59 @@
+virtual_hubs:
+  prod:
+    name: Production
+    virtual_wan:
+      lz_key: virtual_wan
+      key: global_wan
+    region_key: region1
+    hub_address_prefix: 10.51.1.0/24
+    deploy_s2s: false
+    s2s_config:
+      name: prod
+      scale_unit: 1
+    deploy_er: false
+    enable_er_connections: false
+    er_config:
+      name: prod
+      scale_units: 1
+
+  non_prod:
+    name: Non Production
+    virtual_wan:
+      lz_key: virtual_wan
+      key: global_wan
+    region_key: region1
+    hub_address_prefix: 10.51.192.0/24
+    deploy_s2s: false
+    s2s_config:
+      name: non-prod
+      scale_unit: 1
+    deploy_er: false
+    enable_er_connections: false
+    er_config:
+      name: non-prod
+      scale_units: 1
+
+
+express_route_connections:
+  prod:
+    name: erc-er-1-prod
+    virtual_hub:
+      key: prod
+    circuit_peering:
+      tfstate_key: prod
+      key: private_peering
+    express_route_circuit_authorization:
+      tfstate_key: prod
+      key: vhub-prod
+
+  non_prod:
+    name: er-1-non-prod
+    virtual_hub:
+      key: non_prod
+    circuit_peering:
+      tfstate_key: non_prod
+      key: private_peering
+    express_route_circuit_authorization:
+      tfstate_key: non_prod
+      key: vhub-non-prod
+

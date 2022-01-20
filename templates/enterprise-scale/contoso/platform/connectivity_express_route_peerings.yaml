@@ -1,0 +1,22 @@
+# Deployed in a separate tfstate. Circuit must be provisioned first.
+express_route_circuit_peerings:
+  prod:
+    private_peering:
+      express_route:
+        lz_key: connectivity_express_route_prod
+        key: prod
+      peering_type: AzurePrivatePeering
+      primary_peer_address_prefix: 10.23.3.128/30
+      secondary_peer_address_prefix: 10.23.3.132/30
+      peer_asn: 65287
+      vlan_id: 300
+  non_prod:
+    private_peering:
+      express_route:
+        lz_key: connectivity_express_route_non_prod
+        key: non_prod
+      peering_type: AzurePrivatePeering
+      primary_peer_address_prefix: 10.23.3.148/30
+      secondary_peer_address_prefix: 10.23.3.152/30
+      peer_asn: 65287
+      vlan_id: 300

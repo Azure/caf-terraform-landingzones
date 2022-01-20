@@ -1,0 +1,49 @@
+archetype_definitions:
+  corp-prod:
+    display_name: Production
+    archetype_id: landingzone_prod
+    parent_management_group_id: corp
+    policy_assignments:
+      Deploy-ASCDF-Config:
+        emailSecurityContact: security-team@contoso.com<replace>
+        logAnalytics:
+          lz_key: management
+          output_key: diagnostics
+          resource_type: log_analytics
+          resource_key: central_logs_sea
+          attribute_key: id
+        enableAscForKubernetes: DeployIfNotExists
+        enableAscForSql: Disabled
+        enableAscForSqlOnVm: Disabled
+        enableAscForDns: Disabled
+        enableAscForArm: Disabled
+        enableAscForOssDb: Disabled
+        enableAscForAppServices: Disabled
+        enableAscForRegistries: DeployIfNotExists
+        enableAscForKeyVault: DeployIfNotExists
+        enableAscForStorage: Disabled
+        enableAscForServers: DeployIfNotExists
+  corp-non-prod:
+    display_name: Non Production
+    archetype_id: landingzone_non_prod
+    parent_management_group_id: corp
+    policy_assignments:
+      Deploy-ASCDF-Config:
+        emailSecurityContact: security-team@contoso.com<replace>
+        logAnalytics:
+          lz_key: management
+          output_key: diagnostics
+          resource_type: log_analytics
+          resource_key: central_logs_sea
+          attribute_key: id
+        enableAscForKubernetes: Disabled
+        enableAscForSql: Disabled
+        enableAscForSqlOnVm: Disabled
+        enableAscForDns: Disabled
+        enableAscForArm: Disabled
+        enableAscForOssDb: Disabled
+        enableAscForAppServices: Disabled
+        enableAscForRegistries: Disabled
+        enableAscForKeyVault: Disabled
+        enableAscForStorage: Disabled
+        enableAscForServers: Disabled
