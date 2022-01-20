@@ -9,9 +9,6 @@ storage_accounts = {
     tags = {
       ## Those tags must never be changed after being set as they are used by the rover to locate the launchpad and the tfstates.
       # Only adjust the environment value at creation time
-      tfstate         = "level0"
-      environment     = "{{ config.caf_terraform.launchpad.caf_environment }}"
-      launchpad       = "launchpad"
       caf_environment = "{{ config.caf_terraform.launchpad.caf_environment }}"
       caf_launchpad   = "launchpad"
       caf_tfstate     = "level0"
@@ -37,9 +34,6 @@ storage_accounts = {
     account_replication_type = "{{ config.caf_terraform.launchpad.account_replication_type }}"
     tags = {
       # Those tags must never be changed while set as they are used by the rover to locate the launchpad and the tfstates.
-      tfstate         = "level1"
-      environment     = "{{ config.caf_terraform.launchpad.caf_environment }}"
-      launchpad       = "launchpad"
       caf_environment = "{{ config.caf_terraform.launchpad.caf_environment }}"
       caf_launchpad   = "launchpad"
       caf_tfstate     = "level1"
@@ -64,9 +58,6 @@ storage_accounts = {
     account_replication_type = "{{ config.caf_terraform.launchpad.account_replication_type }}"
     tags = {
       # Those tags must never be changed while set as they are used by the rover to locate the launchpad and the tfstates.
-      tfstate         = "level2"
-      environment     = "{{ config.caf_terraform.launchpad.caf_environment }}"
-      launchpad       = "launchpad"
       caf_environment = "{{ config.caf_terraform.launchpad.caf_environment }}"
       caf_launchpad   = "launchpad"
       caf_tfstate     = "level2"

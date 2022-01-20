@@ -5,8 +5,6 @@ keyvaults = {
     resource_group_key = "{{ resources.subscriptions[subscription_key].keyvaults.level0.resource_group_key }}"
     sku_name           = "{{ config.platform_core_setup.sku.keyvault}}"
     tags = {
-      tfstate         = "level0"
-      environment     = "{{ config.caf_terraform.launchpad.caf_environment }}"
       caf_tfstate     = "level0"
       caf_environment = "{{ config.caf_terraform.launchpad.caf_environment }}"
     }
@@ -34,8 +32,6 @@ keyvaults = {
     resource_group_key = "{{ resources.subscriptions[subscription_key].keyvaults.level1.resource_group_key }}"
     sku_name           = "{{ config.platform_core_setup.sku.keyvault}}"
     tags = {
-      tfstate         = "level1"
-      environment     = "{{ config.caf_terraform.launchpad.caf_environment }}"
       caf_tfstate     = "level1"
       caf_environment = "{{ config.caf_terraform.launchpad.caf_environment }}"
     }
@@ -63,8 +59,6 @@ keyvaults = {
     resource_group_key = "{{ resources.subscriptions[subscription_key].keyvaults.level2.resource_group_key }}"
     sku_name           = "{{ config.platform_core_setup.sku.keyvault}}"
     tags = {
-      tfstate         = "level2"
-      environment     = "{{ config.caf_terraform.launchpad.caf_environment }}"
       caf_tfstate     = "level2"
       caf_environment = "{{ config.caf_terraform.launchpad.caf_environment }}"
     }
