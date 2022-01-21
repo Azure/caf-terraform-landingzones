@@ -5,7 +5,7 @@ virtual_hubs:
       lz_key: virtual_wan
       key: global_wan
     region_key: region1
-    hub_address_prefix: 10.51.1.0/24
+    hub_address_prefix: <replace>
     deploy_s2s: false
     s2s_config:
       name: prod
@@ -22,7 +22,7 @@ virtual_hubs:
       lz_key: virtual_wan
       key: global_wan
     region_key: region1
-    hub_address_prefix: 10.51.192.0/24
+    hub_address_prefix: <replace>
     deploy_s2s: false
     s2s_config:
       name: non-prod

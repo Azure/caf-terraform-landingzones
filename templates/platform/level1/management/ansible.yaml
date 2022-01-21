@@ -91,6 +91,8 @@
 # diagnostics_definition
 #
 - name: "[{{ level }}-{{ base_folder }}] - resources - diagnostics_definition"
+  when:
+    - resources.subscriptions[subscription_key].diagnostics_definition is defined
   ansible.builtin.template:
     src: "{{ item }}"
     dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"

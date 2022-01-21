@@ -22,8 +22,6 @@ rover \
   -p ${TF_DATA_DIR}/{{ config.tfstates.platform.launchpad_credentials.tfstate }}.tfplan \
   -a plan
 
-rover logout
-
 ```
 
 If the plan is not successfull you need to come back to the yaml contoso.caf.platform.yaml, fix the values, re-execute the rover ignite and then rover plan.
@@ -72,5 +70,5 @@ When you have successfully deployed the launchpad you can  move to the next step
 {% if config.caf_terraform.billing_subscription_role_delegations.enable %}
  [[Deploy the billing subscription role delegation](../billing_subscription_role_delegations/readme.md)
 {% else %}
- [Deploy the management services](../../level1/management/readme.md)
+ [Deploy the subscription services](../../level1/subscriptions/readme.md)
 {% endif %}

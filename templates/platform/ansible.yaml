@@ -124,8 +124,8 @@
       import_tasks: "{{ level }}/{{ base_folder }}/ansible.yaml"
       when:
         - (config.platform_management.enable | bool)
-        # - (level1_subscriptions is not skipped)
-        # - platform_subscriptions_details is defined
+        - level1_subscriptions is not skipped
+        - platform_subscriptions_details is defined
 
       vars:
         base_folder: "management"
@@ -170,6 +170,7 @@
       when:
         - config.platform_core_setup.enterprise_scale.enable_azure_subscription_vending_machine
         - launchpad_azuread_groups is defined
+        - platform_subscriptions_details is defined
       vars:
         base_folder: "asvm"
         level: "level2"

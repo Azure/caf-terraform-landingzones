@@ -45,6 +45,9 @@ git fetch origin
 git checkout {{ config.gitops.caf_landingzone_branch }}
 
 rover \
+{% if ((config.platform_identity.azuread_identity_mode != "logged_in_user") and (credentials_tfstate_exists.rc == 0)) %}
+  --impersonate-sp-from-keyvault-url {{ keyvaults.cred_level0.vault_uri }} \
+{% endif %}
   -lz /tf/caf/landingzones/caf_launchpad \
   -var-folder {{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }} \
   -tfstate_subscription_id {{ config.caf_terraform.launchpad.subscription_id }} \
@@ -66,6 +69,9 @@ If the plan is not successfull you need to come back to the yaml contoso.caf.pla
 # On success plan, execute
 
 rover \
+{% if ((config.platform_identity.azuread_identity_mode != "logged_in_user") and (credentials_tfstate_exists.rc == 0)) %}
+  --impersonate-sp-from-keyvault-url {{ keyvaults.cred_level0.vault_uri }} \
+{% endif %}
   -lz /tf/caf/landingzones/caf_launchpad \
   -var-folder {{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }} \
   -tfstate_subscription_id {{ config.caf_terraform.launchpad.subscription_id }} \
@@ -88,6 +94,15 @@ rover ignite \
   -e base_templates_folder={{ base_templates_folder }} \
   -e resource_template_folder={{resource_template_folder}} \
   -e config_folder={{ config_folder }}
+
+```
+
+Execute a rover logout and rover login in order to make sure your azure sessions has the Azure groups membership updated.
+
+```bash
+rover logout
+
+rover login -t {{ config.platform_identity.tenant_name }}
 
 ```
 

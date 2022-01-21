@@ -8,9 +8,9 @@ diagnostic_log_analytics = {
     region             = "{{ dla.region | default(config.caf_terraform.launchpad.default_region_key)}}"
     name               = "{{ dla.name }}"
     resource_group_key = "{{ dla.resource_group_key }}"
-    # you can setup up to 5 key
 
 {% if resources.subscriptions[subscription_key].diagnostic_log_analytics[key].diagnostic_profiles is defined %}
+    # you can setup up to 5 key
     diagnostic_profiles = {
 {% for dp_key, dp_value in resources.subscriptions[subscription_key].diagnostic_log_analytics[key].diagnostic_profiles.items() %}
       {{ dp_key }} = {

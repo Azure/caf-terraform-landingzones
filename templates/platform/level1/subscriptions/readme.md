@@ -5,11 +5,13 @@ Set-up the subscription delegations for platform and landingzone subscriptions
 ```bash
 # For manual bootstrap:
 # Login to the subscription {{ config.caf_terraform.launchpad.subscription_name }} with the user {{ config.caf_terraform.billing_subscription_role_delegations.azuread_user_ea_account_owner }}
-rover login -t {{ config.platform_identity.tenant_name }}
+rover login -t {{ config.platform_identity.tenant_name }} -s {{ config.caf_terraform.launchpad.subscription_id }}
 
 rover \
+{% if platform_subscriptions_details.eslz is defined %}
 {% if config.platform_identity.azuread_identity_mode != "logged_in_user" %}
   --impersonate-sp-from-keyvault-url {{ keyvaults.cred_subscription_creation_platform.vault_uri }} \
+{% endif %}
 {% endif %}
   -lz /tf/caf/landingzones/caf_solution \
   -var-folder {{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }} \

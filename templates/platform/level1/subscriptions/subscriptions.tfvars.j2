@@ -14,6 +14,7 @@ subscriptions = {
 
   {{ config.tfstates.platform.launchpad.lz_key_name }} = {
     name            = "{{ config.caf_terraform.launchpad.subscription_name }}"
+    alias           = "{{ config.platform_core_setup.enterprise_scale.management_group_prefix }}-launchpad"
     subscription_id = "{{ config.caf_terraform.launchpad.subscription_id }}"
   }
 {% for key in subscriptions.platform_subscriptions.keys() %}

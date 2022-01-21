@@ -53,7 +53,7 @@ configuration_folders:
   platform:
     # true: force the destination folder to be deleted and re-created before the files are created.
     # false: create the target folder structure if it does not exist. On sub-sequent executions, the folder structure is reused as is.
-    cleanup_destination: false
+    cleanup_destination: true
     # base destination folder where rover ignite will store the tfvars files. No / at the end
     destination_base_path: /tf/caf
     # destination relative path to destination_base_path folder where rover ignite will store the tfvars files. No / at begining and end
@@ -83,6 +83,11 @@ platform_core_setup:
       v1.1.1:
         caf_landingzone_branch: "2112.int"
 
+platform_management:
+  enable: true
+
+networking_topology:
+  deployment_option: virtual_wan
 
 platform_identity:
   # Set the Azure Active Directory tenant name (primary domain name)
