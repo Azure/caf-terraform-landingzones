@@ -1,3 +1,4 @@
+{% if identity.level1.azuread_groups is defined %}
 azuread_groups = {
 {% for key, ad_group in identity.level1.azuread_groups.items() %}
   {{ key }} = {
@@ -35,3 +36,4 @@ azuread_groups = {
   }
 {% endfor %}
 }
+{% endif %}

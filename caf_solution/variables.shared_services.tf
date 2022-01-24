@@ -12,7 +12,15 @@ variable "automations" {
   default = {}
 }
 
+variable "consumption_budgets" {
+  default = {}
+}
+
 variable "image_definitions" {
+  default = {}
+}
+
+variable "monitor_action_groups" {
   default = {}
 }
 

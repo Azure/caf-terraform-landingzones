@@ -10,7 +10,31 @@ archetype_definitions:
         listOfAllowedLocations:
           - southeastasia<replace>
           - eastasia<replace>
+      # More details on in the parameters in the Azure Policy definition (Azure Security Benchmark) 1f3afdf9-d0c9-4c3d-847f-89da613e70a8
+      # Change the attributes values as they are not the same. Some are DeployIfNotExist, Some Disabled, Enabled...
       Deploy-ASC-Monitoring:
+        aadAuthenticationInSqlServerMonitoringEffect: Disabled
+        diskEncryptionMonitoringEffect: Disabled
+        encryptionOfAutomationAccountMonitoringEffect: Disabled
+        identityDesignateLessThanOwnersMonitoringEffect: Disabled
+        identityDesignateMoreThanOneOwnerMonitoringEffect: Disabled
+        identityEnableMFAForWritePermissionsMonitoringEffect: Disabled
+        identityRemoveDeprecatedAccountMonitoringEffect: Disabled
+        identityRemoveDeprecatedAccountWithOwnerPermissionsMonitoringEffect: Disabled
+        identityRemoveExternalAccountWithOwnerPermissionsMonitoringEffect: Disabled
+        identityRemoveExternalAccountWithReadPermissionsMonitoringEffect: Disabled
+        identityRemoveExternalAccountWithWritePermissionsMonitoringEffect: Disabled
+        jitNetworkAccessMonitoringEffect: Disabled
+        networkSecurityGroupsOnSubnetsMonitoringEffect: Disabled
+        sqlDbEncryptionMonitoringEffect: Disabled
+        sqlManagedInstanceAdvancedDataSecurityEmailAdminsMonitoringEffect: Disabled
+        sqlManagedInstanceAdvancedDataSecurityEmailsMonitoringEffect: Disabled
+        sqlServerAdvancedDataSecurityEmailAdminsMonitoringEffect: Disabled
+        sqlServerAdvancedDataSecurityMonitoringEffect: Disabled
+        systemUpdatesMonitoringEffect: Disabled
+        useRbacRulesMonitoringEffect: Disabled
+        vmssSystemUpdatesMonitoringEffect: Disabled
+        windowsDefenderExploitGuardMonitoringEffect: Disabled
       Deploy-ASCDF-Config:
         emailSecurityContact: <replace>
         logAnalytics:
@@ -20,15 +44,15 @@ archetype_definitions:
           resource_key: central_logs_sea
           attribute_key: id
         enableAscForKubernetes: DeployIfNotExists
-        enableAscForSql: Disabled
-        enableAscForSqlOnVm: Disabled
-        enableAscForDns: Disabled
-        enableAscForArm: Disabled
-        enableAscForOssDb: Disabled
-        enableAscForAppServices: Disabled
+        enableAscForSql: DeployIfNotExists
+        enableAscForSqlOnVm: DeployIfNotExists
+        enableAscForDns: DeployIfNotExists
+        enableAscForArm: DeployIfNotExists
+        enableAscForOssDb: DeployIfNotExists
+        enableAscForAppServices: DeployIfNotExists
         enableAscForRegistries: DeployIfNotExists
         enableAscForKeyVault: DeployIfNotExists
-        enableAscForStorage: Disabled
+        enableAscForStorage: DeployIfNotExists
         enableAscForServers: DeployIfNotExists
       Deploy-AzActivity-Log:
         logAnalytics:
@@ -40,6 +64,13 @@ archetype_definitions:
       Deploy-LX-Arc-Monitoring:
       Deploy-Resource-Diag:
         profileName: eslz-diagnostic-log
+        logAnalytics:
+          lz_key: management
+          output_key: diagnostics
+          resource_type: log_analytics
+          resource_key: central_logs_sea
+          attribute_key: id
+      Deploy-WS-Arc-Monitoring:
         logAnalytics:
           lz_key: management
           output_key: diagnostics

@@ -24,6 +24,10 @@ subscription_id_overrides_by_keys = {
     }
   }
   management = {
+    launchpad = {
+      lz_key = "{{ config.tfstates.platform.platform_subscriptions.lz_key_name }}"
+      key    = "launchpad"
+    }
     management = {
       lz_key = "{{ config.tfstates.platform.platform_subscriptions.lz_key_name }}"
       key    = "management"

@@ -141,11 +141,12 @@
         - credentials_tfstate_exists is not skipped
         - level1_subscriptions is not skipped
         - platform_subscriptions_details is defined
-        - identity.level1 is defined
+        - identity.subscriptions is defined
 
       vars:
         base_folder: "identity"
         level: "level1"
+        subscription_key: identity
 
 ## eslz
     - name: "{{ level }}-{{ base_folder }} | Enterprise-scale services"
@@ -154,6 +155,8 @@
         - (config.platform_core_setup.enterprise_scale.enable | bool)
         - ( (config.platform_core_setup.enterprise_scale.enable | bool) and (level1_subscriptions is not skipped) ) or (config.platform_core_setup.enterprise_scale.subscription_deployment_mode == "single_reuse")
         - (platform_subscriptions_details is defined) or (config.platform_core_setup.enterprise_scale.subscription_deployment_mode == "single_reuse")
+        - platform_subscriptions_details.identity is defined
+        - platform_subscriptions_details.management is defined
 
       vars:
         base_folder: "eslz"

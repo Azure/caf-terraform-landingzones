@@ -1,0 +1,69 @@
+monitor_action_groups = {
+{% for key, mag in resources.subscriptions[subscription_key].monitor_action_groups.items() %}
+  {{ key }} = {
+    action_group_name  = "{{ mag.action_group_name }}"
+    shortname          = "{{ mag.shortname }}"
+    resource_group_key = "{{ mag.resource_group_key }}"
+
+{% if mag.arm_role_alert is defined %}
+    arm_role_alert = {
+{% for arm_key, arm_value in mag.arm_role_alert.items() %}
+      {{ arm_key }} = {
+        name                    = "{{arm_value.name}}"
+        role_name               = "{{arm_value.role_name}}"
+        use_common_alert_schema = {{arm_value.use_common_alert_schema | lower | default(false)}}
+      }
+{% endfor %}
+    }
+{%endif%}
+
+{% if mag.automation_runbook_receiver is defined %}
+    automation_runbook_receiver = {
+{% for arr_key, arr_value in mag.automation_runbook_receiver.items() %}
+      {{ arr_key }} = {
+        name                    = "{{arr_value.name}}"
+        automation_account_id   = "{{arr_value.automation_account_id}}"
+        runbook_name            = "{{arr_value.runbook_name}}"
+        webhook_resource_id     = "{{arr_value.webhook_resource_id}}"
+        is_global_runbook       = {{arr_value.is_global_runbook}}
+        service_uri             = "{{arr_value.service_uri}}"
+        use_common_alert_schema = {{arr_value.use_common_alert_schema | lower | default(false)}}
+      }
+{% endfor %}
+    }
+{%endif%}
+
+{% if mag.email_receiver is defined %}
+    email_receiver = {
+{% for email_key, email_value in mag.email_receiver.items() %}
+      {{ email_key }} = {
+        name                    = "{{email_value.name}}"
+        email_address           = "{{email_value.email_address}}"
+        use_common_alert_schema = {{email_value.use_common_alert_schema | lower | default(false)}}
+      }
+{% endfor %}
+    }
+{%endif%}
+
+{% if mag.sms_receiver is defined %}
+    sms_receiver = {
+{% for sms_key, sms_value in mag.sms_receiver.items() %}
+      {{ sms_key }} = {
+        name         = "{{sms_value.name}}"
+        country_code = "{{sms_value.country_code}}"
+        phone_number = "{{sms_value.phone_number}}"
+      }
+{% endfor %}
+    }
+{%endif%}
+
+{% if mag.tags is defined %}
+    tags   = {
+{% for tag_key, tag_value in mag.tags.items() %}
+      {{ tag_key }} = "{{ tag_value }}"
+{% endfor %}
+    }
+{%endif%}
+  }
+{%endfor%}
+}

@@ -24,19 +24,6 @@
     files_matching: "management.yaml|configuration.caf.platform.yaml"
 
 #
-# resource_groups
-#
-- name: "[{{ level }}-{{ base_folder }}] - resources - resource_groups"
-  when:
-    - resources.subscriptions[subscription_key].resource_groups is defined
-  ansible.builtin.template:
-    src: "{{ item }}"
-    dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"
-    force: yes
-  with_fileglob:
-    - "{{ resource_template_folder }}/resource_groups.tfvars.j2"
-
-#
 # automation_accounts
 #
 - name: "[{{ level }}-{{ base_folder }}] - resources - automation_accounts"
@@ -48,19 +35,6 @@
     force: yes
   with_fileglob:
     - "{{ resource_template_folder }}/automation_accounts.tfvars.j2"
-
-#
-# service_health_alerts
-#
-- name: "[{{ level }}-{{ base_folder }}] - resources - service_health_alerts"
-  when:
-    - resources.subscriptions[subscription_key].service_health_alerts is defined
-  ansible.builtin.template:
-    src: "{{ item }}"
-    dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"
-    force: yes
-  with_fileglob:
-    - "{{ resource_template_folder }}/servicehealth.tfvars.j2"
 
 #
 # diagnostic_log_analytics
@@ -111,6 +85,58 @@
     force: yes
   with_fileglob:
     - "{{ resource_template_folder }}/diagnostics_destinations.tfvars.j2"
+
+#
+# monitor_action_groups
+#
+- name: "[{{ level }}-{{ subscription_key }}] - resources - monitor_action_groups"
+  when:
+    - resources.subscriptions[subscription_key].monitor_action_groups is defined
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{ resource_template_folder }}/monitor_action_groups.tfvars.j2"
+
+#
+# recovery_vaults
+#
+- name: "[{{ level }}-{{ subscription_key }}] - resources - recovery_vaults"
+  when:
+    - resources.subscriptions[subscription_key].recovery_vaults is defined
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{ resource_template_folder }}/recovery_vaults.tfvars.j2"
+
+#
+# resource_groups
+#
+- name: "[{{ level }}-{{ base_folder }}] - resources - resource_groups"
+  when:
+    - resources.subscriptions[subscription_key].resource_groups is defined
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{ resource_template_folder }}/resource_groups.tfvars.j2"
+
+#
+# service_health_alerts
+#
+- name: "[{{ level }}-{{ base_folder }}] - resources - service_health_alerts"
+  when:
+    - resources.subscriptions[subscription_key].service_health_alerts is defined
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{ resource_template_folder }}/servicehealth.tfvars.j2"
 
 #
 # Readme
