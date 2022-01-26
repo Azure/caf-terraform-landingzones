@@ -237,7 +237,7 @@ archetype_definitions:
             attribute_key: id
             resource_keys:
               - connectivity
-        '[<replace>-CONNECTIVITY] CAF-network-vhub-peering':
+        '[<replace_with_management_group_prefix_in_UPPER_CASE>-CONNECTIVITY] CAF-network-vhub-peering':
           azuread_groups:
             lz_key: launchpad
             attribute_key: id
