@@ -1,7 +1,7 @@
 
 - name: "{{display_name}} - {{level}} - {{subscription_key}} - set destination paths"
   set_fact:
-    destination_path:  "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/{{resource_folder}}/{{ deployment }}"
+    destination_path:  "{{ destination_base }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/{{resource_folder}}/{{ deployment }}"
 
 - name: "{{display_name}} - {{level}} - {{subscription_key}} - Clean-up directory - {{ destination_path }}"
   file:

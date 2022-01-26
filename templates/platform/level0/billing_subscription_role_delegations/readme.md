@@ -8,7 +8,7 @@ rover login -t {{ config.platform_identity.tenant_name }}
 
 rover \
   -lz /tf/caf/landingzones/caf_solution \
-  -var-folder {{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/level0/billing_subscription_role_delegations \
+  -var-folder {{ destination_base }}/{{ config.configuration_folders.platform.destination_relative_path }}/level0/billing_subscription_role_delegations \
   -tfstate_subscription_id {{ config.caf_terraform.launchpad.subscription_id }} \
   -tfstate {{ config.tfstates.platform.billing_subscription_role_delegations.tfstate }} \
   -target_subscription {{ config.caf_terraform.launchpad.subscription_id }} \

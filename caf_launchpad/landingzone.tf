@@ -53,8 +53,9 @@ module "launchpad" {
   }
 
   compute = {
-    virtual_machines = try(var.compute.virtual_machines, var.virtual_machines)
     bastion_hosts    = try(var.compute.bastion_hosts, var.bastion_hosts)
+    container_groups = var.container_groups
+    virtual_machines = try(var.compute.virtual_machines, var.virtual_machines)
   }
 
   networking = {

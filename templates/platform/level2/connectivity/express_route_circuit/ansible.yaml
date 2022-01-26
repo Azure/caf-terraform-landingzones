@@ -1,23 +1,23 @@
 - name: Express_routes {{ circuit }} - Clean-up directory
   file:
-    path: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/express_route_circuit/{{ circuit }}"
+    path: "{{ destination_base }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/express_route_circuit/{{ circuit }}"
     state: absent
   when:
     - config.configuration_folders.platform.cleanup_destination | bool
 
 - name: Express_routes {{ circuit }} - Creates directory structure
   file:
-    path: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/express_route_circuit/{{ circuit }}"
+    path: "{{ destination_base }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/express_route_circuit/{{ circuit }}"
     state: directory
 
 - name: Express_routes {{ circuit }} - variables
   set_fact:
-    destination_path_resources: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/express_route_circuit/{{ circuit }}"
+    destination_path_resources: "{{ destination_base }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/express_route_circuit/{{ circuit }}"
 
 - name: Express_routes {{ circuit }} - readme
   ansible.builtin.template:
     src: "{{ item }}"
-    dest: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/express_route_circuit/{{ circuit }}/{{ item | basename | regex_replace('.j2$', '') }}"
+    dest: "{{ destination_base }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/express_route_circuit/{{ circuit }}/{{ item | basename | regex_replace('.j2$', '') }}"
     force: yes
   with_fileglob:
     - "{{ level }}/{{ base_folder }}/express_route_circuit/*.md"

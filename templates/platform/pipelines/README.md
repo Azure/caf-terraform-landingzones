@@ -23,19 +23,19 @@ ansible-playbook e2e.yaml \
 
 ```bash
 branch={{ config.eslz.private_lib[config.eslz.private_lib.version_to_deploy].caf_landingzone_branch }}
-cd {{ config.configuration_folders.destination_base_path }}
+cd {{ destination_base_path }}
 git clone --branch ${branch} https://github.com/Azure/caf-terraform-landingzones.git landingzones
 
 # If you are planning to submit PR you can clone the a forked version instead
 git clone --branch ${branch} git@github.com:Azure/caf-terraform-landingzones.git landingzones
 
 # Or refresh an existing clone
-cd {{ config.configuration_folders.destination_base_path }}landingzones
+cd {{ destination_base_path }}landingzones
 git fetch origin
 git checkout ${branch}
 git status
 
-cd {{ config.configuration_folders.destination_base_path }}
+cd {{ destination_base_path }}
 git pull
 
 

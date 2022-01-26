@@ -22,14 +22,6 @@
 
 
   tasks:
-    - name: "Get latest cache folder"
-      set_fact:
-        job_cache_base_path: "/home/vscode/.terraform.cache"
-
-    - name: "Creates cache directory"
-      file:
-        path: "{{ job_cache_base_path }}/launchpad"
-        state: directory
 
     - name: "Load variable for platform config"
       include_vars:
@@ -38,6 +30,20 @@
         depth: 1
         ignore_unknown_extensions: true
         files_matching: "caf.platform.yaml|tfstates.caf.yaml|tfstates.yaml"
+
+    - name: "Get latest cache folder"
+      set_fact:
+        job_cache_base_path: "/home/vscode/.terraform.cache"
+        destination_base: "{{ destination_base_path | default(config.configuration_folders.platform.destination_base_path) }}"
+
+    - name: "Creates cache directory"
+      file:
+        path: "{{ job_cache_base_path }}/launchpad"
+        state: directory
+
+    - name: "Destination folder"
+      debug:
+        msg: "{{destination_base}}"
 
     - name: "Content of config"
       debug:
@@ -69,7 +75,7 @@
 
     - name: "[{{ level }}-{{ base_folder }}] Clean-up directory"
       file:
-        path: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}"
+        path: "{{ destination_base }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}"
         state: absent
       when:
         - config.platform_identity.azuread_identity_mode == "logged_in_user"
@@ -88,7 +94,7 @@
 
     - name: "[{{ level }}-{{ base_folder }}] Clean-up directory"
       file:
-        path: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}"
+        path: "{{ destination_base }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}"
         state: absent
       when:
         - level0_billing_subscription_role_delegations is skipped
@@ -111,7 +117,7 @@
 
     - name: "{{ level }}-{{ base_folder }} | Clean-up directory"
       file:
-        path: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}"
+        path: "{{ destination_base }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}"
         state: absent
       when:
         - level1_subscriptions is skipped
@@ -210,7 +216,7 @@
     - name: "[{{ base_templates_folder }}] readme"
       ansible.builtin.template:
         src: "{{ base_templates_folder }}/readme.md"
-        dest: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/readme.md"
+        dest: "{{ destination_base }}/{{ config.configuration_folders.platform.destination_relative_path }}/readme.md"
         force: yes
 
 #
@@ -219,7 +225,7 @@
 
     - name: Terraform Formatting
       shell: |
-        terraform fmt -recursive {{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}
+        terraform fmt -recursive {{ destination_base }}/{{ config.configuration_folders.platform.destination_relative_path }}
 
 # - name: Level 2 - identity
 #   hosts: localhost
@@ -242,18 +248,18 @@
 #   tasks:
 #     - name: Creates {{ level }} directory
 #       file:
-#         path: "{{ config.configuration_folders.destination_base_path }}{{ config.configuration_folders.destination_relative_path }}/{{ level }}"
+#         path: "{{ destination_base_path }}{{ config.configuration_folders.destination_relative_path }}/{{ level }}"
 #         state: directory
 
 #     - name: Creates {{ base_folder }} directory strcture
 #       file:
-#         path: "{{ config.configuration_folders.destination_base_path }}{{ config.configuration_folders.destination_relative_path }}/{{ level }}/{{ base_folder }}"
+#         path: "{{ destination_base_path }}{{ config.configuration_folders.destination_relative_path }}/{{ level }}/{{ base_folder }}"
 #         state: directory
 
 #     - name: "{{ base_folder }} - Readme"
 #       ansible.builtin.template:
 #         src: "{{ item }}"
-#         dest: "{{ config.configuration_folders.destination_base_path }}{{ config.configuration_folders.destination_relative_path }}/{{ level }}/{{ base_folder }}/{{ item | basename | regex_replace('.j2$', '') }}"
+#         dest: "{{ destination_base_path }}{{ config.configuration_folders.destination_relative_path }}/{{ level }}/{{ base_folder }}/{{ item | basename | regex_replace('.j2$', '') }}"
 #         force: yes
 #       with_fileglob:
 #         - "{{ level }}/{{ base_folder }}/*.md"
@@ -278,4 +284,4 @@
 
 #   tasks:
 #     - import_tasks: "{{ base_folder }}/platform.yaml"
-#     - debug: msg="You can now proceed to the next steps and execute the deployment. Refer to the readme in {{ config.configuration_folders.destination_base_path }}{{ config.configuration_folders.destination_relative_path }}/README.md"
+#     - debug: msg="You can now proceed to the next steps and execute the deployment. Refer to the readme in {{ destination_base_path }}{{ config.configuration_folders.destination_relative_path }}/README.md"

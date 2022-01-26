@@ -1,6 +1,6 @@
 - name: "[{{ level }}-{{ base_folder }}] - Set variables"
   set_fact:
-    destination_path: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}"
+    destination_path: "{{ destination_base }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}"
 
 - name: "[{{ level }}-{{ base_folder }}] - Load variable for launchpad"
   include_vars:
@@ -15,13 +15,13 @@
 
 - name: "[{{ level }}-{{ base_folder }}] Clean-up directory"
   file:
-    path: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}"
+    path: "{{ destination_base }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}"
     state: absent
   when: config.configuration_folders.platform.cleanup_destination | bool
 
 - name: "[{{ level }}-{{ base_folder }}] Creates directory"
   file:
-    path: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}"
+    path: "{{ destination_base }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}"
     state: directory
 
 
@@ -42,7 +42,7 @@
 - name: "[{{ level }}-{{ base_folder }}] launchpad"
   ansible.builtin.template:
     src: "{{ level }}/{{ base_folder }}/{{ item }}.tfvars.j2"
-    dest: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/{{ item }}.tfvars"
+    dest: "{{ destination_base }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/{{ item }}.tfvars"
     force: yes
   loop:
     - dynamic_secrets
@@ -54,7 +54,7 @@
 
 - name: "[{{ level }}-{{ base_folder }}] Clean-up identity files"
   file:
-    path: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/{{ item }}.tfvars"
+    path: "{{ destination_base }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/{{ item }}.tfvars"
     state: absent
   when: config.platform_identity.azuread_identity_mode == "logged_in_user"
   loop:
@@ -69,7 +69,7 @@
 - name: "[{{ level }}-{{ base_folder }}] lauchpad - identity - service_principal"
   ansible.builtin.template:
     src: "{{ level }}/{{ base_folder }}/{{ item }}.tfvars.j2"
-    dest: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/{{ item }}.tfvars"
+    dest: "{{ destination_base }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/{{ item }}.tfvars"
     force: yes
   when: config.platform_identity.azuread_identity_mode != 'logged_in_user'
   loop:
@@ -86,7 +86,7 @@
   shell: |
     /tf/rover/rover.sh \
       -lz /tf/caf/landingzones/caf_launchpad \
-      -var-folder {{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }} \
+      -var-folder {{ destination_base }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }} \
       -tfstate_subscription_id {{ config.caf_terraform.launchpad.subscription_id }} \
       -target_subscription {{ config.caf_terraform.launchpad.subscription_id }} \
       -tfstate {{ config.tfstates.platform.launchpad.tfstate }} \
@@ -184,5 +184,5 @@
 - name: "[{{ level }}-{{ base_folder }}] launchpad - readme"
   ansible.builtin.template:
     src: "{{ level }}/{{ base_folder }}/readme.md"
-    dest: "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/readme.md"
+    dest: "{{ destination_base }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/readme.md"
     force: yes

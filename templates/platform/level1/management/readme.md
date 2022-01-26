@@ -22,7 +22,7 @@ rover \
 {% endif %}
 {% endif %}
   -lz /tf/caf/landingzones/caf_solution \
-  -var-folder {{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }} \
+  -var-folder {{ destination_base }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }} \
   -tfstate_subscription_id {{ config.caf_terraform.launchpad.subscription_id }} \
 {% if platform_subscriptions_details is defined %}
   -target_subscription {{ platform_subscriptions_details.management.subscription_id }} \

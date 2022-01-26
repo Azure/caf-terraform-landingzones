@@ -81,7 +81,7 @@ virtual_machines = {
         diagnostics_storage_account_keys = ["bootdiag_region1"]
 
         # Relative path to the configuration folder or full path
-        xml_diagnostics_file = "{{ config.configuration_folders.destination_base_path }}{{ config.configuration_folders.destination_relative_path }}/{{ level }}/{{ base_folder }}/adds/diagnostics/wadcfg.xml"
+        xml_diagnostics_file = "{{ destination_base_path }}{{ config.configuration_folders.destination_relative_path }}/{{ level }}/{{ base_folder }}/adds/diagnostics/wadcfg.xml"
       }
     }
   }

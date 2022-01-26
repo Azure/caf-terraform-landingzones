@@ -9,7 +9,7 @@ az account clear
 # login a with a user member of the caf-platform-maintainers group
 rover login -t {{ config.platform_identity.tenant_name }}
 
-cd {{ config.configuration_folders.platform.destination_base_path }}/landingzones
+cd {{ destination_base }}/landingzones
 git fetch origin
 git checkout {{ config.platform_core_setup.enterprise_scale.private_lib[config.platform_core_setup.enterprise_scale.private_lib.version_to_deploy].caf_landingzone_branch }}
 
@@ -17,8 +17,8 @@ rover \
 {% if keyvaults is defined and config.platform_identity.azuread_identity_mode != "logged_in_user" %}
   --impersonate-sp-from-keyvault-url {{ keyvaults.cred_eslz.vault_uri }} \
 {% endif %}
-  -lz {{ config.configuration_folders.platform.destination_base_path }}/landingzones/caf_solution/add-ons/caf_eslz \
-  -var-folder {{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }} \
+  -lz {{ destination_base }}/landingzones/caf_solution/add-ons/caf_eslz \
+  -var-folder {{ destination_base }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }} \
   -tfstate_subscription_id {{ config.caf_terraform.launchpad.subscription_id }} \
   -tfstate {{ config.tfstates.platform.eslz.tfstate }} \
   -log-severity ERROR \

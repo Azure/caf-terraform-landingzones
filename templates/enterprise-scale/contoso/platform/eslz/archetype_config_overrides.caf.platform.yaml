@@ -10,6 +10,12 @@ archetype_definitions:
         listOfAllowedLocations:
           - southeastasia<replace>
           - eastasia<replace>
+      # Set to Audit as Terraform cannot combine both in one operation yet.
+      Deny-Subnet-Without-Nsg:
+        effect: Audit
+      # Set to Audit as Terraform cannot combine both in one operation yet.
+      Deny-Subnet-Without-Udr:
+        effect: Audit
       # More details on in the parameters in the Azure Policy definition (Azure Security Benchmark) 1f3afdf9-d0c9-4c3d-847f-89da613e70a8
       # Change the attributes values as they are not the same. Some are DeployIfNotExist, Some Disabled, Enabled...
       Deploy-ASC-Monitoring:
@@ -201,6 +207,37 @@ archetype_definitions:
       Deploy-Sql-Security:
       Enforce-Encryption-CMK:
       Enforce-EncryptTransit:
+    remediation:
+      policy:
+      policy_set_definitions:
+        # policyDefinitionReferenceId = https://github.com/Azure/terraform-azurerm-caf-enterprise-scale/blob/c7958266bd227e52dc1a3468e8c881633bc1b373/modules/archetypes/lib/policy_set_definitions/policy_set_definition_es_deploy_diagnostics_loganalytics.tmpl.json#L766
+        # /providers/microsoft.management/managementgroups/contlle/providers/microsoft.authorization/policyassignments/deploy-resource-diag
+        Deploy-Diagnostics-LogAnalytics:
+          - ExpressRouteDeployDiagnosticLogDeployLogAnalytics
+          - FirewallDeployDiagnosticLogDeployLogAnalytics
+          - KeyVaultDeployDiagnosticLogDeployLogAnalytics
+          - LoadBalancerDeployDiagnosticLogDeployLogAnalytics
+          - NetworkNICDeployDiagnosticLogDeployLogAnalytics
+          - NetworkPublicIPNicDeployDiagnosticLogDeployLogAnalytics
+          - NetworkSecurityGroupsDeployDiagnosticLogDeployLogAnalytics
+          - RecoveryVaultDeployDiagnosticLogDeployLogAnalytics
+          - storageaccountdeploydiagnosticlogdeployloganalytics
+          - VirtualNetworkDeployDiagnosticLogDeployLogAnalytics
+          - VNetGWDeployDiagnosticLogDeployLogAnalytics
+        Deploy-ASCDF-Config:
+          - defenderForOssDb
+          - defenderForVM
+          - defenderForSqlServerVirtualMachines
+          - defenderForAppServices
+          - defenderForStorageAccounts
+          - defenderForKubernetesService
+          - defenderForContainerRegistry
+          - defenderForKeyVaults
+          - defenderForDns
+          - defenderForArm
+          - defenderForSqlPaas
+          - securityEmailContact
+          - ascExport
   landing-zones:
     archetype_id: landing-zones
     policy_assignments:

@@ -236,3 +236,7 @@ variable "route_tables" {
 variable "propagate_launchpad_identities" {
   default = false
 }
+
+variable "container_groups" {
+  default = {}
+}

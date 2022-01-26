@@ -11,7 +11,7 @@ Note you need to adjust the branch {{ resources.gitops.landingzones }} to deploy
 # login a with a user member of the caf-platform-maintainers group
 rover login -t {{ config.platform_identity.tenant_name }}
 
-cd {{ config.configuration_folders.platform.destination_base_path }}/landingzones
+cd {{ destination_base }}/landingzones
 git fetch origin
 git checkout {{ resources.gitops.landingzones }}
 
@@ -19,7 +19,7 @@ rover \
 {% if keyvaults is defined and config.platform_identity.azuread_identity_mode != "logged_in_user" %}
   --impersonate-sp-from-keyvault-url {{ keyvaults.cred_identity.vault_uri }} \
 {% endif %}
-  -lz {{ config.configuration_folders.platform.destination_base_path }}/landingzones/caf_solution \
+  -lz {{ destination_base }}/landingzones/caf_solution \
   -var-folder {{ destination_path }} \
   -tfstate_subscription_id {{ config.caf_terraform.launchpad.subscription_id }} \
 {% if platform_subscriptions_details is defined %}

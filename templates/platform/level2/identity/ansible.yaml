@@ -1,5 +1,5 @@
 - name: Creates {{ base_folder }} directory structure
-  shell: mkdir -p "{{ config.configuration_folders.platform.destination_base_path }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}"
+  shell: mkdir -p "{{ destination_base }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}"
 
 - name: Azure Identity level2
   include_tasks: "{{ level }}/ansible_deployment.yaml"
