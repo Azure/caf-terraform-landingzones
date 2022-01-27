@@ -1,0 +1,29 @@
+{
+    "landingzone_online": {
+        "policy_assignments": [
+           "Deploy-ASC-Defender"
+        ],
+        "policy_definitions": [
+        ],
+        "policy_set_definitions": [
+        ],
+        "role_definitions": [
+        ],
+        "archetype_config": {
+            "parameters": {
+                "Deploy-ASC-Defender": {
+                    "pricingTierAppServices": "Free",
+                    "pricingTierVMs": "Free",
+                    "pricingTierSqlServers": "Standard",
+                    "pricingTierStorageAccounts": "Standard",
+                    "pricingTierContainerRegistry": "Free",
+                    "pricingTierKeyVaults": "Standard",
+                    "pricingTierKubernetesService": "Free",
+                    "pricingTierDns": "Free",
+                    "pricingTierArm": "Free"
+               }
+            },
+            "access_control": {}
+        }
+    }
+}

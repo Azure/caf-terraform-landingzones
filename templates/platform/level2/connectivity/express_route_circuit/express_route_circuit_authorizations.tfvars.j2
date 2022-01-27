@@ -1,0 +1,9 @@
+express_route_circuit_authorizations = {
+{% for key, value in connectivity_express_routes.express_route_circuit_authorizations[circuit].items() %}
+  {{ key }} = {
+    name               = "{{ value.name }}"
+    resource_group_key = "{{ value.resource_group_key }}"
+    express_route_key  = "{{ circuit }}"
+  }
+{% endfor %}
+}

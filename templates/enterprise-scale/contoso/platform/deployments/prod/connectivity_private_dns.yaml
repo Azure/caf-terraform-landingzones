@@ -1,0 +1,188 @@
+gitops:
+  landingzones: 2112.int
+
+deployments:
+  connectivity:
+    landingzone:
+      key:
+        platform:
+          private_dns: prod
+      global_settings_key:
+        platform:
+          management:
+      remote_tfstates:
+        platform:
+          management:
+
+subscriptions:
+  connectivity:
+    resource_groups:
+      dns_connectivity_prod:
+        name: dns-connectivity-prod
+    private_dns:
+      privatelink.adf.azure.com:
+        name: privatelink.adf.azure.com
+        resource_group_key: dns_connectivity_prod
+        vnet_links:
+          fw_prod_plinks_01:
+            name: fw-prod-plinks-01
+            vnet_key: vnet
+            lz_key: connectivity_firewalls_prod
+      privatelink.datafactory.azure.net:
+        name: privatelink.datafactory.azure.net
+        resource_group_key: dns_connectivity_prod
+        vnet_links:
+          fw_prod_plinks_01:
+            name: fw-prod-plinks-01
+            vnet_key: vnet
+            lz_key: connectivity_firewalls_prod
+      privatelink.blob.core.windows.net:
+        name: privatelink.blob.core.windows.net
+        resource_group_key: dns_connectivity_prod
+        vnet_links:
+          fw_prod_plinks_01:
+            name: fw-prod-plinks-01
+            vnet_key: vnet
+            lz_key: connectivity_firewalls_prod
+      privatelink.file.core.windows.net:
+        name: privatelink.file.core.windows.net
+        resource_group_key: dns_connectivity_prod
+        vnet_links:
+          fw_prod_plinks_01:
+            name: fw-prod-plinks-01
+            vnet_key: vnet
+            lz_key: connectivity_firewalls_prod
+      privatelink.notebooks.azure.net:
+        name: privatelink.notebooks.azure.net
+        resource_group_key: dns_connectivity_prod
+        vnet_links:
+          fw_prod_plinks_01:
+            name: fw-prod-plinks-01
+            vnet_key: vnet
+            lz_key: connectivity_firewalls_prod
+      privatelink.dfs.core.windows.net:
+        name: privatelink.dfs.core.windows.net
+        resource_group_key: dns_connectivity_prod
+        vnet_links:
+          fw_prod_plinks_01:
+            name: fw-prod-plinks-01
+            vnet_key: vnet
+            lz_key: connectivity_firewalls_prod
+      privatelink.vaultcore.azure.net:
+        name: privatelink.vaultcore.azure.net
+        resource_group_key: dns_connectivity_prod
+        vnet_links:
+          fw_prod_plinks_01:
+            name: fw-prod-plinks-01
+            vnet_key: vnet
+            lz_key: connectivity_firewalls_prod
+      privatelink.southeastasia.azmk8s.io:
+        name: privatelink.southeastasia.azmk8s.io
+        resource_group_key: dns_connectivity_prod
+        vnet_links:
+          fw_prod_plinks_01:
+            name: fw-prod-plinks-01
+            vnet_key: vnet
+            lz_key: connectivity_firewalls_prod
+      privatelink.azurecr.io:
+        name: privatelink.azurecr.io
+        resource_group_key: dns_connectivity_prod
+        vnet_links:
+          fw_prod_plinks_01:
+            name: fw-prod-plinks-01
+            vnet_key: vnet
+            lz_key: connectivity_firewalls_prod
+      privatelink.southeastasia.backup.windowsazure.com:
+        name: privatelink.southeastasia.backup.windowsazure.com
+        resource_group_key: dns_connectivity_prod
+        vnet_links:
+          fw_prod_plinks_01:
+            name: fw-prod-plinks-01
+            vnet_key: vnet
+            lz_key: connectivity_firewalls_prod
+      privatelink.siterecovery.windowsazure.com:
+        name: privatelink.siterecovery.windowsazure.com
+        resource_group_key: dns_connectivity_prod
+        vnet_links:
+          fw_prod_plinks_01:
+            name: fw-prod-plinks-01
+            vnet_key: vnet
+            lz_key: connectivity_firewalls_prod
+      privatelink.servicebus.windows.net:
+        name: privatelink.servicebus.windows.net
+        resource_group_key: dns_connectivity_prod
+        vnet_links:
+          fw_prod_plinks_01:
+            name: fw-prod-plinks-01
+            vnet_key: vnet
+            lz_key: connectivity_firewalls_prod
+      privatelink.api.azureml.ms:
+        name: privatelink.api.azureml.ms
+        resource_group_key: dns_connectivity_prod
+        vnet_links:
+          fw_prod_plinks_01:
+            name: fw-prod-plinks-01
+            vnet_key: vnet
+            lz_key: connectivity_firewalls_prod
+      privatelink.monitor.azure.com:
+        name: privatelink.monitor.azure.com
+        resource_group_key: dns_connectivity_prod
+        vnet_links:
+          fw_prod_plinks_01:
+            name: fw-prod-plinks-01
+            vnet_key: vnet
+            lz_key: connectivity_firewalls_prod
+      privatelink.oms.opinsights.azure.com:
+        name: privatelink.oms.opinsights.azure.com
+        resource_group_key: dns_connectivity_prod
+        vnet_links:
+          fw_prod_plinks_01:
+            name: fw-prod-plinks-01
+            vnet_key: vnet
+            lz_key: connectivity_firewalls_prod
+      privatelink.ods.opinsights.azure.com:
+        name: privatelink.ods.opinsights.azure.com
+        resource_group_key: dns_connectivity_prod
+        vnet_links:
+          fw_prod_plinks_01:
+            name: fw-prod-plinks-01
+            vnet_key: vnet
+            lz_key: connectivity_firewalls_prod
+      privatelink.agentsvc.azure-automation.net:
+        name: privatelink.agentsvc.azure-automation.net
+        resource_group_key: dns_connectivity_prod
+        vnet_links:
+          fw_prod_plinks_01:
+            name: fw-prod-plinks-01
+            vnet_key: vnet
+            lz_key: connectivity_firewalls_prod
+
+    custom_role_definitions:
+      landgingzone_extended:
+        name: landingzone-networking-private-dns-extended
+        useprefix: true
+        description: "(prod) Provides additional permissions for the level4 principal to perform activies on the level2 private dns zones for private links."
+        permissions:
+          actions:
+            - Microsoft.Network/privateDnsZones/join/action
+            - Microsoft.Network/privateEndpoints/privateDnsZoneGroups/read
+            - Microsoft.Network/privateEndpoints/privateDnsZoneGroups/write
+
+    role_mapping:
+      custom_role_mapping:
+        resource_groups:
+          dns_connectivity_prod:
+            landgingzone_extended:
+              azuread_groups:
+                lz_key: identity_level2
+                keys:
+                  - caf_prod_landingzones_dns_contributors
+      built_in_role_mapping:
+        resource_groups:
+          dns_connectivity_prod:
+            Private DNS Zone Contributor:
+              azuread_groups:
+                lz_key: identity_level2
+                keys:
+                  - caf_prod_landingzones_dns_contributors
+

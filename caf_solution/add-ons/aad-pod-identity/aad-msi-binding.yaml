@@ -1,9 +1,12 @@
 # https://github.com/Azure/aad-pod-identity/blob/b3ee1d07209f26c47a96abf3ba20749932763de6/website/content/en/docs/Concepts/azureidentity.md
+#
+# Note, while the ${} values are not required for kustomize to work, they signify which values are
+# eligible for configuration.
 
 apiVersion: aadpodidentity.k8s.io/v1
 kind: AzureIdentity
 metadata:
-    name: podmi-caf-rover-platform-level0
+    name: ${azureidentity_name}
 spec:
     type: 0
     resourceID: ${resource_id}
@@ -12,8 +15,8 @@ spec:
 apiVersion: aadpodidentity.k8s.io/v1
 kind: AzureIdentityBinding
 metadata:
-    name: podmi-gitlab-runner-binding
+    name: ${azureidentitybinding_name}
 spec:
-    azureIdentity: podmi-caf-rover-platform-level0
-    selector: podmi-caf-rover-platform-level0
+    azureIdentity: ${azureidentity_name}
+    selector: ${azureidentity_selector}
 

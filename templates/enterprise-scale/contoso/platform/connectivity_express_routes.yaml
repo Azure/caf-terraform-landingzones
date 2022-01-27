@@ -1,0 +1,39 @@
+gitops:
+  caf_landingzone_branch: 2112.int
+
+express_route_circuits:
+  prod:
+    name: er-1-prod
+    resource_group_key: prod
+    service_provider_name: XL Axiata
+    peering_location: Jakarta
+    tier: Standard
+    family: MeteredData
+    bandwidth_in_mbps: 50
+  non_prod:
+    name: er-1-nonprod
+    resource_group_key: non_prod
+    service_provider_name: XL Axiata
+    peering_location: Jakarta
+    tier: Standard
+    family: MeteredData
+    bandwidth_in_mbps: 50
+
+express_route_circuit_authorizations:
+  prod:
+    vhub-prod:
+      name: er-auth-vhub-prod
+      resource_group_key: prod
+  non_prod:
+    vhub-non-prod:
+      name: er-auth-vhub-non-prod
+      resource_group_key: dev
+
+
+resource_groups:
+  prod:
+    name: connectivity-express-route-prod
+    region_key: region1
+  non_prod:
+    name: connectivity-express-route-non-prod
+    region_key: region1

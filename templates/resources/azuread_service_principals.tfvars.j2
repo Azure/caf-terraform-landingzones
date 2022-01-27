@@ -1,0 +1,10 @@
+azuread_service_principals = {
+
+{% for key, sp in resources.subscriptions[subscription_key].azuread_service_principals.items() %}
+  {{ key }} = {
+    azuread_application = {
+      key = "{{ sp.azuread_application.key }}"
+    }
+  }
+{% endfor %}
+}

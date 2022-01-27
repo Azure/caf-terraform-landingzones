@@ -1,0 +1,39 @@
+{% if identity.level1.azuread_groups is defined %}
+azuread_groups = {
+{% for key, ad_group in identity.level1.azuread_groups.items() %}
+  {{ key }} = {
+    name        = "{{ ad_group.name }}"
+{% if ad_group.description is defined %}
+    description = "{{ ad_group.description }}"
+{% endif %}
+{% if ad_group.members is defined %}
+    members = {
+{% if ad_group.members.user_principal_names is defined %}
+      user_principal_names = {{ ad_group.members.user_principal_names | replace('None','[]') | replace('\'','\"')  }}
+{% endif %}
+{% if ad_group.members.group_names is defined %}
+      group_names          = {{ ad_group.members.group_names | replace('None','[]') | replace('\'','\"')  }}
+{% endif %}
+{% if ad_group.members.object_ids is defined %}
+      object_ids           = {{ ad_group.members.object_ids | replace('None','[]') | replace('\'','\"')  }}
+{% endif %}
+{% if ad_group.members.group_keys is defined %}
+      group_keys           = {{ ad_group.members.group_keys | replace('None','[]') | replace('\'','\"')  }}
+{% endif %}
+{% if ad_group.members.service_principal_keys is defined %}
+      service_principal_keys = {{ ad_group.members.service_principal_keys | replace('None','[]') | replace('\'','\"')  }}
+{% endif %}
+    }
+{% endif %}
+{% if ad_group.owners is defined %}
+    owners = {
+{% if ad_group.owners.user_principal_names is defined %}
+      user_principal_names = {{ ad_group.owners.user_principal_names | replace('None','[]') | replace('\'','\"')  }}
+{% endif %}
+    }
+{% endif %}
+    prevent_duplicate_name = {{ ad_group.owners.prevent_duplicate_name | default(false) | string | lower }}
+  }
+{% endfor %}
+}
+{% endif %}

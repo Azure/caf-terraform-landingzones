@@ -30,8 +30,8 @@ export environment=[YOUR_ENVIRONMENT]
 
 ```bash
 rover \
-  -lz /tf/caf/landingzones/caf_solution/add-ons/hashicorp_vault_secrets \
-  -var-folder /tf/caf/landingzones/caf_solution/add-ons/hashicorp_vault_secrets/scenario/100-simple-hashicorp-vault-secrets \
+  -lz /tf/caf/caf_solution/add-ons/hashicorp_vault_secrets \
+  -var-folder /tf/caf/caf_solution/add-ons/hashicorp_vault_secrets/scenario/100-simple-hashicorp-vault-secrets \
   -tfstate vault.tfstate \
     -env ${environment}} \
     -level level1 \

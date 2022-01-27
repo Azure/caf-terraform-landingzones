@@ -12,7 +12,15 @@ variable "automations" {
   default = {}
 }
 
+variable "consumption_budgets" {
+  default = {}
+}
+
 variable "image_definitions" {
+  default = {}
+}
+
+variable "monitor_action_groups" {
   default = {}
 }
 
@@ -34,4 +42,9 @@ variable "recovery_vaults" {
 
 variable "shared_image_galleries" {
   default = {}
+}
+
+variable "monitor_autoscale_settings" {
+  default     = {}
+  description = "The map from the monitor_autoscale_settings module configuration"
 }

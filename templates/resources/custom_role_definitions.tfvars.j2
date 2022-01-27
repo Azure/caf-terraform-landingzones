@@ -1,0 +1,20 @@
+custom_role_definitions = {
+{% for key, value in resources.subscriptions[subscription_key].custom_role_definitions.items() %}
+  {{ key }} = {
+    name = "{{ value.name }}"
+{% if value.useprefix is defined %}
+    useprefix = "{{ value.useprefix | string | lower }}"
+{% endif %}
+{% if value.description is defined %}
+    description = "{{ value.description }}"
+{% endif %}
+{% if value.permissions is defined %}
+    permissions = {
+{% for p_key, permission in value.permissions.items() %}
+      {{ p_key }} = {{ permission | sort | replace('None','[]') | replace('\'','\"') | replace(',', ',\n') }}
+{% endfor %}
+    }
+{% endif %}
+  }
+{% endfor %}
+}

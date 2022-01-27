@@ -1,0 +1,34 @@
+virtual_networks:
+  connectivity_hub1_firewall_egress:
+    name: firewall-egress-re1
+    resource_group_key: contoso_global_firewall
+    region_key: region1
+    address_space:
+      - <replace>
+    specialsubnets:
+      AzureFirewallSubnet:
+        name: AzureFirewallSubnet
+        cidr:
+          - <replace>
+
+
+azurerm_firewalls:
+  egress_fw_region1:
+    name: egress-firewall
+    resource_group_key: contoso_global_firewall
+    region_key: region1
+  # egress_fw_region2:
+  #   name: egress-firewall
+  #   resource_group_key: contoso_global_wan
+  #   region_key: region2
+
+resource_groups:
+  contoso_global_dns:
+    name: contoso-connectivity-global-dns
+    region_key: region1
+  contoso_global_firewall:
+    name: contoso-connectivity-global-firewall
+    region_key: region1
+  contoso_global_er_circuits:
+    name: contoso-connectivity-global-er-circuits
+    region_key: region1

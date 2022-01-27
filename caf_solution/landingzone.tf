@@ -1,13 +1,18 @@
 module "solution" {
   source  = "aztfmod/caf/azurerm"
-  version = "~>5.4.2"
+  version = "5.5.1"
 
-  # source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=patch.5.4.6"
+  # source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=master"
   # source = "../../aztfmod"
+
+  providers = {
+    azurerm.vhub = azurerm.vhub
+  }
 
   azuread                               = local.azuread
   cloud                                 = local.cloud
   compute                               = local.compute
+  apim                                  = local.apim
   cognitive_services                    = local.cognitive_services
   current_landingzone_key               = var.landingzone.key
   custom_role_definitions               = var.custom_role_definitions
@@ -22,6 +27,7 @@ module "solution" {
   event_hub_namespaces                  = var.event_hub_namespaces
   event_hubs                            = var.event_hubs
   global_settings                       = local.global_settings
+  identity                              = local.identity
   keyvault_access_policies              = var.keyvault_access_policies
   keyvault_access_policies_azuread_apps = var.keyvault_access_policies_azuread_apps
   keyvault_certificate_issuers          = var.keyvault_certificate_issuers
@@ -31,6 +37,7 @@ module "solution" {
   logged_user_objectId                  = var.logged_user_objectId
   logic_app                             = var.logic_app
   managed_identities                    = var.managed_identities
+  messaging                             = local.messaging
   networking                            = local.networking
   random_strings                        = var.random_strings
   remote_objects                        = local.remote

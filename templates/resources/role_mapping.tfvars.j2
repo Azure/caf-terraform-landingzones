@@ -1,0 +1,31 @@
+role_mapping = {
+{% for top_key, mappings in resources.subscriptions[subscription_key].role_mapping.items() %}
+  {{ top_key }} = {
+{% for key, role_mappings in mappings.items() %}
+    {{ key }} = {
+{% for resource_key, roles_objects in role_mappings.items() %}
+      "{{ resource_key }}" = {
+{% if roles_objects.lz_key is defined %}
+        lz_key = "{{ roles_objects.lz_key }}"
+{% endif %}
+{% for role_name, principals_objects in roles_objects.items() %}
+{% if role_name != 'lz_key' %}
+        "{{ role_name }}" = {
+{% for key_principal_type, principal_mapping in principals_objects.items() %}
+          {{ key_principal_type }} = {
+{% if principal_mapping['lz_key'] is defined %}
+            lz_key = "{{ principal_mapping['lz_key'] }}"
+{% endif %}
+            keys = {{ principal_mapping['keys']  | replace('\'','\"')}}
+          }
+{% endfor %}
+        }
+{% endif %}
+{% endfor %}
+      }
+{% endfor %}
+    }
+{% endfor %}
+  }
+{% endfor %}
+}

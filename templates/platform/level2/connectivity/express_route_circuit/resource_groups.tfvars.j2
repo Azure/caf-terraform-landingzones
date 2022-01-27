@@ -1,0 +1,6 @@
+resource_groups = {
+  {{ circuit }} = {
+    name   = "{{ connectivity_express_routes.resource_groups[circuit].name }}"
+    region = "{{ connectivity_express_routes.resource_groups[circuit].region_key }}"
+  }
+}

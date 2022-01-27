@@ -1,0 +1,16 @@
+platform_subscriptions:
+  management:
+    alias: "management"
+    name: "<replace>-management"
+    # Do not set the subscription_id when using the automated subscripiton creation
+    # In that case delete the following attribute.
+    # When re-using an existing subscripiton, set the GUID of the subscripiton.
+    subscription_id: <replace>
+  identity:
+    alias: "identity"
+    name: "<replace>-identity"
+    subscription_id: <replace>
+  connectivity:
+    alias: "connectivity"
+    name: "<replace>-connectivity"
+    subscription_id: <replace>

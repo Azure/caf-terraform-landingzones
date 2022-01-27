@@ -1,0 +1,34 @@
+azuread_groups_membership = {
+  caf_platform_maintainers = {
+{% if config.platform_identity.azuread_identity_mode == 'logged_in_user' %}
+    object_ids = {
+      logged_in = {
+        keys = ["user"]
+      }
+    }
+{% endif %}
+{% if config.platform_identity.azuread_identity_mode != 'logged_in_user' %}
+    members = {
+      user_principal_names = [
+        "{{ config.caf_terraform.billing_subscription_role_delegations.azuread_user_ea_account_owner }}",
+{% if config.platform_identity.azuread_identity_mode != 'logged_in_user'%}
+{% for user in config.platform_identity.caf_platform_maintainers %}
+        "{{ user }}",
+{% endfor %}
+{% endif %}
+      ]
+    }
+{% endif %}
+  }
+  caf_platform_contributors = {
+    members = {
+      user_principal_names = [
+{% if config.platform_identity.azuread_identity_mode != 'logged_in_user' and config.platform_identity.caf_platform_contributors is defined %}
+{% for user in config.platform_identity.caf_platform_contributors %}
+        "{{ user }}",
+{% endfor %}
+{% endif %}
+      ]
+    }
+  }
+}

@@ -22,6 +22,7 @@ resource "helm_release" "charts" {
   skip_crds        = try(each.value.skip_crds, false)
   create_namespace = try(each.value.create_namespace, false)
   values           = try(each.value.values, null)
+  version          = try(each.value.version, null)
 
   dynamic "set" {
     for_each = try(each.value.sets, {})

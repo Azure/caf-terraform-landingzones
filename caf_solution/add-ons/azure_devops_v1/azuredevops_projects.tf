@@ -36,31 +36,3 @@ resource "azuredevops_project_features" "project" {
     "testplans"    = try(lower(each.value.features.testplans), "disabled")
   }
 }
-
-resource "azuredevops_group" "group" {
-  for_each = var.groups
-
-  scope        = data.azuredevops_project.project[each.value.project_key].id
-  display_name = each.value.display_name
-  description  = each.value.description
-}
-
-module "azuredevops_group_membership" {
-  source = "./azuredevops_group_membership"
-  for_each = {
-    for key, value in var.groups : key => value
-    if try(value.members.user_principal_names, null) != null
-  }
-
-  group_descriptor = azuredevops_group.group[each.key].descriptor
-  group_settings   = each.value
-}
-
-# See https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/project_permissions#permissions for a list of available permissions.
-resource "azuredevops_project_permissions" "project_perm" {
-  for_each = try(var.permissions.projects, {})
-
-  project_id  = data.azuredevops_project.project[each.key].id
-  principal   = azuredevops_group.group[each.value.group_key].id
-  permissions = each.value.permissions
-}
