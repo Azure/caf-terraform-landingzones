@@ -240,3 +240,7 @@ variable "propagate_launchpad_identities" {
 variable "container_groups" {
   default = {}
 }
+
+variable "network_profiles" {
+  default = {}
+}

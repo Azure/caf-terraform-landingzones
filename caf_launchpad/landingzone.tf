@@ -1,9 +1,9 @@
 module "launchpad" {
-  source  = "aztfmod/caf/azurerm"
-  version = "5.5.1"
+  # source  = "aztfmod/caf/azurerm"
+  # version = "5.5.1"
 
 
-  # source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=master"
+  source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=aci_network"
   # source = "../../aztfmod"
 
   providers = {
@@ -59,11 +59,12 @@ module "launchpad" {
   }
 
   networking = {
-    vnets                             = try(var.networking.vnets, var.vnets)
+    azurerm_routes                    = try(var.networking.azurerm_routes, var.azurerm_routes)
+    network_profiles                  = var.network_profiles
     network_security_group_definition = try(var.networking.network_security_group_definition, var.network_security_group_definition)
     public_ip_addresses               = try(var.networking.public_ip_addresses, var.public_ip_addresses)
-    azurerm_routes                    = try(var.networking.azurerm_routes, var.azurerm_routes)
     route_tables                      = try(var.networking.route_tables, var.route_tables)
+    vnets                             = try(var.networking.vnets, var.vnets)
   }
 
   security = {
