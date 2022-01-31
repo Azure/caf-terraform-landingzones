@@ -55,7 +55,11 @@ custom_landing_zones = {
 {% endif %}
     }
     subscriptions    = {}
+{% if mg_custom.subscription_ids is defined %}
+    subscription_ids = {{ mg_custom.subscription_ids | replace('None','[]') | replace('\'','\"')  }}
+{% else %}
     subscription_ids = []
+{% endif %}
   }
 
 {% endfor %}
