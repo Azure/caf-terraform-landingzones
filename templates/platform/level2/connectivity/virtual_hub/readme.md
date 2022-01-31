@@ -1,14 +1,11 @@
-
-# Connectivity
-You have selected the vwan networking option to build your Enteprise Scale platform. The following instructions guides you through the steps to follow.
+# Virtual hubs
 
 ## Select the correct branch for the landingzones code
 
 Note you need to adjust the branch {{ config.gitops.caf_landingzone_branch }} to deploy the connectivity services
 
-## Virtual hubs
 
-{% for virtual_hub in tfstates.virtual_hubs.keys() %}
+{% for virtual_hub in config.tfstates.platform.virtual_hubs.keys() %}
 ### {{ virtual_hub }}
 
 ```bash
