@@ -1,5 +1,5 @@
 gitops:
-  landingzones: 2112.int
+  landingzones: aci_network
 
 deployments:
   connectivity:
@@ -76,8 +76,8 @@ subscriptions:
             name: fw-prod-plinks-01
             vnet_key: vnet
             lz_key: connectivity_firewalls_prod
-      privatelink.southeastasia.azmk8s.io:
-        name: privatelink.southeastasia.azmk8s.io
+      privatelink.southeastasia<replace>.azmk8s.io:
+        name: privatelink.southeastasia<replace>.azmk8s.io
         resource_group_key: dns_connectivity_prod
         vnet_links:
           fw_prod_plinks_01:
@@ -92,8 +92,8 @@ subscriptions:
             name: fw-prod-plinks-01
             vnet_key: vnet
             lz_key: connectivity_firewalls_prod
-      privatelink.southeastasia.backup.windowsazure.com:
-        name: privatelink.southeastasia.backup.windowsazure.com
+      privatelink.southeastasia<replace>.backup.windowsazure.com:
+        name: privatelink.southeastasia<replace>.backup.windowsazure.com
         resource_group_key: dns_connectivity_prod
         vnet_links:
           fw_prod_plinks_01:

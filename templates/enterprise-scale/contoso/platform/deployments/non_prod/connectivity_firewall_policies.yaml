@@ -1,5 +1,5 @@
 gitops:
-  landingzones: 2112.int
+  landingzones: aci_network
 
 deployments:
   connectivity:

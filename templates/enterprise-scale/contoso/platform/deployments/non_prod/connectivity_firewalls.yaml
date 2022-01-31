@@ -1,5 +1,5 @@
 gitops:
-  landingzones: 2112.int
+  landingzones: aci_network
 
 deployments:
   connectivity:
@@ -30,12 +30,12 @@ subscriptions:
         resource_group_key: firewall_policies
         region_key: region1
         address_space:
-          - 10.51.4.0/26
+          - 10.201.61.0/24
         specialsubnets:
           AzureFirewallSubnet:
             name: AzureFirewallSubnet
             cidr:
-              - 10.51.4.0/26
+              - 10.201.61.0/26
 
     public_ip_addresses:
       fw_pip1:

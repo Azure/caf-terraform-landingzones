@@ -81,7 +81,7 @@ platform_core_setup:
       v0.3.3:
         caf_landingzone_branch: "patch.5.4.4"
       v1.1.1:
-        caf_landingzone_branch: "2112.int"
+        caf_landingzone_branch: "aci_network"
 
 platform_management:
   enable: true
@@ -113,6 +113,6 @@ notifications:
   security_center_email_contact: <replace>
 
 gitops:
-  caf_landingzone_branch: "2112.int"
+  caf_landingzone_branch: "aci_network"
   deployment_mode: interactive
   rover_log_error: ERROR
