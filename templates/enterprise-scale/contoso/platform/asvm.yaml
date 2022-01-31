@@ -1,3 +1,6 @@
+gitops:
+  landingzones: aci_network
+  
 subscriptions:
   asvm:
     resource_groups:

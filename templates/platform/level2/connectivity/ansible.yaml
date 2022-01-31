@@ -24,10 +24,6 @@
   loop_control:
     loop_var: virtual_hub
 
-- name: "connectivity_vpn_sites"
-  debug:
-    msg: "{{connectivity_vpn_sites}}"
-    
 - name: VPN Sites
   include_tasks: "{{ level }}/{{ base_folder }}/vpn_site/ansible.yaml"
   when:
