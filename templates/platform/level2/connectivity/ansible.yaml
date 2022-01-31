@@ -35,6 +35,7 @@
 - name: Express Route Circuit
   include_tasks: "{{ level }}/{{ base_folder }}/express_route_circuit/ansible.yaml"
   when:
+    - connectivity_express_routes is defined
     - connectivity_express_routes.express_route_circuits is defined
   loop: "{{ config.tfstates.platform.express_route_circuits.keys() }}"
   loop_control:
