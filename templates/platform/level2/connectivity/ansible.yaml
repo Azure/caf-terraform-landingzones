@@ -24,6 +24,10 @@
   loop_control:
     loop_var: virtual_hub
 
+- name: "connectivity_vpn_sites"
+  debug:
+    msg: "{{connectivity_vpn_sites}}"
+    
 - name: VPN Sites
   include_tasks: "{{ level }}/{{ base_folder }}/vpn_site/ansible.yaml"
   when:
@@ -35,7 +39,6 @@
 - name: Express Route Circuit
   include_tasks: "{{ level }}/{{ base_folder }}/express_route_circuit/ansible.yaml"
   when:
-    - connectivity_express_routes is defined
     - connectivity_express_routes.express_route_circuits is defined
   loop: "{{ config.tfstates.platform.express_route_circuits.keys() }}"
   loop_control:

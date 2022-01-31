@@ -6,7 +6,7 @@ rover login -t {{ config.platform_identity.tenant_name }}
 
 cd {{ destination_base }}/landingzones
 git fetch origin
-git checkout {{ connectivity_express_routes.gitops.caf_landingzone_branch }}
+git checkout {{ resources.gitops.landingzones }}
 
 rover \
 {% if keyvaults is defined and config.platform_identity.azuread_identity_mode != "logged_in_user" %}
