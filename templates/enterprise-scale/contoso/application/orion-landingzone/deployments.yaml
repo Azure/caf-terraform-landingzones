@@ -1,0 +1,77 @@
+deployments:
+  asvm_storage_containers:
+    storage_containers:
+      landingzone:
+        key:
+          asvm:
+            asvm_storage_containers: subscriptions
+        global_settings_key:
+          platform:
+            asvm:
+        remote_tfstates:
+          platform:
+            asvm:
+
+  it_dna_orion_dev:
+    subscriptions:
+      landingzone:
+        key:
+          asvm:
+            it_dna_orion_dev: subscriptions
+        global_settings_key:
+          asvm:
+            asvm_storage_containers: subscriptions
+        remote_tfstates:
+          asvm:
+            asvm_storage_containers: subscriptions
+
+    resources:
+      landingzone:
+        key:
+          asvm:
+            it_dna_orion_dev: resources
+        global_settings_key:
+          platform:
+            virtual_hubs: non_prod
+        remote_tfstates:
+          asvm:
+            it_dna_orion_dev: subscriptions
+            asvm_storage_containers: subscriptions
+          platform:
+            virtual_hubs: non_prod
+            private_dns: non_prod
+            identity_level2:
+            asvm:
+            azurerm_firewalls: non_prod
+
+  it_dna_orion_prod:
+    subscriptions:
+      landingzone:
+        key:
+          asvm:
+            it_dna_orion_prod: subscriptions
+        global_settings_key:
+          asvm:
+            asvm_storage_containers: subscriptions
+        remote_tfstates:
+          asvm:
+            asvm_storage_containers: subscriptions
+
+    resources:
+      landingzone:
+        key:
+          asvm:
+            it_dna_orion_prod: resources
+        global_settings_key:
+          platform:
+            virtual_hubs: prod
+        remote_tfstates:
+          asvm:
+            it_dna_orion_prod: subscriptions
+            asvm_storage_containers: subscriptions
+          platform:
+            virtual_hubs: prod
+            private_dns: prod
+            identity_level2:
+            asvm:
+            azurerm_firewalls: prod
