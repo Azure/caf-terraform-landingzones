@@ -40,7 +40,7 @@ deployments:
           platform:
             virtual_hubs: non_prod
             private_dns: non_prod
-            identity_level2:
+            identity_level2: non_prod
             asvm:
             azurerm_firewalls: non_prod
 
@@ -72,6 +72,6 @@ deployments:
           platform:
             virtual_hubs: prod
             private_dns: prod
-            identity_level2:
+            identity_level2: prod
             asvm:
             azurerm_firewalls: prod
