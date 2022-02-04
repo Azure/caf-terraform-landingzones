@@ -5,7 +5,7 @@
 In order to start deploying your with CAF landing zones, you need an Azure subscription (Trial, MSDN, etc.) and you need to install the following components on your machine:
 
 - [Visual Studio Code](https://code.visualstudio.com/)
-- [Docker Desktop](https://docs.docker.com/docker-for-windows/install/)
+- [Docker Desktop](https://docs.docker.com/docker-for-windows/install/) or [Rancher Dekstop](https://rancherdesktop.io/) in dockerd mode.
 - [Git](https://git-scm.com/downloads)
 
 You can deploy it easily on Windows and MacOS with the following software managers:
