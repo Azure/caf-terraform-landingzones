@@ -8,7 +8,7 @@ role_mapping = {
   built_in_role_mapping = {
 {% if config.platform_core_setup %}
     management_group = {
-      root = {
+      {{ config.platform_core_setup.enterprise_scale.root_parent_id | default('root') }} = {
         "User Access Administrator" = {
 {% if config.platform_identity.azuread_identity_mode == 'logged_in_user' %}
           logged_in = {
@@ -183,6 +183,7 @@ role_mapping = {
           }
 {% endif %}
         }
+{% if config.platform_identity.azuread_identity_mode != 'logged_in_user' %}
         "Storage Blob Data Reader" = {
           azuread_groups = {
             keys = [
@@ -192,6 +193,7 @@ role_mapping = {
             ]
           }
         }
+{% endif %}
       }
     }
   }

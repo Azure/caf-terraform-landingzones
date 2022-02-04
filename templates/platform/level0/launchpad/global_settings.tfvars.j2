@@ -36,8 +36,12 @@ launchpad_key_names = {
   ]
 }
 
+
+{% if config.caf_terraform.launchpad.tags is defined %}
 # Global tags
 tags = {
-  ApplicationOwner = "sre"
-  BusinessUnit     = "sre"
-}
+{% for tag_key, tag_value in config.caf_terraform.launchpad.tags.items() %}
+  {{ tag_key }} = "{{ tag_value }}"
+{% endfor %}
+  }
+{% endif %}
