@@ -1,7 +1,7 @@
 - name: Creates {{ base_folder }} directory structure
   shell: mkdir -p "{{ destination_base }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}"
 
-- name: Azure Identity level2
+- name: "[{{ level }} {{ subscription_key }}] - Azure Identity level2"
   include_tasks: "{{ level }}/ansible_deployment.yaml"
   when:
     - config.tfstates.platform.identity_level2 is defined
@@ -13,7 +13,7 @@
     resource_folder: identity_level2
     display_name: Azure Identity level2
 
-- name: Azure Active Directory Domain Services (AADDS)
+- name: "[{{ level }} {{ subscription_key }}] - Azure Active Directory Domain Services (AADDS) - Azure managed"
   include_tasks: "{{ level }}/ansible_deployment.yaml"
   when:
     - config.tfstates.platform.identity_level2_aadds is defined
@@ -23,4 +23,16 @@
   vars:
     files_matching: "identity_level2_aadds.yaml|identity_level2_aadds.caf.yaml"
     resource_folder: identity_level2_aadds
-    display_name: Azure Active Directory Domain Services (AADDS)
+    display_name: Azure Active Directory Domain Services (AADDS Azure Managed)
+
+- name: "[{{ level }} {{ subscription_key }}] - Active Directory Domain Services in Virtual Machines"
+  include_tasks: "{{ level }}/ansible_deployment.yaml"
+  when:
+    - config.tfstates.platform.identity_level2_adds is defined
+  loop: "{{ config.tfstates.platform.identity_level2_adds.keys() }}"
+  loop_control:
+    loop_var: deployment
+  vars:
+    files_matching: "identity_level2_adds.yaml|identity_level2_adds.caf.yaml"
+    resource_folder: identity_level2_adds
+    display_name: Active Directory Domain Services (ADDS in VM)
