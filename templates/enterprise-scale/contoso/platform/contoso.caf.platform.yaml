@@ -30,6 +30,9 @@ caf_terraform:
     subscription_id: <replace>
     subscription_name: contoso-caf-launchpad
     tenant_id: <replace>
+    # Global tags
+    tags:
+      application_owner: sre
 
   billing_subscription_role_delegations:
     # true: enable this deployment. The remaining attributes are required.

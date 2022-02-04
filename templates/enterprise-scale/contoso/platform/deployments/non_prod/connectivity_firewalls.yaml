@@ -9,7 +9,7 @@ deployments:
           azurerm_firewalls: non_prod
       global_settings_key:
         platform:
-          management:
+          virtual_hubs: non_prod
       remote_tfstates:
         platform:
           virtual_hubs: non_prod

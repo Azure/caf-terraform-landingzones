@@ -23,7 +23,9 @@ Elevate your credentials to the tenant root level to have enough privileges to c
 # Login to the subscription {{ config.caf_terraform.launchpad.subscription_name }} with an account owner.
 {% endif %}
 rover login -t {{ config.platform_identity.tenant_name }}
+{% if config.platform_identity.azuread_identity_mode != 'logged_in_user' %}
 az rest --method post --url "/providers/Microsoft.Authorization/elevateAccess?api-version=2016-07-01"
+{% endif %}
 
 ```
 {% endif %}

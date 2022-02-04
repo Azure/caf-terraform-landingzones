@@ -9,7 +9,7 @@ deployments:
           identity_adds: prod
       global_settings_key:
         platform:
-          management:
+          virtual_hubs: prod
       remote_tfstates:
         platform:
           management:
