@@ -85,6 +85,17 @@ variable "root_name" {
   }
 }
 
+variable "root_parent_id" {
+  type        = string
+  description = "If specified, will deploy the Enterprise scale bellow the root_parent_id."
+  default     = null
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9-]{2,10}$", var.root_parent_id))
+    error_message = "The root_parent_id value must be between 2 to 10 characters long and can only contain alphanumeric characters and hyphens."
+  }
+}
+
 variable "deploy_core_landing_zones" {
   type        = bool
   description = "If set to true, will include the core Enterprise-scale Management Group hierarchy."
