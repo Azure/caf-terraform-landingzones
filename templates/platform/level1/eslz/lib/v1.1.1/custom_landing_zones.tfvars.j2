@@ -1,10 +1,10 @@
 custom_landing_zones = {
 {% for key, level in mg_custom.archetype_definitions.items() %}
   {{ config.platform_core_setup.enterprise_scale.management_group_prefix }}-{{ key }} = {
-    display_name               = "{{ mg_custom.archetype_definitions[key].display_name }}"
-    parent_management_group_id = "{{ config.platform_core_setup.enterprise_scale.management_group_prefix }}-{{ mg_custom.archetype_definitions[key].parent_management_group_id }}"
+    display_name               = "{{ level.display_name }}"
+    parent_management_group_id = "{{ config.platform_core_setup.enterprise_scale.management_group_prefix }}-{{ level.parent_management_group_id }}"
     archetype_config = {
-      archetype_id     = "{{mg_custom.archetype_definitions[key].archetype_id }}"
+      archetype_id     = "{{ mg_custom.archetype_definitions[key].archetype_id }}"
 {% if mg_custom.archetype_definitions[key].policy_assignments is defined %}
       parameters = {
 {% for pa_key, pa_value in mg_custom.archetype_definitions[key].policy_assignments.items() %}
@@ -36,9 +36,9 @@ custom_landing_zones = {
 {% else %}
       parameters       = {}
 {% endif %}
-{% if mg_custom.archetype_definitions[key].archetype_config.access_control is defined %}
+{% if level.archetype_config.access_control is defined %}
       access_control = {
-{% for level_ac_key, level_ac in mg_custom.archetype_definitions[key].archetype_config.access_control.items() %}
+{% for level_ac_key, level_ac in level.archetype_config.access_control.items() %}
         "{{level_ac_key}}" = {
 {% for level_role_key, level_role in level_ac.items()  %}
           "{{ level_role_key }}" = {
@@ -55,8 +55,8 @@ custom_landing_zones = {
 {% endif %}
     }
     subscriptions    = {}
-{% if mg_custom.subscription_ids is defined %}
-    subscription_ids = {{ mg_custom.subscription_ids | replace('None','[]') | replace('\'','\"')  }}
+{% if level.subscription_ids is defined %}
+    subscription_ids = {{ level.subscription_ids | replace('None','[]') | replace('\'','\"')  }}
 {% else %}
     subscription_ids = []
 {% endif %}

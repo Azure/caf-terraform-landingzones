@@ -1,11 +1,55 @@
 subscription_id_overrides = {
 {% if config.platform_identity.azuread_identity_mode != 'logged_in_user' %}
-  root           = []
+{% if config.platform_core_setup.enterprise_scale.subscription_id_overrides is defined %}
+{% if config.platform_core_setup.enterprise_scale.subscription_id_overrides.root is defined %}
+  root           = {{ config.platform_core_setup.enterprise_scale.subscription_id_overrides.root | replace('None','[]') | replace('\'','\"')  }}
 {% else %}
-  root           = [
+  root = []
+{% endif %}
+{% endif %}
+{% else %}
+  {{ config.platform_core_setup.enterprise_scale.root_parent_id | default('root') }}           = [
     "{{ config.caf_terraform.launchpad.subscription_id }}"
   ]
 {% endif %}
+{% if config.platform_core_setup.enterprise_scale.subscription_id_overrides is defined %}
+{% if config.platform_core_setup.enterprise_scale.subscription_id_overrides.decommissioned is defined %}
+  decommissioned           = {{ config.platform_core_setup.enterprise_scale.subscription_id_overrides.decommissioned | replace('None','[]') | replace('\'','\"')  }}
+{% else %}
+  decommissioned = []
+{% endif %}
+{% if config.platform_core_setup.enterprise_scale.subscription_id_overrides.sandboxes is defined %}
+  sandboxes           = {{ config.platform_core_setup.enterprise_scale.subscription_id_overrides.sandboxes | replace('None','[]') | replace('\'','\"')  }}
+{% else %}
+  sandboxes = []
+{% endif %}
+{% if config.platform_core_setup.enterprise_scale.subscription_id_overrides['landing-zones'] is defined %}
+  landing-zones           = {{ config.platform_core_setup.enterprise_scale.subscription_id_overrides['landing-zones'] | replace('None','[]') | replace('\'','\"')  }}
+{% else %}
+  landing-zones = []
+{% endif %}
+{% if config.platform_core_setup.enterprise_scale.subscription_id_overrides.platform is defined %}
+  platform           = {{ config.platform_core_setup.enterprise_scale.subscription_id_overrides.platform | replace('None','[]') | replace('\'','\"')  }}
+{% else %}
+  platform = []
+{% endif %}
+{% if config.platform_core_setup.enterprise_scale.subscription_id_overrides.connectivity is defined %}
+  connectivity           = {{ config.platform_core_setup.enterprise_scale.subscription_id_overrides.connectivity | replace('None','[]') | replace('\'','\"')  }}
+{% else %}
+  connectivity = []
+{% endif %}
+{% if config.platform_core_setup.enterprise_scale.subscription_id_overrides.management is defined %}
+  management           = {{ config.platform_core_setup.enterprise_scale.subscription_id_overrides.management | replace('None','[]') | replace('\'','\"')  }}
+{% else %}
+  management = []
+{% endif %}
+{% if config.platform_core_setup.enterprise_scale.subscription_id_overrides.identity is defined %}
+  identity           = {{ config.platform_core_setup.enterprise_scale.subscription_id_overrides.identity | replace('None','[]') | replace('\'','\"')  }}
+{% else %}
+  identity = []
+{% endif %}
+{% else %}
+  root           = []
   decommissioned = []
   sandboxes      = []
   landing-zones  = []
@@ -13,6 +57,7 @@ subscription_id_overrides = {
   connectivity   = []
   management     = []
   identity       = []
+{% endif %}
 }
 
 {% if config.platform_identity.azuread_identity_mode != 'logged_in_user' %}
