@@ -14,6 +14,17 @@
     path: "{{ destination_path }}"
     state: directory
 
+#
+# landingzone
+#
+- name: "{{display_name}} - {{level}} - {{subscription_key}} -  {{ deployment }} - landingzone.tfvars"
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{ resource_template_folder }}/landingzone.tfvars.j2"
+
 - name: "{{display_name}} - {{level}} - {{subscription_key}} -  {{ deployment }} - Tfvars"
   include_tasks: "{{ level }}/ansible_resource_type.yaml"
   loop: "{{ resources.subscriptions[subscription_key].keys() }}"

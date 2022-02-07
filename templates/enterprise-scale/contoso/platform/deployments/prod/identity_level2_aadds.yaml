@@ -3,18 +3,19 @@ gitops:
 
 deployments:
   identity:
-    landingzone:
-      key:
-        platform:
-          identity_aadds: prod
-      global_settings_key:
-        platform:
-          virtual_hubs: prod
-      remote_tfstates:
-        platform:
-          management:
-          virtual_hubs: prod
-
+    prod:
+      landingzone:
+        key:
+          platform:
+            identity_aadds: prod
+        global_settings_key:
+          platform:
+            virtual_hubs: prod
+        remote_tfstates:
+          platform:
+            management:
+            virtual_hubs: prod
+            identity_level2: prod
 
 subscriptions:
   identity:

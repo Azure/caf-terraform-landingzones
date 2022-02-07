@@ -1,0 +1,34 @@
+container_groups = {
+{% for key, value in resources.subscriptions[subscription_key].container_groups.items() %}
+  {{ key }} = {
+      name = "{{ value.name }}"
+{% if value.region is defined %}
+      region = "{{ value.region }}"
+{% endif %}
+{% if value.resource_group_key is defined %}
+      resource_group_key = "{{ value.resource_group_key }}"
+{% endif %}
+{% if value.resource_group is defined %}
+      resource_group = {
+{% if value.resource_group.lz_key is defined %}
+        lz_key = "{{ value.resource_group.lz_key }}"
+{% endif %}
+        key = "{{ value.resource_group.key }}"
+      }
+      ip_address_type = "{{ value.ip_address_type | default('Private') }}"
+      os_type = "{{ value.os_type | default('Linux') }}"
+      restart_policy = "{{ value.restart_policy | default('Never') }}"
+{% if value.network_profile is defined %}
+      network_profile = {
+{% if value.network_profile.lz_key is defined %}
+      lz_key = "{{ value.network_profile.lz_key }}"
+{% endif %}
+{% if value.network_profile.key is defined %}
+      key = "{{ value.network_profile.key }}"
+{% endif %}
+      }
+{% endif %}
+{% endif %}
+  }
+{% endfor %}
+}

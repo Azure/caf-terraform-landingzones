@@ -3,17 +3,18 @@ gitops:
 
 deployments:
   connectivity:
-    landingzone:
-      key:
-        platform:
-          private_dns: prod
-      global_settings_key:
-        platform:
-          management:
-      remote_tfstates:
-        platform:
-          management:
-          asvm:
+    prod:
+      landingzone:
+        key:
+          platform:
+            private_dns: prod
+        global_settings_key:
+          platform:
+            management:
+        remote_tfstates:
+          platform:
+            management:
+            asvm:
 
 subscriptions:
   connectivity:

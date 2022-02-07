@@ -4,10 +4,10 @@ custom_landing_zones = {
     display_name               = "{{ level.display_name }}"
     parent_management_group_id = "{{ config.platform_core_setup.enterprise_scale.management_group_prefix }}-{{ level.parent_management_group_id }}"
     archetype_config = {
-      archetype_id     = "{{ mg_custom.archetype_definitions[key].archetype_id }}"
-{% if mg_custom.archetype_definitions[key].policy_assignments is defined %}
+      archetype_id     = "{{ level.archetype_id }}"
+{% if level.policy_assignments is defined %}
       parameters = {
-{% for pa_key, pa_value in mg_custom.archetype_definitions[key].policy_assignments.items() %}
+{% for pa_key, pa_value in level.policy_assignments.items() %}
 {% if pa_value is mapping %}
         "{{ pa_key }}" = {
 {% for attribute, attribute_value in pa_value.items()  %}

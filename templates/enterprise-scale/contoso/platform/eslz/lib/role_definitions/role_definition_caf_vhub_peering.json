@@ -9,6 +9,7 @@
       "permissions": [
           {
               "actions": [
+                  "Microsoft.Network/ddosProtectionPlans/join/action",
                   "Microsoft.Network/virtualHubs/hubVirtualNetworkConnections/*",
                   "Microsoft.Network/virtualHubs/read",
                   "Microsoft.Resources/subscriptions/resourceGroups/read"

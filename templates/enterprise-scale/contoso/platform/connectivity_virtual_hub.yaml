@@ -1,3 +1,11 @@
+custom_variables:
+  prod:
+    virtual_hub_lz_key: connectivity_virtual_hub_prod
+    # ddos_protection_plan_id: put ddos plan resource id
+  non_prod:
+    virtual_hub_lz_key: connectivity_virtual_hub_non_prod
+    # ddos_protection_plan_id: put ddos plan resource id
+
 virtual_hubs:
   prod:
     name: Production

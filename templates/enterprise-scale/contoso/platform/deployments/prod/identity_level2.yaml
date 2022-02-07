@@ -3,11 +3,62 @@ gitops:
 
 deployments:
   identity:
+    prod:
+      landingzone:
+        key:
+          platform:
+            identity_level2: prod
+        global_settings_key:
+          platform:
+            management:
+        remote_tfstates:
+          platform:
+            management:
 
 subscriptions:
   identity:
+    resource_groups:
+      management:
+        name: management
+
     azuread_groups:
       caf_non_prod_landingzones_dns_contributors:
         name: caf ac non_prod landingzones dns contributors
       caf_prod_landingzones_dns_contributors:
         name: caf ac prod landingzones dns contributors
+
+    recovery_vaults:
+      asr:
+        name: asr
+        resource_group_key: management
+        soft_delete_enabled: true
+        backup_policies:
+          vms:
+            default:
+              name: vm-default-policy
+              # Default to UTC
+              # possible values - https://jackstromberg.com/2017/01/list-of-time-zones-consumed-by-azure/
+              timezone: "SE Asia Standard Time"
+              backup:
+                frequency: Daily
+                time: "23:00"
+              retention_daily:
+                count: 7
+              retention_weekly:
+                count: 2
+                weekdays:
+                  - Sunday
+              retention_monthly:
+                count: 2
+                weeks:
+                  - First
+                weekdays:
+                  - Sunday
+              retention_yearly:
+                count: 1
+                weeks:
+                  - First
+                months:
+                  - January
+                weekdays:
+                  - Sunday

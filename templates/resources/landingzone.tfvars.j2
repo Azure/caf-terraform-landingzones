@@ -1,16 +1,29 @@
 landingzone = {
   backend_type        = "{{ config.caf_terraform.launchpad.backend_type | default("azurerm") }}"
-  level               = "{{ config.tfstates['asvm'][subscription_key].level }}"
+{% if config.tfstates['asvm'][subscription_key].level is defined %}
+  {% set level = config.tfstates['asvm'][subscription_key].level %}
+  level               = "{{ level }}"
+{% elif deployments.deployments[subscription_key][deployment].landingzone.key.platform.values() | first %}
+  {% set level = config.tfstates['platform'][deployments.deployments[subscription_key][deployment].landingzone.key.platform.keys() | first][deployments.deployments[subscription_key][deployment].landingzone.key.platform.values() | first].level %}
+  level               = "{{ level }}"
+{% else %}
+  {% set level = config.tfstates['platform'][deployments.deployments[subscription_key][deployment].landingzone.key.platform.keys() | first].level %}
+  level               = "{{ level }}"
+{% endif %}
 {% if deployments.deployments[subscription_key][deployment].landingzone.key.asvm is defined %}
 {% for l_key, l_value in deployments.deployments[subscription_key][deployment].landingzone.key.asvm.items() %}
   key                 = "{{ config.tfstates['asvm'][l_key][l_value].lz_key_name}}"
 {% endfor %}
+{% elif deployments.deployments[subscription_key][deployment].landingzone.key.platform.values() | first %}
+  key               = "{{ config.tfstates['platform'][deployments.deployments[subscription_key][deployment].landingzone.key.platform.keys() | first][deployments.deployments[subscription_key][deployment].landingzone.key.platform.values() | first].lz_key_name }}"
+{% else %}
+  key               = "{{ config.tfstates['platform'][deployments.deployments[subscription_key][deployment].landingzone.key.platform.keys() | first].lz_key_name }}"
 {% endif %}
 {% if deployments.deployments[subscription_key][deployment].landingzone.global_settings_key.platform is defined %}
-{% if deployments.deployments[subscription_key][deployment].landingzone.global_settings_key.platform.virtual_hubs is defined %}
-  global_settings_key = "{{ config.tfstates['platform'].virtual_hubs[deployments.deployments[subscription_key][deployment].landingzone.global_settings_key.platform.virtual_hubs].lz_key_name }}"
-{% elif deployments.deployments[subscription_key][deployment].landingzone.global_settings_key.platform.asvm is defined  %}
-  global_settings_key = "{{ config.tfstates['platform'].asvm.lz_key_name }}"
+{% if deployments.deployments[subscription_key][deployment].landingzone.global_settings_key.platform.values() | first %}
+  global_settings_key               = "{{ config.tfstates['platform'][deployments.deployments[subscription_key][deployment].landingzone.global_settings_key.platform.keys() | first][deployments.deployments[subscription_key][deployment].landingzone.global_settings_key.platform.values() | first].lz_key_name }}"
+{% else %}
+  global_settings_key               = "{{ config.tfstates['platform'][deployments.deployments[subscription_key][deployment].landingzone.global_settings_key.platform.keys() | first].lz_key_name }}"
 {% endif %}
 {% else %}
 {% for m_key, m_value in deployments.deployments[subscription_key][deployment].landingzone.global_settings_key.asvm.items()  %}
@@ -32,15 +45,20 @@ landingzone = {
 {% for p_key in deployments.deployments[subscription_key][deployment].landingzone.remote_tfstates.platform.keys() %}
 {% if config.tfstates['platform'][p_key][deployments.deployments[subscription_key][deployment].landingzone.remote_tfstates.platform[p_key]] is defined  %}
     {{ config.tfstates['platform'][p_key][deployments.deployments[subscription_key][deployment].landingzone.remote_tfstates.platform[p_key]].lz_key_name }} = {
-      tfstate   = "{{ config.tfstates['platform'][p_key][deployments.deployments[subscription_key][deployment].landingzone.remote_tfstates.platform[p_key]].tfstate }}"
+      {% set remote_tfstate = config.tfstates['platform'][p_key][deployments.deployments[subscription_key][deployment].landingzone.remote_tfstates.platform[p_key]] %}
+      tfstate   = "{{ remote_tfstate.tfstate }}"
+      workspace = "{{ remote_tfstate.workspace | default('tfstate') }}"
+{% if remote_tfstate.level != level %}
       level     = "lower"
-      workspace = "{{ config.tfstates['platform'][p_key][deployments.deployments[subscription_key][deployment].landingzone.remote_tfstates.platform[p_key]].workspace | default('tfstate') }}"
+{% endif %}
     }
 {% else %}
     {{ config.tfstates['platform'][p_key].lz_key_name }} = {
       tfstate   = "{{ config.tfstates['platform'][p_key].tfstate }}"
-      level     = "lower"
       workspace = "{{ config.tfstates['platform'][p_key].workspace | default('tfstate') }}"
+{% if config.tfstates['platform'][p_key].level != level %}
+      level     = "lower"
+{% endif %}
     }
 {% endif %}
 {% endfor %}

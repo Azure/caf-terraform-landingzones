@@ -3,17 +3,18 @@ gitops:
 
 deployments:
   connectivity:
-    landingzone:
-      key:
-        platform:
-          azurerm_firewalls: prod
-      global_settings_key:
-        platform:
-          virtual_hubs: prod
-      remote_tfstates:
-        platform:
-          virtual_hubs: prod
-          azurerm_firewall_policies: prod
+    prod:
+      landingzone:
+        key:
+          platform:
+            azurerm_firewalls: prod
+        global_settings_key:
+          platform:
+            virtual_hubs: prod
+        remote_tfstates:
+          platform:
+            virtual_hubs: prod
+            azurerm_firewall_policies: prod
 
 
 subscriptions:

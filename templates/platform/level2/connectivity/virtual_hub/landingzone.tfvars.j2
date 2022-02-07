@@ -26,6 +26,10 @@ landingzone = {
   }
 }
 
+{% if connectivity_virtual_hub.custom_variables[virtual_hub] is defined %}
 custom_variables = {
-  virtual_hub_lz_key = "{{ config.tfstates.platform.virtual_hubs[virtual_hub].lz_key_name }}"
+{% for key, value in connectivity_virtual_hub.custom_variables[virtual_hub].items() %}
+  {{key}} = "{{value}}"
+{% endfor %}
 }
+{% endif %}

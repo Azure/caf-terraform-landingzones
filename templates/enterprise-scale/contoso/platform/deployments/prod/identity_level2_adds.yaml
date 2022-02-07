@@ -3,17 +3,19 @@ gitops:
 
 deployments:
   identity:
-    landingzone:
-      key:
-        platform:
-          identity_adds: prod
-      global_settings_key:
-        platform:
-          virtual_hubs: prod
-      remote_tfstates:
-        platform:
-          management:
-          virtual_hubs: prod
+    prod:
+      landingzone:
+        key:
+          platform:
+            identity_level2_adds: prod
+        global_settings_key:
+          platform:
+            virtual_hubs: prod
+        remote_tfstates:
+          platform:
+            management:
+            virtual_hubs: prod
+            identity_level2: prod
 
 
 subscriptions:
@@ -76,6 +78,10 @@ subscriptions:
         region: region1
         os_type: windows
         keyvault_key: adds_credentials
+        backup:
+          vault_key: asr
+          policy_key: default
+          lz_key: identity_level2
 
         virtual_machine_settings:
           windows:
@@ -158,6 +164,10 @@ subscriptions:
         region: region1
         os_type: windows
         keyvault_key: adds_credentials
+        backup:
+          vault_key: asr
+          policy_key: default
+          lz_key: identity_level2
 
         virtual_machine_settings:
           windows:

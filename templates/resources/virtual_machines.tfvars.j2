@@ -24,6 +24,28 @@ virtual_machines = {
 {% if value.public_key_pem_file is defined %}
       public_key_pem_file = "{{ value.public_key_pem_file }}"
 {% endif %}
+{% if value.backup is defined %}
+      backup = {
+{% if value.backup.backup_vault_rg is defined %}
+        backup_vault_rg = "{{ value.backup.backup_vault_rg }}"
+{% endif %}
+{% if value.backup.backup_vault_id is defined %}
+        backup_vault_id = "{{ value.backup.backup_vault_id }}"
+{% endif %}
+{% if value.backup.backup_policy_id is defined %}
+        backup_policy_id = "{{ value.backup.backup_policy_id }}"
+{% endif %}
+{% if value.backup.vault_key is defined %}
+        vault_key = "{{ value.backup.vault_key }}"
+{% endif %}
+{% if value.backup.policy_key is defined %}
+        policy_key = "{{ value.backup.policy_key }}"
+{% endif %}
+{% if value.backup.lz_key is defined %}
+        lz_key = "{{ value.backup.lz_key }}"
+{% endif %}
+      }
+{% endif %}
 {% if value.tags is defined %}
       tags   = {
 {% for tag_key, tag_value in value.tags.items() %}

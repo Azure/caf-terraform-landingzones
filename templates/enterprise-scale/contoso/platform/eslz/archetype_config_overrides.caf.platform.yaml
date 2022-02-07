@@ -294,7 +294,6 @@ archetype_definitions:
     archetype_id: platform_identity
     policy_assignments:
       Deny-RDP-From-Internet:
-      Deny-Public-IP:
     archetype_config:
       access_control:
         Owner:
