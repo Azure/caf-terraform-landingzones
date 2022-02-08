@@ -45,11 +45,13 @@ role_mapping = {
           }
 {% endif %}
         }
+{% if config.platform_identity.azuread_identity_mode != 'logged_in_user' %}
         "Reader" = {
           azuread_groups = {
             keys = ["caf_platform_contributors"]
           }
         }
+{% endif %}
       }
     }
 {% endif %}
