@@ -20,6 +20,10 @@ keyvaults = {
         azuread_group_key  = "caf_platform_maintainers"
         secret_permissions = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
       }
+      caf_platform_contributors = {
+        azuread_group_key  = "caf_platform_contributors"
+        secret_permissions = ["Get"]
+      }
 {% endif %}
 {% if config.platform_identity.azuread_identity_mode == 'logged_in_user' %}
       logged_in_user = {
@@ -52,6 +56,10 @@ keyvaults = {
         azuread_group_key  = "caf_platform_maintainers"
         secret_permissions = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
       }
+      caf_platform_contributors = {
+        azuread_group_key  = "caf_platform_contributors"
+        secret_permissions = ["Get"]
+      }
 {% endif %}
 {% if config.platform_identity.azuread_identity_mode == 'logged_in_user' %}
       logged_in_user = {
@@ -83,6 +91,10 @@ keyvaults = {
       caf_platform_maintainers = {
         azuread_group_key  = "caf_platform_maintainers"
         secret_permissions = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
+      }
+      caf_platform_contributors = {
+        azuread_group_key  = "caf_platform_contributors"
+        secret_permissions = ["Get"]
       }
 {% endif %}
 {% if config.platform_identity.azuread_identity_mode == 'logged_in_user' %}

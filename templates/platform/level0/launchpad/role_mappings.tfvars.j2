@@ -45,6 +45,11 @@ role_mapping = {
           }
 {% endif %}
         }
+        "Reader" = {
+          azuread_groups = {
+            keys = ["caf_platform_contributors"]
+          }
+        }
       }
     }
 {% endif %}
@@ -76,7 +81,8 @@ role_mapping = {
           azuread_groups = {
             keys = [
               "identity",
-              "subscription_creation_platform"
+              "subscription_creation_platform",
+              "caf_platform_contributors"
             ]
           }
         }
@@ -88,7 +94,8 @@ role_mapping = {
               "identity",
               "management",
               "eslz",
-              "subscription_creation_platform"
+              "subscription_creation_platform",
+              "caf_platform_contributors"
             ]
           }
         }
@@ -100,7 +107,8 @@ role_mapping = {
               "identity",
               "connectivity",
               "management",
-              "subscription_creation_landingzones"
+              "subscription_creation_landingzones",
+              "caf_platform_contributors"
             ]
           }
         }
@@ -126,7 +134,8 @@ role_mapping = {
             keys = [
               "management",
               "eslz",
-              "subscription_creation_platform"
+              "subscription_creation_platform",
+              "caf_platform_contributors"
             ]
           }
         }
@@ -155,6 +164,7 @@ role_mapping = {
           azuread_groups = {
             keys = [
               "connectivity",
+              "caf_platform_contributors",
 {% if config.platform_core_setup.enterprise_scale.enable_azure_subscription_vending_machine %}
               "level0"
 {% endif %}
@@ -187,6 +197,7 @@ role_mapping = {
         "Storage Blob Data Reader" = {
           azuread_groups = {
             keys = [
+              "caf_platform_contributors",
 {% if config.platform_core_setup.enterprise_scale.enable_azure_subscription_vending_machine %}
               "subscription_creation_landingzones"
 {% endif %}
