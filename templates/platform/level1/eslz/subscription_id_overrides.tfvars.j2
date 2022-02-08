@@ -6,7 +6,7 @@ subscription_id_overrides = {
   root = []
 {% endif %}
 {% else %}
-{% if config.platform_identity.azuread_identity_mode == 'logged_in_user' %}
+{% if config.platform_core_setup.enterprise_scale.subscription_deployment_mode == 'single_reuse' %}
   root           = [
     "{{ config.caf_terraform.launchpad.subscription_id }}"
   ]
