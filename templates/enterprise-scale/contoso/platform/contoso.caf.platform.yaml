@@ -85,7 +85,16 @@ platform_core_setup:
         caf_landingzone_branch: "patch.5.4.4"
       v1.1.1:
         caf_landingzone_branch: "aci_network"
-
+    # subscription_id_overrides:
+    #   decommissioned:
+    #     - guid1
+    #   connectivity:
+    #     - guid2
+    #     - guid3
+    #   management:
+    #     - guid4
+    #   identity:
+    #     -     
 platform_management:
   enable: true
 
@@ -97,7 +106,9 @@ platform_identity:
   # has to be the default domain name (custom dns name or tenantname.onmicrosoft.com)
   # check the AAD property
   tenant_name: <replace>
-  # only service_principal supported with rover ignite at the moment
+  # Supported values
+  #  - service_principal
+  #  - logged_in_user
   azuread_identity_mode: service_principal
   # UPNs you want to add in the caf_platform_maintainers Azure AD group
   # Can use user or guest accounts

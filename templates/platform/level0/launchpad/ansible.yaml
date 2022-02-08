@@ -26,6 +26,33 @@
 
 
 #
+# container_groups
+#
+- name: "[{{ level }}-{{ base_folder }}] - resources - container_groups"
+  when:
+    - resources.subscriptions[subscription_key].container_groups is defined
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{ resource_template_folder }}/container_groups.tfvars.j2"
+
+#
+# network_security_group_definition
+#
+- name: "[{{ level }}-{{ base_folder }}] - resources - network_security_group_definition"
+  when:
+    - resources.subscriptions[subscription_key].network_security_group_definition is defined
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{ resource_template_folder }}/network_security_group_definition.tfvars.j2"
+
+
+#
 # resource_groups
 #
 - name: "[{{ level }}-{{ base_folder }}] - resources - resource_groups"
@@ -37,6 +64,33 @@
     force: yes
   with_fileglob:
     - "{{ resource_template_folder }}/resource_groups.tfvars.j2"
+
+#
+# virtual_networks
+#
+- name: "[{{ level }}-{{ base_folder }}] - resources - virtual_networks"
+  when:
+    - resources.subscriptions[subscription_key].virtual_networks is defined
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{ resource_template_folder }}/virtual_networks.tfvars.j2"
+
+
+#
+# network_profiles
+#
+- name: "[{{ level }}-{{ base_folder }}] - resources - network_profiles"
+  when:
+    - resources.subscriptions[subscription_key].network_profiles is defined
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{ resource_template_folder }}/network_profiles.tfvars.j2"
 
 
 - name: "[{{ level }}-{{ base_folder }}] launchpad"

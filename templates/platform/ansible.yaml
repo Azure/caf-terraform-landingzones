@@ -129,8 +129,8 @@
       import_tasks: "{{ level }}/{{ base_folder }}/ansible.yaml"
       when:
         - (config.platform_management.enable | bool)
-        - level1_subscriptions is not skipped
-        - platform_subscriptions_details is defined
+        - ((level1_subscriptions is not skipped and config.platform_identity.azuread_identity_mode != "logged_in_user") or config.platform_identity.azuread_identity_mode == "logged_in_user")
+        - ((platform_subscriptions_details is defined and config.platform_identity.azuread_identity_mode != "logged_in_user") or config.platform_identity.azuread_identity_mode == "logged_in_user")
 
       vars:
         base_folder: "management"
@@ -141,11 +141,10 @@
     - name: "{{ level }}-{{ base_folder }} | Identity services"
       import_tasks: "{{ level }}/{{ base_folder }}/ansible.yaml"
       when:
-        # - config.platform_core_setup.enterprise_scale.subscription_deployment_mode != "single_reuse"
         - launchpad_tfstate_exists is not skipped
         - credentials_tfstate_exists is not skipped
-        - level1_subscriptions is not skipped
-        - platform_subscriptions_details is defined
+        - ((level1_subscriptions is not skipped and config.platform_identity.azuread_identity_mode != "logged_in_user") or config.platform_identity.azuread_identity_mode == "logged_in_user")
+        - ((platform_subscriptions_details is defined and config.platform_identity.azuread_identity_mode != "logged_in_user") or config.platform_identity.azuread_identity_mode == "logged_in_user")
         - identity.subscriptions is defined
 
       vars:
@@ -158,7 +157,7 @@
       import_tasks: "{{ level }}/{{ base_folder }}/ansible.yaml"
       when:
         - (config.platform_core_setup.enterprise_scale.enable | bool)
-        - ( (config.platform_core_setup.enterprise_scale.enable | bool) and (level1_subscriptions is not skipped) ) or (config.platform_core_setup.enterprise_scale.subscription_deployment_mode == "single_reuse")
+        - ( (config.platform_core_setup.enterprise_scale.enable | bool) and (level1_subscriptions is not skipped) ) or (config.platform_core_setup.enterprise_scale.subscription_deployment_mode == "single_reuse") or (config.platform_identity.azuread_identity_mode == "logged_in_user")
         - (platform_subscriptions_details is defined) or (config.platform_core_setup.enterprise_scale.subscription_deployment_mode == "single_reuse")
         - platform_subscriptions_details.identity is defined
         - platform_subscriptions_details.management is defined
@@ -189,7 +188,7 @@
       import_tasks: "{{ level }}/{{ base_folder }}/ansible.yaml"
       when:
         - ( (config.networking_topology.deployment_option == "virtual_wan") or (config.platform_identity.azuread_identity_mode == 'logged_in_user') )
-        - (platform_subscriptions_details is defined) or (config.platform_core_setup.enterprise_scale.subscription_deployment_mode == "single_reuse")
+        - (platform_subscriptions_details is defined) or (config.platform_core_setup.enterprise_scale.subscription_deployment_mode == "single_reuse") or (config.platform_identity.azuread_identity_mode == 'logged_in_user') 
       vars:
         base_folder: "connectivity"
         level: "level2"
@@ -225,47 +224,6 @@
     - name: Terraform Formatting
       shell: |
         terraform fmt -recursive {{ destination_base }}/{{ config.configuration_folders.platform.destination_relative_path }}
-
-# - name: Level 2 - identity
-#   hosts: localhost
-#   vars:
-#     config: "{{ lookup('file', '{{ config_folder }}/platform.yaml') | from_yaml }}"
-#     identity: "{{ lookup('file', '{{ config_folder }}/identity.yaml') | from_yaml }}"
-#     connectivity_virtual_wan: "{{ lookup('file', '{{ config_folder }}/connectivity_virtual_wan.yaml') | from_yaml }}"
-#     connectivity_virtual_hub: "{{ lookup('file', '{{ config_folder }}/connectivity_virtual_hub.yaml') | from_yaml }}"
-#     connectivity_firewall: "{{ lookup('file', '{{ config_folder }}/connectivity_firewall.yaml') | from_yaml }}"
-#     connectivity_firewall_policies: "{{ lookup('file', '{{ config_folder }}/connectivity_firewall_policies.yaml') | from_yaml }}"
-#     cidr: "{{ lookup('file', '{{ config_folder }}/cidr.yaml') | from_yaml }}"
-#     tfstates: "{{ lookup('file', '{{ config_folder }}/tfstates.yaml') | from_yaml }}"
-#     base_templates_folder: /tf/caf/templates/platform
-#     base_folder: identity
-#     level: level2
-#     folders:
-#       - virtual_wan
-
-
-#   tasks:
-#     - name: Creates {{ level }} directory
-#       file:
-#         path: "{{ destination_base_path }}{{ config.configuration_folders.destination_relative_path }}/{{ level }}"
-#         state: directory
-
-#     - name: Creates {{ base_folder }} directory strcture
-#       file:
-#         path: "{{ destination_base_path }}{{ config.configuration_folders.destination_relative_path }}/{{ level }}/{{ base_folder }}"
-#         state: directory
-
-#     - name: "{{ base_folder }} - Readme"
-#       ansible.builtin.template:
-#         src: "{{ item }}"
-#         dest: "{{ destination_base_path }}{{ config.configuration_folders.destination_relative_path }}/{{ level }}/{{ base_folder }}/{{ item | basename | regex_replace('.j2$', '') }}"
-#         force: yes
-#       with_fileglob:
-#         - "{{ level }}/{{ base_folder }}/*.md"
-
-#     - name: "{{ base_folder }} - adds"
-#       include_tasks: "{{ base_templates_folder }}/{{ level }}/{{ base_folder }}/platform.yaml"
-
 
 
 # #
