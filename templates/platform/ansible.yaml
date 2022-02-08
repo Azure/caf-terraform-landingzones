@@ -106,6 +106,7 @@
 # Level 1
 #
 
+
 ## subscriptions
     - name: "{{ level }}-{{ base_folder }} | Create platform subscriptions"
       import_tasks: "{{ level }}/{{ base_folder }}/ansible.yaml"
@@ -158,9 +159,9 @@
       when:
         - (config.platform_core_setup.enterprise_scale.enable | bool)
         - ( (config.platform_core_setup.enterprise_scale.enable | bool) and (level1_subscriptions is not skipped) ) or (config.platform_core_setup.enterprise_scale.subscription_deployment_mode == "single_reuse") or (config.platform_identity.azuread_identity_mode == "logged_in_user")
-        - (platform_subscriptions_details is defined) or (config.platform_core_setup.enterprise_scale.subscription_deployment_mode == "single_reuse") or (config.platform_identity.azuread_identity_mode == "logged_in_user")
-        - platform_subscriptions_details.identity is defined
-        - platform_subscriptions_details.management is defined
+        - (platform_subscriptions_details is defined) or (config.platform_core_setup.enterprise_scale.subscription_deployment_mode == "single_reuse")
+        - platform_subscriptions_details.identity is defined or (config.platform_identity.azuread_identity_mode == "logged_in_user")
+        - platform_subscriptions_details.management is defined or (config.platform_identity.azuread_identity_mode == "logged_in_user")
 
       vars:
         base_folder: "eslz"
@@ -177,7 +178,7 @@
       when:
         - config.platform_core_setup.enterprise_scale.enable_azure_subscription_vending_machine
         - launchpad_azuread_groups is defined
-        - platform_subscriptions_details is defined
+        - platform_subscriptions_details is defined or (config.platform_identity.azuread_identity_mode == "logged_in_user")
       vars:
         base_folder: "asvm"
         level: "level2"
@@ -202,7 +203,7 @@
         - config.platform_core_setup.enterprise_scale.subscription_deployment_mode != "single_reuse"
         - launchpad_tfstate_exists is not skipped
         - credentials_tfstate_exists is not skipped
-        - level1_subscriptions is not skipped
+        - level1_subscriptions is not skipped or (config.platform_identity.azuread_identity_mode == "logged_in_user")
         - (platform_subscriptions_details is defined) or (config.platform_core_setup.enterprise_scale.subscription_deployment_mode == "single_reuse")
 
       vars:
