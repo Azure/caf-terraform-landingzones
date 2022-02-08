@@ -16,12 +16,13 @@ subscriptions:
 
     monitor_action_groups:
       networking_operations:
+        resource_group_key: management
         action_group_name: Networking Operations
         shortname: netops
         arm_role_alert:
           contributors:
-            name: contributors
-            role_name: servicehealth-alerts-contributors<replace>
+            name: Monitoring Contributor
+            role_name: Monitoring Contributor
             use_common_alert_schema: false
         email_receiver:
           noc:

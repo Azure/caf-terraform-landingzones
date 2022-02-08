@@ -1,16 +1,16 @@
 subscription_id_overrides = {
-{% if config.platform_identity.azuread_identity_mode != 'logged_in_user' %}
 {% if config.platform_core_setup.enterprise_scale.subscription_id_overrides is defined %}
 {% if config.platform_core_setup.enterprise_scale.subscription_id_overrides.root is defined %}
-  root           = {{ config.platform_core_setup.enterprise_scale.subscription_id_overrides.root | replace('None','[]') | replace('\'','\"')  }}
+  root = {{ config.platform_core_setup.enterprise_scale.subscription_id_overrides.root | replace('None','[]') | replace('\'','\"')  }}
 {% else %}
   root = []
 {% endif %}
-{% endif %}
 {% else %}
-  {{ config.platform_core_setup.enterprise_scale.root_parent_id | default('root') }}           = [
+{% if config.platform_identity.azuread_identity_mode == 'logged_in_user' %}
+  root           = [
     "{{ config.caf_terraform.launchpad.subscription_id }}"
   ]
+{% endif %}
 {% endif %}
 {% if config.platform_core_setup.enterprise_scale.subscription_id_overrides is defined %}
 {% if config.platform_core_setup.enterprise_scale.subscription_id_overrides.decommissioned is defined %}
