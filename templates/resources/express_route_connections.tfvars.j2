@@ -1,40 +1,83 @@
-
-{% if connectivity_virtual_hub.virtual_hubs[virtual_hub].enable_er_connections and connectivity_virtual_hub.express_route_connections is defined %}
 express_route_connections = {
-  {{ virtual_hub }} = {
-    name = "{{ connectivity_virtual_hub.express_route_connections[virtual_hub].name }}"
-{% if connectivity_virtual_hub.express_route_connections[virtual_hub].enable_internet_security is defined %}
-    enable_internet_security = {{ connectivity_virtual_hub.express_route_connections[virtual_hub].enable_internet_security | string | lower }}
+{% for key, value in resources.subscriptions[subscription_key].express_route_connections.items() %}
+{% if value.enable_er_connections %}
+  {{ key }} = {
+    name = "{{ value.name }}"
+{% if value.enable_internet_security is defined %}
+    enable_internet_security = {{ value.enable_internet_security | string | lower }}
 {% endif %}
-{% if connectivity_virtual_hub.virtual_hubs[virtual_hub].enable_er_connections %}
-    enable_er_connections = {{ connectivity_virtual_hub.virtual_hubs[virtual_hub].enable_er_connections | string | lower }}
+{% if value.routing_weight is defined %}
+    routing_weight = {{ value.routing_weight }}
 {% endif %}
-{% if connectivity_virtual_hub.express_route_connections[virtual_hub].routing_weight is defined %}
-    routing_weight = {{ connectivity_virtual_hub.express_route_connections[virtual_hub].routing_weight }}
+{% if value.express_route_gateway_id is defined %}
+      express_route_gateway_id   = "{{ value.express_route_gateway_id }}"
 {% endif %}
     virtual_hub = {
-      key   = "{{ connectivity_virtual_hub.express_route_connections[virtual_hub].virtual_hub.key }}"
+{% if value.virtual_hub.key is defined %}
+      key   = "{{ value.virtual_hub.key }}"
+{% endif %}
+{% if value.virtual_hub.lz_key is defined %}
+      lz_key   = "{{ value.virtual_hub.lz_key }}"
+{% endif %}
+{% if value.virtual_hub.id is defined %}
+      id   = "{{ value.virtual_hub.id }}"
+{% endif %}
     }
+{% if value.express_route_circuit_peering_id is defined %}
+      express_route_circuit_peering_id   = "{{ value.express_route_circuit_peering_id }}"
+{% endif %}
     circuit_peering = {
-      lz_key = "{{ config.tfstates.platform.express_route_circuit_peerings[connectivity_virtual_hub.express_route_connections[virtual_hub].circuit_peering.tfstate_key].lz_key_name }}"
-      key    = "{{ connectivity_virtual_hub.express_route_connections[virtual_hub].circuit_peering.key }}"
+{% if value.circuit_peering.lz_key is defined %}
+      lz_key = "{{ value.circuit_peering.lz_key }}"
+{% endif %}
+      key    = "{{ value.circuit_peering.key }}"
     }
-{% if connectivity_virtual_hub.express_route_connections[virtual_hub].express_route_circuit_authorization is defined %}
+{% if value.express_route_circuit_authorization is defined %}
     express_route_circuit_authorization = {
-      lz_key = "{{ config.tfstates.platform.express_route_circuits[connectivity_virtual_hub.express_route_connections[virtual_hub].express_route_circuit_authorization.tfstate_key].lz_key_name }}"
-      key    = "{{ connectivity_virtual_hub.express_route_connections[virtual_hub].express_route_circuit_authorization.key }}"
+{% if value.express_route_circuit_authorization.lz_key is defined %}
+      lz_key = "{{ value.express_route_circuit_authorization.lz_key }}"
+{% endif %}
+      key    = "{{ value.express_route_circuit_authorization.key }}"
     }
 {% endif %}
-{% if connectivity_virtual_hub.express_route_connections[virtual_hub].route_table is defined %}
+{% if value.routing is defined %}
+    routing = {
+{% if value.routing.propagated_route_table is defined %}
+      propagated_route_table = {
+{% if value.routing.propagated_route_table.labels is defined %}
+        labels = {{ value.routing.propagated_route_table.labels | replace('None','[]') | replace('\'','\"') }}
+{% endif %}
+      }
+{% endif %}
+    }
+{% endif %}
+{% if value.route_table is defined %}
     route_table = {
-      key    = "{{ connectivity_virtual_hub.express_route_connections[virtual_hub].route_table.key }}"
+{% if value.route_table.key is defined %}
+      key = "{{ value.route_table.key }}"
+{% endif %}
+{% if value.route_table.lz_key is defined %}
+      lz_key = "{{ value.route_table.lz_key }}"
+{% endif %}
+{% if value.route_table.id is defined %}
+      id = "{{ value.route_table.id }}"
+{% endif %}
     }
 {% endif %}
-{% if connectivity_virtual_hub.express_route_connections[virtual_hub].propagated_route_tables is defined %}
+{% if value.propagated_route_tables is defined %}
     propagated_route_tables = {
-      key    = "{{ connectivity_virtual_hub.express_route_connections[virtual_hub].propagated_route_tables.key }}"
+{% if value.propagated_route_tables.lz_key is defined %}
+      lz_key    = "{{ value.propagated_route_tables.lz_key }}"
+{% endif %}
+{% if value.propagated_route_tables.keys is defined %}
+      keys    = {{ value.propagated_route_tables.keys | replace('None','[]') | replace('\'','\"') }}
+{% endif %}
+{% if value.propagated_route_tables.ids is defined %}
+      ids    = {{ value.propagated_route_tables.ids | replace('None','[]') | replace('\'','\"') }}
+{% endif %}
     }
 {% endif %}
   }
-}
 {% endif %}
+{% endfor %}
+}

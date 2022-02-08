@@ -7,20 +7,17 @@ virtual_hubs = {
 {% endif %}
       key    = "{{ value.virtual_wan.key }}"
     }
-
     resource_group = {
 {% if value.virtual_wan.lz_key is defined %}
       lz_key = "{{ value.virtual_wan.lz_key }}"
 {% endif %}
       key = "{{ value.virtual_wan.key }}"
     }
-
     hub_name           = "{{ value.name }}"
 {% if value.region_key is defined %}
     region             = "{{ value.region_key }}"
 {% endif %}
     hub_address_prefix = "{{ value.hub_address_prefix }}"
-
 {% if value.routes is defined %}
     routes = {
 {% for rt_key, rt_value in value.routes.items() %}
@@ -31,10 +28,7 @@ virtual_hubs = {
 {% endfor %}
     }
 {% endif %}
-
-{% if value.deploy_p2s is defined %}
-    deploy_p2s    = {{ value.deploy_p2s | lower }}
-{% endif %}
+    deploy_p2s    = {{ value.deploy_p2s | default(false) | lower }}
 {% if value.p2s_config is defined %}
     p2s_config = {
         name = "{{ value.p2s_config.name }}"
@@ -53,28 +47,52 @@ virtual_hubs = {
 {% endif %}
         }
 {% endif %}
-    }
+{% if value.deploy_p2s.server_config is defined %}
+        server_config = {
+          vpn_authentication_types = "{{ value.deploy_p2s.server_config.vpn_authentication_types }}"
+          client_root_certificate = {
+            name             = "{{ value.deploy_p2s.server_config.client_root_certificate.name }}"
+            public_cert_data = "{{ value.deploy_p2s.server_config.client_root_certificate.public_cert_data }}"
+          }
+        }
 {% endif %}
-
-{% if connectivity_virtual_hub.virtual_hubs[virtual_hub].deploy_s2s  %}
-    deploy_s2s         = {{ connectivity_virtual_hub.virtual_hubs[virtual_hub].deploy_s2s | string | lower }}
-    s2s_config         = {
-      name       = "{{ connectivity_virtual_hub.virtual_hubs[virtual_hub].s2s_config.name }}"
-      scale_unit = {{ connectivity_virtual_hub.virtual_hubs[virtual_hub].s2s_config.scale_unit }}
     }
 {% else %}
-    deploy_s2s         = false
+    p2s_config = {}
 {% endif %}
-{% if connectivity_virtual_hub.virtual_hubs[virtual_hub].deploy_er  %}
-    deploy_er          = {{ connectivity_virtual_hub.virtual_hubs[virtual_hub].deploy_er | string | lower }}
+    deploy_s2s = {{ value.deploy_s2s | string | lower | default(false) }}
+    s2s_config = {
+{% if value.s2s_config.name is defined %}
+      name               = "{{ value.s2s_config.name }}"
+{% endif %}
+{% if value.s2s_config.scale_unit is defined %}
+      scale_unit         = {{ value.s2s_config.scale_unit }}
+{% endif %}
+{% if value.s2s_config.routing_preference is defined %}
+      routing_preference = "{{ value.s2s_config.routing_preference | default('Microsoft Network') }}"
+{% endif %}
+{% if value.deploy_s2s.bgp_settings is defined  %}
+      bgp_settings = {
+        asn         = "{{ value.deploy_s2s.bgp_settings.asn }}"
+        peer_weight = {{ value.deploy_s2s.bgp_settings.peer_weight }}
+{% if value.deploy_s2s.bgp_settings.instance_0_bgp_peering_address is defined  %}
+        instance_0_bgp_peering_address = {
+          custom_ips = {{ value.deploy_s2s.bgp_settings.instance_0_bgp_peering_address.custom_ips | replace('None','[]') | replace('\'','\"') }}
+        }
+{% endif %}
+{% if value.deploy_s2s.bgp_settings.instance_1_bgp_peering_address is defined  %}
+        instance_1_bgp_peering_address = {
+          custom_ips = {{ value.deploy_s2s.bgp_settings.instance_1_bgp_peering_address.custom_ips | replace('None','[]') | replace('\'','\"') }}
+        }
+{% endif %}
+      }
+{% endif %}
+    }
+    deploy_er             = {{ value.deploy_er | string | lower | default(false) }}
     er_config          = {
-      name        = "{{ connectivity_virtual_hub.virtual_hubs[virtual_hub].er_config.name }}"
-      scale_units = {{ connectivity_virtual_hub.virtual_hubs[virtual_hub].er_config.scale_units }}
+      name        = "{{ value.er_config.name }}"
+      scale_units = {{ value.er_config.scale_units }}
     }
-{% else %}
-    deploy_er          = false
-{% endif %}
-
 {% if value.security_partner_provider is defined %}
     security_partner_provider = {
 {% for spp_key, spp_value in value.security_partner_provider.items() %}
@@ -85,7 +103,6 @@ virtual_hubs = {
 {% endfor %}
     }
 {% endif %}
-
 {% if value.bgp_connection is defined %}
     bgp_connection = {
 {% for bgp_key, bgp_value in value.bgp_connection.items() %}
@@ -97,7 +114,6 @@ virtual_hubs = {
 {% endfor %}
     }
 {% endif %}
-
   }
 {% endfor %}
 }

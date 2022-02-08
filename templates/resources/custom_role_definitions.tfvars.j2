@@ -11,7 +11,7 @@ custom_role_definitions = {
 {% if value.permissions is defined %}
     permissions = {
 {% for p_key, permission in value.permissions.items() %}
-      {{ p_key }} = {{ permission | sort | replace('None','[]') | replace('\'','\"') | replace(',', ',\n') }}
+      {{ p_key }} = {{ permission | sort | replace('None','[]') | replace('\'','\"') | replace(',', ',\n') | replace('[', '[\n') | replace(']', '\n]') }}
 {% endfor %}
     }
 {% endif %}

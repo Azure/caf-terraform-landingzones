@@ -1,8 +1,8 @@
 - name: CAF Terraform - Generate Azure Subscription Vending Machine (asvm) configuration files
   hosts: localhost
   vars:
-    connectivity_virtual_wan: "{{ lookup('file', '{{ config_folder }}/connectivity_virtual_wan.yaml') | from_yaml }}"
-    connectivity_virtual_hub: "{{ lookup('file', '{{ config_folder }}/connectivity_virtual_hub.yaml') | from_yaml }}"
+    # connectivity_virtual_wan: "{{ lookup('file', '{{ config_folder }}/connectivity_virtual_wan.yaml') | from_yaml }}"
+    # connectivity_virtual_hub: "{{ lookup('file', '{{ config_folder }}/connectivity_virtual_hub.yaml') | from_yaml }}"
     connectivity_firewall: "{{ lookup('file', '{{ config_folder }}/connectivity_firewall.yaml', errors='ignore') | from_yaml }}"
     connectivity_firewall_policies: "{{ lookup('file', '{{ config_folder }}/connectivity_firewall_policies.yaml', errors='ignore') | from_yaml }}"
     connectivity_vpn_sites: "{{ lookup('file', '{{ config_folder }}/connectivity_vpn_sites.yaml', errors='ignore') | from_yaml }}"
