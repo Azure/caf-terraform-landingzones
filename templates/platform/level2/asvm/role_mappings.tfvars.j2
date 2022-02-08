@@ -10,6 +10,7 @@ role_mapping = {
     resource_groups = {
       level3 = {
         "Reader" = {
+{% if config.platform_identity.azuread_identity_mode != 'logged_in_user' %}
           object_ids = {
             keys = [
               "{{launchpad_azuread_groups.caf_platform_maintainers.id}}",           // caf_platform_maintainers
@@ -22,10 +23,16 @@ role_mapping = {
               "caf_ac_landingzone_maintainers_prod"
             ]
           }
+{% else %}
+          logged_in = {
+            keys = [ "user" ]
+          }
+{% endif %}
         }
       }
       level4 = {
         "Reader" = {
+{% if config.platform_identity.azuread_identity_mode != 'logged_in_user' %}
           object_ids = {
             keys = [
               "{{launchpad_azuread_groups.caf_platform_maintainers.id}}",           // caf_platform_maintainers
@@ -38,10 +45,14 @@ role_mapping = {
               "caf_ac_landingzone_maintainers_prod"
             ]
           }
+{% else %}
+          logged_in = {
+            keys = [ "user" ]
+          }
+{% endif %}
         }
       }
     }
-{% endif %}
 
     storage_accounts = {
       level3 = {
