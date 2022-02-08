@@ -158,7 +158,7 @@
       when:
         - (config.platform_core_setup.enterprise_scale.enable | bool)
         - ( (config.platform_core_setup.enterprise_scale.enable | bool) and (level1_subscriptions is not skipped) ) or (config.platform_core_setup.enterprise_scale.subscription_deployment_mode == "single_reuse") or (config.platform_identity.azuread_identity_mode == "logged_in_user")
-        - (platform_subscriptions_details is defined) or (config.platform_core_setup.enterprise_scale.subscription_deployment_mode == "single_reuse")
+        - (platform_subscriptions_details is defined) or (config.platform_core_setup.enterprise_scale.subscription_deployment_mode == "single_reuse") or (config.platform_identity.azuread_identity_mode == "logged_in_user")
         - platform_subscriptions_details.identity is defined
         - platform_subscriptions_details.management is defined
 
