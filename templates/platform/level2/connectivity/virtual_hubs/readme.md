@@ -4,9 +4,7 @@
 
 Note you need to adjust the branch {{ config.gitops.caf_landingzone_branch }} to deploy the connectivity services
 
-
-{% for virtual_hub in config.tfstates.platform.virtual_hubs.keys() %}
-### {{ virtual_hub }}
+## {{ deployment }}
 
 ```bash
 # login a with a user member of the caf-platform-maintainers group
@@ -14,27 +12,25 @@ rover login -t {{ config.platform_identity.tenant_name }}
 
 cd {{ destination_base }}/landingzones
 git fetch origin
-git checkout {{ config.gitops.caf_landingzone_branch }}
+git checkout {{ resources.gitops.landingzones }}
 
 rover \
 {% if keyvaults is defined and config.platform_identity.azuread_identity_mode != "logged_in_user" %}
   --impersonate-sp-from-keyvault-url {{ keyvaults.cred_connectivity.vault_uri }} \
 {% endif %}
   -lz {{ destination_base }}/landingzones/caf_solution \
-  -var-folder {{ destination_base }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/virtual_hubs/{{ virtual_hub }} \
+  -var-folder {{ destination_path }} \
   -tfstate_subscription_id {{ config.caf_terraform.launchpad.subscription_id }} \
 {% if platform_subscriptions_details is defined %}
   -target_subscription {{ platform_subscriptions_details.connectivity.subscription_id }} \
 {% else %}
   -target_subscription {{ config.caf_terraform.launchpad.subscription_id }} \
 {% endif %}
-  -tfstate {{ config.tfstates.platform.virtual_hubs[virtual_hub].tfstate }} \
+  -tfstate {{ config.tfstates.platform.virtual_hubs[deployment].tfstate }} \
   -log-severity ERROR \
   -env {{ config.caf_terraform.launchpad.caf_environment }} \
   -level {{ level }} \
-  -p ${TF_DATA_DIR}/{{ config.tfstates.platform.virtual_hubs[virtual_hub].tfstate }}.tfplan \
+  -p ${TF_DATA_DIR}/{{ config.tfstates.platform.virtual_hubs[deployment].tfstate }}.tfplan \
   -a plan
 
-
 ```
-{% endfor %}

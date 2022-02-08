@@ -66,3 +66,11 @@ landingzone = {
   }
 {% endif %}
 }
+
+{% if deployments.deployments[subscription_key][deployment].custom_variables is defined %}
+custom_variables = {
+{% for cv_key, cv_value in deployments.deployments[subscription_key][deployment].custom_variables.items() %}
+  {{cv_key}} = "{{cv_value}}"
+{% endfor %}
+}
+{% endif %}
