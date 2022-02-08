@@ -6,6 +6,7 @@
 
 role_mapping = {
   built_in_role_mapping = {
+{% if config.platform_identity.azuread_identity_mode != 'logged_in_user' %}
     resource_groups = {
       level3 = {
         "Reader" = {
@@ -40,17 +41,25 @@ role_mapping = {
         }
       }
     }
+{% endif %}
 
     storage_accounts = {
       level3 = {
         "Storage Blob Data Contributor" = {
+{% if config.platform_identity.azuread_identity_mode != 'logged_in_user' %}
           object_ids = {
             keys = [
               "{{launchpad_azuread_groups.caf_platform_maintainers.id}}",           // caf_platform_maintainers
               "{{launchpad_azuread_groups.subscription_creation_landingzones.id}}"  // subscription_creation_landingzones
             ]
           }
+{% else %}
+          logged_in = {
+            keys = [ "user" ]
+          }
+{% endif %}
         }
+{% if config.platform_identity.azuread_identity_mode != 'logged_in_user' %}
         "Owner" = {
           object_ids = {
             keys = [
@@ -58,17 +67,25 @@ role_mapping = {
             ]
           }
         }
+{% endif %}
       }
 
       level4 = {
         "Storage Blob Data Contributor" = {
+{% if config.platform_identity.azuread_identity_mode != 'logged_in_user' %}
           object_ids = {
             keys = [
               "{{launchpad_azuread_groups.caf_platform_maintainers.id}}",           // caf_platform_maintainers
               "{{launchpad_azuread_groups.subscription_creation_landingzones.id}}"  // subscription_creation_landingzones
             ]
           }
+{% else %}
+          logged_in = {
+            keys = [ "user" ]
+          }
+{% endif %}
         }
+{% if config.platform_identity.azuread_identity_mode != 'logged_in_user' %}
         "Owner" = {
           object_ids = {
             keys = [
@@ -76,6 +93,7 @@ role_mapping = {
             ]
           }
         }
+{% endif %}
       }
 
     }

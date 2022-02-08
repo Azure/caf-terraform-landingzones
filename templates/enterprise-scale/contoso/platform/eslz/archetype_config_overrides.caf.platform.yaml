@@ -47,7 +47,7 @@ archetype_definitions:
           lz_key: management
           output_key: diagnostics
           resource_type: log_analytics
-          resource_key: central_logs_sea
+          resource_key: region1
           attribute_key: id
         enableAscForKubernetes: DeployIfNotExists
         enableAscForSql: DeployIfNotExists
@@ -65,7 +65,7 @@ archetype_definitions:
           lz_key: management
           output_key: diagnostics
           resource_type: log_analytics
-          resource_key: central_logs_sea
+          resource_key: region1
           attribute_key: id
       Deploy-LX-Arc-Monitoring:
       Deploy-Resource-Diag:
@@ -74,28 +74,28 @@ archetype_definitions:
           lz_key: management
           output_key: diagnostics
           resource_type: log_analytics
-          resource_key: central_logs_sea
+          resource_key: region1
           attribute_key: id
       Deploy-WS-Arc-Monitoring:
         logAnalytics:
           lz_key: management
           output_key: diagnostics
           resource_type: log_analytics
-          resource_key: central_logs_sea
+          resource_key: region1
           attribute_key: id
       Deploy-VM-Monitoring:
         logAnalytics_1:
           lz_key: management
           output_key: diagnostics
           resource_type: log_analytics
-          resource_key: central_logs_sea
+          resource_key: region1
           attribute_key: id
       Deploy-VMSS-Monitoring:
         logAnalytics_1:
           lz_key: management
           output_key: diagnostics
           resource_type: log_analytics
-          resource_key: central_logs_sea
+          resource_key: region1
           attribute_key: id
     policy_definitions:
       Append-AppService-httpsonly:

@@ -158,10 +158,9 @@
       import_tasks: "{{ level }}/{{ base_folder }}/ansible.yaml"
       when:
         - (config.platform_core_setup.enterprise_scale.enable | bool)
-        - ( (config.platform_core_setup.enterprise_scale.enable | bool) and (level1_subscriptions is not skipped) ) or (config.platform_core_setup.enterprise_scale.subscription_deployment_mode == "single_reuse") or (config.platform_identity.azuread_identity_mode == "logged_in_user")
-        - (platform_subscriptions_details is defined) or (config.platform_core_setup.enterprise_scale.subscription_deployment_mode == "single_reuse")
-        - platform_subscriptions_details.identity is defined or (config.platform_identity.azuread_identity_mode == "logged_in_user")
-        - platform_subscriptions_details.management is defined or (config.platform_identity.azuread_identity_mode == "logged_in_user")
+        - ( (config.platform_core_setup.enterprise_scale.enable | bool) and level1_subscriptions is not skipped ) or config.platform_core_setup.enterprise_scale.subscription_deployment_mode == "single_reuse" or config.platform_identity.azuread_identity_mode == "logged_in_user"
+        - platform_subscriptions_details.identity is defined or config.platform_identity.azuread_identity_mode == "logged_in_user" or config.platform_core_setup.enterprise_scale.subscription_deployment_mode == "single_reuse" 
+        - platform_subscriptions_details.management is defined or config.platform_identity.azuread_identity_mode == "logged_in_user" or config.platform_core_setup.enterprise_scale.subscription_deployment_mode == "single_reuse" 
 
       vars:
         base_folder: "eslz"
@@ -193,8 +192,6 @@
       vars:
         base_folder: "connectivity"
         level: "level2"
-        folders:
-          - virtual_wan
 
 ## identity
     - name: "{{ level }}-{{ base_folder }} | Identity services"

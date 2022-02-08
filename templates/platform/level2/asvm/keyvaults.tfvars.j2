@@ -12,6 +12,7 @@ keyvaults = {
     }
 
     creation_policies = {
+{% if config.platform_identity.azuread_identity_mode != 'logged_in_user' %}
       subscription_creation_landingzones = {
         object_id = "{{launchpad_azuread_groups.subscription_creation_landingzones.id}}"
         secret_permissions = ["Get"]
@@ -20,7 +21,6 @@ keyvaults = {
         object_id = "{{launchpad_azuread_groups.level0.id}}"
         secret_permissions = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
       }
-{% if config.platform_identity.azuread_identity_mode != 'logged_in_user' %}
       caf_platform_maintainers = {
         object_id  = "{{launchpad_azuread_groups.caf_platform_maintainers.id}}"
         secret_permissions = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
@@ -49,6 +49,7 @@ keyvaults = {
     }
 
     creation_policies = {
+{% if config.platform_identity.azuread_identity_mode != 'logged_in_user' %}
       subscription_creation_landingzones = {
         object_id = "{{launchpad_azuread_groups.subscription_creation_landingzones.id}}"
         secret_permissions = ["Get"]
@@ -65,7 +66,6 @@ keyvaults = {
         object_id = "{{launchpad_azuread_groups.level0.id}}"
         secret_permissions = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
       }
-{% if config.platform_identity.azuread_identity_mode != 'logged_in_user' %}
       caf_platform_maintainers = {
         object_id  = "{{launchpad_azuread_groups.caf_platform_maintainers.id}}"
         secret_permissions = ["Set", "Get", "List", "Delete", "Purge", "Recover"]

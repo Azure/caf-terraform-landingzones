@@ -1,28 +1,37 @@
 - name: Creates {{ base_folder }} directory structure
   shell: mkdir -p "{{ destination_base }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}"
 
-# - name: "{{ base_folder }} - Readme"
-#   ansible.builtin.template:
-#     src: "{{ item }}"
-#     dest: "{{ destination_base }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/{{ item | basename | regex_replace('.j2$', '') }}"
-#     force: yes
-#   with_fileglob:
-#     - "{{ level }}/{{ base_folder }}/*.md"
-
-- name: "{{ base_folder }} - Virtual WAN"
-  include_tasks: "{{ level }}/{{ base_folder }}/{{ folder_name }}/ansible.yaml"
-  loop:
-    - virtual_wan
-  loop_control:
-    loop_var: folder_name
-
-- name: Virtual Hubs
-  include_tasks: "{{ level }}/{{ base_folder }}/virtual_hub/ansible.yaml"
+- name: "[{{ level }} {{ subscription_key }}] - virtual_wans"
+  include_tasks: "{{ level }}/ansible_deployment.yaml"
   when:
-    - connectivity_virtual_hub.virtual_hubs is defined
+    - config.tfstates.platform.virtual_wans is defined
+  loop: "{{ config.tfstates.platform.virtual_wans.keys() }}"
+  loop_control:
+    loop_var: deployment
+  vars:
+    files_matching: "connectivity_virtual_wan.yaml|connectivity_virtual_wan.caf.yaml"
+    resource_folder: virtual_wans
+    display_name: Virtual Wan
+
+- name: "[{{ level }} {{ subscription_key }}] - virtual_hubs"
+  include_tasks: "{{ level }}/ansible_deployment.yaml"
+  when:
+    - config.tfstates.platform.virtual_hubs is defined
   loop: "{{ config.tfstates.platform.virtual_hubs.keys() }}"
   loop_control:
-    loop_var: virtual_hub
+    loop_var: deployment
+  vars:
+    files_matching: "connectivity_virtual_hubs.yaml|connectivity_virtual_hubs.caf.yaml"
+    resource_folder: virtual_hubs
+    display_name: Virtual Wan
+
+# - name: Virtual Hubs
+#   include_tasks: "{{ level }}/{{ base_folder }}/virtual_hub/ansible.yaml"
+#   when:
+#     - connectivity_virtual_hub.virtual_hubs is defined
+#   loop: "{{ config.tfstates.platform.virtual_hubs.keys() }}"
+#   loop_control:
+#     loop_var: virtual_hub
 
 - name: VPN Sites
   include_tasks: "{{ level }}/{{ base_folder }}/vpn_site/ansible.yaml"
