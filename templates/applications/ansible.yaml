@@ -59,9 +59,9 @@
         state: directory
 
 
-    - name: "{{ level }} | Get platform details (requires '-e config_folder_platform=path to yamls' path to be set)"
-      include_tasks: "ansible-get-platform-details.yaml"
-      when: config_folder_platform is defined
+    # - name: "{{ level }} | Get platform details (requires '-e config_folder_platform=path to yamls' path to be set)"
+    #   include_tasks: "ansible-get-platform-details.yaml"
+    #   when: config_folder_platform is defined
 
 #
 # Level 3

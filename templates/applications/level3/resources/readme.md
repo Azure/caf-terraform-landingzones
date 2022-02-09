@@ -17,7 +17,11 @@ rover \
   -lz /tf/caf/landingzones/caf_solution \
   -var-folder {{ destination_path }} \
   -tfstate_subscription_id {{ config.caf_terraform.launchpad.subscription_id }} \
+{% if subscriptions.subscriptions[asvm_folder][subscription_key].subscription_id is defined %}
+  -target_subscription {{ subscriptions.subscriptions[asvm_folder][subscription_key].subscription_id }} \
+{% else %}
   -target_subscription {{ asvm_subscriptions_details[asvm_folder].subscription_id }} \
+{% endif %}
   -tfstate {{ config.tfstates['asvm'][asvm_folder].resources.tfstate }} \
   --workspace {{ config.tfstates['asvm'][asvm_folder].workspace }} \
   -log-severity {{ config.gitops.rover_log_error }} \

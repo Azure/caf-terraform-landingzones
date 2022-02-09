@@ -253,7 +253,7 @@
 # Readme
 #
 - name: "[{{ level }}-{{ subscription_key }}] - resources - *.md"
-  when: subscription_tfstate_exists.rc == 0
+  # when: subscription_tfstate_exists.rc == 0
   ansible.builtin.template:
     src: "{{ item }}"
     dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"

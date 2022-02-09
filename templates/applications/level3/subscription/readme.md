@@ -29,7 +29,7 @@ Note you need to logout and login as a caf_maintainer group member
 rover login -t {{ config.platform_identity.tenant_name }}
 
 rover ignite \
-  --playbook /tf/caf/starter/templates/landingzones/ansible.yaml \
+  --playbook /tf/caf/landingzones/templates/applications/ansible.yaml \
   -e base_templates_folder={{ base_templates_folder }} \
   -e resource_template_folder={{ resource_template_folder }} \
   -e config_folder={{ config_folder }} \
