@@ -1,0 +1,132 @@
+caf_terraform:
+  naming_convention:
+    # When set to false use the CAF provider to generate names aligned to CAF guidance
+    # true: use the name as defined in the configuration files. You may have to iterate multiple times to prevent conflicts with Azure unique names with servides like storage account, keyvault or log analytics workspace.
+    passthrough: false
+    inherit_tags: false
+    # set: define the prefix to add to all resource names
+    # unset: if passthrough is set to false, generate a random prefix
+    prefix: cont
+    # if passthrough is set to false, add random suffix to name, up to the random_lenght value.
+    random_length: 5
+  launchpad:
+    caf_environment: <replace>
+    account_replication_type: GRS
+    regions:
+      region1:
+        # set the short form of the Azure region
+        name: southeastasia  # Use the lower-case region's name, short version with no space
+        slug: sea
+      region2:
+        name: eastasia  # Use the lower-case region's name, short version with no space
+        slug: ea
+    default_region_key: region1
+    # Define the number of CAF levels to use. Recommeded is 3 for the platform.
+    number_of_levels: 3
+    blob_versioning_enabled: true
+    container_delete_retention_policy: 7
+    delete_retention_policy: 7
+    # Subscription_id to deploy the launchpad. Note 1 existing manual subscription is required to deploy the launhchapd.
+    subscription_id: <replace>
+    subscription_name: <replace>
+    tenant_id: <replace>
+    global_tags_propagated: yes
+    tags:
+      test: <replace>
+      date: <replace>
+
+  billing_subscription_role_delegations:
+    # true: enable this deployment. The remaining attributes are required.
+    # false: disable this deployment.
+    #     azuread_user_ea_account_owner: set the upn of the user doing the manual deployment of the platform
+    #     azuread_user_ea_account_owner_object_id: if that user is already loged-in to an azure cli session you can get the object_id by running:
+    #         az ad signed-in-user show --query objectId -o tsv
+    #     The remaining attributes are ignored: [billing_account_name, enrollment_account_name]
+    enable: false
+    # Azure Active Directory User (UPN) that is Account Owner in the EA portal
+    # if enable=false, set the upn of the user doing the manual deployment
+    azuread_user_ea_account_owner: <replace>
+    # see comments above to get the object_id
+    azuread_user_ea_account_owner_object_id: <replace>
+    # Only set the following two attributes when enable=true
+    billing_account_name: <replace>
+    enrollment_account_name: <replace>
+
+# cleanup_destination - recommended to clean and recreated a clean state from template.
+configuration_folders:
+  platform:
+    # true: force the destination folder to be deleted and re-created before the files are created.
+    # false: create the target folder structure if it does not exist. On sub-sequent executions, the folder structure is reused as is.
+    cleanup_destination: true
+    # base destination folder where rover ignite will store the tfvars files. No / at the end
+    destination_base_path: /tf/caf
+    # destination relative path to destination_base_path folder where rover ignite will store the tfvars files. No / at begining and end
+    destination_relative_path: configuration/contoso/platform
+
+
+platform_core_setup:
+  enterprise_scale:
+    enable: true
+    management_group_name: <replace>
+    management_group_prefix: <replace>
+    deploy_core_landing_zones: true
+    enable_azure_subscription_vending_machine: true
+    clean_up_destination_folder: false
+    update_lib_folder: true
+    # resuse_subscriptions - do not create subscriptions through API automation. Requires the following subscription_id_overrides to be set with 4 subscriptions
+    subscription_deployment_mode: reuse_subscriptions
+    # Option only set if you've be given a delegated management group ID.
+    # Comment to deploy to deploy at the tenant root level
+    root_parent_id: lab
+    private_lib:
+      version_to_deploy: v1.1.1
+      v0.1.x:
+        caf_landingzone_branch: "2107.1"
+      v0.3.3:
+        caf_landingzone_branch: "patch.5.4.4"
+      v1.1.1:
+        caf_landingzone_branch: "aci_network"
+    subscription_id_overrides:
+      connectivity:
+        - <replace>
+      management:
+        - <replace>    # launchpad
+        - <replace>
+      identity:
+        - <replace>
+
+platform_management:
+  enable: true
+
+networking_topology:
+  deployment_option: virtual_wan
+
+platform_identity:
+  # Set the Azure Active Directory tenant name (primary domain name)
+  # has to be the default domain name (custom dns name or tenantname.onmicrosoft.com)
+  # check the AAD property
+  tenant_name: terraformdev.onmicrosoft.com
+  # only service_principal supported with rover ignite at the moment
+  azuread_identity_mode: logged_in_user
+  # UPNs you want to add in the caf_platform_maintainers Azure AD group
+  # Can use user or guest accounts
+  # Those users will have full permissions on platform.
+  # Once setup, you can remove them from here or add them from
+  # Check in Azure AD the User Principal Name attribute value. Note there is a special convention for guest accounts.
+  caf_platform_maintainers:
+    - <replace>
+  caf_platform_contributors:
+    - <replace>
+
+notifications:
+  service_health_alerts:
+    emails:
+      support1:
+        name: <replace>
+        email_address: <replace>
+  security_center_email_contact: <replace>
+
+gitops:
+  caf_landingzone_branch: "aci_network"
+  deployment_mode: interactive
+  rover_log_error: ERROR

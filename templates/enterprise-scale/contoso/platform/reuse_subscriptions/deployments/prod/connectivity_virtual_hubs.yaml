@@ -1,0 +1,53 @@
+gitops:
+  landingzones: aci_network
+
+deployments:
+  connectivity:
+    prod:
+      landingzone:
+        key:
+          platform:
+            virtual_hubs: prod
+        global_settings_key:
+          platform:
+            virtual_wans: prod
+        remote_tfstates:
+          platform:
+            virtual_wans: prod
+
+      custom_variables:
+        virtual_hub_lz_key: connectivity_virtual_hub_prod
+        # ddos_protection_plan_id:
+
+subscriptions:
+  connectivity:
+    virtual_hubs:
+      prod:
+        name: Production
+        virtual_wan:
+          lz_key: virtual_wan
+          key: global_wan
+        region_key: region1
+        hub_address_prefix: 10.101.51.0/24
+        deploy_s2s: false
+        s2s_config:
+          name: prod
+          scale_unit: 1
+        deploy_er: false
+        er_config:
+          name: prod
+          scale_units: 1
+
+    express_route_connections:
+      prod:
+        enable_er_connections: false
+        name: erc-er-1-prod
+        virtual_hub:
+          key: prod
+        circuit_peering:
+          tfstate_key: prod
+          key: private_peering
+        express_route_circuit_authorization:
+          tfstate_key: prod
+          key: vhub-prod
+

@@ -3,6 +3,7 @@
   vars:
     base_templates_folder: "{{ base_templates_folder }}/asvm"
     resource_template_folder: "{{ base_templates_folder }}/resources"
+    subscriptions: "{{ lookup('file', '{{ config_folder }}/subscriptions.yaml') | from_yaml }}"
     level: level3
 
 
@@ -59,9 +60,11 @@
         state: directory
 
 
-    # - name: "{{ level }} | Get platform details (requires '-e config_folder_platform=path to yamls' path to be set)"
-    #   include_tasks: "ansible-get-platform-details.yaml"
-    #   when: config_folder_platform is defined
+    - name: "{{ level }} | Get platform details (requires '-e config_folder_platform=path to yamls' path to be set)"
+      include_tasks: "ansible-get-platform-details.yaml"
+      when: 
+        - config.platform_core_setup.enterprise_scale.subscription_deployment_mode != 'reuse_subscriptions'
+        - config_folder_platform is defined
 
 #
 # Level 3

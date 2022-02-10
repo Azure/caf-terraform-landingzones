@@ -1,0 +1,84 @@
+subscriptions:
+  management:
+    resource_groups:
+      management:
+        name: management
+      alerts:
+        name: alerts
+
+    diagnostic_log_analytics:
+      # if you change this key you also need to change it in the ESLZ deployment
+      # eslz/archetype_config_overrides.caf.platform.yaml
+      # eslz/custom_landing_zones.caf.platform.yaml
+      region1:
+        name: logre1
+        resource_group_key: management
+
+    monitor_action_groups:
+      networking_operations:
+        action_group_name: Networking Operations
+        resource_group_key: alerts
+        shortname: netops
+        arm_role_alert:
+          contributors:
+            name: Monitoring Contributor
+            role_name: Monitoring Contributor
+            use_common_alert_schema: false
+        email_receiver:
+          noc:
+            name: email_alert_support1
+            email_address: arnaul@microsoft.com
+            use_common_alert_schema: false
+
+    service_health_alerts:
+      enable_service_health_alerts: true
+      name: alerts
+      shortname: HealthAlerts
+      resource_group_key: alerts
+      action_group_name: actiongrp
+      email_alert_settings:
+        support1:
+          name: email_alert_support1
+          email_address: arnaul@microsoft.com
+          use_common_alert_schema: false
+
+    automation_accounts:
+      account1:
+        name: automationAccount1
+        resource_group_key: management
+
+    recovery_vaults:
+      asr:
+        name: asr
+        resource_group_key: management
+        soft_delete_enabled: true
+        backup_policies:
+          vms:
+            default:
+              name: vm-default-policy
+              # Default to UTC
+              # possible values - https://jackstromberg.com/2017/01/list-of-time-zones-consumed-by-azure/
+              timezone: "SE Asia Standard Time"
+              backup:
+                frequency: Daily
+                time: "23:00"
+              retention_daily:
+                count: 7
+              retention_weekly:
+                count: 2
+                weekdays:
+                  - Sunday
+              retention_monthly:
+                count: 2
+                weeks:
+                  - First
+                weekdays:
+                  - Sunday
+              retention_yearly:
+                count: 1
+                weeks:
+                  - First
+                months:
+                  - January
+                weekdays:
+                  - Sunday

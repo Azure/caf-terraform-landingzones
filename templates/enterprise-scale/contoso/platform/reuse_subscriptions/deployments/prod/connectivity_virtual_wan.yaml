@@ -1,0 +1,29 @@
+gitops:
+  landingzones: aci_network
+
+deployments:
+  connectivity:
+    prod:
+      landingzone:
+        key:
+          platform:
+            virtual_wans: prod
+        global_settings_key:
+          platform:
+            management:
+        remote_tfstates:
+          platform:
+            management:
+
+subscriptions:
+  connectivity:
+    virtual_wans:
+      global_wan:
+        name: vwan
+        resource_group_key: global_wan
+        region_key: region1
+
+    resource_groups:
+      global_wan:
+        name: connectivity-global-wan
+        region_key: region1

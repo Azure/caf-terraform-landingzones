@@ -1,0 +1,33 @@
+gitops:
+  landingzones: aci_network
+
+deployments:
+  connectivity:
+    prod:
+      landingzone:
+        key:
+          platform:
+            azurerm_firewall_policies: prod
+        global_settings_key:
+          platform:
+            azurerm_firewalls: prod
+        remote_tfstates:
+          platform:
+            azurerm_firewalls: prod
+
+subscriptions:
+  connectivity:
+    resource_groups:
+      firewall_policies:
+        name: connectivity-prod-firewall-policies
+        region_key: region1
+
+    azurerm_firewall_policies:
+      root:
+        name: "prod-root-policy"
+        region_key: region1
+        resource_group:
+          key: firewall_policies
+        dns:
+          proxy_enabled: true
+        threat_intelligence_mode: "Alert"

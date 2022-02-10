@@ -1,0 +1,69 @@
+subscriptions:
+  identity:
+    resource_groups:
+      management:
+        name: management
+      alerts:
+        name: alerts
+
+    service_health_alerts:
+      enable_service_health_alerts: true
+      name: alerts
+      shortname: HealthAlerts
+      resource_group_key: alerts
+      action_group_name: actiongrp
+      email_alert_settings:
+        support1:
+          name: email_alert_support1
+          email_address: lalesle@microsoft.com
+          use_common_alert_schema: false
+
+    recovery_vaults:
+      asr:
+        name: asr
+        resource_group_key: management
+        soft_delete_enabled: true
+        backup_policies:
+          vms:
+            default:
+              name: vm-default-policy
+              # Default to UTC
+              # possible values - https://jackstromberg.com/2017/01/list-of-time-zones-consumed-by-azure/
+              timezone: "SE Asia Standard Time"
+              backup:
+                frequency: Daily
+                time: "23:00"
+              retention_daily:
+                count: 7
+              retention_weekly:
+                count: 2
+                weekdays:
+                  - Sunday
+              retention_monthly:
+                count: 2
+                weeks:
+                  - First
+                weekdays:
+                  - Sunday
+              retention_yearly:
+                count: 1
+                weeks:
+                  - First
+                months:
+                  - January
+                weekdays:
+                  - Sunday
+
+
+# Bring here you existing active directory security groups.
+# Those are the groups you will inject to RBAC in the Enterprise Scale deployment.
+# Note Terraform will create a new Azure AD group and add the existing as a member
+#
+# level1:
+#   azuread_groups:
+#     network_ops_team:
+#       name: netops
+#       members:
+#         # Set the list of the existing groups
+#         objects_ids:
+#          - existing_azure_ad_group_object_id

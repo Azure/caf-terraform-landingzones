@@ -7,8 +7,9 @@
       --subscription {{ config.caf_terraform.launchpad.subscription_id }} \
       --query "[?tags.caf_tfstate=='{{ config.tfstates["platform"].platform_subscriptions.level | default('level1') }}' && tags.caf_environment=='{{ config.caf_terraform.launchpad.caf_environment }}'].{name:name}[0]" -o json | jq -r .name
 
-- debug:
-    msg: "{{ subscription_tfstate_file_name.stdout }}"
+# - debug:
+#   when: lookup('file', '{{ config_folder_platform }}/subscriptions.yaml', errors='ignore')
+#     msg: "{{ subscription_tfstate_file_name.stdout }}"
 
 - name: "Download platform subscriptions tfstate details"
   register: platform_subscription_tfstate_exists
@@ -21,7 +22,8 @@
       --file "{{ job_cache_base_path }}/{{ config.tfstates["platform"].platform_subscriptions.tfstate | default('platform_subscriptions.tfstate') }}"
 
 - name: "Get platform_subscriptions details"
-  when: platform_subscription_tfstate_exists.rc == 0
+  when: 
+    - platform_subscription_tfstate_exists.rc == 0
   shell: "cat {{ job_cache_base_path }}/{{ config.tfstates[\"platform\"].platform_subscriptions.tfstate | default('platform_subscriptions.tfstate') }}"
   register: platform_subscriptions
 
