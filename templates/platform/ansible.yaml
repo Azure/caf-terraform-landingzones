@@ -36,7 +36,7 @@
 
     - include_tasks: "process_foundations.yaml"
       loop: "{{bootstrap.deployments.keys()}}"
-      when: boostrap is defined
+      when: bootstrap is defined
       loop_control:
         loop_var: stage
       vars:
