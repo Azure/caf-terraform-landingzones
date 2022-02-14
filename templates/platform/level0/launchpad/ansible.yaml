@@ -1,29 +1,29 @@
-- name: "{{deployment}} - Set variables"
-  set_fact:
-    destination_path: "{{config.configuration_folders.platform.destination_base_path}}/{{config.configuration_folders.platform.destination_relative_path}}/{{resources.relative_destination_folder}}"
+# - name: "{{deployment}} - Set variables"
+#   set_fact:
+#     destination_path: "{{config.configuration_folders.platform.destination_base_path}}/{{config.configuration_folders.platform.destination_relative_path}}/{{resources.relative_destination_folder}}"
 
-- debug:
-    msg: 
-    - "{{tfstate_object}}"
-    - "{{resources}}"
+# - debug:
+#     msg: 
+#     - "{{tfstate_object}}"
+#     - "{{resources}}"
 
-- name: "[{{resources.relative_destination_folder}}] Clean-up directory"
-  file:
-    path: "{{destination_path}}"
-    state: absent
-  when: config.configuration_folders.platform.cleanup_destination | bool
+# - name: "[{{resources.relative_destination_folder}}] Clean-up directory"
+#   file:
+#     path: "{{destination_path}}"
+#     state: absent
+#   when: config.configuration_folders.platform.cleanup_destination | bool
 
-- name: "[{{resources.relative_destination_folder}}] Creates directory"
-  file:
-    path: "{{destination_path}}"
-    state: directory
+# - name: "[{{resources.relative_destination_folder}}] Creates directory"
+#   file:
+#     path: "{{destination_path}}"
+#     state: directory
 
 
-- name: "{{deployment}} - process subscription resources"
-  include_tasks: "process_subscription_resources.yaml"
-  loop: "{{resources.subscriptions.keys()}}"
-  loop_control:
-    loop_var: subscription_key
+# - name: "{{deployment}} - process subscription resources"
+#   include_tasks: "process_subscription_resources.yaml"
+#   loop: "{{resources.subscriptions.keys()}}"
+#   loop_control:
+#     loop_var: subscription_key
 
 # #
 # # container_groups
