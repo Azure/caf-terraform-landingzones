@@ -3,7 +3,7 @@ gitops:
 
 subscriptions:
 
-  it_dna_orion_dev:
+  orion_dev:
 
     resource_groups:
       rg:
@@ -458,8 +458,8 @@ subscriptions:
 
       built_in_role_mapping:
         subscriptions:
-          it_dna_orion_dev:
-            lz_key: it_dna_orion_dev_subscriptions
+          orion_dev:
+            lz_key: orion_dev_subscriptions
             Contributor:
               azuread_service_principals:
                 keys:
@@ -486,21 +486,21 @@ subscriptions:
                 keys:
                   - sp_LZContributors
         storage_containers:
-          it_dna_orion_prod_level3:
-            lz_key: it_dna_orion_storage_containers
+          orion_prod_level3:
+            lz_key: orion_storage_containers
             Storage Blob Data Contributor:
               azuread_service_principals:
                 keys:
                   - sp_LZContributors
-          it_dna_orion_dev_level4:
-            lz_key: it_dna_orion_storage_containers
+          orion_dev_level4:
+            lz_key: orion_storage_containers
             Storage Blob Data Contributor:
               azuread_service_principals:
                 keys:
                   - sp_LZContributors
 
 
-  it_dna_orion_prod:
+  orion_prod:
 
     resource_groups:
       rg:
@@ -972,8 +972,8 @@ subscriptions:
 
       built_in_role_mapping:
         subscriptions:
-          it_dna_orion_prod:
-            lz_key: it_dna_orion_prod_subscriptions
+          orion_prod:
+            lz_key: orion_prod_subscriptions
             Contributor:
               azuread_service_principals:
                 keys:
@@ -1000,14 +1000,14 @@ subscriptions:
                 keys:
                   - sp_LZContributors
         storage_containers:
-          it_dna_orion_prod_level3:
-            lz_key: it_dna_orion_storage_containers
+          orion_prod_level3:
+            lz_key: orion_storage_containers
             Storage Blob Data Contributor:
               azuread_service_principals:
                 keys:
                   - sp_LZContributors
-          it_dna_orion_prod_level4:
-            lz_key: it_dna_orion_storage_containers
+          orion_prod_level4:
+            lz_key: orion_storage_containers
             Storage Blob Data Contributor:
               azuread_service_principals:
                 keys:

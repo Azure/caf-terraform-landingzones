@@ -1,0 +1,33 @@
+
+- debug:
+    msg: "tfstate {{tfstate}} - {{tfstates[tfstate]}}"
+
+
+- name: "{{tfstates[tfstate]}} - Set env"
+  set_fact:
+    env: "{{tfstates[tfstate].values() | first | default()}}"
+    verbosity: 2
+
+
+- name: "{{tfstates[tfstate]}} - Set tfstate_object"
+  set_fact:
+    tfstate_object: '{{config.tfstates.platform[tfstates[tfstate].keys() | first] if env == "" else config.tfstates.platform[tfstates[tfstate].keys() | first][env]}}'
+    verbosity: 2
+
+- name: "{{tfstates[tfstate]}} - Set config_file"
+  set_fact:
+    config_file: "{{config_folder + '/' + tfstate_object.config_file }}"
+
+- debug:
+    msg: '{{ config_file }}'
+    verbosity: 2
+
+- name: "Including tasks process_tfstate.yaml"
+  include_tasks: "process_tfstate.yaml"
+  loop: "{{tfstates[tfstate].keys()}}"
+  loop_control:
+    loop_var: deployment
+  vars:
+    key: "{{tfstates[tfstate]}}"
+    resources: "{{ lookup('file', '{{ config_file }}') | from_yaml }}"
+    deployments: "{{ lookup('file', '{{ config_file }}') | from_yaml }}"

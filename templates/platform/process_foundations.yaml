@@ -1,0 +1,10 @@
+
+- debug:
+    msg: "stage {{stage}} - {{bootstrap[step][stage]}}"
+
+- include_tasks: "process_stages.yaml"
+  loop: "{{bootstrap[step][stage].keys()}}"
+  loop_control:
+    loop_var: tfstate
+  vars:
+    tfstates: "{{bootstrap[step][stage]}}"

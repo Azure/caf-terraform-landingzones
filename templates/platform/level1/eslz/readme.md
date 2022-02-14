@@ -18,7 +18,7 @@ rover \
   --impersonate-sp-from-keyvault-url {{ keyvaults.cred_eslz.vault_uri }} \
 {% endif %}
   -lz {{ destination_base }}/landingzones/caf_solution/add-ons/caf_eslz \
-  -var-folder {{ destination_base }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }} \
+  -var-folder {{ destination_path }} \
   -tfstate_subscription_id {{ config.caf_terraform.launchpad.subscription_id }} \
   -tfstate {{ config.tfstates.platform.eslz.tfstate }} \
   -log-severity ERROR \

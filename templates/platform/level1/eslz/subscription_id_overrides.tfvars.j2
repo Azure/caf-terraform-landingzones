@@ -1,7 +1,7 @@
 subscription_id_overrides = {
 {% if config.platform_core_setup.enterprise_scale.subscription_id_overrides is defined %}
 {% if config.platform_core_setup.enterprise_scale.subscription_id_overrides.root is defined %}
-  root = {{ config.platform_core_setup.enterprise_scale.subscription_id_overrides.root | replace('None','[]') | replace('\'','\"')  }}
+  root = {{ config.platform_core_setup.enterprise_scale.subscription_id_overrides.root | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"') }}
 {% else %}
   root = []
 {% endif %}
@@ -14,37 +14,37 @@ subscription_id_overrides = {
 {% endif %}
 {% if config.platform_core_setup.enterprise_scale.subscription_id_overrides is defined %}
 {% if config.platform_core_setup.enterprise_scale.subscription_id_overrides.decommissioned is defined %}
-  decommissioned           = {{ config.platform_core_setup.enterprise_scale.subscription_id_overrides.decommissioned | replace('None','[]') | replace('\'','\"')  }}
+  decommissioned           = {{ config.platform_core_setup.enterprise_scale.subscription_id_overrides.decommissioned | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"') }}
 {% else %}
   decommissioned = []
 {% endif %}
 {% if config.platform_core_setup.enterprise_scale.subscription_id_overrides.sandboxes is defined %}
-  sandboxes           = {{ config.platform_core_setup.enterprise_scale.subscription_id_overrides.sandboxes | replace('None','[]') | replace('\'','\"')  }}
+  sandboxes           = {{ config.platform_core_setup.enterprise_scale.subscription_id_overrides.sandboxes | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"') }}
 {% else %}
   sandboxes = []
 {% endif %}
 {% if config.platform_core_setup.enterprise_scale.subscription_id_overrides['landing-zones'] is defined %}
-  landing-zones           = {{ config.platform_core_setup.enterprise_scale.subscription_id_overrides['landing-zones'] | replace('None','[]') | replace('\'','\"')  }}
+  landing-zones           = {{ config.platform_core_setup.enterprise_scale.subscription_id_overrides['landing-zones'] | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"') }}
 {% else %}
   landing-zones = []
 {% endif %}
 {% if config.platform_core_setup.enterprise_scale.subscription_id_overrides.platform is defined %}
-  platform           = {{ config.platform_core_setup.enterprise_scale.subscription_id_overrides.platform | replace('None','[]') | replace('\'','\"')  }}
+  platform           = {{ config.platform_core_setup.enterprise_scale.subscription_id_overrides.platform | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"') }}
 {% else %}
   platform = []
 {% endif %}
 {% if config.platform_core_setup.enterprise_scale.subscription_id_overrides.connectivity is defined %}
-  connectivity           = {{ config.platform_core_setup.enterprise_scale.subscription_id_overrides.connectivity | replace('None','[]') | replace('\'','\"')  }}
+  connectivity           = {{ config.platform_core_setup.enterprise_scale.subscription_id_overrides.connectivity | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"') }}
 {% else %}
   connectivity = []
 {% endif %}
 {% if config.platform_core_setup.enterprise_scale.subscription_id_overrides.management is defined %}
-  management           = {{ config.platform_core_setup.enterprise_scale.subscription_id_overrides.management | replace('None','[]') | replace('\'','\"')  }}
+  management           = {{ config.platform_core_setup.enterprise_scale.subscription_id_overrides.management | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"') }}
 {% else %}
   management = []
 {% endif %}
 {% if config.platform_core_setup.enterprise_scale.subscription_id_overrides.identity is defined %}
-  identity           = {{ config.platform_core_setup.enterprise_scale.subscription_id_overrides.identity | replace('None','[]') | replace('\'','\"')  }}
+  identity           = {{ config.platform_core_setup.enterprise_scale.subscription_id_overrides.identity | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"') }}
 {% else %}
   identity = []
 {% endif %}

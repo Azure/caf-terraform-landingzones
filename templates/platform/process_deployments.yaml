@@ -1,0 +1,21 @@
+
+- debug:
+    msg: "file {{file_to_process.path}}"
+
+- set_fact:
+    resources: "{{ lookup('file', '{{ file_to_process.path }}') | from_yaml }}"
+
+- set_fact:
+    env: "{{resources.deployments.tfstate.values() | first | default('')}}"
+
+- name: "{{tfstates[tfstate]}} - Set tfstate_object"
+  set_fact:
+    tfstate_object: '{{config.tfstates.platform[resources.deployments.tfstate.keys() | first] if env == "" else config.tfstates.platform[resources.deployments.tfstate.keys() | first][env]}}'
+
+- name: "Including tasks process_tfstate.yaml"
+  include_tasks: "process_tfstate.yaml"
+  loop: ["{{resources.deployments.tfstate.keys() | first }}"]
+  loop_control:
+    loop_var: deployment
+  vars:
+    config_file: "{{ file_to_process.path }}"

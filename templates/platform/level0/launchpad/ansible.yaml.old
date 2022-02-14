@@ -1,0 +1,242 @@
+- name: "{{deployment}} - Set variables"
+  set_fact:
+    destination_path: "{{config.configuration_folders.platform.destination_base_path}}/{{config.configuration_folders.platform.destination_relative_path}}/{{resources.relative_destination_folder}}"
+
+- debug:
+    msg: 
+    - "{{tfstate_object}}"
+    - "{{resources}}"
+
+- name: "[{{resources.relative_destination_folder}}] Clean-up directory"
+  file:
+    path: "{{destination_path}}"
+    state: absent
+  when: config.configuration_folders.platform.cleanup_destination | bool
+
+- name: "[{{resources.relative_destination_folder}}] Creates directory"
+  file:
+    path: "{{destination_path}}"
+    state: directory
+
+
+- name: "{{deployment}} - process subscription resources"
+  include_tasks: "process_subscription_resources.yaml"
+  loop: "{{resources.subscriptions.keys()}}"
+  loop_control:
+    loop_var: subscription_key
+
+# #
+# # container_groups
+# #
+# - name: "[{{resources.relative_destination_folder}}] - resources - container_groups"
+#   when:
+#     - resources.subscriptions[resources.subscriptions.keys()].container_groups is defined
+#   ansible.builtin.template:
+#     src: "{{ item }}"
+#     dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"
+#     force: yes
+#   with_fileglob:
+#     - "{{ resource_template_folder }}/container_groups.tfvars.j2"
+
+# #
+# # network_security_group_definition
+# #
+# - name: "[{{resources.relative_destination_folder}}] - resources - network_security_group_definition"
+#   when:
+#     - resources.subscriptions[resources.subscriptions.keys()].network_security_group_definition is defined
+#   ansible.builtin.template:
+#     src: "{{ item }}"
+#     dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"
+#     force: yes
+#   with_fileglob:
+#     - "{{ resource_template_folder }}/network_security_group_definition.tfvars.j2"
+
+
+# #
+# # resource_groups
+# #
+# - name: "[{{resources.relative_destination_folder}}] - resources - resource_groups"
+#   when:
+#     - resources.subscriptions[resources.subscriptions.keys()].resource_groups is defined
+#   ansible.builtin.template:
+#     src: "{{ item }}"
+#     dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"
+#     force: yes
+#   with_fileglob:
+#     - "{{ resource_template_folder }}/resource_groups.tfvars.j2"
+
+# #
+# # virtual_networks
+# #
+# - name: "[{{resources.relative_destination_folder}}] - resources - virtual_networks"
+#   when:
+#     - resources.subscriptions[resources.subscriptions.keys()].virtual_networks is defined
+#   ansible.builtin.template:
+#     src: "{{ item }}"
+#     dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"
+#     force: yes
+#   with_fileglob:
+#     - "{{ resource_template_folder }}/virtual_networks.tfvars.j2"
+
+
+# #
+# # network_profiles
+# #
+# - name: "[{{resources.relative_destination_folder}}] - resources - network_profiles"
+#   when:
+#     - resources.subscriptions[resources.subscriptions.keys()].network_profiles is defined
+#   ansible.builtin.template:
+#     src: "{{ item }}"
+#     dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"
+#     force: yes
+#   with_fileglob:
+#     - "{{ resource_template_folder }}/network_profiles.tfvars.j2"
+
+
+# - name: "[{{resources.relative_destination_folder}}] launchpad"
+#   ansible.builtin.template:
+#     src: "{{ level }}/{{ base_folder }}/{{ item }}.tfvars.j2"
+#     dest: "{{destination_path}}/{{ item }}.tfvars"
+#     force: yes
+#   loop:
+#     - dynamic_secrets
+#     - global_settings
+#     - keyvaults
+#     - landingzone
+#     - role_mappings
+#     - storage_accounts
+
+# - name: "[{{resources.relative_destination_folder}}] Clean-up identity files"
+#   file:
+#     path: "{{destination_path}}/{{ item }}.tfvars"
+#     state: absent
+#   when: config.platform_identity.azuread_identity_mode == "logged_in_user"
+#   loop:
+#     - azuread_api_permissions
+#     - azuread_applications
+#     - azuread_group_members
+#     - azuread_groups
+#     - azuread_roles
+#     - keyvault_policies
+#     - service_principals
+
+# - name: "[{{resources.relative_destination_folder}}] lauchpad - identity - service_principal"
+#   ansible.builtin.template:
+#     src: "{{ level }}/{{ base_folder }}/{{ item }}.tfvars.j2"
+#     dest: "{{destination_path}}/{{ item }}.tfvars"
+#     force: yes
+#   when: config.platform_identity.azuread_identity_mode != 'logged_in_user'
+#   loop:
+#     - azuread_api_permissions
+#     - azuread_applications
+#     - azuread_group_members
+#     - azuread_groups
+#     - azuread_roles
+#     - keyvault_policies
+#     - service_principals
+
+# - name: "[{{resources.relative_destination_folder}}] Deploy the launchpad"
+#   when: boostrap_launchpad | bool | default(false)
+#   shell: |
+#     /tf/rover/rover.sh \
+#       -lz /tf/caf/landingzones/caf_launchpad \
+#       -var-folder {{destination_path}} \
+#       -tfstate_subscription_id {{ config.caf_terraform.launchpad.subscription_id }} \
+#       -target_subscription {{ config.caf_terraform.launchpad.subscription_id }} \
+#       -tfstate {{ config.tfstates.platform.launchpad.tfstate }} \
+#       -log-severity {{ config.gitops.rover_log_error }} \
+#       -launchpad \
+#       -env {{ config.caf_terraform.launchpad.caf_environment }} \
+#       -level {{ level }} \
+#       -a apply
+
+- name: "[{{resources.relative_destination_folder}}] Get tfstate account name"
+  register: launchpad_storage_account
+  shell: |
+    az storage account list \
+      --subscription {{ config.caf_terraform.launchpad.subscription_id }} \
+      --query "[?tags.caf_tfstate=='{{ config.tfstates.platform.launchpad.level }}' && tags.caf_environment=='{{ config.caf_terraform.launchpad.caf_environment }}'].{name:name}[0]" -o json | jq -r .name
+
+- debug:
+    msg: "{{launchpad_storage_account}}"
+
+- name: "[{{resources.relative_destination_folder}}] Get launchpad tfstate details"
+  register: launchpad_tfstate_exists
+  ignore_errors: true
+  shell: |
+    az storage blob download \
+      --name "{{ config.tfstates.platform.launchpad.tfstate }}" \
+      --account-name "{{ launchpad_storage_account.stdout | default('') }}" \
+      --container-name "{{ config.tfstates.platform.launchpad.workspace | default('tfstate') }}" \
+      --auth-mode "login" \
+      --file "~/.terraform.cache/launchpad/{{ config.tfstates.platform.launchpad.tfstate }}"
+
+- name: "[{{resources.relative_destination_folder}}] Get subscription_creation_landingzones details"
+  when:
+    - launchpad_tfstate_exists.rc == 0
+    - config.platform_core_setup.enterprise_scale.enable_azure_subscription_vending_machine
+  shell: "cat ~/.terraform.cache/launchpad/{{ config.tfstates.platform.launchpad.tfstate }}"
+  register: launchpad_tfstate
+
+- name: "[{{resources.relative_destination_folder}}] Get launchpad json data"
+  when:
+    - launchpad_tfstate_exists.rc == 0
+    - config.platform_core_setup.enterprise_scale.enable_azure_subscription_vending_machine
+  set_fact:
+    scljsondata: "{{ launchpad_tfstate.stdout | from_json }}"
+
+- name: "[{{resources.relative_destination_folder}}] set launchpad_azuread_groups"
+  when:
+    - launchpad_tfstate_exists.rc == 0
+    - config.platform_core_setup.enterprise_scale.enable_azure_subscription_vending_machine
+  set_fact:
+    launchpad_azuread_groups: "{{ scljsondata | json_query(path) }}"
+  vars:
+    path: 'outputs.objects.value.launchpad.azuread_groups'
+
+- name: "[{{resources.relative_destination_folder}}] Get credentials tfstate details"
+  register: credentials_tfstate_exists
+  ignore_errors: true
+  shell: |
+    az storage blob download \
+      --name "{{ config.tfstates.platform.launchpad_credentials.tfstate }}" \
+      --account-name "{{ launchpad_storage_account.stdout }}" \
+      --container-name "{{ config.tfstates.platform.launchpad.workspace | default('tfstate') }}" \
+      --auth-mode "login" \
+      --file "~/.terraform.cache/launchpad/{{ config.tfstates.platform.launchpad_credentials.tfstate }}"
+
+- name: "[{{resources.relative_destination_folder}}] Get launchpad_credentials details"
+  when: credentials_tfstate_exists.rc == 0
+  shell: "cat ~/.terraform.cache/launchpad/{{ config.tfstates.platform.launchpad_credentials.tfstate }}"
+  register: launchpad_credentials
+
+- name: "[{{resources.relative_destination_folder}}] Get launchpad_credentials json data"
+  when: credentials_tfstate_exists.rc == 0
+  set_fact:
+    credjsondata: "{{ launchpad_credentials.stdout | from_json }}"
+
+- name: "[{{resources.relative_destination_folder}}] set keyvaults"
+  when: credentials_tfstate_exists.rc == 0
+  set_fact:
+    keyvaults: "{{ credjsondata | json_query(path) }}"
+  vars:
+    path: 'outputs.objects.value.launchpad_credentials_rotation.keyvaults'
+
+- name: "[{{resources.relative_destination_folder}}] cleanup"
+  when: credentials_tfstate_exists.rc == 0
+  file:
+    path: "~/.terraform.cache/launchpad/{{ config.tfstates.platform.launchpad_credentials.tfstate }}"
+    state: absent
+
+- name: "[{{resources.relative_destination_folder}}] cleanup"
+  when: launchpad_tfstate_exists.rc == 0
+  file:
+    path: "~/.terraform.cache/launchpad/{{ config.tfstates.platform.launchpad.tfstate }}"
+    state: absent
+
+# Update readme
+# - name: "[{{resources.relative_destination_folder}}] launchpad - readme"
+#   ansible.builtin.template:
+#     src: "{{ level }}/{{ base_folder }}/readme.md"
+#     dest: "{{destination_path}}/readme.md"
+#     force: yes

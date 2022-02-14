@@ -1,3 +1,4 @@
+{% if config.platform_identity.enable_azuread_groups %}
 azuread_groups = {
   caf_platform_maintainers = {
     name                   = "caf-platform-maintainers"
@@ -95,3 +96,6 @@ azuread_groups = {
   }
 
 }
+{% else %}
+# Azure AD Groups in config.platform_identity.enable_azuread_groups is not set to true
+{% endif %}
