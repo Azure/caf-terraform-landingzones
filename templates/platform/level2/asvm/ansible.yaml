@@ -24,6 +24,16 @@
 #     path: "{{ destination_base }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}"
 #     state: directory
 
+- name: "[{{resources.relative_destination_folder}}] Get tfstate account name"
+  register: launchpad_storage_account
+  shell: |
+    az storage account list \
+      --subscription {{ config.caf_terraform.launchpad.subscription_id }} \
+      --query "[?tags.caf_tfstate=='{{ config.tfstates.platform.launchpad.level }}' && tags.caf_environment=='{{ config.caf_terraform.launchpad.caf_environment }}'].{name:name}[0]" -o json | jq -r .name
+
+- debug:
+    msg: "{{launchpad_storage_account}}"
+
 - name: "[{{deployment}} - {{resources.relative_destination_folder}}] - Get launchpad tfstate details"
   register: launchpad_tfstate_exists
   ignore_errors: true
