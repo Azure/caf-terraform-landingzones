@@ -1,4 +1,4 @@
-library_path                    = "../../../../{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/lib"
+library_path                    = "../../../../{{ config.configuration_folders.platform.destination_relative_path }}/{{ tfstate_object.sub_template_folder }}/lib"
 {% if config.platform_core_setup.enterprise_scale.root_parent_id is defined %}
 root_parent_id                  = "{{ config.platform_core_setup.enterprise_scale.root_parent_id }}"
 {% endif %}

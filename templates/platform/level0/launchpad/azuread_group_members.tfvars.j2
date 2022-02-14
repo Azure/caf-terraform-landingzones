@@ -1,3 +1,4 @@
+{% if config.platform_identity.enable_azuread_groups %}
 azuread_groups_membership = {
   caf_platform_maintainers = {
 {% if config.platform_identity.azuread_identity_mode == 'logged_in_user' %}
@@ -32,3 +33,6 @@ azuread_groups_membership = {
     }
   }
 }
+{% else %}
+# Azure AD Groups in config.platform_identity.enable_azuread_groups is not set to true
+{% endif %}

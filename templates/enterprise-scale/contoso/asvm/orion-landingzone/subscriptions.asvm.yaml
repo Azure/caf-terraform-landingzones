@@ -2,12 +2,12 @@ gitops:
   landingzones: aci_network
 
 subscriptions:
-  it_dna_orion_dev:
-    it_dna_orion_dev:
+  orion_dev:
+    orion_dev:
       name: orion-dev
       management_group_suffix: non-prod
 
-  it_dna_orion_prod:
-    it_dna_orion_prod:
+  orion_prod:
+    orion_prod:
       name: orion-prod
       management_group_suffix: prod

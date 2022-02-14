@@ -1,0 +1,29 @@
+# ### orion ###
+tfstates:
+  asvm:
+    asvm_storage_containers:
+      subscriptions:
+        lz_key_name: orion_storage_containers
+        tfstate: orion_storage_containers.tfstate
+      workspace: tfstate
+      level: level3
+
+    orion_dev:
+      subscriptions:
+        lz_key_name: orion_dev_subscriptions
+        tfstate: orion_dev_subscriptions.tfstate
+      resources:
+        lz_key_name: orion_dev_resources
+        tfstate: orion_dev_resources.tfstate
+      workspace: orion-dev
+      level: level3
+
+    orion_prod:
+      subscriptions:
+        lz_key_name: orion_prod_subscriptions
+        tfstate: orion_prod_subscriptions.tfstate
+      resources:
+        lz_key_name: orion_prod_resources
+        tfstate: orion_prod_resources.tfstate
+      workspace: orion-prod
+      level: level3
