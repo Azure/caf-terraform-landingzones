@@ -57,4 +57,5 @@ module "vmss_extension_keyvault_extension" {
   virtual_machine_scale_set_id = module.solution.virtual_machine_scale_sets[each.key].id
   extension                    = each.value.virtual_machine_scale_set_extensions.microsoft_azure_keyvault
   extension_name               = "microsoft_azure_keyvault"
+  managed_identities           = merge(tomap({ (var.landingzone.key) = module.solution.managed_identities }), try(local.remote.managed_identities, {}))
 }
