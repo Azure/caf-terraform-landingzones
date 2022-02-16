@@ -1,0 +1,18 @@
+#
+# Set the workflow to bootstrap the Azure platform landing zones
+#
+deployments:
+  0:
+    0:
+      launchpad:
+    1:
+      launchpad_credentials:
+    # 2:
+    #   subscriptions:
+    3:
+      identity:
+    4:
+      management:
+    5:
+      eslz:
+

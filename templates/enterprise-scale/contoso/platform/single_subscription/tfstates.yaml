@@ -1,0 +1,144 @@
+tfstates:
+  platform:
+    ### Level0 ###
+    launchpad:
+      lz_key_name: launchpad
+      tfstate: caf_launchpad.tfstate
+      workspace: tfstate
+      level: level0
+      identity_aad_key: cred_level0
+      config_file: launchpad.yaml
+      sub_template_folder: level0/launchpad
+      yaml: level0/launchpad/ansible.yaml
+    launchpad_credentials:
+      lz_key_name: launchpad_credentials_rotation
+      tfstate: launchpad_credentials_rotation.tfstate
+      level: level0
+      identity_aad_key: cred_identity
+      config_file: credentials.yaml
+      sub_template_folder: level0/credentials
+
+    ### Level1 ###
+    management:
+      lz_key_name: management
+      tfstate: management.tfstate
+      level: level1
+      identity_aad_key: cred_management
+      config_file: management.yaml
+    identity:
+      lz_key_name: identity
+      tfstate: identity.tfstate
+      level: level1
+      identity_aad_key: cred_identity
+      config_file: identity.yaml
+      sub_template_folder: level1/identity
+    eslz:
+      lz_key_name: eslz
+      tfstate: eslz.tfstate
+      level: level1
+      identity_aad_key: cred_eslz
+      config_file: eslz/eslz.yaml
+      sub_template_folder: level1/eslz
+      yaml: level1/eslz/ansible.yaml
+    platform_subscriptions:
+      lz_key_name: platform_subscriptions
+      tfstate: platform_subscriptions.tfstate
+      level: level1
+      identity_aad_key: cred_subscription_creation_platform
+      config_file: subscriptions.yaml
+      sub_template_folder: level1/subscriptions
+
+    ## Level2 ##
+    identity_level2:
+      prod:
+        lz_key_name: identity_level2
+        tfstate: identity_level2.tfstate
+        level: level2
+        identity_aad_key: cred_identity
+      non_prod:
+        lz_key_name: identity_level2
+        tfstate: identity_level2_non_prod.tfstate
+        level: level2
+        identity_aad_key: cred_identity
+
+    identity_level2_aadds:
+      prod:
+        lz_key_name: identity_level2_aadds
+        tfstate: identity_level2_aadds.tfstate
+        level: 
+        identity_aad_key: cred_identity
+
+    virtual_wans:
+      prod:
+        lz_key_name: connectivity_virtual_wan
+        tfstate: connectivity_virtual_wan.tfstate
+        level: level2
+        identity_aad_key: cred_connectivity
+
+    virtual_hubs:
+      prod:
+        lz_key_name: connectivity_virtual_hub_prod
+        tfstate: connectivity_virtual_hub_prod.tfstate
+        workspace: tfstate
+        level: level2
+        identity_aad_key: cred_connectivity
+      non_prod:
+        lz_key_name: connectivity_virtual_hub_non_prod
+        tfstate: connectivity_virtual_hub_non_prod.tfstate
+        workspace: tfstate
+        level: level2
+        identity_aad_key: cred_connectivity
+
+    azurerm_firewalls:
+      prod:
+        lz_key_name: connectivity_firewalls_prod
+        tfstate: connectivity_firewalls_prod.tfstate
+        level: level2
+        identity_aad_key: cred_connectivity
+      non_prod:
+        lz_key_name: connectivity_firewalls_non_prod
+        tfstate: connectivity_firewalls_non_prod.tfstate
+        level: level2
+        identity_aad_key: cred_connectivity
+
+    azurerm_firewall_policies:
+      prod:
+        lz_key_name: connectivity_firewall_policies_prod
+        tfstate: connectivity_firewall_policies_prod.tfstate
+        level: level2
+        identity_aad_key: cred_connectivity
+      non_prod:
+        lz_key_name: connectivity_firewall_policies_non_prod
+        tfstate: connectivity_firewall_policies_non_prod.tfstate
+        level: level2
+        identity_aad_key: cred_connectivity
+
+    private_dns:
+      prod:
+        lz_key_name: connectivity_private_dns_prod
+        tfstate: connectivity_private_dns_prod.tfstate
+        level: level2
+        identity_aad_key: cred_connectivity
+      non_prod:
+        lz_key_name: connectivity_private_dns_non_prod
+        tfstate: connectivity_private_dns_non_prod.tfstate
+        level: level2
+        identity_aad_key: cred_connectivity
+
+    vpn_sites:
+      prod:
+        lz_key_name: connectivity_vpn_sites_prod
+        tfstate: connectivity_vpn_sites_prod.tfstate
+        sub_template_folder: level2/connectivity
+        level: level2
+        identity_aad_key: cred_connectivity
+
+    asvm:
+      lz_key_name: asvm
+      tfstate: asvm_subscription_vending_machine.tfstate
+      level: level2
+      identity_aad_key: cred_level0
+      sub_template_folder: level2/asvm
+      yaml: level2/asvm/ansible.yaml
+      rover_ignite_dependencies:
+        - launchpad

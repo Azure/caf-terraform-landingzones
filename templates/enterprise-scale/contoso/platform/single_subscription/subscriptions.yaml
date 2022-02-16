@@ -1,0 +1,22 @@
+gitops:
+  caf_landingzone_branch: aci_network
+
+relative_destination_folder: level1/subscriptions
+
+deployments:
+  landingzone:
+    tfstate:
+      platform:
+        subscriptions:
+
+subscriptions:
+  launchpad:
+    subscriptions:
+      launchpad:
+        subscription_id: <replace>
+      identity:
+        subscription_id: <replace>
+      connectivity:
+        subscription_id: <replace>
+      management:
+        subscription_id: <replace>
