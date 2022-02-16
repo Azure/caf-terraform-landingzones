@@ -32,14 +32,14 @@ caf_terraform:
         name: eastasia  # Use the lower-case region's name, short version with no space
         slug: ea
     default_region_key: region1
-    # Define the number of CAF levels to use. Recommeded is 3 for the platform.
+    # Define the number of CAF levels to use. Recommended is 3 for the platform.
     # number_of_levels: 3
     # blob_versioning_enabled: true
     # container_delete_retention_policy: 7
     # delete_retention_policy: 7
     # Subscription_id to deploy the launchpad. Note 1 existing manual subscription is required to deploy the launhchapd.
     subscription_id: <replace>
-    subscription_name: LLE-Resource Sub1
+    subscription_name: <replace>
     tenant_id: <replace>
     global_tags_propagated: yes
     tags:
