@@ -4,15 +4,15 @@
 # login a with a user member of the caf-platform-maintainers group
 rover login -t {{ config.platform_identity.tenant_name }}
 
-cd {{ destination_base }}/landingzones
+cd {{ landingzones_folder }}
 git fetch origin
-git checkout {{ resources.gitops.landingzones }}
+git checkout {{ resources.gitops.caf_landingzone_branch }}
 
 rover \
 {% if keyvaults is defined and config.platform_identity.azuread_identity_mode != "logged_in_user" %}
-  --impersonate-sp-from-keyvault-url {{ keyvaults.cred_level0.vault_uri }} \
+  --impersonate-sp-from-keyvault-url {{ keyvaults[tfstate_object.identity_aad_key].vault_uri }} \
 {% endif %}
-  -lz {{ destination_base }}/landingzones/caf_solution \
+  -lz {{ landingzones_folder }}/caf_solution \
   -var-folder {{ destination_path }} \
   -tfstate_subscription_id {{ config.caf_terraform.launchpad.subscription_id }} \
   -target_subscription {{ config.caf_terraform.launchpad.subscription_id }} \

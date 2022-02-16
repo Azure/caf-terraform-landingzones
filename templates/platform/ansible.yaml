@@ -11,24 +11,40 @@
         ignore_unknown_extensions: true
         files_matching: "bootstrap.yaml"
 
+    - name: "Load variable for landingzones config"
+      include_vars:
+        name: asvm_config__to_merge
+        dir: "{{config_folder}}"
+        depth: 1
+        ignore_unknown_extensions: true
+        files_matching: "config.asvm.yaml|tfstates.asvm.yaml|deployments.yaml"
+
     - name: "Load variable for platform config"
       include_vars:
-        name: config
-        dir: "{{config_folder}}"
+        name: platform_config__to_merge
+        dir: "{{config_folder_platform | default(config_folder)}}"
         depth: 1
         ignore_unknown_extensions: true
         files_matching: "caf.platform.yaml|tfstates.caf.yaml|tfstates.yaml|subscriptions.yaml"
 
+    - name: Merge asvm and platform variables
+      merge_vars:
+        suffix_to_merge: config__to_merge
+        merged_var_name: config
+        expected_type: 'dict'
+        recursive_dict_merge: True
 
-    - name: "{{deployment}} - Set tfstate_object"
+    - name: "Get latest cache folder"
       set_fact:
+        job_cache_base_path: "/home/vscode/.terraform.cache"
         destination_base: '{{config.configuration_folders.platform.destination_base_path}}'
+        config: "{{ ansible_facts.config }}"
 
     - debug:
         msg: 
         - "{{bootstrap}}"
         - "{{config}}"
-        verbosity: 2
+        # verbosity: 2
 
 #
 # Generate the foundation services
@@ -36,7 +52,7 @@
 
     - include_tasks: "process_foundations.yaml"
       loop: "{{bootstrap.deployments.keys()}}"
-      when: bootstrap is defined
+      when: bootstrap != {}
       loop_control:
         loop_var: stage
       vars:

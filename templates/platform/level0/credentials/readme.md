@@ -8,15 +8,14 @@ rover login -t {{ config.platform_identity.tenant_name }}
 
 rover \
 {% if ((config.platform_identity.azuread_identity_mode != "logged_in_user") and (credentials_tfstate_exists.rc == 0)) %}
-  --impersonate-sp-from-keyvault-url {{ keyvaults.cred_identity.vault_uri }} \
+  --impersonate-sp-from-keyvault-url {{ keyvaults[tfstate_object.identity_aad_key].vault_uri }} \
 {% endif %}
-  -lz /tf/caf/landingzones/caf_solution \
+  -lz {{ landingzones_folder }}/caf_solution \
   -var-folder {{ destination_path }} \
   -tfstate_subscription_id {{ config.caf_terraform.launchpad.subscription_id }} \
   -target_subscription {{ config.caf_terraform.launchpad.subscription_id }} \
   -tfstate {{ config.tfstates.platform.launchpad_credentials.tfstate }} \
   -launchpad \
-  -log-severity {{ config.gitops.rover_log_error }} \
   -env {{ config.caf_terraform.launchpad.caf_environment }} \
   -level {{ level }} \
   -p ${TF_DATA_DIR}/{{ config.tfstates.platform.launchpad_credentials.tfstate }}.tfplan \
@@ -32,15 +31,14 @@ If the plan is not successfull you need to come back to the yaml contoso.caf.pla
 
 rover \
 {% if ((config.platform_identity.azuread_identity_mode != "logged_in_user") and (credentials_tfstate_exists.rc == 0)) %}
-  --impersonate-sp-from-keyvault-url {{ keyvaults.cred_identity.vault_uri }} \
+  --impersonate-sp-from-keyvault-url {{ keyvaults[tfstate_object.identity_aad_key].vault_uri }} \
 {% endif %}
-  -lz /tf/caf/landingzones/caf_solution \
+  -lz {{ landingzones_folder }}/caf_solution \
   -var-folder {{ destination_path }} \
   -tfstate_subscription_id {{ config.caf_terraform.launchpad.subscription_id }} \
   -target_subscription {{ config.caf_terraform.launchpad.subscription_id }} \
   -tfstate {{ config.tfstates.platform.launchpad_credentials.tfstate }} \
   -launchpad \
-  -log-severity {{ config.gitops.rover_log_error }} \
   -env {{ config.caf_terraform.launchpad.caf_environment }} \
   -level {{ level }} \
   -p ${TF_DATA_DIR}/{{ config.tfstates.platform.launchpad_credentials.tfstate }}.tfplan \
@@ -52,10 +50,11 @@ rover \
 # On success, re-execute the rover ignite
 
 rover ignite \
-  --playbook /tf/caf/landingzones/templates/platform/ansible.yaml \
+  --playbook {{ base_templates_folder }}/ansible.yaml \
   -e base_templates_folder={{ base_templates_folder }} \
   -e resource_template_folder={{resource_template_folder}} \
-  -e config_folder={{ config_folder }}
+  -e config_folder={{ config_folder }} \
+  -e landingzones_folder={{ landingzones_folder }}
 
 ```
 

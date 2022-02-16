@@ -1,0 +1,22 @@
+gitops:
+  caf_landingzone_branch: aci_network
+
+relative_destination_folder: level2/identity/prod
+
+deployments:
+  landingzone:
+    tfstate:
+      platform:
+        identity_level2: prod
+    global_settings_key:
+      platform:
+        identity:
+    remote_tfstates:
+      platform:
+        identity:
+
+subscriptions:
+  identity:
+    azuread_groups:
+      caf_prod_landingzones_dns_contributors:
+        name: caf ac prod landingzones dns contributors

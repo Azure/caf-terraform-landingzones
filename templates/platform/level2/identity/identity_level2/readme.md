@@ -13,7 +13,7 @@ rover \
 {% if config.platform_identity.azuread_identity_mode != "logged_in_user" %}
   --impersonate-sp-from-keyvault-url {{ keyvaults.cred_identity.vault_uri }} \
 {% endif %}
-  -lz /tf/caf/landingzones/caf_solution \
+  -lz {{ landingzones_folder }}/caf_solution \
   -var-folder {{ destination_path }} \
   -tfstate_subscription_id {{ config.caf_terraform.launchpad.subscription_id }} \
   -target_subscription {{ platform_subscriptions_details.identity.subscription_id }} \

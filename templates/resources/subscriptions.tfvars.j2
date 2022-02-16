@@ -1,7 +1,8 @@
 subscriptions = {
-{% for key, value in resources.subscriptions[subscription_key].items() %}
+{% for key, value in resources.subscriptions[subscription_key].subscriptions.items() %}
   {{ key }} = {
     name                    = "{{ value.name }}"
+{% if value.subscription_id is not defined %}
     billing_account_name    = "{{ config.caf_terraform.billing_subscription_role_delegations.billing_account_name }}"
     enrollment_account_name = "{{ config.caf_terraform.billing_subscription_role_delegations.enrollment_account_name }}"
 {% if value.management_group_suffix is defined %}
@@ -16,6 +17,9 @@ subscriptions = {
       {{ tag_key }} = "{{ value.tags[tag_key] }}"
 {% endfor %}
     }
+{% endif %}
+{% else %}
+    subscription_id = "{{value.subscription_id}}"
 {% endif %}
   }
 {% endfor %}

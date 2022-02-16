@@ -1,0 +1,26 @@
+archetype_definitions:
+  corp:
+    display_name: Corp
+    archetype_id: landingzone_corp
+    parent_management_group_id: landing-zones
+    subscription_ids:
+  online:
+    display_name: Online
+    archetype_id: landingzone_online
+    parent_management_group_id: landing-zones
+    subscription_ids:
+  corp-prod:
+    display_name: Production
+    archetype_id: landingzone_prod
+    parent_management_group_id: corp
+    subscription_ids:
+  corp-non-prod:
+    display_name: Non Production
+    archetype_id: landingzone_non_prod
+    parent_management_group_id: corp
+    subscription_ids:
+  online-web:
+    display_name: Non Production
+    archetype_id: landingzone_online_web
+    parent_management_group_id: online
+    subscription_ids:

@@ -42,21 +42,20 @@ az rest --method post --url "/providers/Microsoft.Authorization/elevateAccess?ap
 {% endif %}
 rover login -t {{ config.platform_identity.tenant_name }} -s {{ config.caf_terraform.launchpad.subscription_id }}
 
-cd /tf/caf/landingzones
+cd {{ landingzones_folder }}
 git fetch origin
-git checkout {{ config.gitops.caf_landingzone_branch }}
+git checkout {{ resources.gitops.caf_landingzone_branch }}
 git pull
 
 rover \
 {% if ((config.platform_identity.azuread_identity_mode != "logged_in_user") and (credentials_tfstate_exists.rc == 0)) %}
-  --impersonate-sp-from-keyvault-url {{ keyvaults.cred_level0.vault_uri }} \
+  --impersonate-sp-from-keyvault-url {{ keyvaults[tfstate_object.identity_aad_key].vault_uri }} \
 {% endif %}
-  -lz /tf/caf/landingzones/caf_launchpad \
+  -lz {{ landingzones_folder }}/caf_launchpad \
   -var-folder {{ destination_path }} \
   -tfstate_subscription_id {{ config.caf_terraform.launchpad.subscription_id }} \
   -target_subscription {{ config.caf_terraform.launchpad.subscription_id }} \
   -tfstate {{ config.tfstates.platform.launchpad.tfstate }} \
-  -log-severity {{ config.gitops.rover_log_error }} \
   -launchpad \
   -env {{ config.caf_terraform.launchpad.caf_environment }} \
   -level {{ level }} \
@@ -75,12 +74,11 @@ rover \
 {% if ((config.platform_identity.azuread_identity_mode != "logged_in_user") and (credentials_tfstate_exists.rc == 0)) %}
   --impersonate-sp-from-keyvault-url {{ keyvaults.cred_level0.vault_uri }} \
 {% endif %}
-  -lz /tf/caf/landingzones/caf_launchpad \
+  -lz {{ landingzones_folder }}/caf_launchpad \
   -var-folder {{ destination_path }} \
   -tfstate_subscription_id {{ config.caf_terraform.launchpad.subscription_id }} \
   -target_subscription {{ config.caf_terraform.launchpad.subscription_id }} \
   -tfstate {{ config.tfstates.platform.launchpad.tfstate }} \
-  -log-severity {{ config.gitops.rover_log_error }} \
   -launchpad \
   -env {{ config.caf_terraform.launchpad.caf_environment }} \
   -level {{ level }} \
@@ -93,10 +91,11 @@ rover \
 # On success, re-execute the rover ignite
 
 rover ignite \
-  --playbook /tf/caf/landingzones/templates/platform/ansible.yaml \
+  --playbook {{ base_templates_folder }}/ansible.yaml \
   -e base_templates_folder={{ base_templates_folder }} \
   -e resource_template_folder={{resource_template_folder}} \
-  -e config_folder={{ config_folder }}
+  -e config_folder={{ config_folder }} \
+  -e landingzones_folder={{ landingzones_folder }}
 
 ```
 

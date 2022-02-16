@@ -1,0 +1,93 @@
+- name: "Creates cache directory"
+  file:
+    path: "~/.terraform.cache/launchpad"
+    state: directory
+
+- name: "[{{ level }}-{{ subscription_key }}]  Get tfstate account name"
+  register: launchpad_storage_account
+  shell: |
+    az storage account list \
+      --subscription {{ config.caf_terraform.launchpad.subscription_id }} \
+      --query "[?tags.caf_tfstate=='{{ config.tfstates.platform.launchpad.level }}' && tags.caf_environment=='{{ config.caf_terraform.launchpad.caf_environment }}'].{name:name}[0]" -o json | jq -r .name
+
+- name: "[{{ level }}-{{ subscription_key }}]  Get credentials tfstate details"
+  register: credentials_tfstate_exists
+  ignore_errors: true
+  shell: |
+    az storage blob download \
+      --name "{{ config.tfstates.platform.launchpad_credentials.tfstate }}" \
+      --account-name "{{ launchpad_storage_account.stdout }}" \
+      --container-name "{{ config.tfstates.platform.launchpad.workspace | default('tfstate') }}" \
+      --auth-mode "login" \
+      --file "~/.terraform.cache/launchpad/{{ config.tfstates.platform.launchpad_credentials.tfstate }}"
+
+- name: "[{{ level }}-{{ subscription_key }}]  Get launchpad_credentials details"
+  shell: "cat ~/.terraform.cache/launchpad/{{ config.tfstates.platform.launchpad_credentials.tfstate }}"
+  register: launchpad_credentials
+
+- name: "[{{ level }}-{{ subscription_key }}]  Get launchpad_credentials json data"
+  set_fact:
+    credjsondata: "{{ launchpad_credentials.stdout | from_json }}"
+
+- name: "[{{ level }}-{{ subscription_key }}]  set keyvaults"
+  set_fact:
+    keyvaults: "{{ credjsondata | json_query(path) }}"
+  vars:
+    path: 'outputs.objects.value.launchpad_credentials_rotation.keyvaults'
+
+- name: "[{{ level }}-{{ subscription_key }}]  cleanup"
+  file:
+    path: "~/.terraform.cache/launchpad/{{ config.tfstates.platform.launchpad_credentials.tfstate }}"
+    state: absent
+
+
+#
+# Get landingzones subscriptions
+#
+
+- name: "[{{ level }}-{{ subscription_key }}] - storage_containers - launchpad level3"
+  register: storage_account_level3
+  shell: |
+    az storage account list \
+      --subscription {{ config.caf_terraform.launchpad.subscription_id }} \
+      --query "[?tags.caf_tfstate=='level3' && tags.caf_environment=='{{ config.caf_terraform.launchpad.caf_environment }}'].{name:name, resource_group:resourceGroup}[0]" -o json | jq -r
+
+- debug:
+    msg: "{{storage_account_level3.stdout}}"
+
+- name: "[{{ level }}-{{ subscription_key }}]  Get credentials tfstate details"
+  register: landingzones_subscriptions
+  ignore_errors: true
+  shell: |
+    az storage blob download \
+      --name "{{ config.tfstates.asvm.subscriptions.tfstate }}" \
+      --account-name "{{ storage_account_level3.stdout|from_json|json_query('name') }}" \
+      --container-name "{{ config.tfstates.asvm.subscriptions.workspace | default('tfstate') }}" \
+      --auth-mode "login" \
+      --file "~/.terraform.cache/launchpad/{{ config.tfstates.asvm.subscriptions.tfstate }}"
+
+- name: "[{{ level }}-{{ subscription_key }}]  Get subscription_creation_landingzones details"
+  when:
+    - landingzones_subscriptions.rc == 0
+  shell: "cat ~/.terraform.cache/launchpad/{{ config.tfstates.asvm.subscriptions.tfstate }}"
+  register: landingzones_tfstate
+
+- debug:
+    msg: "{{landingzones_tfstate.stdout | from_json }}"
+
+- name: "[{{ level }}-{{ subscription_key }}]  Get landingzone json data"
+  when:
+    - landingzones_subscriptions.rc == 0
+  set_fact:
+    scljsondata: "{{ landingzones_tfstate.stdout | from_json }}"
+
+- name: "[{{ level }}-{{ subscription_key }}]  Get landingzone subscription ids"
+  when:
+    - landingzones_subscriptions.rc == 0
+  set_fact:
+    asvm_subscriptions_details: "{{ scljsondata | json_query(path) }}"
+  vars:
+    path: 'outputs.objects.value.{{config.tfstates.asvm.subscriptions.lz_key_name}}.subscriptions'
+
+- debug:
+    msg: "{{asvm_subscriptions_details}}"

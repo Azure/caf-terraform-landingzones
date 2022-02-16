@@ -7,15 +7,15 @@ Deploy 2 domain controllers in the primary region
 # login a with a user member of the caf-maintainers group
 rover login -t {{ config.platform_identity.tenant_name }}
 
-cd {{ destination_base }}/landingzones
+cd {{ landingzones_folder }}
 git fetch origin
-git checkout {{ resources.gitops.landingzones }}
+git checkout {{ resources.gitops.caf_landingzone_branch }}
 
 rover \
 {% if keyvaults is defined and config.platform_identity.azuread_identity_mode != "logged_in_user" %}
   --impersonate-sp-from-keyvault-url {{ keyvaults.cred_identity.vault_uri }} \
 {% endif %}
-  -lz {{ destination_base }}/landingzones/caf_solution \
+  -lz {{ landingzones_folder }}/caf_solution \
   -var-folder {{ destination_path }} \
   -tfstate_subscription_id {{ config.caf_terraform.launchpad.subscription_id }} \
 {% if platform_subscriptions_details is defined %}

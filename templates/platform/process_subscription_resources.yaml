@@ -65,7 +65,7 @@
 #
 # overrides
 #
-- name: "[{{deployment}} - {{resources.relative_destination_folder}}] - resources - overrides"
+- name: "[{{deployment}} - {{resources.relative_destination_folder}}] - resources - overrides from path {{ ansible_to_process }}"
   ansible.builtin.template:
     src: "{{ item }}"
     dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"

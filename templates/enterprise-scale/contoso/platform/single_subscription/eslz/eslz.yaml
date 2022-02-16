@@ -1,0 +1,8 @@
+gitops:
+  landingzones: aci_network
+
+relative_destination_folder: level1/eslz
+
+# Keep the following to allow rover ignite to process the deployment.
+subscriptions:
+  launchpad:
