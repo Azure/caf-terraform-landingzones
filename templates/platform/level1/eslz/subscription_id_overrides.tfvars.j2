@@ -5,12 +5,6 @@ subscription_id_overrides = {
 {% else %}
   root = []
 {% endif %}
-{% else %}
-{% if config.platform_core_setup.enterprise_scale.subscription_deployment_mode == 'single_reuse' %}
-  root           = [
-    "{{ config.caf_terraform.launchpad.subscription_id }}"
-  ]
-{% endif %}
 {% endif %}
 {% if config.platform_core_setup.enterprise_scale.subscription_id_overrides is defined %}
 {% if config.platform_core_setup.enterprise_scale.subscription_id_overrides.decommissioned is defined %}
@@ -49,7 +43,13 @@ subscription_id_overrides = {
   identity = []
 {% endif %}
 {% else %}
+{% if config.platform_core_setup.enterprise_scale.subscription_deployment_mode == 'single_reuse' %}
+  root           = [
+    "{{ config.caf_terraform.launchpad.subscription_id }}"
+  ]
+{% else %}
   root           = []
+{% endif %}
   decommissioned = []
   sandboxes      = []
   landing-zones  = []
@@ -60,7 +60,7 @@ subscription_id_overrides = {
 {% endif %}
 }
 
-{% if config.platform_identity.azuread_identity_mode != 'logged_in_user' %}
+{% if config.platform_identity.azuread_identity_mode != 'logged_in_user' and config.platform_core_setup.enterprise_scale.subscription_deployment_mode != 'single_reuse' %}
 subscription_id_overrides_by_keys = {
   connectivity = {
     connectivity = {

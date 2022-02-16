@@ -1,15 +1,17 @@
+- debug:
+    msg:
+      - "{{lz_type}}"
 
-- name: "Verify {{deployment}} {{key[deployment] | default()}} is defined under tfstates:platform in {{config_folder}}/tfstates.yaml :"
+- name: "Verify {{deployment}} {{lz_type}} is defined under tfstates:platform in {{config_folder}}/tfstates.yaml :"
   debug:
     msg: 
-    - "{{config.tfstates.platform[deployment]}}"
+    - "{{config.tfstates[lz_type][deployment]}}"
     - "resources - {{resources}}"
 
-- name: "{{deployment}} - tfstate_object sub_template_folder and config_file - {{env}}"
+- name: "{{deployment}} - tfstate_object sub_template_folder- {{env}}"
   debug:
     msg: 
     - 'sub_template_folder - {{tfstate_object.sub_template_folder | default()}}'
-    - 'config_file         - {{tfstate_object.config_file | default()}}'
     - 'tfstate_object      - {{tfstate_object}}'
     verbosity: 2
 

@@ -1,33 +1,39 @@
 
 - debug:
-    msg: "tfstate {{tfstate}} - {{tfstates[tfstate]}}"
+    msg: 
+      - "tfstate {{tfstate}} - {{tfstates[tfstate]}}"
+      - "{{lz_type}}"
+
+- set_fact:
+    tfstate_key: "{{ tfstates[tfstate].keys() | first }}"
+    env: "{{ tfstates[tfstate].values() | first | default('') }}"
 
 
-- name: "{{tfstates[tfstate]}} - Set env"
+- name: "Set tfstate_object"
   set_fact:
-    env: "{{tfstates[tfstate].values() | first | default()}}"
-    verbosity: 2
+    tfstate_object: '{{config.tfstates[lz_type][tfstate_key] if env == "" else config.tfstates[lz_type][tfstate_key][env] }}'
 
-
-- name: "{{tfstates[tfstate]}} - Set tfstate_object"
+- name: "Set config_folder"
   set_fact:
-    tfstate_object: '{{config.tfstates.platform[tfstates[tfstate].keys() | first] if env == "" else config.tfstates.platform[tfstates[tfstate].keys() | first][env]}}'
-    verbosity: 2
-
-- name: "{{tfstates[tfstate]}} - Set config_file"
-  set_fact:
-    config_file: "{{config_folder + '/' + tfstate_object.config_file }}"
+    config_folder: '{{ tfstate_object.sub_template_folder | default() }}'
 
 - debug:
-    msg: '{{ config_file }}'
+    msg:
+      - "{{config}}"
+      - "{{lz_type}}"
+      - "{{tfstate_key}}"
+      - "{{env}}"
+      - "{{tfstate_object}}"
+      - "{{config_folder}}"
     verbosity: 2
+
+- set_fact:
+    resources: "{{ lookup('file', '{{ config_folder + \"/\" + tfstate_object.config_file }}') | from_yaml }}"
 
 - name: "Including tasks process_tfstate.yaml"
   include_tasks: "process_tfstate.yaml"
-  loop: "{{tfstates[tfstate].keys()}}"
+  loop: ["{{tfstate_key}}"]
   loop_control:
     loop_var: deployment
   vars:
-    key: "{{tfstates[tfstate]}}"
-    resources: "{{ lookup('file', '{{ config_file }}') | from_yaml }}"
-    deployments: "{{ lookup('file', '{{ config_file }}') | from_yaml }}"
+    config_file: "{{config_folder + '/' + tfstate_object.config_file }}"

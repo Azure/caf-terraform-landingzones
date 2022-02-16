@@ -7,12 +7,11 @@ Set-up the subscription delegations for platform and landingzone subscriptions
 rover login -t {{ config.platform_identity.tenant_name }}
 
 rover \
-  -lz /tf/caf/landingzones/caf_solution \
+  -lz {{ landingzones_folder }}/caf_solution \
   -var-folder {{ destination_base }}/{{ config.configuration_folders.platform.destination_relative_path }}/level0/billing_subscription_role_delegations \
   -tfstate_subscription_id {{ config.caf_terraform.launchpad.subscription_id }} \
   -tfstate {{ config.tfstates.platform.billing_subscription_role_delegations.tfstate }} \
   -target_subscription {{ config.caf_terraform.launchpad.subscription_id }} \
-  -log-severity {{ config.gitops.rover_log_error }} \
   -launchpad \
   -env {{ config.caf_terraform.launchpad.caf_environment }} \
   -level {{ level }} \
@@ -35,10 +34,11 @@ To execute this step you need to login with on of the CAF maintainers:
 rover login -t {{ config.platform_identity.tenant_name }}
 
 rover ignite \
-  --playbook /tf/caf/starter/templates/platform/ansible.yaml \
+  --playbook {{ landingzones_folder }}/ansible.yaml \
   -e base_templates_folder={{ base_templates_folder }} \
   -e resource_template_folder={{resource_template_folder}} \
-  -e config_folder={{ config_folder }}
+  -e config_folder={{ config_folder }} \
+  -e landingzones_folder={{ landingzones_folder }}
 
 ```
 

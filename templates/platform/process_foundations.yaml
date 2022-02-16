@@ -8,3 +8,4 @@
     loop_var: tfstate
   vars:
     tfstates: "{{bootstrap[step][stage]}}"
+    lz_type: platform

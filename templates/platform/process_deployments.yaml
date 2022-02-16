@@ -6,15 +6,33 @@
     resources: "{{ lookup('file', '{{ file_to_process.path }}') | from_yaml }}"
 
 - set_fact:
-    env: "{{resources.deployments.tfstate.values() | first | default('')}}"
+    lz_type: "{{resources.deployments.landingzone.tfstate.keys() | first}}"
 
-- name: "{{tfstates[tfstate]}} - Set tfstate_object"
+- set_fact:
+    tfstate: "{{resources.deployments.landingzone.tfstate[lz_type].keys() | first}}"
+    env: "{{resources.deployments.landingzone.tfstate[lz_type].values() | first | default('')}}"
+
+- debug:
+    msg:
+      - "{{config}}"
+      - "{{lz_type}}"
+      - "{{tfstate}}"
+      - "{{env}}"
+    verbosity: 2
+      
+
+- name: "Set tfstate_object"
   set_fact:
-    tfstate_object: '{{config.tfstates.platform[resources.deployments.tfstate.keys() | first] if env == "" else config.tfstates.platform[resources.deployments.tfstate.keys() | first][env]}}'
+    tfstate_object: '{{config.tfstates[lz_type][tfstate] if env == "" else config.tfstates[lz_type][tfstate][env] }}'
+
+
+- debug:
+    msg:
+      - "{{tfstate_object}}"
 
 - name: "Including tasks process_tfstate.yaml"
   include_tasks: "process_tfstate.yaml"
-  loop: ["{{resources.deployments.tfstate.keys() | first }}"]
+  loop: ["{{ tfstate }}"]
   loop_control:
     loop_var: deployment
   vars:
