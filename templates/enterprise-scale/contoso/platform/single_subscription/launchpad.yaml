@@ -113,6 +113,7 @@ subscriptions:
                   - connectivity  # only when deploying in single subscription
                   - identity      # only when deploying in single subscription
                   - management    # only when deploying in single subscription
+                  - subscription_creation_landingzones # # only when deploying in single subscription
             Reader:
               azuread_groups:
                 keys:
