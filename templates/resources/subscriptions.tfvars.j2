@@ -3,7 +3,7 @@ subscriptions = {
   {{ key }} = {
     name                    = "{{ value.name }}"
 {% if value.create_alias is defined %}
-    create_alias            = {% value.create_alias | lower%}
+    create_alias            = {{ value.create_alias | lower}}
 {% endif %}
 {% if value.subscription_id is not defined %}
     billing_account_name    = "{{ config.caf_terraform.billing_subscription_role_delegations.billing_account_name }}"
