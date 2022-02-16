@@ -21,11 +21,11 @@ subscriptions:
       orion_dev:
         name: orion-dev
         create_alias: false
-        subscription_id: <replace>
+        subscription_id: dbf68ed2-d840-4e8d-a3b9-2fcf8e05ad2b
 
       orion_prod:
         name: orion-prod
         create_alias: false
-        subscription_id: <replace>
+        subscription_id: dbf68ed2-d840-4e8d-a3b9-2fcf8e05ad2b
 
     

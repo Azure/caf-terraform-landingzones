@@ -9,8 +9,8 @@ git pull
 git checkout {{ resources.gitops.caf_landingzone_branch }}
 
 rover \
-{% if config.platform_identity.azuread_identity_mode != "logged_in_user"  and keyvaults is defined %}
-  --impersonate-sp-from-keyvault-url {{ keyvaults.cred_subscription_creation_landingzones.vault_uri }} \
+{% if config.platform_identity.azuread_identity_mode != "logged_in_user" and keyvault_scl is defined %}
+  --impersonate-sp-from-keyvault-url {{ keyvault_scl.stdout }} \
 {% endif %}
   -lz {{landingzones_folder}}/caf_solution \
   -var-folder {{ destination_path }} \

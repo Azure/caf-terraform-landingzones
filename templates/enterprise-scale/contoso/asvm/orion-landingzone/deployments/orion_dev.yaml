@@ -12,6 +12,8 @@ deployments:
       platform:
         virtual_hubs: non_prod
     remote_tfstates:
+      asvm:
+        subscriptions:
       platform:
         virtual_hubs: non_prod
         azurerm_firewalls: non_prod
@@ -495,13 +497,13 @@ subscriptions:
                   - sp_LZContributors
         storage_containers:
           orion_prod_level3:
-            lz_key: orion_storage_containers
+            lz_key: orion_subscriptions
             Storage Blob Data Contributor:
               azuread_service_principals:
                 keys:
                   - sp_LZContributors
           orion_dev_level4:
-            lz_key: orion_storage_containers
+            lz_key: orion_subscriptions
             Storage Blob Data Contributor:
               azuread_service_principals:
                 keys:

@@ -11,6 +11,7 @@ keyvaults = {
 
     creation_policies = {
 {% if config.platform_identity.azuread_identity_mode != 'logged_in_user' %}
+{% if launchpad_azuread_groups is defined %}
       subscription_creation_landingzones = {
         object_id = "{{launchpad_azuread_groups.subscription_creation_landingzones.id}}"
         secret_permissions = ["Get"]
@@ -23,6 +24,7 @@ keyvaults = {
         object_id  = "{{launchpad_azuread_groups.caf_platform_maintainers.id}}"
         secret_permissions = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
       }
+{% endif %}
 {% endif %}
 {% if config.platform_identity.azuread_identity_mode == 'logged_in_user' %}
       logged_in_user = {
@@ -46,10 +48,12 @@ keyvaults = {
 
     creation_policies = {
 {% if config.platform_identity.azuread_identity_mode != 'logged_in_user' %}
+{% if launchpad_azuread_groups is defined %}
       subscription_creation_landingzones = {
         object_id = "{{launchpad_azuread_groups.subscription_creation_landingzones.id}}"
         secret_permissions = ["Get"]
       }
+{% endif %}
       caf_ac_landingzone_maintainers_non_prod = {
         azuread_group_key  = "caf_ac_landingzone_maintainers_non_prod"
         secret_permissions = ["Get"]
@@ -58,6 +62,7 @@ keyvaults = {
         azuread_group_key  = "caf_ac_landingzone_maintainers_prod"
         secret_permissions = ["Get"]
       }
+{% if launchpad_azuread_groups is defined %}
       level0 = {
         object_id = "{{launchpad_azuread_groups.level0.id}}"
         secret_permissions = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
@@ -66,6 +71,7 @@ keyvaults = {
         object_id  = "{{launchpad_azuread_groups.caf_platform_maintainers.id}}"
         secret_permissions = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
       }
+{% endif %}
 {% endif %}
 {% if config.platform_identity.azuread_identity_mode == 'logged_in_user' %}
       logged_in_user = {
