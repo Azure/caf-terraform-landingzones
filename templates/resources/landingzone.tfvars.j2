@@ -23,7 +23,7 @@ landingzone = {
 {% endfor %}
 {% else %} 
     {{ config.tfstates['asvm'][resources.deployments.landingzone.remote_tfstates.asvm.keys() | first].lz_key_name }} = {
-      fstate   = "{{ config.tfstates['asvm'][resources.deployments.landingzone.remote_tfstates.asvm.keys() | first].tfstate }}"
+      tfstate   = "{{ config.tfstates['asvm'][resources.deployments.landingzone.remote_tfstates.asvm.keys() | first].tfstate }}"
       workspace = "{{ config.tfstates['asvm'][resources.deployments.landingzone.remote_tfstates.asvm.keys() | first].workspace | default('tfstate')}}"
     }
 {% endif %}

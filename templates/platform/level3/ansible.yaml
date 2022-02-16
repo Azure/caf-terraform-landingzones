@@ -1,45 +1,13 @@
-- name: "Creates cache directory"
-  file:
-    path: "~/.terraform.cache/launchpad"
-    state: directory
 
-- name: "[{{ level }}-{{ subscription_key }}]  Get tfstate account name"
-  register: launchpad_storage_account
+- name: "[{{ level }}-{{ subscription_key }}]  Get asvm keyvault credentials name"
+  register: keyvault_scl
   shell: |
-    az storage account list \
+    az keyvault list \
       --subscription {{ config.caf_terraform.launchpad.subscription_id }} \
-      --query "[?tags.caf_tfstate=='{{ config.tfstates.platform.launchpad.level }}' && tags.caf_environment=='{{ config.caf_terraform.launchpad.caf_environment }}'].{name:name}[0]" -o json | jq -r .name
+      --query "[?tags.caf_identity_aad_key=='cred_subscription_creation_landingzones' && tags.caf_environment=='{{ config.caf_terraform.launchpad.caf_environment }}'].{name:name}[0]" -o json | jq -r --arg http "https://" --arg suffix ".vault.azure.net/" '$http + (.name) + $suffix'
 
-- name: "[{{ level }}-{{ subscription_key }}]  Get credentials tfstate details"
-  register: credentials_tfstate_exists
-  ignore_errors: true
-  shell: |
-    az storage blob download \
-      --name "{{ config.tfstates.platform.launchpad_credentials.tfstate }}" \
-      --account-name "{{ launchpad_storage_account.stdout }}" \
-      --container-name "{{ config.tfstates.platform.launchpad.workspace | default('tfstate') }}" \
-      --auth-mode "login" \
-      --file "~/.terraform.cache/launchpad/{{ config.tfstates.platform.launchpad_credentials.tfstate }}"
-
-- name: "[{{ level }}-{{ subscription_key }}]  Get launchpad_credentials details"
-  shell: "cat ~/.terraform.cache/launchpad/{{ config.tfstates.platform.launchpad_credentials.tfstate }}"
-  register: launchpad_credentials
-
-- name: "[{{ level }}-{{ subscription_key }}]  Get launchpad_credentials json data"
-  set_fact:
-    credjsondata: "{{ launchpad_credentials.stdout | from_json }}"
-
-- name: "[{{ level }}-{{ subscription_key }}]  set keyvaults"
-  set_fact:
-    keyvaults: "{{ credjsondata | json_query(path) }}"
-  vars:
-    path: 'outputs.objects.value.launchpad_credentials_rotation.keyvaults'
-
-- name: "[{{ level }}-{{ subscription_key }}]  cleanup"
-  file:
-    path: "~/.terraform.cache/launchpad/{{ config.tfstates.platform.launchpad_credentials.tfstate }}"
-    state: absent
-
+- debug:
+    msg: "{{keyvault_scl.stdout}}"
 
 #
 # Get landingzones subscriptions

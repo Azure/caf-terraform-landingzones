@@ -22,7 +22,13 @@ keyvaults = {
 {% if keyvault.soft_delete_retention_days is defined %}
     soft_delete_retention_days = {{ keyvault.soft_delete_retention_days }}
 {% endif %}
-    
+{% if keyvault.tags is defined %}
+      tags   = {
+{% for tag_key, tag_value in keyvault.tags.items() %}
+        {{ tag_key }} = "{{ tag_value }}"
+{% endfor %}
+      }
+{% endif %}
     creation_policies = {
 {% if config.platform_identity is defined %}
 {% if config.platform_identity.azuread_identity_mode == 'logged_in_user' %}
