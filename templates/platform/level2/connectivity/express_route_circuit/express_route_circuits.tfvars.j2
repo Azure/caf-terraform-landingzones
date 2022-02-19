@@ -1,0 +1,18 @@
+express_route_circuits = {
+  {{ circuit }} = {
+    name                  = "{{ connectivity_express_routes.express_route_circuits[circuit].name }}"
+    resource_group_key    = "{{ connectivity_express_routes.express_route_circuits[circuit].resource_group_key }}"
+    service_provider_name = "{{ connectivity_express_routes.express_route_circuits[circuit].service_provider_name }}"
+    peering_location      = "{{ connectivity_express_routes.express_route_circuits[circuit].peering_location }}"
+    tier                  = "{{ connectivity_express_routes.express_route_circuits[circuit].tier }}"
+    family                = "{{ connectivity_express_routes.express_route_circuits[circuit].family }}"
+    bandwidth_in_mbps     = {{ connectivity_express_routes.express_route_circuits[circuit].bandwidth_in_mbps }}
+{% if connectivity_express_routes.express_route_circuits[circuit].tags is defined %}
+    tags = {
+{% for k_tag, tag in connectivity_express_routes.express_route_circuits[circuit].tags.items() %}
+      "{{ k_tag }}" = "{{ tag }}"
+    }
+{% endfor %}
+{% endif %}
+  }
+}

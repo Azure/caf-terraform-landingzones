@@ -130,7 +130,7 @@ caf_foundations:
 
       - name: deploy caf_foundations
         run: |
-            /tf/rover/rover.sh /tf/caf/landingzones/${{ matrix.landingzone }} apply \
+            /tf/rover/rover.sh /tf/caf/${{ matrix.landingzone }} apply \
                 '-var tags={testing-job-id="${{ github.run_id }}"}' \
                 '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}_${{ matrix.region }}_${{ matrix.convention }}.tfvars'
 ```
@@ -185,7 +185,7 @@ Once the fundamentals are set, we can now proceed to deploy the test landing zon
 
       - name: deploy landing_zone
         run: |
-          /tf/rover/rover.sh /tf/caf/landingzones/${{ matrix.landingzone }} apply \
+          /tf/rover/rover.sh /tf/caf/${{ matrix.landingzone }} apply \
             '-var tags={testing-job-id="${{ github.run_id }}"}' \
             '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}.tfvars' \
             '-var workspace=caffoundationsci'
@@ -193,7 +193,7 @@ Once the fundamentals are set, we can now proceed to deploy the test landing zon
       - name: destroy landing_zone
         if: always()
         run: |
-          /tf/rover/rover.sh /tf/caf/landingzones/${{ matrix.landingzone }} destroy \
+          /tf/rover/rover.sh /tf/caf/${{ matrix.landingzone }} destroy \
             '-var tags={testing-job-id="${{ github.run_id }}"}' \
             '-var-file ${{ env.TFVARS_PATH }}/${{ matrix.environment }}/${{ matrix.landingzone }}/${{ matrix.landingzone }}.tfvars' \
             '-var workspace=caffoundationsci'

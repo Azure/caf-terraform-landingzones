@@ -7,6 +7,9 @@ variable "azurerm_redis_caches" {
 variable "cosmos_dbs" {
   default = {}
 }
+variable "cosmosdb_sql_databases" {
+  default = {}
+}
 variable "database" {
   description = "Database configuration objects"
   default     = {}

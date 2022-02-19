@@ -1,0 +1,15 @@
+resource_groups = {
+{% for key, resource_group in resources.subscriptions[subscription_key].resource_groups.items() %}
+  {{ key }} = {
+    name   = "{{ resource_group.name }}"
+    region = "{{ resource_group.region_key | default(config.caf_terraform.launchpad.default_region_key) }}"
+{% if resource_group.tags is defined %}
+    tags   = {
+{% for tag_key, tag_value in resource_group.tags.items() %}
+      {{ tag_key }} = "{{ tag_value }}"
+{% endfor %}
+    }
+{% endif %}
+  }
+{% endfor %}
+}

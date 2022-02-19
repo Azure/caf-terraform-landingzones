@@ -1,0 +1,50 @@
+azurerm_firewall_policies = {
+{% for key, value in resources.subscriptions[subscription_key].azurerm_firewall_policies.items() %}
+  {{ key }} = {
+    name   = "{{ value.name }}"
+{% if value.region_key is defined %}
+    region = "{{ value.region_key }}"
+{% endif %}
+{% if value.sku is defined %}
+    sku    = "{{ value.sku }}"
+{% endif %}
+    resource_group = {
+      key    = "{{ value.resource_group.key }}"
+{% if value.resource_group.lz_key is defined %}
+      lz_key = "{{ config.tfstates.platform.azurerm_firewall_policies[value.resource_group.lz_key].lz_key_name }}"
+{% endif %}
+    }
+{% if value.base_policy is defined %}
+    base_policy    = {
+      key    = "{{ value.base_policy.key }}"
+{% if value.resource_group.lz_key is defined %}
+      lz_key = "{{ config.tfstates.platform.azurerm_firewall_policies[value.resource_group.lz_key].lz_key_name }}"
+{% endif %}
+    }
+{% endif %}
+{% if value.dns is defined %}
+    dns = {
+{% if value.dns.servers is defined %}
+      servers       = "{{ value.dns.servers }}"
+{% endif %}
+{% if value.dns.proxy_enabled is defined %}
+      proxy_enabled = {{ value.dns.proxy_enabled | string | lower }}
+{% endif %}
+    }
+{% endif %}
+{% if value.threat_intelligence_mode is defined %}
+    threat_intelligence_mode = "{{ value.threat_intelligence_mode }}"
+{% endif %}
+{% if value.threat_intelligence_allowlist is defined %}
+    threat_intelligence_allowlist = {
+{% if value.threat_intelligence_allowlist.ip_addresses is defined %}
+      ip_addresses = {{ value.threat_intelligence_allowlist.ip_addresses | replace('None','[]') | replace('\'','\"') }}
+{% endif %}
+{% if value.threat_intelligence_allowlist.fqdns is defined %}
+      fqdns = {{ value.threat_intelligence_allowlist.fqdns | replace('None','[]') | replace('\'','\"') }}
+{% endif %}
+    }
+{% endif %}
+  }
+{% endfor %}
+}

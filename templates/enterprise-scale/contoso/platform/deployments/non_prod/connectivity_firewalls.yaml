@@ -1,0 +1,77 @@
+gitops:
+  landingzones: 2112.int
+
+deployments:
+  connectivity:
+    landingzone:
+      key:
+        platform:
+          azurerm_firewalls: non_prod
+      global_settings_key:
+        platform:
+          management:
+      remote_tfstates:
+        platform:
+          virtual_hubs: non_prod
+          azurerm_firewall_policies: non_prod
+
+
+subscriptions:
+  connectivity:
+    resource_groups:
+        firewall_policies:
+          name: connectivity-non-prod-firewall
+          region_key: region1
+
+
+    virtual_networks:
+      vnet:
+        name: vnet-connectivity-non-prod-fw-plinks
+        resource_group_key: firewall_policies
+        region_key: region1
+        address_space:
+          - 10.51.4.0/26
+        specialsubnets:
+          AzureFirewallSubnet:
+            name: AzureFirewallSubnet
+            cidr:
+              - 10.51.4.0/26
+
+    public_ip_addresses:
+      fw_pip1:
+        name: pip-non-prod-fw-01
+        resource_group_key: firewall_policies
+        sku: Standard
+        allocation_method: Static
+        ip_version: IPv4
+        idle_timeout_in_minutes: 4
+
+    azurerm_firewalls:
+      fw_non_prod_plinks_01:
+        name: fw-non-prod-plinks-01
+        resource_group_key: firewall_policies
+        vnet_key: vnet
+        sku_tier: Standard
+        firewall_policy:
+          key: root
+          lz_key: connectivity_firewall_policies_non_prod
+        zones:
+          - 1
+          - 2
+          - 3
+        public_ips:
+          ip1:
+            name: pip1
+            public_ip_key: fw_pip1
+            vnet_key: vnet
+            subnet_key: AzureFirewallSubnet
+
+
+    virtual_hub_connections:
+      vnet_to_hub:
+        name: vnet-connectivity-non-prod-fw-plinks-TO-vhub-non_prod
+        virtual_hub:
+          lz_key: connectivity_virtual_hub_non_prod
+          key: non_prod
+        vnet:
+          vnet_key: vnet

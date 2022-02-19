@@ -39,9 +39,9 @@ Azure:
 ## Deployment
 
 ```bash
-rover -lz /tf/caf/landingzones/caf_launchpad/add-ons/azure_devops \
+rover -lz /tf/caf/caf_launchpad/add-ons/azure_devops \
   -tfstate azure_devops-contoso_demo.tfstate \
-  -var-folder /tf/caf/landingzones/caf_launchpad/add-ons/azure_devops/scenario/200-contoso_demo \
+  -var-folder /tf/caf/caf_launchpad/add-ons/azure_devops/scenario/200-contoso_demo \
   -parallelism 30 \
   -level level0 \
   -env sandpit \
@@ -49,10 +49,10 @@ rover -lz /tf/caf/landingzones/caf_launchpad/add-ons/azure_devops \
 
 
 # If the tfstates are stored in a different subscription you need to execute the following command
-rover -lz /tf/caf/landingzones/caf_launchpad/add-ons/azure_devops \
+rover -lz /tf/caf/caf_launchpad/add-ons/azure_devops \
   -tfstate_subscription_id <ID of the subscription> \
   -tfstate azure_devops-contoso_demo.tfstate \
-  -var-folder /tf/caf/landingzones/caf_launchpad/add-ons/azure_devops/scenario/200-contoso_demo \
+  -var-folder /tf/caf/caf_launchpad/add-ons/azure_devops/scenario/200-contoso_demo \
   -parallelism 30 \
   -level level0 \
   -env sandpit \

@@ -1,9 +1,14 @@
 module "launchpad" {
   source  = "aztfmod/caf/azurerm"
-  version = "~>5.4.2"
+  version = "5.5.1"
 
-  # source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=patch.5.4.6"
+
+  # source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=master"
   # source = "../../aztfmod"
+
+  providers = {
+    azurerm.vhub = azurerm
+  }
 
   current_landingzone_key               = var.landingzone.key
   custom_role_definitions               = var.custom_role_definitions
@@ -48,8 +53,9 @@ module "launchpad" {
   }
 
   compute = {
-    virtual_machines = try(var.compute.virtual_machines, var.virtual_machines)
     bastion_hosts    = try(var.compute.bastion_hosts, var.bastion_hosts)
+    container_groups = var.container_groups
+    virtual_machines = try(var.compute.virtual_machines, var.virtual_machines)
   }
 
   networking = {

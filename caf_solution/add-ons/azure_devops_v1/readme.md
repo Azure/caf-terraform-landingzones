@@ -26,16 +26,64 @@ Azure Devops (example):
   - sample yaml attached [here](./scenario/200-contoso_demo/pipeline/rover.yaml).
 
 Azure:
-* PAT Token   : PAT Token should be updated in keyvault secret that deployed by launchpad LZ as below
+* AZDO PAT Token   : PAT Token should be updated in keyvault secret that deployed by launchpad LZ as below
+* Github PAT Token : If building from repos hosted in Github, a Github PAT Token should be added to a keyvault secret.
+
+
+## Pipelines
+AZDO supports creating pipelines from a number of sources, such as AZDO itself, Github, Bitbucket,
+etc. For repos hosted in Github, you must configure a [service connection][https://docs.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints].
+
+To do this, create a Github PAT token (repo read access is sufficient), and add it to a KeyVault (we
+recommend the 'secrets' KeyVault typically provisioned in level0). Then provide the following config
+directive to configure the connection:
+
+```
+service_endpoints = {
+  github_endpoint = {
+    endpoint_name = "github_endpoint"
+    type = "Github"
+    project_key = "my_project""
+    keyvault = {
+      lz_key      = "launchpad"
+      key         = "secrets"
+      secret_name = "github-pat"
+    }
+  }
+}
+```
+
+When configuring pipelines via the pipelines{} config directive, you can then set the following
+parameters:
+
+```
+pipelines = {
+  launchpad = {
+    project_key      = "my_project"
+    repo_project_key = "my_project_repo"
+    name             = "launchpad"
+    folder           = "\\configuration\\level0"
+    yaml             = "configuration/dev/pipelines/test.yml"
+    repo_type        = "GitHub"
+    git_repo_name    = "github_org/repo_name"
+    branch_name      = "main"
+    service_connection_key = "github_endpoint"
+    variables = {
+      ...
+    }
+  }
+}
+```
+
 
 ![](./documentation/images/pat_token.png)
 
 ## Deployment
 
 ```bash
-rover -lz /tf/caf/landingzones/caf_solution/add-ons/azure_devops_v1 \
+rover -lz /tf/caf/caf_solution/add-ons/azure_devops_v1 \
   -tfstate azure_devops-contoso_demo.tfstate \
-  -var-folder /tf/caf/landingzones/caf_solution/add-ons/azure_devops_v1/scenario/200-contoso_demo \
+  -var-folder /tf/caf/caf_solution/add-ons/azure_devops_v1/scenario/200-contoso_demo \
   -parallelism 30 \
   -level level0 \
   -env sandpit \
@@ -43,10 +91,10 @@ rover -lz /tf/caf/landingzones/caf_solution/add-ons/azure_devops_v1 \
 
 
 # If the tfstates are stored in a different subscription you need to execute the following command
-rover -lz /tf/caf/landingzones/caf_solution/add-ons/azure_devops_v1 \
+rover -lz /tf/caf/caf_solution/add-ons/azure_devops_v1 \
   -tfstate_subscription_id <ID of the subscription> \
   -tfstate azure_devops-contoso_demo.tfstate \
-  -var-folder /tf/caf/landingzones/caf_solution/add-ons/azure_devops_v1/scenario/200-contoso_demo \
+  -var-folder /tf/caf/caf_solution/add-ons/azure_devops_v1/scenario/200-contoso_demo \
   -parallelism 30 \
   -level level0 \
   -env sandpit \

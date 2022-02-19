@@ -16,6 +16,7 @@ resource "azuredevops_build_definition" "build_definition" {
     azuredevops_variable_group.variable_group[key].id
   ]
 
+  # This block handles repos that are hosted in AZDO
   dynamic "repository" {
     for_each = {
       for key, value in try(data.azuredevops_git_repositories.repos[try(each.value.repo_project_key, each.value.project_key)].repositories, {}) : key => value
@@ -27,7 +28,20 @@ resource "azuredevops_build_definition" "build_definition" {
       repo_type   = each.value.repo_type
       yml_path    = each.value.yaml
       branch_name = lookup(each.value, "branch_name", null)
-      # service_connection_id = lookup(each.value, "repo_type", null) == "github" ? null : azuredevops_serviceendpoint_azurerm.github[each.value.service_connection_key].id
+    }
+  }
+
+  # This block handles repos that are hosted in GitHub and require a service connection
+  dynamic "repository" {
+    for_each = each.value.repo_type == "GitHub" ? [1] : []
+
+    content {
+      repo_id     = each.value.git_repo_name
+      repo_type   = each.value.repo_type
+      yml_path    = each.value.yaml
+      branch_name = lookup(each.value, "branch_name", null)
+      service_connection_id = azuredevops_serviceendpoint_github.serviceendpoint_github[
+      each.value.service_connection_key].id
     }
   }
 

@@ -1,0 +1,106 @@
+azurerm_firewalls = {
+{% for key, value in resources.subscriptions[subscription_key].azurerm_firewalls.items() %}
+  {{ key }} = {
+    name   = "{{ value.name }}"
+    resource_group_key = "{{ value.resource_group_key }}"
+    vnet_key = "{{ value.vnet_key }}"
+{% if value.sku_tier is defined %}
+        sku_tier = "{{ value.sku_tier }}"
+{% endif %}
+{% if value.sku_name is defined %}
+        sku_name = "{{ value.sku_name }}"
+{% endif %}
+{% if value.firewall_policy is defined %}
+    firewall_policy = {
+{% if value.firewall_policy.firewall_policy_key is defined %}
+        firewall_policy_key = "{{ value.firewall_policy_key }}"
+{% else %}
+{% if value.firewall_policy.key is defined %}
+        key = "{{ value.firewall_policy.key }}"
+{% endif %}
+{% if value.firewall_policy.lz_key is defined %}
+        lz_key = "{{ value.firewall_policy.lz_key }}"
+{% endif %}
+{% if value.firewall_policy.id is defined %}
+        id = "{{ value.firewall_policy.id }}"
+{% endif %}
+{% endif %}
+    }
+{% endif %}
+{% if value.zones is defined %}
+    zones = {{ value.zones | replace('None','[]') | replace('\'','\"') }}
+{% endif %}
+{% if value.threat_intel_mode is defined %}
+        threat_intel_mode = "{{ value.threat_intel_mode }}"
+{% endif %}
+{% if value.private_ip_ranges is defined %}
+    private_ip_ranges = {{ value.private_ip_ranges | replace('None','[]') | replace('\'','\"') }}
+{% endif %}
+
+{% if value.tags is defined %}
+    tags   = {
+{% for tag_key, tag_value in value.tags.items() %}
+      {{ tag_key }} = "{{ tag_value }}"
+{% endfor %}
+    }
+{% endif %}
+{% if value.management_ip_configuration is defined %}
+    management_ip_configuration = {
+        lz_key = "{{ value.management_ip_configuration.name }}"
+{% if value.management_ip_configuration.public_ip_address_id is defined %}
+        public_ip_address_id = "{{ value.management_ip_configuration.public_ip_address_id }}"
+{% else %}
+        public_ip_key = "{{ value.management_ip_configuration.public_ip_key }}"
+{% endif %}
+{% if value.management_ip_configuration.subnet_id is defined %}
+        subnet_id = "{{ value.management_ip_configuration.subnet_id }}"
+{% else %}
+            vnet_key = "{{ value.management_ip_configuration.vnet_key }}"
+            subnet_key = "{{ value.management_ip_configuration.subnet_key }}"
+{% if value.management_ip_configuration.lz_key is defined %}
+            lz_key = "{{ value.management_ip_configuration.lz_key }}"
+{% endif %}
+{% endif %}
+    }
+{% endif %}
+{% if value.virtual_hub_id is defined %}
+    virtual_hub = {
+{% if value.virtual_hub.virtual_hub_id is defined %}
+        virtual_hub_id = "{{ value.virtual_hub_id }}"
+{% elif value.virtual_hub is defined %}
+        virtual_wan_key = " {{ value.virtual_hub.virtual_wan_key }}"
+        virtual_hub_key = " {{ value.virtual_hub.virtual_hub_key }}"
+{% if value.virtual_hub.lz_key is defined %}
+        lz_key = "{{ value.virtual_hub.lz_key }}"
+{% endif %}
+        virtual_wan_key = " {{ value.virtual_hub.virtual_wan_key }}"
+{% endif %}
+        public_ip_count = " {{ value.virtual_hub.public_ip_count }}"
+    }
+{% endif %}
+{% if value.public_ips is defined %}
+    public_ips = {
+{% for p_key, p_value in value.public_ips.items() %}
+        {{ p_key }} = {
+            name = "{{ p_value.name }}"
+{% if p_value.public_ip_id is defined %}
+            public_ip_id = "{{ p_value.public_ip_id }}"
+{% else %}
+            public_ip_key = "{{ p_value.public_ip_key }}"
+{% endif %}
+{% if p_value.subnet_id is defined %}
+            subnet_id = "{{ p_value.subnet_id }}"
+{% else %}
+            vnet_key = "{{ p_value.vnet_key }}"
+            subnet_key = "{{ p_value.subnet_key }}"
+{% if p_value.lz_key is defined %}
+            lz_key = "{{ p_value.lz_key }}"
+{% endif %}
+{% endif %}
+        }
+{% endfor %}
+    }
+{% endif %}
+  }
+{% endfor %}
+}

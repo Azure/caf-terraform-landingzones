@@ -4,26 +4,26 @@ terraform {
     // azuread version driven by the caf module
     random = {
       source  = "hashicorp/random"
-      version = "~> 2.2.1"
+      version = "~> 3.1.0"
     }
     external = {
       source  = "hashicorp/external"
-      version = "~> 1.2.0"
+      version = "~> 2.2.0"
     }
     null = {
       source  = "hashicorp/null"
-      version = "~> 2.1.0"
+      version = "~> 3.1.0"
     }
     tls = {
       source  = "hashicorp/tls"
-      version = "~> 2.2.0"
+      version = "~> 3.1.0"
     }
     azurecaf = {
       source  = "aztfmod/azurecaf"
-      version = "~>1.2.0"
+      version = "~> 1.2.0"
     }
   }
-  required_version = ">= 0.13"
+  required_version = ">= 0.15"
 }
 
 
@@ -35,6 +35,14 @@ provider "azurerm" {
       purge_soft_delete_on_destroy = var.provider_azurerm_features_keyvault.purge_soft_delete_on_destroy
     }
   }
+}
+
+provider "azurerm" {
+  alias                      = "vhub"
+  skip_provider_registration = true
+  features {}
+  subscription_id = local.connectivity_subscription_id
+  tenant_id       = local.connectivity_tenant_id
 }
 
 data "azurerm_client_config" "current" {}
@@ -67,3 +75,4 @@ locals {
   }
 
 }
+

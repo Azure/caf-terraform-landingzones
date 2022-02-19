@@ -8,7 +8,7 @@ Microsoft [Cloud Adoption Framework for Azure](https://docs.microsoft.com/azure/
 
 A landing zone is a segment of a cloud environment, that has been pre-provisioned through code, and is dedicated to the support of one or more workloads. Landing zones provide access to foundational tools and controls to establish a compliant place to innovate and build new workloads in the cloud, or to migrate existing workloads to the cloud. Landing zones use defined sets of cloud services and best practices to set you up for success.
 
-We leverage Azure enterprise-scale landing zones and propose a Terraform-native structure, set of mechanisms and artifacts to get started to deploy workloads fast. 
+We leverage Azure enterprise-scale landing zones and propose a Terraform-native structure, set of mechanisms and artifacts to get started to deploy workloads fast.
 
 You can review the different components parts of the Cloud Adoption Framework for Azure Terraform landing zones and look at the quick intro :vhs:  below:
 
@@ -16,14 +16,14 @@ You can review the different components parts of the Cloud Adoption Framework fo
 
 ## Goals
 
-Cloud Adoption Framework for Azure Terraform landing zones is an Open Source project equiping the Site Reliability Engineer on Azure with:
+Cloud Adoption Framework for Azure Terraform landing zones is an open-source project equipping the Site Reliability Engineers on Azure with:
 
-* Enable the community with a set of reusable landing artifacts.
+* Reusable community artifacts.
 * Standardize deployments using battlefield-proven components.
 * Accelerate the setup of complex environments on Azure.
 * Implement Azure enterprise-scale design and approach with native Terraform and DevOps.
 * Propose a prescriptive guidance on how to enable DevOps for infrastructure as code on Microsoft Azure.
-* Foster a community of Azure *Terraformers* using a common set of practices and sharing best practices.
+* Develop configuration-based "infrastructure-as-data" as a democratization of "infrastructure-as-code".
 
 ## :rocket: Getting started
 
@@ -31,9 +31,9 @@ When starting an enterprise deployment, we recommend you start creating a config
 
 The best way to start is to clone the [starter repository](https://github.com/Azure/caf-terraform-landingzones-starter) and getting started with the configuration files, you can find a quick [onboarding video here](https://www.youtube.com/watch?v=M5BXm30IpdY)
 
-## Documentation
+## :books: Documentation
 
-The documentation on this repo is  on how to develop, deploy and operate with landing zones can be found in the reference section [here](./documentation/README.md)
+You can refer to our new integrated documentation: [GitHub Pages documentation](https://aztfmod.github.io/documentation)
 
 ## Repositories
 

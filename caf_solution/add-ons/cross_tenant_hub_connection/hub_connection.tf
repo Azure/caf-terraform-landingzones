@@ -9,7 +9,8 @@ resource "null_resource" "wait_for_virtual_hub_state" {
     command = format("%s/scripts/wait.sh", path.module)
 
     environment = {
-      VIRTUAL_HUB_ID = data.terraform_remote_state.remote[each.value.virtual_hub.lz_key].outputs.objects[each.value.virtual_hub.lz_key].virtual_hubs[each.value.virtual_hub.key].id
+      VIRTUAL_HUB_ID = try(data.terraform_remote_state.remote[each.value.virtual_hub.lz_key].outputs.objects[each.value.virtual_hub.lz_key].virtual_hubs[each.value.virtual_hub.key].id,
+        data.terraform_remote_state.remote[each.value.virtual_hub.lz_key].outputs.objects[each.value.virtual_hub.lz_key].virtual_wans[each.value.virtual_hub.vwan_key].virtual_hubs[each.value.virtual_hub.key].id)
     }
   }
 }
@@ -19,7 +20,8 @@ resource "azurerm_virtual_hub_connection" "conn" {
   depends_on = [null_resource.wait_for_virtual_hub_state]
 
   name           = each.value.name
-  virtual_hub_id = data.terraform_remote_state.remote[each.value.virtual_hub.lz_key].outputs.objects[each.value.virtual_hub.lz_key].virtual_hubs[each.value.virtual_hub.key].id
+  virtual_hub_id = try(data.terraform_remote_state.remote[each.value.virtual_hub.lz_key].outputs.objects[each.value.virtual_hub.lz_key].virtual_hubs[each.value.virtual_hub.key].id,
+    data.terraform_remote_state.remote[each.value.virtual_hub.lz_key].outputs.objects[each.value.virtual_hub.lz_key].virtual_wans[each.value.virtual_hub.vwan_key].virtual_hubs[each.value.virtual_hub.key].id)
   remote_virtual_network_id = try(
     each.value.vnet.id,
     data.terraform_remote_state.remote[each.value.vnet.lz_key].outputs.objects[each.value.vnet.lz_key].vnets[each.value.vnet.vnet_key].id

@@ -1,0 +1,34 @@
+gitops:
+  landingzones: 2112.int
+
+deployments:
+  connectivity:
+    landingzone:
+      key:
+        platform:
+          private_dns: non_prod
+      global_settings_key:
+        platform:
+          management:
+      remote_tfstates:
+        platform:
+          management:
+          asvm:
+
+subscriptions:
+  connectivity:
+    resource_groups:
+      firewall_policies:
+        name: connectivity-non-prod-firewall-policies
+        region_key: region1
+
+    azurerm_firewall_policies:
+      root:
+        name: "non-prod-root-policy"
+        region_key: region1
+        resource_group:
+          key: firewall_policies
+        dns:
+          proxy_enabled: true
+        threat_intelligence_mode: "Alert"
+

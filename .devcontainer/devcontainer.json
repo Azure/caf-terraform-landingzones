@@ -20,7 +20,7 @@
     "settings": {
         "files.eol": "\n",
         "editor.tabSize": 2,
-        "terminal.integrated.scrollback": 32000,
+        "terminal.integrated.scrollback": 64000,
     },
 
     // Uncomment the next line if you want start specific services in your Docker Compose config.
@@ -30,13 +30,11 @@
     // "shutdownAction": "none",
 
     // Uncomment the next line to run commands after the container is created.
-    "postCreateCommand": "sudo cp -R /tmp/.ssh-localhost/* ~/.ssh && sudo chown -R $(whoami):$(whoami) /tf/caf ~/.ssh && sudo chmod 400 ~/.ssh/* && git config --global core.editor vi && pre-commit install && pre-commit autoupdate",
-
+    "postCreateCommand": "sudo cp -R /tmp/.ssh-localhost/* ~/.ssh && sudo chown -R $(whoami):$(whoami) /tf/caf ~/.ssh && sudo chmod 400 ~/.ssh/* && git config --global core.editor vim && pre-commit install && pre-commit autoupdate",
+    
     // Add the IDs of extensions you want installed when the container is created in the array below.
     "extensions": [
         "4ops.terraform",
-        "mutantdino.resourcemonitor",
-        "ms-azure-devops.azure-pipelines",
-        "omartawfik.github-actions-vscode"
+        "mutantdino.resourcemonitor"
     ]
 }

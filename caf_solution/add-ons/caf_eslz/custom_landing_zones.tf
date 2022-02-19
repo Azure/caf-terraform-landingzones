@@ -1,7 +1,13 @@
-data "azurerm_management_group" "id" {
+data "external" "reconcile_susbscription_ids_from_management_groups" {
   for_each = var.reconcile_vending_subscriptions ? var.custom_landing_zones : {}
 
-  name = each.key
+  program = [
+    "bash", "-c",
+    format(
+      "az rest --method GET --url https://management.azure.com/providers/Microsoft.Management/managementGroups/%s/subscriptions?api-version=2020-05-01 --query \"[value][].name | sort(@) | {subscription_ids: join(',', @)}\" -o json 2>/dev/null || echo '{\"subscription_ids\":\"\"}' | jq -r",
+      each.key
+    )
+  ]
 }
 
 locals {
@@ -23,7 +29,7 @@ locals {
           [
             for key, value in mg_value.subscriptions : local.caf.subscriptions[value.lz_key][value.key].subscription_id
           ],
-          try(tolist(data.azurerm_management_group.id[mg_id].subscription_ids), []),
+          try(split(",",data.external.reconcile_susbscription_ids_from_management_groups[mg_id].result.subscription_ids), []),
           try(mg_value.subscription_ids, [])
         )
       )
