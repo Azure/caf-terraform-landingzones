@@ -2,28 +2,28 @@
 
 ## Deploy Enterprise Scale
 
-Note you need to adjust the branch to deploy Enterprise Scale to {{ config.platform_core_setup.enterprise_scale.private_lib[config.platform_core_setup.enterprise_scale.private_lib.version_to_deploy].caf_landingzone_branch }}
+Note you need to adjust the branch to deploy Enterprise Scale to {{ resources.platform_core_setup.private_lib[tfstate_object.eslz_version].caf_landingzone_branch }}
 
 ```bash
 az account clear
 # login a with a user member of the caf-platform-maintainers group
-rover login -t {{ config.platform_identity.tenant_name }}
+rover login -t {{ resources.platform_identity.tenant_name }}
 
 cd {{ landingzones_folder }}
 git fetch origin
-git checkout {{ config.platform_core_setup.enterprise_scale.private_lib[config.platform_core_setup.enterprise_scale.private_lib.version_to_deploy].caf_landingzone_branch }}
+git checkout {{ resources.platform_core_setup.private_lib[tfstate_object.eslz_version].caf_landingzone_branch }}
 
 rover \
-{% if keyvaults is defined and config.platform_identity.azuread_identity_mode != "logged_in_user" %}
+{% if keyvaults is defined and resources.platform_identity.azuread_identity_mode != "logged_in_user" %}
   --impersonate-sp-from-keyvault-url {{ keyvaults[tfstate_object.identity_aad_key].vault_uri }} \
 {% endif %}
   -lz {{ landingzones_folder }}/caf_solution/add-ons/caf_eslz \
   -var-folder {{ destination_path }} \
-  -tfstate_subscription_id {{ config.caf_terraform.launchpad.subscription_id }} \
-  -tfstate {{ config.tfstates.platform.eslz.tfstate }} \
-  -env {{ config.caf_terraform.launchpad.caf_environment }} \
-  -level {{ level }} \
-  -p ${TF_DATA_DIR}/{{ config.tfstates.platform.eslz.tfstate }}.tfplan \
+  -tfstate_subscription_id {{ resources.caf_terraform.launchpad.subscription_id }} \
+  -tfstate {{ tfstate_object.tfstate }} \
+  -env {{ resources.caf_terraform.launchpad.caf_environment }} \
+  -level {{ tfstate_object.level }} \
+  -p ${TF_DATA_DIR}/{{ tfstate_object.tfstate }}.tfplan \
   -a plan
 
 ```

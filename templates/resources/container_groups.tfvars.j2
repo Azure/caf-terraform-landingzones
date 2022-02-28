@@ -1,5 +1,5 @@
 container_groups = {
-{% for key, value in resources.subscriptions[subscription_key].container_groups.items() %}
+{% for key, value in resources[tfstate_resource].subscriptions[subscription_key].container_groups.items() %}
   {{ key }} = {
       name = "{{ value.name }}"
 {% if value.region is defined %}
@@ -196,8 +196,8 @@ container_groups = {
 {% endif %}
 {% if value.dns_config is defined %}
     dns_config = {
-      nameservers = {{ value.dns_config.nameservers | replace('None','[]') | replace('\'','\"') }}
-      search_domains = {{ value.dns_config.search_domains | replace('None','[]') | replace('\'','\"') }}
+      nameservers = {{ value.dns_resources.nameservers | replace('None','[]') | replace('\'','\"') }}
+      search_domains = {{ value.dns_resources.search_domains | replace('None','[]') | replace('\'','\"') }}
     }
 {% endif %}
   }

@@ -7,21 +7,21 @@ Deploy the identity services
 rover logout
 
 # login a with a user member of the caf-maintainers group
-rover login -t {{ config.platform_identity.tenant_name }}
+rover login -t {{ resources.platform_identity.tenant_name }}
 
 rover \
-{% if config.platform_identity.azuread_identity_mode != "logged_in_user" %}
+{% if resources.platform_identity.azuread_identity_mode != "logged_in_user" %}
   --impersonate-sp-from-keyvault-url {{ keyvaults.cred_identity.vault_uri }} \
 {% endif %}
   -lz {{ landingzones_folder }}/caf_solution \
   -var-folder {{ destination_path }} \
-  -tfstate_subscription_id {{ config.caf_terraform.launchpad.subscription_id }} \
+  -tfstate_subscription_id {{ resources.caf_terraform.launchpad.subscription_id }} \
   -target_subscription {{ platform_subscriptions_details.identity.subscription_id }} \
-  -tfstate {{ config.tfstates.platform.identity_level2[deployment].tfstate }} \
-  -log-severity {{ config.gitops.rover_log_error }} \
-  -env {{ config.caf_terraform.launchpad.caf_environment }} \
+  -tfstate {{ resources.tfstates.platform.identity_level2[deployment].tfstate }} \
+  -log-severity {{ resources.gitops.rover_log_error }} \
+  -env {{ resources.caf_terraform.launchpad.caf_environment }} \
   -level {{ level }} \
-  -p ${TF_DATA_DIR}/{{ config.tfstates.platform.identity_level2[deployment].tfstate }}.tfplan \
+  -p ${TF_DATA_DIR}/{{ resources.tfstates.platform.identity_level2[deployment].tfstate }}.tfplan \
   -a plan
 
 ```

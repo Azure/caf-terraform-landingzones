@@ -1,5 +1,5 @@
 storage_accounts = {
-{% for key, value in resources.subscriptions[subscription_key].storage_accounts.items() %}
+{% for key, value in resources[tfstate_resource].subscriptions[subscription_key].storage_accounts.items() %}
   {{ key }} = {
     name                      = "{{ value.name }}"
     resource_group_key        = "{{ value.resource_group_key }}"

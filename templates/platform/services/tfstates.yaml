@@ -1,0 +1,28 @@
+tfstates:
+  platform:
+{% for key in topology.deployments.root.keys() %}
+    {{topologies[key].tfstate.tfstate_key_name}}:
+{% for l_key, l_value in topologies[key].tfstate.items() %}
+      {{l_key}}: {{l_value}}
+{% endfor %}
+
+{% endfor %}
+
+{% for key in topology.deployments.eslz.keys() %}
+    {{topologies['eslz_' + key].tfstate.tfstate_key_name}}:
+{% for l_key, l_value in topologies['eslz_' + key].tfstate.items() %}
+      {{l_key}}: {{l_value}}
+{% endfor %}
+
+{% endfor %}
+
+{% for key in topology.deployments.scale_out_domains.keys() %}
+    {{key}}:
+{% for a_key in topology.deployments.scale_out_domains[key].keys() %}
+      {{a_key}}:
+{% for l_key, l_value in topologies[key + '_' + a_key].tfstate.items() %}
+        {{l_key}}: {{l_value}}
+{% endfor %}
+{% endfor %}
+
+{% endfor %}

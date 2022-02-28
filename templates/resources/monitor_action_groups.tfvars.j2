@@ -1,5 +1,5 @@
 monitor_action_groups = {
-{% for key, mag in resources.subscriptions[subscription_key].monitor_action_groups.items() %}
+{% for key, mag in resources[tfstate_resource].subscriptions[subscription_key].monitor_action_groups.items() %}
   {{ key }} = {
     action_group_name  = "{{ mag.action_group_name }}"
     shortname          = "{{ mag.shortname }}"

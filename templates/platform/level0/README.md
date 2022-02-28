@@ -1,5 +1,5 @@
 ## Introduction
-This directory contains details around the configurations which are deployed to the config. All the components are deployed in a layered approach.
+This directory contains details around the configurations which are deployed to the resources. All the components are deployed in a layered approach.
 
 ### Level 0
 Deployment Elements  | Resources Deployed

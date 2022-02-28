@@ -1,9 +1,11 @@
 - name: "{{level }}-{{ deployment}} - Set landingzone file_path"
   set_fact:
-    destination_path: "{{config.configuration_folders.platform.destination_base_path}}/{{config.configuration_folders.platform.destination_relative_path}}/{{ level }}/{{ deployment }}"
-    mg: "{{ lookup('file', '{{ config_folder }}/eslz/archetype_config_overrides.caf.platform.yaml') | from_yaml }}"
-    mg_custom: "{{ lookup('file', '{{ config_folder }}/eslz/custom_landing_zones.caf.platform.yaml') | from_yaml }}"
+    destination_path: "{{resources.configuration_folders.platform.destination_base_path}}/{{resources.configuration_folders.platform.destination_relative_path}}/{{ resources['eslz_' + deployment].relative_destination_folder }}"
+    mg: "{{ lookup('file', '{{ config_folder }}/eslz/{{deployment}}/archetype_config_overrides.caf.platform.yaml') | from_yaml }}"
+    mg_custom: "{{ lookup('file', '{{ config_folder }}/eslz/{{deployment}}/custom_landing_zones.caf.platform.yaml') | from_yaml }}"
     level: "{{tfstate_object.level}}"
+    definition_source_folder: "{{config_folder}}/eslz/{{ deployment}}"
+    template_source_folder: "{{base_templates_folder}}/{{tfstate_object.template_lib_folder}}"
     verbosity: 2
 
 - debug:
@@ -13,12 +15,11 @@
   shell: |
     rm -rf "{{ destination_path }}"
   when:
-    - config.platform_core_setup.enterprise_scale.enable
-    - config.platform_core_setup.enterprise_scale.clean_up_destination_folder
+    - resources.platform_core_setup.enterprise_scale[deployment].clean_up_destination_folder
 
 - name: "{{ level }}-{{ deployment }} | Creates directory structure"
-  shell: mkdir -p "{{ destination_path }}/lib/{{ item.path }}"
-  with_filetree: "{{ base_templates_folder }}/{{ tfstate_object.sub_template_folder}}/lib/{{ config.platform_core_setup.enterprise_scale.private_lib.version_to_deploy }}"
+  shell: mkdir -p "{{ destination_path }}/{{ item.path }}"
+  with_filetree: "{{ definition_source_folder }}"
   when: item.state == 'directory'
 
 - name: "{{ level }}-{{ deployment }} |  Tfvars"
@@ -27,12 +28,12 @@
     dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"
     force: yes
   with_fileglob:
-    - "{{ level }}/{{ deployment }}/*.j2"
-    - "{{ level }}/{{ deployment }}/*.md"
+    - "{{ template_source_folder }}/*.j2"
+    - "{{ template_source_folder }}/*.md"
 
 - name: "{{ level }}-{{ deployment }} |  Lib - archetypes - built-in"
   ansible.builtin.template:
-      src: "{{ base_templates_folder }}/{{ tfstate_object.sub_template_folder}}/lib/{{ config.platform_core_setup.enterprise_scale.private_lib.version_to_deploy }}/archetype_definitions/archetype_definition_template.json.j2"
+      src: "{{ template_source_folder }}/lib/{{tfstate_object.eslz_version}}/archetype_definitions/archetype_definition_template.json.j2"
       dest: "{{ destination_path }}/lib/archetype_definitions/archetype_definition_{{ mg.archetype_definitions[item].archetype_id }}.json"
       force: yes
   loop: "{{ mg.archetype_definitions.keys() }}"
@@ -43,20 +44,30 @@
   when:
     - mg_custom.archetype_definitions is defined
   ansible.builtin.template:
-      src: "{{ base_templates_folder }}/{{ tfstate_object.sub_template_folder }}/lib/{{ config.platform_core_setup.enterprise_scale.private_lib.version_to_deploy }}/archetype_definitions/custom_landing_zone_template.json.j2"
+      src: "{{ template_source_folder }}/lib/{{tfstate_object.eslz_version}}/archetype_definitions/custom_landing_zone_template.json.j2"
       dest: "{{ destination_path }}/lib/archetype_definitions/archetype_definition_{{ mg_custom.archetype_definitions[item].archetype_id }}.json"
       force: yes
   loop: "{{ mg_custom.archetype_definitions.keys() }}"
   loop_control:
     loop_var: item
 
+- name: "{{ level }}-{{ deployment }} | archetypes"
+  ansible.builtin.template:
+      src: "{{ template_source_folder }}/lib/{{tfstate_object.eslz_version}}/{{item}}"
+      dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"
+      force: yes
+  loop: 
+    - archetype_config_overrides.tfvars.j2
+    - custom_landing_zones.tfvars.j2
+
 - name: "{{ level }}-{{ deployment }} |  Lib"
   ansible.builtin.template:
     src: "{{ item.src }}"
-    dest: "{{ destination_path }}/lib/{{ item.path }}"
+    dest: "{{ destination_path }}/{{ item.path }}"
     force: yes
-  with_filetree: "{{ config_folder }}/eslz/lib"
-  when: item.state == 'file' and config.platform_core_setup.enterprise_scale.update_lib_folder
+  with_filetree: "{{ definition_source_folder }}"
+  when: 
+    - item.state == 'file' and resources.platform_core_setup.enterprise_scale[deployment].update_lib_folder
 
 - name: "{{ level }}-{{ deployment }} |  overrides"
   when:
@@ -66,4 +77,4 @@
     dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"
     force: yes
   with_fileglob:
-    - "{{ level }}/{{ deployment }}/lib/{{ config.platform_core_setup.enterprise_scale.private_lib.version_to_deploy }}/*.tfvars.j2"
+    - "{{ definition_source_folder }}/*.tfvars.j2"

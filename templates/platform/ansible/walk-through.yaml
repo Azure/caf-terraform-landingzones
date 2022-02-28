@@ -1,0 +1,117 @@
+- name: Get deployment user object_id
+  shell: az ad signed-in-user show --query objectId -o tsv
+  register: object_id
+
+- name: Get deployment user UPN
+  shell: az ad signed-in-user show --query userPrincipalName -o tsv
+  register: upn
+
+- name: Get default user's tenant name
+  shell: az rest --method get --url "https://graph.microsoft.com/v1.0/organization" --query "value[0].verifiedDomains[?isDefault].name" -o tsv
+  register: tenant_name
+  
+- name: Get default user's tenant guid
+  shell: az account show --query tenantId -o tsv
+  register: tenant_id
+  
+- name: Get default subscription id
+  shell: az account show --query id -o tsv
+  register: subscription_id
+  
+- name: Get default subscription name
+  shell: az account show --query name -o tsv
+  register: subscription_name
+
+
+- set_fact:
+    regions:  "{{ azure_regions }}"
+
+- set_fact:
+    topology: "{{ lookup('template', '{{ topology_file }}') | from_yaml }}"
+    destination_path: "{{destination_base_path + '/' + definitions_relative_path}}"
+
+
+- name: "Creates directory - {{destination_path}}"
+  file:
+    path: "{{destination_path}}"
+    state: directory
+
+#
+# Load the files into variables
+#
+
+- include_tasks: "load_deployments.yaml"
+  loop: "{{topology.deployments.keys()}}"
+  loop_control:
+    loop_var: stage
+
+- name: Merge deployment files into topologies variable
+  merge_vars:
+    suffix_to_merge: _deployment__to_merge
+    merged_var_name: merged_topologies
+    expected_type: 'dict'
+    recursive_dict_merge: True
+
+- set_fact:
+    topologies:  "{{ merged_topologies }}"
+
+
+# Need topologies to render the following templates
+- name: "load tfstates"
+  set_fact:
+    "tfstates_deployment__to_merge": "{{ lookup('template', '{{config_folder_platform_templates}}/services/tfstates.yaml') | from_yaml }}"
+
+- name: "load template.caf.platform"
+  set_fact:
+    "caf_platform_deployment__to_merge": "{{ lookup('template', '{{config_folder_platform_templates}}/services/template.caf.platform.yaml') | from_yaml }}"
+
+- name: Merge deployment files into topologies variable
+  merge_vars:
+    suffix_to_merge: _deployment__to_merge
+    merged_var_name: merged_topologies
+    expected_type: 'dict'
+    recursive_dict_merge: True
+
+- set_fact:
+    topologies:  "{{ merged_topologies }}"
+
+- debug:
+    msg: "topologies: {{topologies}}"
+
+#
+# Generate target folder structure and files
+#
+
+- name: Copy files
+  include_tasks: "load_deployments.yaml"
+  loop: "{{topology.deployments.keys()}}"
+  loop_control:
+    loop_var: stage
+
+- name: tfstates.yaml
+  ansible.builtin.template:
+    src: "{{config_folder_platform_templates}}/services/tfstates.yaml"
+    dest: "{{destination_path}}/tfstates.yaml"
+    
+- name: ignite.yaml
+  ansible.builtin.template:
+    src: "{{config_folder_platform_templates}}/eslz_single_subscription.yaml"
+    dest: "{{destination_path}}/ignite.yaml"
+            
+- name: template.caf.platform.yaml
+  ansible.builtin.template:
+    src: "{{config_folder_platform_templates}}/services/template.caf.platform.yaml"
+    dest: "{{destination_path}}/{{topology.customer_name}}.caf.platform.yaml"
+                    
+- name: readme.me
+  ansible.builtin.template:
+    src: "{{config_folder_platform_templates}}/services/README.md"
+    dest: "{{destination_path}}/GETTING-STARTED.md"
+    
+
+- debug:
+    msg:
+    - "You have now initialized the definition of the platform"
+    - "You can review and adjust the yaml files."
+    - "configuration folder: - {{destination_path}}"
+    - "readme: {{destination_path}}/GETTING-STARTED.md"

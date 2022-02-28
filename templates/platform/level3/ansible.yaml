@@ -3,8 +3,8 @@
   register: keyvault_scl
   shell: |
     az keyvault list \
-      --subscription {{ config.caf_terraform.launchpad.subscription_id }} \
-      --query "[?tags.caf_identity_aad_key=='cred_subscription_creation_landingzones' && tags.caf_environment=='{{ config.caf_terraform.launchpad.caf_environment }}'].{name:name}[0]" -o json | jq -r --arg http "https://" --arg suffix ".vault.azure.net/" '$http + (.name) + $suffix'
+      --subscription {{ resources.caf_terraform.launchpad.subscription_id }} \
+      --query "[?tags.caf_identity_aad_key=='cred_subscription_creation_landingzones' && tags.caf_environment=='{{ resources.caf_terraform.launchpad.caf_environment }}'].{name:name}[0]" -o json | jq -r --arg http "https://" --arg suffix ".vault.azure.net/" '$http + (.name) + $suffix'
 
 - debug:
     msg: "{{keyvault_scl.stdout}}"
@@ -17,8 +17,8 @@
   register: storage_account_level3
   shell: |
     az storage account list \
-      --subscription {{ config.caf_terraform.launchpad.subscription_id }} \
-      --query "[?tags.caf_tfstate=='level3' && tags.caf_environment=='{{ config.caf_terraform.launchpad.caf_environment }}'].{name:name, resource_group:resourceGroup}[0]" -o json | jq -r
+      --subscription {{ resources.caf_terraform.launchpad.subscription_id }} \
+      --query "[?tags.caf_tfstate=='level3' && tags.caf_environment=='{{ resources.caf_terraform.launchpad.caf_environment }}'].{name:name, resource_group:resourceGroup}[0]" -o json | jq -r
 
 - debug:
     msg: "{{storage_account_level3.stdout}}"
@@ -28,16 +28,16 @@
   ignore_errors: true
   shell: |
     az storage blob download \
-      --name "{{ config.tfstates.asvm.subscriptions.tfstate }}" \
+      --name "{{ resources.tfstates.asvm.subscriptions.tfstate }}" \
       --account-name "{{ storage_account_level3.stdout|from_json|json_query('name') }}" \
-      --container-name "{{ config.tfstates.asvm.subscriptions.workspace | default('tfstate') }}" \
+      --container-name "{{ resources.tfstates.asvm.subscriptions.workspace | default('tfstate') }}" \
       --auth-mode "login" \
-      --file "~/.terraform.cache/launchpad/{{ config.tfstates.asvm.subscriptions.tfstate }}"
+      --file "~/.terraform.cache/launchpad/{{ resources.tfstates.asvm.subscriptions.tfstate }}"
 
 - name: "[{{ level }}-{{ subscription_key }}]  Get subscription_creation_landingzones details"
   when:
     - landingzones_subscriptions.rc == 0
-  shell: "cat ~/.terraform.cache/launchpad/{{ config.tfstates.asvm.subscriptions.tfstate }}"
+  shell: "cat ~/.terraform.cache/launchpad/{{ resources.tfstates.asvm.subscriptions.tfstate }}"
   register: landingzones_tfstate
 
 - debug:
@@ -55,7 +55,7 @@
   set_fact:
     asvm_subscriptions_details: "{{ scljsondata | json_query(path) }}"
   vars:
-    path: 'outputs.objects.value.{{config.tfstates.asvm.subscriptions.lz_key_name}}.subscriptions'
+    path: 'outputs.objects.value.{{resources.tfstates.asvm.subscriptions.lz_key_name}}.subscriptions'
 
 - debug:
     msg: "{{asvm_subscriptions_details}}"

@@ -1,0 +1,99 @@
+- name: Process deployment based on ignite.yaml
+  hosts: localhost
+
+  tasks:
+
+    - name: "load {{ config_folder }}/ignite.yaml"
+      include_vars:
+        name: bootstrap
+        dir: "{{ config_folder }}"
+        depth: 1
+        ignore_unknown_extensions: true
+        files_matching: "ignite.yaml"
+
+    - name: "Load variable for platform config"
+      include_vars:
+        name: resources
+        dir: "{{config_folder_platform | default(config_folder)}}"
+        depth: 0
+        ignore_unknown_extensions: true
+        files_matching: ".yaml"
+        ignore_files: "ignite.yaml"
+
+    - name: "Set variables"
+      set_fact:
+        job_cache_base_path: "/home/vscode/.terraform.cache"
+        destination_base_path: '{{resources.configuration_folders.platform.destination_base_path}}/{{ resources.configuration_folders.platform.destination_relative_path }}'
+
+    - name: "Creates destination directory - {{destination_base_path}}"
+      file:
+        path: "{{destination_base_path}}"
+        state: directory
+
+
+    - debug:
+        msg: 
+        - "bootstrap: {{bootstrap}}"
+        - "resources: {{resources}}"
+
+#
+# Generate the foundation services
+#
+
+    - name: Process core deployments
+      include_tasks: "process_stages.yaml"
+      loop: "{{bootstrap.deployments.root.keys()}}"
+      loop_control:
+        loop_var: tfstate
+      vars:
+        lz_type: platform
+        stage: root
+
+    - name: Process eslz deployments
+      include_tasks: "process_stages.yaml"
+      loop: "{{bootstrap.deployments.eslz.keys()}}"
+      loop_control:
+        loop_var: tfstate
+      when:
+        - launchpad_tfstate_exists.rc == 0
+      vars:
+        lz_type: platform
+        stage: eslz
+
+#
+# Process the deployments folders
+#
+
+    - find:
+        paths: "{{config_folder}}/scale_out_domains"
+        recurse: yes
+        patterns: "*.yaml"
+        file_type: file
+      register: files_to_process
+
+    - name: Process scale out domaines deployments
+      include_tasks: "process_stages.yaml"
+      loop: "{{bootstrap.deployments.scale_out_domains.keys()}}"
+      loop_control:
+        loop_var: tfstate
+      when:
+        - launchpad_tfstate_exists.rc == 0
+      vars:
+        lz_type: platform
+        stage: scale_out_domains
+
+## Platform readme
+
+    - name: "[{{ base_templates_folder }}] readme"
+      ansible.builtin.template:
+        src: "{{ base_templates_folder }}/readme.md"
+        dest: "{{ destination_base_path }}/readme.md"
+        force: yes
+
+#
+# Formatting & Linters
+#
+
+    - name: Terraform Formatting
+      shell: |
+        terraform fmt -recursive {{ destination_base_path }}

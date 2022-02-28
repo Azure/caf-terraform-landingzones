@@ -1,51 +1,51 @@
 subscription_id_overrides = {
-{% if config.platform_core_setup.enterprise_scale.subscription_id_overrides is defined %}
-{% if config.platform_core_setup.enterprise_scale.subscription_id_overrides.root is defined %}
-  root = {{ config.platform_core_setup.enterprise_scale.subscription_id_overrides.root | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"') }}
+{% if resources.platform_core_setup.enterprise_scale.subscription_id_overrides is defined %}
+{% if resources.platform_core_setup.enterprise_scale.subscription_id_overrides.root is defined %}
+  root = {{ resources.platform_core_setup.enterprise_scale.subscription_id_overrides.root | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"') }}
 {% else %}
   root = []
 {% endif %}
 {% endif %}
-{% if config.platform_core_setup.enterprise_scale.subscription_id_overrides is defined %}
-{% if config.platform_core_setup.enterprise_scale.subscription_id_overrides.decommissioned is defined %}
-  decommissioned           = {{ config.platform_core_setup.enterprise_scale.subscription_id_overrides.decommissioned | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"') }}
+{% if resources.platform_core_setup.enterprise_scale.subscription_id_overrides is defined %}
+{% if resources.platform_core_setup.enterprise_scale.subscription_id_overrides.decommissioned is defined %}
+  decommissioned           = {{ resources.platform_core_setup.enterprise_scale.subscription_id_overrides.decommissioned | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"') }}
 {% else %}
   decommissioned = []
 {% endif %}
-{% if config.platform_core_setup.enterprise_scale.subscription_id_overrides.sandboxes is defined %}
-  sandboxes           = {{ config.platform_core_setup.enterprise_scale.subscription_id_overrides.sandboxes | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"') }}
+{% if resources.platform_core_setup.enterprise_scale.subscription_id_overrides.sandboxes is defined %}
+  sandboxes           = {{ resources.platform_core_setup.enterprise_scale.subscription_id_overrides.sandboxes | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"') }}
 {% else %}
   sandboxes = []
 {% endif %}
-{% if config.platform_core_setup.enterprise_scale.subscription_id_overrides['landing-zones'] is defined %}
-  landing-zones           = {{ config.platform_core_setup.enterprise_scale.subscription_id_overrides['landing-zones'] | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"') }}
+{% if resources.platform_core_setup.enterprise_scale.subscription_id_overrides['landing-zones'] is defined %}
+  landing-zones           = {{ resources.platform_core_setup.enterprise_scale.subscription_id_overrides['landing-zones'] | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"') }}
 {% else %}
   landing-zones = []
 {% endif %}
-{% if config.platform_core_setup.enterprise_scale.subscription_id_overrides.platform is defined %}
-  platform           = {{ config.platform_core_setup.enterprise_scale.subscription_id_overrides.platform | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"') }}
+{% if resources.platform_core_setup.enterprise_scale.subscription_id_overrides.platform is defined %}
+  platform           = {{ resources.platform_core_setup.enterprise_scale.subscription_id_overrides.platform | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"') }}
 {% else %}
   platform = []
 {% endif %}
-{% if config.platform_core_setup.enterprise_scale.subscription_id_overrides.connectivity is defined %}
-  connectivity           = {{ config.platform_core_setup.enterprise_scale.subscription_id_overrides.connectivity | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"') }}
+{% if resources.platform_core_setup.enterprise_scale.subscription_id_overrides.connectivity is defined %}
+  connectivity           = {{ resources.platform_core_setup.enterprise_scale.subscription_id_overrides.connectivity | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"') }}
 {% else %}
   connectivity = []
 {% endif %}
-{% if config.platform_core_setup.enterprise_scale.subscription_id_overrides.management is defined %}
-  management           = {{ config.platform_core_setup.enterprise_scale.subscription_id_overrides.management | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"') }}
+{% if resources.platform_core_setup.enterprise_scale.subscription_id_overrides.management is defined %}
+  management           = {{ resources.platform_core_setup.enterprise_scale.subscription_id_overrides.management | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"') }}
 {% else %}
   management = []
 {% endif %}
-{% if config.platform_core_setup.enterprise_scale.subscription_id_overrides.identity is defined %}
-  identity           = {{ config.platform_core_setup.enterprise_scale.subscription_id_overrides.identity | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"') }}
+{% if resources.platform_core_setup.enterprise_scale.subscription_id_overrides.identity is defined %}
+  identity           = {{ resources.platform_core_setup.enterprise_scale.subscription_id_overrides.identity | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"') }}
 {% else %}
   identity = []
 {% endif %}
 {% else %}
-{% if config.platform_core_setup.enterprise_scale.subscription_deployment_mode == 'single_reuse' %}
+{% if resources.subscription_deployment_mode == 'single_reuse' %}
   root           = [
-    "{{ config.caf_terraform.launchpad.subscription_id }}"
+    "{{ resources.caf_terraform.launchpad.subscription_id }}"
   ]
 {% else %}
   root           = []
@@ -60,27 +60,27 @@ subscription_id_overrides = {
 {% endif %}
 }
 
-{% if config.platform_identity.azuread_identity_mode != 'logged_in_user' and config.platform_core_setup.enterprise_scale.subscription_deployment_mode != 'single_reuse' %}
+{% if resources.platform_identity.azuread_identity_mode != 'logged_in_user' and resources.subscription_deployment_mode != 'single_reuse' %}
 subscription_id_overrides_by_keys = {
   connectivity = {
     connectivity = {
-      lz_key = "{{ config.tfstates.platform.platform_subscriptions.lz_key_name }}"
+      lz_key = "{{ resources.tfstates.platform.platform_subscriptions.lz_key_name }}"
       key    = "connectivity"
     }
   }
   management = {
     launchpad = {
-      lz_key = "{{ config.tfstates.platform.platform_subscriptions.lz_key_name }}"
+      lz_key = "{{ resources.tfstates.platform.platform_subscriptions.lz_key_name }}"
       key    = "launchpad"
     }
     management = {
-      lz_key = "{{ config.tfstates.platform.platform_subscriptions.lz_key_name }}"
+      lz_key = "{{ resources.tfstates.platform.platform_subscriptions.lz_key_name }}"
       key    = "management"
     }
   }
   identity = {
     identity = {
-      lz_key = "{{ config.tfstates.platform.platform_subscriptions.lz_key_name }}"
+      lz_key = "{{ resources.tfstates.platform.platform_subscriptions.lz_key_name }}"
       key    = "identity"
     }
   }

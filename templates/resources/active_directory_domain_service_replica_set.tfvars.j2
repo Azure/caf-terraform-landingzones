@@ -1,5 +1,5 @@
 active_directory_domain_service_replica_set = {
-{% for key, value in resources.subscriptions[subscription_key].active_directory_domain_service_replica_set.items() %}
+{% for key, value in resources[tfstate_resource].subscriptions[subscription_key].active_directory_domain_service_replica_set.items() %}
   {{ key }} = {
     region = "{{ value.region }}"
     active_directory_domain_service = {

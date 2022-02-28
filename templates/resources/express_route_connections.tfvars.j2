@@ -1,5 +1,5 @@
 express_route_connections = {
-{% for key, value in resources.subscriptions[subscription_key].express_route_connections.items() %}
+{% for key, value in resources[tfstate_resource].subscriptions[subscription_key].express_route_connections.items() %}
 {% if value.enable_er_connections %}
   {{ key }} = {
     name = "{{ value.name }}"

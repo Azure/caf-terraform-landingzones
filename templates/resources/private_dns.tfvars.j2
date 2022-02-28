@@ -1,5 +1,5 @@
 private_dns = {
-{% for key, value in resources.subscriptions[subscription_key].private_dns.items() %}
+{% for key, value in resources[tfstate_resource].subscriptions[subscription_key].private_dns.items() %}
   "{{ key }}" = {
     name               = "{{ value.name }}"
     resource_group_key = "{{ value.resource_group_key }}"

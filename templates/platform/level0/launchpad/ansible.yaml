@@ -6,86 +6,98 @@
     path: "{{ job_cache_base_path }}/launchpad"
     state: directory
 
-- name: "[{{resources.relative_destination_folder}}] Get tfstate account name"
+- name: "[{{resources[tfstate].relative_destination_folder}}] Get tfstate account name"
   register: launchpad_storage_account
   shell: |
     az storage account list \
-      --subscription {{ config.caf_terraform.launchpad.subscription_id }} \
-      --query "[?tags.caf_tfstate=='{{ config.tfstates.platform.launchpad.level }}' && tags.caf_environment=='{{ config.caf_terraform.launchpad.caf_environment }}'].{name:name}[0]" -o json | jq -r .name
+      --subscription {{ resources.caf_terraform.launchpad.subscription_id }} \
+      --query "[?tags.caf_tfstate=='{{ tfstate_object.level }}' && tags.caf_environment=='{{ resources.caf_terraform.launchpad.caf_environment }}'].{name:name}[0]" -o json | jq -r .name
 
 - debug:
     msg: "{{launchpad_storage_account}}"
 
-- name: "[{{resources.relative_destination_folder}}] Get launchpad tfstate details"
+- name: "[{{resources[tfstate].relative_destination_folder}}] Get launchpad tfstate details"
   register: launchpad_tfstate_exists
   ignore_errors: true
   shell: |
     az storage blob download \
-      --name "{{ config.tfstates.platform.launchpad.tfstate }}" \
+      --name "{{ resources.tfstates.platform.launchpad.tfstate }}" \
       --account-name "{{ launchpad_storage_account.stdout | default('') }}" \
-      --container-name "{{ config.tfstates.platform.launchpad.workspace | default('tfstate') }}" \
+      --container-name "{{ resources.tfstates.platform.launchpad.workspace | default('tfstate') }}" \
       --auth-mode "login" \
-      --file "~/.terraform.cache/launchpad/{{ config.tfstates.platform.launchpad.tfstate }}"
+      --file "~/.terraform.cache/launchpad/{{ resources.tfstates.platform.launchpad.tfstate }}"
 
-- name: "[{{resources.relative_destination_folder}}] Get subscription_creation_landingzones details"
+- debug:
+    msg: "{{launchpad_tfstate_exists}}"
+
+- name: "[{{resources[tfstate].relative_destination_folder}}] Get subscription_creation_landingzones details"
   when:
     - launchpad_tfstate_exists.rc == 0
-    - config.platform_core_setup.enterprise_scale.enable_azure_subscription_vending_machine
-  shell: "cat ~/.terraform.cache/launchpad/{{ config.tfstates.platform.launchpad.tfstate }}"
+    - resources.platform_core_setup.enable_azure_subscription_vending_machine
+  shell: "cat ~/.terraform.cache/launchpad/{{ resources.tfstates.platform.launchpad.tfstate }}"
   register: launchpad_tfstate
 
-- name: "[{{resources.relative_destination_folder}}] Get launchpad json data"
+- name: "[{{resources[tfstate].relative_destination_folder}}] Get launchpad json data"
   when:
     - launchpad_tfstate_exists.rc == 0
-    - config.platform_core_setup.enterprise_scale.enable_azure_subscription_vending_machine
+    - resources.platform_core_setup.enable_azure_subscription_vending_machine
   set_fact:
     scljsondata: "{{ launchpad_tfstate.stdout | from_json }}"
 
-- name: "[{{resources.relative_destination_folder}}] set launchpad_azuread_groups"
+- name: "[{{resources[tfstate].relative_destination_folder}}] set launchpad_azuread_groups"
   when:
     - launchpad_tfstate_exists.rc == 0
-    - config.platform_core_setup.enterprise_scale.enable_azure_subscription_vending_machine
+    - resources.platform_core_setup.enable_azure_subscription_vending_machine
   set_fact:
     launchpad_azuread_groups: "{{ scljsondata | json_query(path) }}"
   vars:
     path: 'outputs.objects.value.launchpad.azuread_groups'
 
-- name: "[{{resources.relative_destination_folder}}] Get credentials tfstate details"
+- name: "[{{resources[tfstate].relative_destination_folder}}] Get credentials tfstate details for {{ resources.tfstates.platform.launchpad_credentials.tfstate }} from {{ launchpad_storage_account.stdout }}/{{ resources.tfstates.platform.launchpad.workspace | default('tfstate') }}"
   register: credentials_tfstate_exists
-  ignore_errors: true
+  when:
+    - launchpad_tfstate_exists.rc == 0
   shell: |
     az storage blob download \
-      --name "{{ config.tfstates.platform.launchpad_credentials.tfstate }}" \
+      --name "{{ resources.tfstates.platform.launchpad_credentials.tfstate }}" \
       --account-name "{{ launchpad_storage_account.stdout }}" \
-      --container-name "{{ config.tfstates.platform.launchpad.workspace | default('tfstate') }}" \
+      --container-name "{{ resources.tfstates.platform.launchpad.workspace | default('tfstate') }}" \
       --auth-mode "login" \
-      --file "~/.terraform.cache/launchpad/{{ config.tfstates.platform.launchpad_credentials.tfstate }}"
+      --file "~/.terraform.cache/launchpad/{{ resources.tfstates.platform.launchpad_credentials.tfstate }}"
 
-- name: "[{{resources.relative_destination_folder}}] Get launchpad_credentials details"
+- name: "[{{resources[tfstate].relative_destination_folder}}] Get launchpad_credentials details"
   when: credentials_tfstate_exists.rc == 0
-  shell: "cat ~/.terraform.cache/launchpad/{{ config.tfstates.platform.launchpad_credentials.tfstate }}"
+  shell: "cat ~/.terraform.cache/launchpad/{{ resources.tfstates.platform.launchpad_credentials.tfstate }}"
   register: launchpad_credentials
 
-- name: "[{{resources.relative_destination_folder}}] Get launchpad_credentials json data"
+- name: "Keyvaults"
+  debug:
+    msg: 
+    - "{{credentials_tfstate_exists}}"
+    - "{{ resources.tfstates.platform.launchpad_credentials.tfstate }}"
+    - "{{launchpad_credentials}}"
+    verbosity: 2
+
+- name: "[{{resources[tfstate].relative_destination_folder}}] Get launchpad_credentials json data"
   when: credentials_tfstate_exists.rc == 0
   set_fact:
     credjsondata: "{{ launchpad_credentials.stdout | from_json }}"
 
-- name: "[{{resources.relative_destination_folder}}] set keyvaults"
+- name: "[{{resources[tfstate].relative_destination_folder}}] set keyvaults"
   when: credentials_tfstate_exists.rc == 0
   set_fact:
     keyvaults: "{{ credjsondata | json_query(path) }}"
   vars:
-    path: 'outputs.objects.value.launchpad_credentials_rotation.keyvaults'
+    path: 'outputs.objects.value.launchpad_credentials.keyvaults'
 
-- name: "[{{resources.relative_destination_folder}}] cleanup"
+- name: "[{{resources[tfstate].relative_destination_folder}}] cleanup"
   when: credentials_tfstate_exists.rc == 0
   file:
-    path: "~/.terraform.cache/launchpad/{{ config.tfstates.platform.launchpad_credentials.tfstate }}"
+    path: "~/.terraform.cache/launchpad/{{ resources.tfstates.platform.launchpad_credentials.tfstate }}"
     state: absent
 
-- name: "[{{resources.relative_destination_folder}}] cleanup"
+- name: "[{{resources[tfstate].relative_destination_folder}}] cleanup"
   when: launchpad_tfstate_exists.rc == 0
   file:
-    path: "~/.terraform.cache/launchpad/{{ config.tfstates.platform.launchpad.tfstate }}"
+    path: "~/.terraform.cache/launchpad/{{ resources.tfstates.platform.launchpad.tfstate }}"
     state: absent

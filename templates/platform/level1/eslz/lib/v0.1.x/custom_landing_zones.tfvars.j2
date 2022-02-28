@@ -1,7 +1,7 @@
 custom_landing_zones = {
-  {{ config.eslz.root_id }}-corp = {
+  {{ resources.eslz.root_id }}-corp = {
     display_name               = "Corp"
-    parent_management_group_id = "{{ config.eslz.root_id }}-landing-zones"
+    parent_management_group_id = "{{ resources.eslz.root_id }}-landing-zones"
     archetype_config = {
       archetype_id   = "landingzone_corp"
       parameters     = {}
@@ -10,9 +10,9 @@ custom_landing_zones = {
     subscriptions    = {}
     subscription_ids = []
   }
-  {{ config.eslz.root_id }}-online = {
+  {{ resources.eslz.root_id }}-online = {
     display_name               = "Online"
-    parent_management_group_id = "{{ config.eslz.root_id }}-landing-zones"
+    parent_management_group_id = "{{ resources.eslz.root_id }}-landing-zones"
     archetype_config = {
       archetype_id   = "landingzone_online"
       parameters     = {}

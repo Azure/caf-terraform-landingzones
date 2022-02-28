@@ -1,5 +1,5 @@
 public_ip_addresses = {
-{% for key, value in resources.subscriptions[subscription_key].public_ip_addresses.items() %}
+{% for key, value in resources[tfstate_resource].subscriptions[subscription_key].public_ip_addresses.items() %}
   {{ key }} = {
     name = "{{ value.name }}"
     resource_group_key = "{{ value.resource_group_key }}"

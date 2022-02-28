@@ -6,22 +6,22 @@ archetype_config_overrides = {
       "Deny-Resource-Locations" = {
         "listOfAllowedLocations" = {
           value = [
-            "{{ config.caf_terraform.launchpad.regions.region1.name }}",
-            "{{ config.caf_terraform.launchpad.regions.region2.name }}"
+            "{{ resources.caf_terraform.launchpad.regions.region1.name }}",
+            "{{ resources.caf_terraform.launchpad.regions.region2.name }}"
           ]
         }
       }
       "Deny-RSG-Locations" = {
         "listOfAllowedLocations" = {
           value = [
-            "{{ config.caf_terraform.launchpad.regions.region1.name }}",
-            "{{ config.caf_terraform.launchpad.regions.region2.name }}"
+            "{{ resources.caf_terraform.launchpad.regions.region1.name }}",
+            "{{ resources.caf_terraform.launchpad.regions.region2.name }}"
           ]
         }
       }
       "Deploy-Resource-Diag" = {
         "logAnalytics" = {
-          lz_key        = "{{ config.tfstates.platform.management.lz_key_name }}"
+          lz_key        = "{{ resources.tfstates.platform.management.lz_key_name }}"
           output_key    = "diagnostics"
           resource_type = "log_analytics"
           resource_key  = "central_logs_region1"
@@ -33,7 +33,7 @@ archetype_config_overrides = {
       }
       "Deploy-VM-Monitoring" = {
         "logAnalytics" = {
-          lz_key        = "{{ config.tfstates.platform.management.lz_key_name }}"
+          lz_key        = "{{ resources.tfstates.platform.management.lz_key_name }}"
           output_key    = "diagnostics"
           resource_type = "log_analytics"
           resource_key  = "central_logs_region1"
@@ -42,7 +42,7 @@ archetype_config_overrides = {
       }
       "Deploy-VMSS-Monitoring" = {
         "logAnalytics" = {
-          lz_key        = "{{ config.tfstates.platform.management.lz_key_name }}"
+          lz_key        = "{{ resources.tfstates.platform.management.lz_key_name }}"
           output_key    = "diagnostics"
           resource_type = "log_analytics"
           resource_key  = "central_logs_region1"

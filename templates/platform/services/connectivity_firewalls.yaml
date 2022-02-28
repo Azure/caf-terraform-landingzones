@@ -1,0 +1,88 @@
+azurerm_firewalls_{{env}}:
+  gitops:
+    caf_landingzone_branch: {{topology.caf_landingzone_branch}}
+
+  relative_destination_folder: level2/connectivity/azurerm_firewalls/{{env}}
+
+  tfstate:
+    lz_key_name: connectivity_firewalls_{{env}}
+    tfstate: connectivity_firewalls_{{env}}.tfstate
+    level: level2
+    config_file: azurerm_firewalls.yaml
+    identity_aad_key: cred_connectivity
+    # Do not rename the tfstate_key_name
+    tfstate_key_name: azurerm_firewalls
+
+  deployments:
+    landingzone:
+      tfstate:
+        platform:
+          azurerm_firewalls: {{env}}
+      global_settings_key:
+        platform:
+          virtual_hubs: {{env}}
+      remote_tfstates:
+        platform:
+          virtual_hubs: {{env}}
+          azurerm_firewall_policies: {{env}}
+
+
+  subscriptions:
+    connectivity:
+      resource_groups:
+          firewall_policies:
+            name: connectivity-{{env}}-firewall
+            region_key: region1
+
+
+      virtual_networks:
+        vnet:
+          name: vnet-connectivity-{{env}}-fw-plinks
+          resource_group_key: firewall_policies
+          region_key: region1
+          address_space:
+            - 10.101.61.0/24
+          specialsubnets:
+            AzureFirewallSubnet:
+              name: AzureFirewallSubnet
+              cidr:
+                - 10.101.61.0/26
+
+      public_ip_addresses:
+        fw_pip1:
+          name: pip-{{env}}-fw-01
+          resource_group_key: firewall_policies
+          sku: Standard
+          allocation_method: Static
+          ip_version: IPv4
+          idle_timeout_in_minutes: 4
+
+      azurerm_firewalls:
+        fw_{{env}}_plinks_01:
+          name: fw-{{env}}-plinks-01
+          resource_group_key: firewall_policies
+          vnet_key: vnet
+          sku_tier: Standard
+          firewall_policy:
+            key: root
+            lz_key: connectivity_firewall_policies_{{env}}
+          zones:
+            - 1
+            - 2
+            - 3
+          public_ips:
+            ip1:
+              name: pip1
+              public_ip_key: fw_pip1
+              vnet_key: vnet
+              subnet_key: AzureFirewallSubnet
+
+
+      virtual_hub_connections:
+        vnet_to_hub:
+          name: vnet-connectivity-{{env}}-fw-plinks-TO-vhub-{{env}}
+          virtual_hub:
+            lz_key: connectivity_virtual_hubs_{{env}}
+            key: {{env}}
+          vnet:
+            vnet_key: vnet

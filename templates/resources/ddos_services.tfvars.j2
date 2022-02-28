@@ -1,5 +1,5 @@
 ddos_services = {
-{% for key, value in resources.subscriptions[subscription_key].ddos_services.items() %}
+{% for key, value in resources[tfstate_resource].subscriptions[subscription_key].ddos_services.items() %}
   "{{key}}" = {
     resource_group_key = "{{ value.resource_group_key }}"
     name               = "{{ value.name }}"

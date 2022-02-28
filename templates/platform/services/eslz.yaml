@@ -1,0 +1,38 @@
+eslz_{{item}}:
+  gitops:
+    caf_landingzone_branch: {{topology.caf_landingzone_branch}}
+
+  relative_destination_folder: level1/eslz/{{item}}
+
+
+  tfstate:
+    lz_key_name: eslz_{{item}}
+    tfstate: eslz_{{item}}.tfstate
+    level: level1
+    identity_aad_key: cred_eslz
+    config_file: eslz_{{item}}.yaml
+    template_lib_folder: level1/eslz
+    sub_template_folder: level1/eslz
+    eslz_version: {{topology.enterprise_scale[item].version_to_deploy}}
+    yaml: level1/eslz/ansible.yaml
+    # Do not rename the tfstate_key_name
+    tfstate_key_name: eslz_{{item}}
+
+  deployments:
+    landingzone:
+      tfstate:
+        platform:
+          eslz_contoso:
+      global_settings_key:
+        platform:
+          launchpad:
+      remote_tfstates:
+        platform:
+          launchpad:
+          identity:
+          management:
+          subscriptions:
+
+  # Keep the following to allow rover ignite to process the deployment.
+  subscriptions:
+    launchpad:

@@ -3,16 +3,16 @@
 #
 
 diagnostic_log_analytics = {
-{% for key, dla in resources.subscriptions[subscription_key].diagnostic_log_analytics.items() %}
+{% for key, dla in resources[tfstate_resource].subscriptions[subscription_key].diagnostic_log_analytics.items() %}
   {{ key }} = {
-    region             = "{{ dla.region | default(config.caf_terraform.launchpad.default_region_key)}}"
+    region             = "{{ dla.region | default(resources.caf_terraform.launchpad.default_region_key)}}"
     name               = "{{ dla.name }}"
     resource_group_key = "{{ dla.resource_group_key }}"
 
-{% if resources.subscriptions[subscription_key].diagnostic_log_analytics[key].diagnostic_profiles is defined %}
+{% if resources[tfstate_resource].subscriptions[subscription_key].diagnostic_log_analytics[key].diagnostic_profiles is defined %}
     # you can setup up to 5 key
     diagnostic_profiles = {
-{% for dp_key, dp_value in resources.subscriptions[subscription_key].diagnostic_log_analytics[key].diagnostic_profiles.items() %}
+{% for dp_key, dp_value in resources[tfstate_resource].subscriptions[subscription_key].diagnostic_log_analytics[key].diagnostic_profiles.items() %}
       {{ dp_key }} = {
         definition_key   = "{{ dp_value.definition_key }}"
         destination_type = "{{ dp_value.destination_type }}"
@@ -21,9 +21,9 @@ diagnostic_log_analytics = {
 {% endfor %}
     }
 {% endif %}
-{% if resources.subscriptions[subscription_key].diagnostic_log_analytics[key].solutions is defined %}
+{% if resources[tfstate_resource].subscriptions[subscription_key].diagnostic_log_analytics[key].solutions is defined %}
     solutions = {
-{% for sol_key, sol_value in resources.subscriptions[subscription_key].diagnostic_log_analytics[key].solutions.items() %}
+{% for sol_key, sol_value in resources[tfstate_resource].subscriptions[subscription_key].diagnostic_log_analytics[key].solutions.items() %}
       {{ sol_key }} = {
         "publisher" = "{{ sol_value.publisher }}"
         "product"   = "{{ sol_value.product }}"

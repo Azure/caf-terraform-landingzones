@@ -2,7 +2,7 @@ archetype_config_overrides = {
 {% for key, level in mg.archetype_definitions.items() %}
   {{ key }} = {
       archetype_id     = "{{mg.archetype_definitions[key].archetype_id }}"
-{% if mg.archetype_definitions[key].policy_assignments is defined %}
+{% if mg.archetype_definitions[key].policy_assignments is mapping %}
       parameters = {
 {% for pa_key, pa_value in mg.archetype_definitions[key].policy_assignments.items() %}
 {% if pa_value is mapping %}
@@ -33,10 +33,10 @@ archetype_config_overrides = {
 {% else %}
       parameters       = {}
 {% endif %}
-{% if level.archetype_config.access_control is defined %}
+{% if level.archetype_resources.access_control is mapping %}
       access_control = {
-{% if config.platform_identity.azuread_identity_mode != "logged_in_user" %}
-{% for level_ac_key, level_ac in level.archetype_config.access_control.items() %}
+{% if resources.platform_identity.azuread_identity_mode != "logged_in_user" %}
+{% for level_ac_key, level_ac in level.archetype_resources.access_control.items() %}
         "{{level_ac_key}}" = {
 {% for level_role_key, level_role in level_ac.items()  %}
           "{{ level_role_key }}" = {
@@ -49,7 +49,7 @@ archetype_config_overrides = {
 {% endfor %}
 {% else %}
       "Owner" = {
-         "principal_ids" = ["{{ config.caf_terraform.billing_subscription_role_delegations.azuread_user_ea_account_owner_object_id }}"]
+         "principal_ids" = ["{{ resources.caf_terraform.billing_subscription_role_delegations.azuread_user_ea_account_owner_object_id }}"]
       }
 {% endif %}
       }
