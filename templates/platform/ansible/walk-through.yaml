@@ -1,3 +1,7 @@
+#
+# Get launchpad subscription details
+#
+
 - name: Get deployment user object_id
   shell: az ad signed-in-user show --query objectId -o tsv
   register: object_id

@@ -55,15 +55,14 @@
 
 - name: "[{{resources[tfstate].relative_destination_folder}}] Get credentials tfstate details for {{ resources.tfstates.platform.launchpad_credentials.tfstate }} from {{ launchpad_storage_account.stdout }}/{{ resources.tfstates.platform.launchpad.workspace | default('tfstate') }}"
   register: credentials_tfstate_exists
-  when:
-    - launchpad_tfstate_exists.rc == 0
+  ignore_errors: true
   shell: |
     az storage blob download \
       --name "{{ resources.tfstates.platform.launchpad_credentials.tfstate }}" \
       --account-name "{{ launchpad_storage_account.stdout }}" \
       --container-name "{{ resources.tfstates.platform.launchpad.workspace | default('tfstate') }}" \
       --auth-mode "login" \
-      --file "~/.terraform.cache/launchpad/{{ resources.tfstates.platform.launchpad_credentials.tfstate }}"
+      --file "~/.terraform.cache/launchpad/{{ resources.tfstates.platform.launchpad_credentials.tfstate }}" 
 
 - name: "[{{resources[tfstate].relative_destination_folder}}] Get launchpad_credentials details"
   when:

@@ -48,7 +48,7 @@ git checkout {{ resources.gitops.caf_landingzone_branch }}
 git pull
 
 rover \
-{% if ((resources.platform_identity.azuread_identity_mode != "logged_in_user") and (credentials_tfstate_exists.rc == 0)) %}
+{% if resources.platform_identity.azuread_identity_mode != "logged_in_user" and credentials_tfstate_exists.rc == 0 %}
   --impersonate-sp-from-keyvault-url {{ keyvaults[tfstate_object.identity_aad_key].vault_uri }} \
 {% endif %}
   -lz {{ landingzones_folder }}/caf_launchpad \
@@ -71,7 +71,7 @@ If the plan is not successfull you need to come back to the yaml contoso.caf.pla
 # On success plan, execute
 
 rover \
-{% if resources.platform_identity.azuread_identity_mode != "logged_in_user" and credentials_tfstate_exists is defined and credentials_tfstate_exists.rc == 0 %}
+{% if resources.platform_identity.azuread_identity_mode != "logged_in_user" and credentials_tfstate_exists.rc == 0 %}
   --impersonate-sp-from-keyvault-url {{ keyvaults.cred_level0.vault_uri }} \
 {% endif %}
   -lz {{ landingzones_folder }}/caf_launchpad \

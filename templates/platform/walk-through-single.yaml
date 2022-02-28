@@ -40,13 +40,12 @@
       default: region1
 
     - name: eslz_mg_prefix
-      prompt: Management group prefix
+      prompt: Management group prefix (value must be between 2 to 10 characters long and can only contain alphanumeric characters and hyphens). 
       private: no
 
     - name: eslz_mg_name
       prompt: Management group name
       private: no
-
 
   tasks:
 

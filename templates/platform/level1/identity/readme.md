@@ -40,4 +40,6 @@ rover \
 
 # Next steps
 
- [Deploy Enterprise Scale](../../level1/eslz/readme.md)
+{% for key in bootstrap.deployments.eslz.keys() %}
+[Deploy Enterprise Scale - {{key}}](../../level1/eslz/{{key}}/readme.md)
+{% endfor %}

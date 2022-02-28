@@ -16,10 +16,8 @@ rover login -t {{ resources.platform_identity.tenant_name }} -s {{ resources.caf
 {% endif %}
 
 rover \
-{% if platform_subscriptions_details.eslz is defined %}
-{% if keyvaults is defined and resources.platform_identity.azuread_identity_mode != "logged_in_user" %}
+{% if resources.platform_identity.azuread_identity_mode != "logged_in_user" and keyvaults is defined %}
   --impersonate-sp-from-keyvault-url {{ keyvaults[tfstate_object.identity_aad_key].vault_uri }} \
-{% endif %}
 {% endif %}
   -lz {{ landingzones_folder }}/caf_solution \
   -var-folder {{ destination_path }} \
@@ -44,8 +42,4 @@ rover \
 
 When you have successfully deployed the management landing zone, you can move to the next step:
 
-{% if resources.platform_core_setup.enterprise_scale is defined %}
- [Deploy Enterprise Scale](../../level1/eslz/readme.md)
-{% else %}
- [Deploy Connectivity](../../level2/connectivity/readme.md)
-{% endif %}
+[Deploy Identity](../../level1/identity/readme.md)

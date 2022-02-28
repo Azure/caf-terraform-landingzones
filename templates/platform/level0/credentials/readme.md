@@ -7,7 +7,7 @@
 rover login -t {{ resources.platform_identity.tenant_name }}
 
 rover \
-{% if ((resources.platform_identity.azuread_identity_mode != "logged_in_user") and (credentials_tfstate_exists.rc == 0)) %}
+{% if resources.platform_identity.azuread_identity_mode != "logged_in_user" and keyvaults is defined %}
   --impersonate-sp-from-keyvault-url {{ keyvaults[tfstate_object.identity_aad_key].vault_uri }} \
 {% endif %}
   -lz {{ landingzones_folder }}/caf_solution \
@@ -23,14 +23,14 @@ rover \
 
 ```
 
-If the plan is not successfull you need to come back to the yaml contoso.caf.platform.yaml, fix the values, re-execute the rover ignite and then rover plan.
+If the plan is not successfull you need to come back to the yaml {{resources.customer_name}}.caf.platform.yaml, fix the values, re-execute the rover ignite and then rover plan.
 
 
 ```bash 
 # On success plan, execute
 
 rover \
-{% if ((resources.platform_identity.azuread_identity_mode != "logged_in_user") and (credentials_tfstate_exists.rc == 0)) %}
+{% if resources.platform_identity.azuread_identity_mode != "logged_in_user" and keyvaults is defined %}
   --impersonate-sp-from-keyvault-url {{ keyvaults[tfstate_object.identity_aad_key].vault_uri }} \
 {% endif %}
   -lz {{ landingzones_folder }}/caf_solution \

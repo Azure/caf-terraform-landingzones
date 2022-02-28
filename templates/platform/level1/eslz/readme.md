@@ -30,4 +30,10 @@ rover \
 
 # Next steps
 
- [Deploy Connectivity](../../level2/connectivity/readme.md)
+[Deploy asvm](../../level2/asvm/readme.md)
+{% if bootstrap.deployments.scale_out_domains.identity_level2 is defined %}
+{% for key in bootstrap.deployments.scale_out_domains.identity_level2.keys() %}
+[Deploy identity_level2 - {{key}}](../../{{resources['identity_level2_' + key].relative_destination_folder}}/readme.md)
+{% endfor %}
+{% endif %}
+[Deploy Connectivity](../../level2/connectivity/virtual_wans/readme.md)

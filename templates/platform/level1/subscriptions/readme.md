@@ -8,10 +8,8 @@ Set-up the subscription delegations for platform and landingzone subscriptions
 rover login -t {{ resources.platform_identity.tenant_name }} -s {{ resources.caf_terraform.launchpad.subscription_id }}
 
 rover \
-{% if platform_subscriptions_details.eslz is defined %}
 {% if resources.platform_identity.azuread_identity_mode != "logged_in_user" and keyvaults is defined %}
   --impersonate-sp-from-keyvault-url {{ keyvaults[tfstate_object.identity_aad_key].vault_uri }} \
-{% endif %}
 {% endif %}
   -lz {{ landingzones_folder }}/caf_solution \
   -var-folder {{ destination_path }} \
