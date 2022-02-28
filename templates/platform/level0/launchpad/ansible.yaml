@@ -66,7 +66,9 @@
       --file "~/.terraform.cache/launchpad/{{ resources.tfstates.platform.launchpad_credentials.tfstate }}"
 
 - name: "[{{resources[tfstate].relative_destination_folder}}] Get launchpad_credentials details"
-  when: credentials_tfstate_exists.rc == 0
+  when:
+    - launchpad_tfstate_exists.rc == 0
+    - credentials_tfstate_exists.rc == 0
   shell: "cat ~/.terraform.cache/launchpad/{{ resources.tfstates.platform.launchpad_credentials.tfstate }}"
   register: launchpad_credentials
 
@@ -77,27 +79,38 @@
     - "{{ resources.tfstates.platform.launchpad_credentials.tfstate }}"
     - "{{launchpad_credentials}}"
     verbosity: 2
+  when:
+    - launchpad_tfstate_exists.rc == 0
+    - credentials_tfstate_exists.rc == 0
 
 - name: "[{{resources[tfstate].relative_destination_folder}}] Get launchpad_credentials json data"
-  when: credentials_tfstate_exists.rc == 0
+  when:
+    - launchpad_tfstate_exists.rc == 0
+    - credentials_tfstate_exists.rc == 0
   set_fact:
     credjsondata: "{{ launchpad_credentials.stdout | from_json }}"
 
 - name: "[{{resources[tfstate].relative_destination_folder}}] set keyvaults"
-  when: credentials_tfstate_exists.rc == 0
+  when:
+    - launchpad_tfstate_exists.rc == 0
+    - credentials_tfstate_exists.rc == 0
   set_fact:
     keyvaults: "{{ credjsondata | json_query(path) }}"
   vars:
     path: 'outputs.objects.value.launchpad_credentials.keyvaults'
 
 - name: "[{{resources[tfstate].relative_destination_folder}}] cleanup"
-  when: credentials_tfstate_exists.rc == 0
+  when:
+    - launchpad_tfstate_exists.rc == 0
+    - credentials_tfstate_exists.rc == 0
   file:
     path: "~/.terraform.cache/launchpad/{{ resources.tfstates.platform.launchpad_credentials.tfstate }}"
     state: absent
 
 - name: "[{{resources[tfstate].relative_destination_folder}}] cleanup"
-  when: launchpad_tfstate_exists.rc == 0
+  when:
+    - launchpad_tfstate_exists.rc == 0
+    - credentials_tfstate_exists.rc == 0
   file:
     path: "~/.terraform.cache/launchpad/{{ resources.tfstates.platform.launchpad.tfstate }}"
     state: absent
