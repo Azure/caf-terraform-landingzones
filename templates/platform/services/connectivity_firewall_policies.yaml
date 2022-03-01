@@ -34,8 +34,16 @@ azurerm_firewall_policies_{{env}}:
           region_key: region1
 
       azurerm_firewall_policies:
-        root:
-          name: "{{env}}-root-policy"
+        secure_root:
+          name: "secure-root-policy-{{env}}"
+          region_key: region1
+          resource_group:
+            key: firewall_policies
+          dns:
+            proxy_enabled: true
+          threat_intelligence_mode: "Alert"
+        dns_root:
+          name: "dns-root-policy-{{env}}"
           region_key: region1
           resource_group:
             key: firewall_policies

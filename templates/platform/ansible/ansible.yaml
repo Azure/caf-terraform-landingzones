@@ -23,7 +23,7 @@
     - name: "Set variables"
       set_fact:
         job_cache_base_path: "/home/vscode/.terraform.cache"
-        destination_base_path: '{{resources.configuration_folders.platform.destination_base_path}}/{{ resources.configuration_folders.platform.destination_relative_path }}'
+        destination_base_path: '{{ destination_folder }}'
 
     - name: "Creates destination directory - {{destination_base_path}}"
       file:

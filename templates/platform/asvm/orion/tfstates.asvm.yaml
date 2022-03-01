@@ -1,0 +1,28 @@
+# ### orion ###
+tfstates:
+  asvm:
+    subscriptions:
+      lz_key_name: orion_subscriptions
+      tfstate: orion_subscriptions.tfstate
+      workspace: tfstate
+      level: level3
+      sub_template_folder: level3
+      yaml: level3/ansible.yaml
+
+    orion_dev:
+      lz_key_name: orion_dev_level3
+      tfstate: orion_dev_level3.tfstate
+      workspace: orion-dev
+      level: level3
+      sub_template_folder: level3
+      yaml: level3/ansible.yaml
+
+
+    orion_prod:
+      lz_key_name: orion_prod_level3
+      tfstate: orion_prod_level3.tfstate
+      workspace: orion-prod
+      level: level3
+      sub_template_folder: level3
+      yaml: level3/ansible.yaml
+

@@ -1,17 +1,17 @@
-azurerm_firewalls_{{env}}:
+private_dns_firewalls_{{env}}:
   gitops:
     caf_landingzone_branch: {{topology.caf_landingzone_branch}}
 
-  relative_destination_folder: level2/connectivity/azurerm_firewalls/{{env}}
+  relative_destination_folder: level2/connectivity/private_dns_firewalls/{{env}}
 
   tfstate:
-    lz_key_name: connectivity_firewalls_{{env}}
-    tfstate: connectivity_firewalls_{{env}}.tfstate
+    lz_key_name: connectivity_private_dns_firewalls_{{env}}
+    tfstate: connectivity_private_dns_firewalls_{{env}}.tfstate
     level: level2
-    config_file: azurerm_firewalls.yaml
+    config_file: connectivity_private_dns_firewalls.yaml
     identity_aad_key: cred_connectivity
     # Do not rename the tfstate_key_name
-    tfstate_key_name: azurerm_firewalls
+    tfstate_key_name: private_dns_firewalls
 
   deployments:
     landingzone:
@@ -30,7 +30,7 @@ azurerm_firewalls_{{env}}:
   subscriptions:
     connectivity:
       resource_groups:
-          firewall_policies:
+          firewall:
             name: connectivity-{{env}}-firewall
             region_key: region1
 
@@ -38,7 +38,7 @@ azurerm_firewalls_{{env}}:
       virtual_networks:
         vnet:
           name: vnet-connectivity-{{env}}-fw-plinks
-          resource_group_key: firewall_policies
+          resource_group_key: firewall
           region_key: region1
           address_space:
             - 10.101.61.0/24
@@ -51,16 +51,16 @@ azurerm_firewalls_{{env}}:
       public_ip_addresses:
         fw_pip1:
           name: pip-{{env}}-fw-01
-          resource_group_key: firewall_policies
+          resource_group_key: firewall
           sku: Standard
           allocation_method: Static
           ip_version: IPv4
           idle_timeout_in_minutes: 4
 
       azurerm_firewalls:
-        fw_{{env}}_plinks_01:
-          name: fw-{{env}}-plinks-01
-          resource_group_key: firewall_policies
+        fw_{{env}}_dns:
+          name: fw-{{env}}-dns-01
+          resource_group_key: firewall
           vnet_key: vnet
           sku_tier: Standard
           firewall_policy:

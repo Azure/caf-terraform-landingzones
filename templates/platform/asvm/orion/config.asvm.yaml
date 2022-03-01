@@ -1,0 +1,4 @@
+# cleanup_destination - recommended to clean and recreated a clean state from template.
+configuration_folders:
+  asvm:
+    cleanup_destination: true

@@ -1,3 +1,10 @@
+#
+# Always-on template builing:
+# - 1 Enterprise Scale
+# - 1 global Virtual Wan with a Secure Firewall in Virtual Hub for egress internet traffic
+# - 1 Azure Firewall in spoke vnet for private DNS resolution per region
+#
+
 customer_name: {{customer_name}}
 caf_environment: {{caf_environment}}
 caf_landingzone_branch: AL-azurerm2931
@@ -76,17 +83,23 @@ deployments:
     virtual_wans:
       prod: connectivity_virtual_wans.yaml
     virtual_hubs:
-      prod: connectivity_virtual_hubs.yaml
-      non_prod: connectivity_virtual_hubs.yaml
+{% for region, location in regions.items() %}
+      {{region}}: connectivity_virtual_hubs.yaml
+{% endfor %}
     virtual_hubs_route_tables:
-      prod: connectivity_virtual_hubs_route_tables.yaml
-      non_prod: connectivity_virtual_hubs_route_tables.yaml
-    azurerm_firewalls:
-      prod: connectivity_firewalls.yaml
-      non_prod: connectivity_firewalls.yaml
+{% for region, location in regions.items() %}
+      {{region}}: connectivity_virtual_hubs_route_tables.yaml
+{% endfor %}
     azurerm_firewall_policies:
       prod: connectivity_firewall_policies.yaml
-      non_prod: connectivity_firewall_policies.yaml
+    secure_firewalls:
+{% for region, location in regions.items() %}
+      {{region}}: connectivity_secure_firewalls.yaml
+{% endfor %}
+    private_dns_firewalls:
+{% for region, location in regions.items() %}
+      {{region}}: connectivity_private_dns_firewalls.yaml
+{% endfor %}
     private_dns:
       prod: connectivity_private_dns.yaml
       non_prod: connectivity_private_dns.yaml

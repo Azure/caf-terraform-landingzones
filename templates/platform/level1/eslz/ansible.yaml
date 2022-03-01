@@ -1,6 +1,6 @@
 - name: "{{level }}-{{ deployment}} - Set landingzone file_path"
   set_fact:
-    destination_path: "{{resources.configuration_folders.platform.destination_base_path}}/{{resources.configuration_folders.platform.destination_relative_path}}/{{ resources['eslz_' + deployment].relative_destination_folder }}"
+    destination_path: "{{destination_base_path}}/{{ resources['eslz_' + deployment].relative_destination_folder }}"
     mg: "{{ lookup('file', '{{ config_folder }}/eslz/{{deployment}}/archetype_config_overrides.caf.platform.yaml') | from_yaml }}"
     mg_custom: "{{ lookup('file', '{{ config_folder }}/eslz/{{deployment}}/custom_landing_zones.caf.platform.yaml') | from_yaml }}"
     level: "{{tfstate_object.level}}"

@@ -10,8 +10,8 @@ For further executions or command, you can refer to the following sections
 
 ### Clone the landingzone project (Terraform base code)
 ```bash
-git clone https://github.com/Azure/caf-terraform-landingzones.git {{destination_base_path}}/landingzones
-cd {{destination_base_path}}/landingzones && git pull
+git clone https://github.com/Azure/caf-terraform-landingzones.git {{landingzones_folder}}
+cd {{landingzones_folder}} && git pull
 git checkout {{topology.caf_landingzone_branch}}
 
 ```
@@ -24,13 +24,13 @@ Rover ignite creates the tfvars and also the documentation.
 ```bash
 rover login -t {{tenant_name.stdout}} -s {{subscription_id.stdout}}
 
-  rover ignite \
+rover ignite \
   --playbook {{ config_folder_platform_templates }}/ansible/ansible.yaml \
   -e base_templates_folder={{ config_folder_platform_templates }} \
   -e resource_template_folder={{landingzones_folder}}/templates/resources \
-  -e config_folder={{destination_base_path}}/{{definitions_relative_path}} \
-  -e landingzones_folder={{landingzones_folder}}
-
+  -e config_folder={{destination_path}} \
+  -e landingzones_folder={{landingzones_folder}} \
+  -e destination_folder={{destination_folder}}
 
 ```
 
@@ -38,4 +38,18 @@ rover login -t {{tenant_name.stdout}} -s {{subscription_id.stdout}}
 
 Once the rover ignite command has been executed, go to your configuration folder when the platform launchpad configuration has been created.
 
-Get started with the [launchpad]({{destination_base_path}}/{{configuration_relative_path}}/{{topologies.launchpad.relative_destination_folder}})
+Get started with the [launchpad]({{destination_path}}/{{topologies.launchpad.relative_destination_folder}})
+
+### Regenerate the definition folder
+
+```bash
+ansible-playbook {{config_folder_platform_templates}}/walk-through-single.yaml \
+  -e topology_file={{destination_folder}}/ignite.yaml \
+  -e config_folder_platform_templates={{config_folder_platform_templates}} \
+  -e platform_service_folder={{platform_service_folder}} \
+  -e landingzones_folder={{landingzones_folder}} \
+  -e destination_folder={{destination_folder}} \
+  -e configuration_folder={{configuration_folder}} \
+  --extra-vars "@{{destination_folder}}/ignite_input.yaml"
+
+```

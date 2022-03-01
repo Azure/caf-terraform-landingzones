@@ -72,7 +72,7 @@
 #
 # overrides
 #
-- name: "[{{tfstate_resource}} - {{resources[tfstate_resource].relative_destination_folder}}] - resources - overrides from path {{ ansible_to_process }}"
+- name: "[{{tfstate_resource}} - {{resources[tfstate_resource].relative_destination_folder}}] - resources - overrides from path {{ ansible_to_process }} to {{ destination_path }}"
   ansible.builtin.template:
     src: "{{ item }}"
     dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"

@@ -37,3 +37,4 @@ virtual_wans_{{env}}:
         global_wan:
           name: connectivity-global-wan
           region_key: region1
+          

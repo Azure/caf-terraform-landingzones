@@ -32,7 +32,7 @@
 
 - set_fact:
     topology: "{{ lookup('template', '{{ topology_file }}') | from_yaml }}"
-    destination_path: "{{destination_base_path + '/' + definitions_relative_path}}"
+    destination_path: "{{destination_folder}}"
 
 
 - name: "Creates directory - {{destination_path}}"
@@ -40,6 +40,11 @@
     path: "{{destination_path}}"
     state: directory
 
+- name: ignite_input
+  ansible.builtin.template:
+    src: "{{platform_service_folder}}/ignite_input.yaml"
+    dest: "{{destination_path}}/ignite_input.yaml"
+       
 #
 # Load the files into variables
 #
@@ -63,11 +68,11 @@
 # Need topologies to render the following templates
 - name: "load tfstates"
   set_fact:
-    "tfstates_deployment__to_merge": "{{ lookup('template', '{{config_folder_platform_templates}}/services/tfstates.yaml') | from_yaml }}"
+    "tfstates_deployment__to_merge": "{{ lookup('template', '{{platform_service_folder}}/tfstates.yaml') | from_yaml }}"
 
 - name: "load template.caf.platform"
   set_fact:
-    "caf_platform_deployment__to_merge": "{{ lookup('template', '{{config_folder_platform_templates}}/services/template.caf.platform.yaml') | from_yaml }}"
+    "caf_platform_deployment__to_merge": "{{ lookup('template', '{{platform_service_folder}}/template.caf.platform.yaml') | from_yaml }}"
 
 - name: Merge deployment files into topologies variable
   merge_vars:
@@ -94,22 +99,22 @@
 
 - name: tfstates.yaml
   ansible.builtin.template:
-    src: "{{config_folder_platform_templates}}/services/tfstates.yaml"
+    src: "{{platform_service_folder}}/tfstates.yaml"
     dest: "{{destination_path}}/tfstates.yaml"
     
 - name: ignite.yaml
   ansible.builtin.template:
-    src: "{{config_folder_platform_templates}}/eslz_single_subscription.yaml"
+    src: "{{config_folder_platform_templates}}/single_subscription.yaml"
     dest: "{{destination_path}}/ignite.yaml"
             
 - name: template.caf.platform.yaml
   ansible.builtin.template:
-    src: "{{config_folder_platform_templates}}/services/template.caf.platform.yaml"
+    src: "{{platform_service_folder}}/template.caf.platform.yaml"
     dest: "{{destination_path}}/{{topology.customer_name}}.caf.platform.yaml"
                     
-- name: readme.me
+- name: readme.md
   ansible.builtin.template:
-    src: "{{config_folder_platform_templates}}/services/README.md"
+    src: "{{platform_service_folder}}/README.md"
     dest: "{{destination_path}}/GETTING-STARTED.md"
     
 

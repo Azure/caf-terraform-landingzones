@@ -20,10 +20,10 @@ private_dns_{{env}}:
           private_dns: {{env}}
       global_settings_key:
         platform:
-          azurerm_firewalls: {{env}}
+          private_dns_firewalls: {{env}}
       remote_tfstates:
         platform:
-          azurerm_firewalls: {{env}}
+          private_dns_firewalls: {{env}}
           identity_level2: {{env}}
 
   subscriptions:

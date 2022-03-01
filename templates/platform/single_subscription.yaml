@@ -1,0 +1,174 @@
+customer_name: {{customer_name}}
+caf_environment: {{caf_environment}}
+caf_landingzone_branch: AL-azurerm2931
+
+caf_regions:
+{% for region, location in regions.items() %}
+  {{region}}: {{location}}
+{% endfor %}
+
+# Use the lower-case region's name, short version with no space
+resources_allowed_regions:
+{% for region in regions.keys() %}
+  - {{region}}
+{% endfor %}
+
+resource_groups_allowed_regions:
+{% for region in regions.keys() %}
+  - {{region}}
+{% endfor %}
+
+default_region_key: {{default_region_key}}
+
+azuread_user_ea_account_owner: {{upn.stdout}}
+ea_owner_object_id: {{object_id.stdout}}
+
+azuread_identity_mode: service_principal
+enable_azuread_groups: True
+enable_azuread_applications: True
+
+enable_azure_subscription_vending_machine: True
+
+enterprise_scale:
+  {{eslz_mg_prefix}}:
+    version_to_deploy: "v1.1.1"
+    management_group_prefix: {{eslz_mg_prefix}}
+    management_group_name: "{{eslz_mg_name}}"
+    deploy_core_landing_zones: True
+    clean_up_destination_folder: True
+    update_lib_folder: True
+
+
+subscription_deployment_mode: single_reuse
+
+subscriptions:
+  launchpad:  # Do not rename the key
+    name: {{subscription_name.stdout}}
+    create_alias: false 
+    subscription_id: {{subscription_id.stdout}}
+  identity:  # Do not rename the key
+    name: {{subscription_name.stdout}}
+    create_alias: false 
+    subscription_id: {{subscription_id.stdout}}
+  connectivity:  # Do not rename the key
+    name: {{subscription_name.stdout}}
+    create_alias: false 
+    subscription_id: {{subscription_id.stdout}}
+  management:  # Do not rename the key
+    name: {{subscription_name.stdout}}
+    create_alias: false 
+    subscription_id: {{subscription_id.stdout}}
+
+deployments:
+  root:
+    launchpad: launchpad_azuread_sp_single_subscription.yaml
+    launchpad_credentials: launchpad_credentials_azuread_sp.yaml
+    subscriptions: subscriptions.yaml
+    identity: identity.yaml
+    management: management.yaml
+    asvm: asvm.yaml
+  eslz:
+    {{eslz_mg_prefix}}: eslz.yaml
+  scale_out_domains:
+    identity_level2:
+      prod: identity_level2.yaml
+      non_prod: identity_level2.yaml
+    virtual_wans:
+      prod: connectivity_virtual_wans.yaml
+    virtual_hubs:
+      prod: connectivity_virtual_hubs.yaml
+      non_prod: connectivity_virtual_hubs.yaml
+    virtual_hubs_route_tables:
+      prod: connectivity_virtual_hubs_route_tables.yaml
+      non_prod: connectivity_virtual_hubs_route_tables.yaml
+    azurerm_firewall_policies:
+      prod: connectivity_firewall_policies.yaml
+      non_prod: connectivity_firewall_policies.yaml
+    secure_firewalls:
+      prod: connectivity_secure_firewalls.yaml
+      non_prod: connectivity_secure_firewalls.yaml
+    private_dns_firewalls:
+      prod: connectivity_private_dns_firewalls.yaml
+      non_prod: connectivity_private_dns_firewalls.yaml
+    private_dns:
+      prod: connectivity_private_dns.yaml
+      non_prod: connectivity_private_dns.yaml
+
+#
+# Advanced settings
+#
+
+notifications:
+  monitor_action_groups:
+    networking_operations: {{default_email_address}}
+  service_health_alerts: {{default_email_address}}
+  azure_defender:
+    emailSecurityContact: {{default_email_address}}
+
+
+backup_policies:           
+  vms:
+    default:
+      name: vm-default-policy
+      # Default to UTC
+      # possible values - https://jackstromberg.com/2017/01/list-of-time-zones-consumed-by-azure/
+      timezone: SE Asia Standard Time
+      backup:
+        frequency: Daily
+        time: "23:00"
+      retention_daily:
+        count: 7
+      retention_weekly:
+        count: 2
+        weekdays:
+          - Sunday
+      retention_monthly:
+        count: 2
+        weeks:
+          - First
+        weekdays:
+          - Sunday
+      retention_yearly:
+        count: 1
+        weeks:
+          - First
+        months:
+          - January
+        weekdays:
+          - Sunday
+
+
+identity:
+  backup_policy:
+    vms: default
+
+management:
+  backup_policy:
+    vms: default
+
+connectivity:
+  backup_policy:
+    vms: default
+
+  private_dns_zones:
+    zones:
+      privatelink.adf.azure.com:
+      privatelink.datafactory.azure.net:
+      privatelink.blob.core.windows.net:
+      privatelink.file.core.windows.net:
+      privatelink.notebooks.azure.net:
+      privatelink.dfs.core.windows.net:
+      privatelink.vaultcore.azure.net:
+      privatelink.azurecr.io:
+      privatelink.siterecovery.windowsazure.com:
+      privatelink.servicebus.windows.net:
+      privatelink.api.azureml.ms:
+      privatelink.monitor.azure.com:
+      privatelink.oms.opinsights.azure.com:
+      privatelink.ods.opinsights.azure.com:
+      privatelink.agentsvc.azure-automation.net:
+
+    # region will be de-tokenized by the values set in resources_allowed_regions
+    regional_zones:
+      privatelink.region.azmk8s.io:
+      privatelink.region.backup.windowsazure.com:

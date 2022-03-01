@@ -47,6 +47,10 @@ virtual_hubs_{{env}}:
           er_config:
             name: {{env}}
             scale_units: 1
+          deploy_p2s: false
+          p2s_config:
+            name: {{env}}
+            scale_units: 1
 
       express_route_connections:
         {{env}}:

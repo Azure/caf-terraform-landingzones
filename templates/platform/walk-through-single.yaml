@@ -26,6 +26,7 @@
     - name: default_email_address
       prompt: Email address to send all notifications
       private: no
+      default: email@address.com
 
     - name: azure_regions
       prompt: Azure regions (lowercase, short version)
@@ -42,10 +43,12 @@
     - name: eslz_mg_prefix
       prompt: Management group prefix (value must be between 2 to 10 characters long and can only contain alphanumeric characters and hyphens). 
       private: no
+      default: es
 
     - name: eslz_mg_name
       prompt: Management group name
       private: no
+      default: Contoso
 
   tasks:
 

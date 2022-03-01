@@ -114,3 +114,24 @@ When you have successfully deployed the launchpad you can  move to the next step
 {% else %}
  [Deploy the management services](../../level1/management/readme.md)
 {% endif %}
+
+
+# To destroy the launchpad
+
+Destroying the launchpad is a specific opertion that requires the tfstate to be first downloaded in the rover and then run the terraform destroy command. Note the action to use is -a destroy
+
+```bash
+
+rover \
+  -lz {{ landingzones_folder }}/caf_launchpad \
+  -var-folder {{ destination_path }} \
+  -tfstate_subscription_id {{ resources.caf_terraform.launchpad.subscription_id }} \
+  -target_subscription {{ resources.caf_terraform.launchpad.subscription_id }} \
+  -tfstate {{ resources.tfstates.platform.launchpad.tfstate }} \
+  -launchpad \
+  -env {{ resources.caf_terraform.launchpad.caf_environment }} \
+  -level {{ level }} \
+  -p ${TF_DATA_DIR}/{{ resources.tfstates.platform.launchpad.tfstate }}.tfplan \
+  -a destroy
+
+```

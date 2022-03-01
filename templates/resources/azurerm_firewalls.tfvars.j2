@@ -3,7 +3,9 @@ azurerm_firewalls = {
   {{ key }} = {
     name   = "{{ value.name }}"
     resource_group_key = "{{ value.resource_group_key }}"
+{% if value.vnet_key is defined %}
     vnet_key = "{{ value.vnet_key }}"
+{% endif %}
 {% if value.sku_tier is defined %}
         sku_tier = "{{ value.sku_tier }}"
 {% endif %}
