@@ -1,5 +1,5 @@
 # relative path to {{ landingzones_folder }}/caf_solution/add-ons/caf_eslz
-library_path                    = "../../../../{{ destination_base_path }}/{{tfstate_object.level}}/{{stage}}/{{deployment}}/lib"
+library_path                    = "{{ destination_base_path }}/{{tfstate_object.level}}/{{stage}}/{{deployment}}/lib"
 {% if resources.platform_core_setup.enterprise_scale[deployment].root_parent_id is defined %}
 root_parent_id                  = "{{ resources.platform_core_setup.enterprise_scale[deployment].root_parent_id }}"
 {% endif %}

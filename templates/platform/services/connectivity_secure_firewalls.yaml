@@ -23,7 +23,6 @@ secure_firewalls_{{env}}:
           virtual_hubs: {{env}}
       remote_tfstates:
         platform:
-          virtual_wans: prod
           virtual_hubs: {{env}}
           azurerm_firewall_policies: {{env}}
 
@@ -38,10 +37,12 @@ secure_firewalls_{{env}}:
         fw_secure_{{env}}:
           name: fw-secure-{{env}}
           resource_group_key: firewall
+          sku_name: AZFW_Hub
           sku_tier: Standard
           virtual_hub:
-            lz_key: connectivity_virtual_hubs_{{env}}
-            key: {{env}}
+            {{env}}:
+              lz_key: connectivity_virtual_hubs_{{env}}
+              virtual_hub_key: {{env}}
           public_ip_count: 1
           firewall_policy:
             key: root

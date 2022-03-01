@@ -54,7 +54,8 @@ rover ignite \
   -e base_templates_folder={{ base_templates_folder }} \
   -e resource_template_folder={{resource_template_folder}} \
   -e config_folder={{ config_folder }} \
-  -e landingzones_folder={{ landingzones_folder }}
+  -e landingzones_folder={{ landingzones_folder }} \
+  -e destination_folder={{destination_folder}}
 
 ```
 

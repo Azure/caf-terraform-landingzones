@@ -30,7 +30,7 @@ rover ignite \
   -e resource_template_folder={{landingzones_folder}}/templates/resources \
   -e config_folder={{destination_path}} \
   -e landingzones_folder={{landingzones_folder}} \
-  -e destination_folder={{destination_folder}}
+  -e destination_folder={{configuration_folder}}
 
 ```
 

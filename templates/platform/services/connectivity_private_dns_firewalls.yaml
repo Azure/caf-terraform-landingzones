@@ -17,7 +17,7 @@ private_dns_firewalls_{{env}}:
     landingzone:
       tfstate:
         platform:
-          azurerm_firewalls: {{env}}
+          private_dns_firewalls: {{env}}
       global_settings_key:
         platform:
           virtual_hubs: {{env}}
