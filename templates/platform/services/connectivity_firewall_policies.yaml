@@ -15,9 +15,6 @@ azurerm_firewall_policies_{{env}}:
 
   deployments:
     landingzone:
-      tfstate:
-        platform:
-          azurerm_firewall_policies: {{env}}
       global_settings_key:
         platform:
           virtual_wans: prod
@@ -26,7 +23,7 @@ azurerm_firewall_policies_{{env}}:
           virtual_wans: prod
 
 
-  subscriptions:
+  resources:
     connectivity:
       resource_groups:
         firewall_policies:
@@ -39,14 +36,5 @@ azurerm_firewall_policies_{{env}}:
           region_key: region1
           resource_group:
             key: firewall_policies
-          dns:
-            proxy_enabled: true
           threat_intelligence_mode: "Alert"
-        dns_root:
-          name: "dns-root-policy-{{env}}"
-          region_key: region1
-          resource_group:
-            key: firewall_policies
-          dns:
-            proxy_enabled: true
-          threat_intelligence_mode: "Alert"
+

@@ -24,13 +24,8 @@ Rover ignite creates the tfvars and also the documentation.
 ```bash
 rover login -t {{tenant_name.stdout}} -s {{subscription_id.stdout}}
 
-rover ignite \
-  --playbook {{ config_folder_platform_templates }}/ansible/ansible.yaml \
-  -e base_templates_folder={{ config_folder_platform_templates }} \
-  -e resource_template_folder={{landingzones_folder}}/templates/resources \
-  -e config_folder={{destination_path}} \
-  -e landingzones_folder={{landingzones_folder}} \
-  -e destination_folder={{configuration_folder}}
+ansible-playbook {{public_templates_folder}}/ansible/ansible.yaml \
+  --extra-vars "@{{platform_definition_folder}}/ignite.yaml"
 
 ```
 
@@ -43,13 +38,7 @@ Get started with the [launchpad]({{destination_path}}/{{topologies.launchpad.rel
 ### Regenerate the definition folder
 
 ```bash
-ansible-playbook {{config_folder_platform_templates}}/walk-through-single.yaml \
-  -e topology_file={{destination_folder}}/ignite.yaml \
-  -e config_folder_platform_templates={{config_folder_platform_templates}} \
-  -e platform_service_folder={{platform_service_folder}} \
-  -e landingzones_folder={{landingzones_folder}} \
-  -e destination_folder={{destination_folder}} \
-  -e configuration_folder={{configuration_folder}} \
-  --extra-vars "@{{destination_folder}}/ignite_input.yaml"
+ansible-playbook {{public_templates_folder}}/ansible/walk-through-single.yaml \
+  --extra-vars "@{{platform_definition_folder}}/ignite.yaml"
 
 ```

@@ -15,9 +15,6 @@ virtual_wans_{{env}}:
 
   deployments:
     landingzone:
-      tfstate:
-        platform:
-          virtual_wans: {{env}}
       global_settings_key:
         platform:
           management:
@@ -25,7 +22,7 @@ virtual_wans_{{env}}:
         platform:
           management:
 
-  subscriptions:
+  resources:
     connectivity:
       virtual_wans:
         global_wan:

@@ -22,7 +22,7 @@ ansible-playbook e2e.yaml \
 ## Prerequisites
 
 ```bash
-branch={{ resources.eslz.private_lib[resources.eslz.private_lib.version_to_deploy].caf_landingzone_branch }}
+branch={{ resources.alz.private_lib[resources.alz.private_lib.version_to_deploy].caf_landingzone_branch }}
 cd {{ destination_base_path }}
 git clone --branch ${branch} https://github.com/Azure/caf-terraform-landingzones.git landingzones
 

@@ -10,16 +10,13 @@ asvm:
     level: level2
     config_file: asvm.yaml
     identity_aad_key: cred_level0
-    sub_template_folder: level2/asvm
-    yaml: level2/asvm/ansible.yaml
+    sub_template_folder: platform/level2/asvm
+    yaml: platform/level2/asvm/ansible.yaml
     # Do not rename the tfstate_key_name
     tfstate_key_name: asvm
 
   deployments:
     landingzone:
-      tfstate:
-        platform:
-          asvm:
       global_settings_key:
         platform:
           management:
@@ -27,7 +24,7 @@ asvm:
         platform:
           management:
 
-  subscriptions:
+  resources:
     launchpad:
       resource_groups:
         level3:
@@ -60,7 +57,7 @@ asvm:
           tags:
             ## Those tags must never be changed after being set as they are used by the rover to locate the launchpad and the tfstates.
             # Only adjust the environment value at creation time
-            caf_environment: contosolle
+            caf_environment: {{topology.caf_environment}}
             caf_launchpad: launchpad
             caf_tfstate: level3
         level4:
@@ -80,7 +77,7 @@ asvm:
           tags:
             ## Those tags must never be changed after being set as they are used by the rover to locate the launchpad and the tfstates.
             # Only adjust the environment value at creation time
-            caf_environment: contosolle
+            caf_environment: {{topology.caf_environment}}
             caf_launchpad: launchpad
             caf_tfstate: level4
 

@@ -11,18 +11,15 @@ launchpad:
     level: level0
     identity_aad_key: cred_level0
     config_file: launchpad.yaml
-    sub_template_folder: level0/launchpad
-    yaml: level0/launchpad/ansible.yaml
+    sub_template_folder: platform/level0/launchpad
+    yaml: platform/level0/launchpad/ansible.yaml
     # Do not rename the tfstate_key_name
     tfstate_key_name: launchpad
 
   deployments:
     landingzone:
-      tfstate:
-        platform:
-          launchpad:
 
-  subscriptions:
+  resources:
     launchpad:
       resource_groups:
         level0:
@@ -115,12 +112,12 @@ launchpad:
               Management Group Contributor:
                 azuread_groups:
                   keys:
-                    - eslz
+                    - alz
                     - caf_platform_maintainers
               Owner:
                 azuread_groups:
                   keys:
-                    - eslz
+                    - alz
                     - caf_platform_maintainers
                     - connectivity  # only when deploying in single subscription
                     - identity      # only when deploying in single subscription
@@ -156,7 +153,7 @@ launchpad:
                   keys:
                     - identity
                     - management
-                    - eslz
+                    - alz
                     - subscription_creation_platform
                     - caf_platform_contributors
             level2:
@@ -181,7 +178,7 @@ launchpad:
                 azuread_groups:
                   keys:
                     - management
-                    - eslz
+                    - alz
                     - subscription_creation_platform
                     - caf_platform_contributors
             level1:
@@ -191,7 +188,7 @@ launchpad:
                     - caf_platform_maintainers
                     - identity
                     - management
-                    - eslz
+                    - alz
                     - subscription_creation_platform
               Storage Blob Data Reader:
                 azuread_groups:
@@ -261,8 +258,8 @@ launchpad:
             azuread_group_key: management
             secret_permissions:
               - Get
-          eslz:
-            azuread_group_key: eslz
+          alz:
+            azuread_group_key: alz
             secret_permissions:
               - Get
           subscription_creation_platform:
@@ -303,8 +300,8 @@ launchpad:
           application_name: sp-caf-identity
         management:
           application_name: sp-caf-management
-        eslz:
-          application_name: sp-caf-eslz
+        alz:
+          application_name: sp-caf-alz
         connectivity:
           application_name: sp-caf-connectivity
         subscription_creation_platform:
@@ -318,9 +315,9 @@ launchpad:
           azuread_application:
             key: level0
         # Manage the deployment of Enterprise Scale
-        eslz:
+        alz:
           azuread_application:
-            key: eslz
+            key: alz
         # Manage the deployment of the connectivity services
         connectivity:
           azuread_application:
@@ -469,14 +466,14 @@ launchpad:
           members:
             azuread_service_principal_keys:
               - level0
-        eslz:
-          name: caf-eslz
+        alz:
+          name: caf-alz
           prevent_duplicate_name: true
           owners:
             - {{topology.ea_owner_object_id}}
           members:
             azuread_service_principal_keys:
-              - eslz
+              - alz
         identity:
           name: caf-identity
           prevent_duplicate_name: true

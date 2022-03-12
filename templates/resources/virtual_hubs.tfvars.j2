@@ -1,5 +1,5 @@
 virtual_hubs = {
-{% for key, value in resources[tfstate_resource].subscriptions[subscription_key].virtual_hubs.items() %}
+{% for key, value in resources[tfstate_resource].resources[subscription_key].virtual_hubs.items() %}
   {{ key }} = {
     virtual_wan = {
 {% if value.virtual_wan.lz_key is defined %}

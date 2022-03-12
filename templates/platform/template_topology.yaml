@@ -1,0 +1,59 @@
+bootstrap:
+  azuread_identity_mode: service_principal
+  enable_azuread_groups: True
+  enable_azuread_applications: True
+
+  enable_azure_subscription_vending_machine: True
+
+  management_groups:
+    region1:
+      es:
+        management_group_prefix: "es"
+        management_group_name: "Contoso"
+        deploy_core_landing_zones: True
+        clean_up_destination_folder: True
+        update_lib_folder: True
+        version_to_deploy: "v1.1.1"
+
+  subscription_deployment_mode: single_reuse
+
+  caf_landingzone_branch: int.2202
+
+  deployments:
+    platform:
+      root:
+        region1:
+          launchpad: launchpad_azuread_sp_single_subscription.yaml
+          launchpad_credentials: launchpad_credentials_azuread_sp.yaml
+          subscriptions: subscriptions.yaml
+          identity: identity.yaml
+          management: management.yaml
+          asvm: asvm.yaml
+      alz:
+        region1:
+          es: alz.yaml
+      scale_out_domains:
+        region1:
+          identity_level2:
+            prod: identity_level2.yaml
+            non_prod: identity_level2.yaml
+          virtual_wans:
+            prod: connectivity_virtual_wans.yaml
+          virtual_hubs:
+            prod: connectivity_virtual_hubs.yaml
+            non_prod: connectivity_virtual_hubs.yaml
+          virtual_hubs_route_tables:
+            prod: connectivity_virtual_hubs_route_tables.yaml
+            non_prod: connectivity_virtual_hubs_route_tables.yaml
+          azurerm_firewall_policies:
+            prod: connectivity_firewall_policies.yaml
+            non_prod: connectivity_firewall_policies.yaml
+          secure_firewalls:
+            prod: connectivity_secure_firewalls.yaml
+            non_prod: connectivity_secure_firewalls.yaml
+          private_dns_firewalls:
+            prod: connectivity_private_dns_firewalls.yaml
+            non_prod: connectivity_private_dns_firewalls.yaml
+          private_dns:
+            prod: connectivity_private_dns.yaml
+            non_prod: connectivity_private_dns.yaml

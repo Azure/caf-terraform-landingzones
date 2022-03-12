@@ -1,5 +1,5 @@
 azurerm_firewall_policies = {
-{% for key, value in resources[tfstate_resource].subscriptions[subscription_key].azurerm_firewall_policies.items() %}
+{% for key, value in resources[tfstate_resource].resources[subscription_key].azurerm_firewall_policies.items() %}
   {{ key }} = {
     name   = "{{ value.name }}"
 {% if value.region_key is defined %}

@@ -1,5 +1,5 @@
 virtual_hub_route_tables = {
-{% for key, value in resources[tfstate_resource].subscriptions[subscription_key].virtual_hub_route_tables.items() %}
+{% for key, value in resources[tfstate_resource].resources[subscription_key].virtual_hub_route_tables.items() %}
   {{ key }} = {
     name = "{{ value.name }}"
     virtual_hub = {

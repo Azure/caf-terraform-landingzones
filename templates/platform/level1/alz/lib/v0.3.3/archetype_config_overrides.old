@@ -1,0 +1,208 @@
+archetype_config_overrides = {
+
+  root = {
+    archetype_id = "root"
+    parameters = {
+      "Allowed-Locations" = {
+        "listOfAllowedLocations" = {
+          values = [
+{% for key in resources.caf_regions.keys() %}
+            "{{ resources.caf_regions[key].name }}",
+{% endfor %}
+          ]
+        }
+      }
+      "Deny-RSG-Locations" = {
+        "listOfAllowedLocations" = {
+          values = [
+{% for key in resources.caf_regions.keys() %}
+            "{{ resources.caf_regions[key].name }}",
+{% endfor %}
+          ]
+        }
+      }
+      "Deploy-Resource-Diag" = {
+        "logAnalytics" = {
+          lz_key        = "{{ resources.tfstates.platform.management.lz_key_name }}"
+          output_key    = "diagnostics"
+          resource_type = "log_analytics"
+          resource_key  = "central_logs_{{resources.caf_regions[resources.default_region_key].slug}}"
+          attribute_key = "id"
+        }
+        "profileName" = {
+          value = "alz-diagnostic-log"
+        }
+      }
+      "Deploy-AzActivity-Log" = {
+        "logAnalytics" = {
+          lz_key        = "{{ resources.tfstates.platform.management.lz_key_name }}"
+          output_key    = "diagnostics"
+          resource_type = "log_analytics"
+          resource_key  = "central_logs_{{resources.caf_regions[resources.default_region_key].slug}}"
+          attribute_key = "id"
+        }
+      }
+{% if "VM" in resources.platform_management.enable_monitoring %}
+      "Deploy-VM-Monitoring" = {
+        "logAnalytics_1" = {
+          lz_key        = "{{ resources.tfstates.platform.management.lz_key_name }}"
+          output_key    = "diagnostics"
+          resource_type = "log_analytics"
+          resource_key  = "central_logs_{{resources.caf_regions[resources.default_region_key].slug}}"
+          attribute_key = "id"
+        }
+      }
+{% endif %}
+{% if "VMSS" in resources.platform_management.enable_monitoring %}
+      "Deploy-VMSS-Monitoring" = {
+        "logAnalytics_1" = {
+          lz_key        = "{{ resources.tfstates.platform.management.lz_key_name }}"
+          output_key    = "diagnostics"
+          resource_type = "log_analytics"
+          resource_key  = "central_logs_{{resources.caf_regions[resources.default_region_key].slug}}"
+          attribute_key = "id"
+        }
+      }
+{% endif %}
+{% if "Arc" in resources.platform_management.enable_monitoring %}
+      "Deploy-WS-Arc-Monitoring" = {
+        "logAnalytics" = {
+          lz_key        = "{{ resources.tfstates.platform.management.lz_key_name }}"
+          output_key    = "diagnostics"
+          resource_type = "log_analytics"
+          resource_key  = "central_logs_{{resources.caf_regions[resources.default_region_key].slug}}"
+          attribute_key = "id"
+        }
+      }
+      "Deploy-LX-Arc-Monitoring" = {
+        "logAnalytics" = {
+          lz_key        = "{{ resources.tfstates.platform.management.lz_key_name }}"
+          output_key    = "diagnostics"
+          resource_type = "log_analytics"
+          resource_key  = "central_logs_{{resources.caf_regions[resources.default_region_key].slug}}"
+          attribute_key = "id"
+        }
+      }
+{% endif %}
+      "Deploy-ASC-Defender" = {
+        "emailSecurityContact" = {
+          value = "{{ resources.notifications.security_center_email_contact }}"
+        }
+        "logAnalytics" = {
+          lz_key        = "{{ resources.tfstates.platform.management.lz_key_name }}"
+          output_key    = "diagnostics"
+          resource_type = "log_analytics"
+          resource_key  = "central_logs_{{resources.caf_regions[resources.default_region_key].slug}}"
+          attribute_key = "id"
+        }
+{% for parameter_key in mg.archetype_definitions.root.policy_assignments["Deploy-ASC-Defender"].keys() %}
+        "{{ parameter_key }}" = {
+          value = "{{ mg.archetype_definitions.root.policy_assignments["Deploy-ASC-Defender"][parameter_key] }}"
+        }
+{% endfor %}
+      }
+    }
+    access_control = {}
+  } //root
+
+  landing-zones = {
+    archetype_id   = "landingzone"
+    parameters     = {}
+    access_control = {
+{% if resources.azure_landing_zones.identity.azuread_identity_mode != 'logged_in_user' %}
+      "Owner" = {
+        "azuread_groups" = {
+          lz_key        = "{{ resources.tfstates.platform.launchpad.lz_key_name }}"
+          attribute_key = "id"
+          resource_keys = [
+            "subscription_creation_landingzones"
+          ]
+        }
+      }
+{% endif %}
+    }
+  }
+
+  platform = {
+    archetype_id   = "platform"
+    parameters     = {}
+    access_control = {}
+  }
+
+  connectivity = {
+    archetype_id = "platform_connectivity"
+    parameters   = {}
+    access_control = {
+{% if resources.azure_landing_zones.identity.azuread_identity_mode != 'logged_in_user' %}
+      "Owner" = {
+        "azuread_groups" = {
+          lz_key        = "{{ resources.tfstates.platform.launchpad.lz_key_name }}"
+          attribute_key = "id"
+          resource_keys = [
+            "connectivity"
+          ]
+        }
+      }
+{% if resources.azure_landing_zones.enterprise_scale.enable_azure_subscription_vending_machine %}
+      "[{{ resources.azure_landing_zones.enterprise_scale.management_group_prefix | upper }}-CONNECTIVITY] CAF-network-vhub-peering" = {
+        "azuread_groups" = {
+          lz_key        = "{{ resources.tfstates.platform.launchpad.lz_key_name }}"
+          attribute_key = "id"
+          resource_keys = [
+            "subscription_creation_landingzones"
+          ]
+        }
+      }
+{% endif %}
+{% endif %}
+    }
+  }
+
+  identity = {
+    archetype_id = "platform_identity"
+    parameters   = {}
+    access_control = {
+{% if resources.azure_landing_zones.identity.azuread_identity_mode != 'logged_in_user' %}
+      "Owner" = {
+        "azuread_groups" = {
+          lz_key        = "{{ resources.tfstates.platform.launchpad.lz_key_name }}"
+          attribute_key = "id"
+          resource_keys = [
+            "identity"
+          ]
+        }
+      }
+{% endif %}
+    }
+  }
+
+  management = {
+    archetype_id = "platform_management"
+    parameters   = {}
+    access_control = {
+{% if resources.azure_landing_zones.identity.azuread_identity_mode != 'logged_in_user' %}
+      "Owner" = {
+        "azuread_groups" = {
+          lz_key        = "{{ resources.tfstates.platform.launchpad.lz_key_name }}"
+          attribute_key = "id"
+          resource_keys = [
+            "management"
+          ]
+        }
+      }
+{% endif %}
+    }
+  }
+
+  decommissioned = {
+    archetype_id   = "es_decommissioned"
+    parameters     = {}
+    access_control = {}
+  }
+
+  sandboxes = {
+    archetype_id   = "es_sandboxes"
+    parameters     = {}
+    access_control = {}
+  }
+}

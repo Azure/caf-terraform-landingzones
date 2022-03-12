@@ -16,9 +16,6 @@ virtual_hubs_route_tables_{{env}}:
 
   deployments:
     landingzone:
-      tfstate:
-        platform:
-          virtual_hubs_route_tables: {{env}}
       global_settings_key:
         platform:
           virtual_hubs: {{env}}
@@ -28,7 +25,7 @@ virtual_hubs_route_tables_{{env}}:
           secure_firewalls: {{env}}
           private_dns_firewalls: {{env}}
 
-  subscriptions:
+  resources:
     connectivity:
       virtual_hub_route_tables:
         egress_internet:

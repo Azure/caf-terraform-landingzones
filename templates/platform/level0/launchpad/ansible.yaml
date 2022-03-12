@@ -10,8 +10,8 @@
   register: launchpad_storage_account
   shell: |
     az storage account list \
-      --subscription {{ resources.caf_terraform.launchpad.subscription_id }} \
-      --query "[?tags.caf_tfstate=='{{ tfstate_object.level }}' && tags.caf_environment=='{{ resources.caf_terraform.launchpad.caf_environment }}'].{name:name}[0]" -o json | jq -r .name
+      --subscription {{ resources.caf_launchpad.subscription_id }} \
+      --query "[?tags.caf_tfstate=='{{ tfstate_object.level }}' && tags.caf_environment=='{{ resources.caf_environment }}'].{name:name}[0]" -o json | jq -r .name
 
 - debug:
     msg: "{{launchpad_storage_account}}"
@@ -33,21 +33,21 @@
 - name: "[{{resources[tfstate].relative_destination_folder}}] Get subscription_creation_landingzones details"
   when:
     - launchpad_tfstate_exists.rc == 0
-    - resources.platform_core_setup.enable_azure_subscription_vending_machine
+    - resources.enable_azure_subscription_vending_machine
   shell: "cat ~/.terraform.cache/launchpad/{{ resources.tfstates.platform.launchpad.tfstate }}"
   register: launchpad_tfstate
 
 - name: "[{{resources[tfstate].relative_destination_folder}}] Get launchpad json data"
   when:
     - launchpad_tfstate_exists.rc == 0
-    - resources.platform_core_setup.enable_azure_subscription_vending_machine
+    - resources.enable_azure_subscription_vending_machine
   set_fact:
     scljsondata: "{{ launchpad_tfstate.stdout | from_json }}"
 
 - name: "[{{resources[tfstate].relative_destination_folder}}] set launchpad_azuread_groups"
   when:
     - launchpad_tfstate_exists.rc == 0
-    - resources.platform_core_setup.enable_azure_subscription_vending_machine
+    - resources.enable_azure_subscription_vending_machine
   set_fact:
     launchpad_azuread_groups: "{{ scljsondata | json_query(path) }}"
   vars:

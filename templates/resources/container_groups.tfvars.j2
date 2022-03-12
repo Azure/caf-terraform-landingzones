@@ -1,5 +1,5 @@
 container_groups = {
-{% for key, value in resources[tfstate_resource].subscriptions[subscription_key].container_groups.items() %}
+{% for key, value in resources[tfstate_resource].resources[subscription_key].container_groups.items() %}
   {{ key }} = {
       name = "{{ value.name }}"
 {% if value.region is defined %}

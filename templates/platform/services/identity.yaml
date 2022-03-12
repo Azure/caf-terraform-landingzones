@@ -10,15 +10,12 @@ identity:
     level: level1
     identity_aad_key: cred_identity
     config_file: identity.yaml
-    sub_template_folder: level1/identity
+    sub_template_folder: platform/level1/identity
     # Do not rename the tfstate_key_name
     tfstate_key_name: identity
 
   deployments:
     landingzone:
-      tfstate:
-        platform:
-          identity:
       global_settings_key:
         platform:
           launchpad:
@@ -26,7 +23,7 @@ identity:
         platform:
           launchpad:
 
-  subscriptions:
+  resources:
     identity:
       resource_groups:
         management:

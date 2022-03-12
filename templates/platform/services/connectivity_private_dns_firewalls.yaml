@@ -15,9 +15,6 @@ private_dns_firewalls_{{env}}:
 
   deployments:
     landingzone:
-      tfstate:
-        platform:
-          private_dns_firewalls: {{env}}
       global_settings_key:
         platform:
           virtual_hubs: {{env}}
@@ -27,7 +24,7 @@ private_dns_firewalls_{{env}}:
           azurerm_firewall_policies: {{env}}
 
 
-  subscriptions:
+  resources:
     connectivity:
       resource_groups:
           firewall:
@@ -40,13 +37,13 @@ private_dns_firewalls_{{env}}:
           name: vnet-connectivity-{{env}}-fw-plinks
           resource_group_key: firewall
           region_key: region1
-          address_space:
-            - 10.101.61.0/24
+          address_space: 
+            {{variables.variables_cidr[deployment_mode][service]['region1'][env].address_prefixes}}
           specialsubnets:
             AzureFirewallSubnet:
               name: AzureFirewallSubnet
               cidr:
-                - 10.101.61.0/26
+                {{variables.variables_cidr[deployment_mode][service]['region1'][env].address_prefixes}}
 
       public_ip_addresses:
         fw_pip1:
@@ -64,8 +61,7 @@ private_dns_firewalls_{{env}}:
           vnet_key: vnet
           sku_tier: Standard
           firewall_policy:
-            key: root
-            lz_key: connectivity_firewall_policies_{{env}}
+            key: private_links
           zones:
             - 1
             - 2
@@ -76,7 +72,16 @@ private_dns_firewalls_{{env}}:
               public_ip_key: fw_pip1
               vnet_key: vnet
               subnet_key: AzureFirewallSubnet
-
+              
+      azurerm_firewall_policies:
+        private_links:
+          name: "private-links-{{env}}"
+          region_key: region1
+          resource_group:
+            key: firewall
+          dns:
+            proxy_enabled: true
+          threat_intelligence_mode: "Alert"
 
       virtual_hub_connections:
         vnet_to_hub:

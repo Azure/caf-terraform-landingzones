@@ -1,16 +1,16 @@
 
 keyvaults = {
   level3 = {
-    name               = "{{ resources[tfstate].subscriptions[subscription_key].keyvaults.level3.name }}"
-    resource_group_key = "{{ resources[tfstate].subscriptions[subscription_key].keyvaults.level3.resource_group_key }}"
-    sku_name           = "{{ resources[tfstate].subscriptions[subscription_key].keyvaults.level3.sku_name | default('standard') }}"
+    name               = "{{ resources[tfstate].resources[subscription_key].keyvaults.level3.name }}"
+    resource_group_key = "{{ resources[tfstate].resources[subscription_key].keyvaults.level3.resource_group_key }}"
+    sku_name           = "{{ resources[tfstate].resources[subscription_key].keyvaults.level3.sku_name | default('standard') }}"
     tags = {
       caf_tfstate     = "level3"
-      caf_environment = "{{ resources.caf_terraform.launchpad.caf_environment }}"
+      caf_environment = "{{ resources.caf_environment }}"
     }
 
     creation_policies = {
-{% if resources.platform_identity.azuread_identity_mode != 'logged_in_user' and launchpad_azuread_groups is defined %}
+{% if resources.azure_landing_zones.identity.azuread_identity_mode != 'logged_in_user' and launchpad_azuread_groups is defined %}
       subscription_creation_landingzones = {
         object_id = "{{launchpad_azuread_groups.subscription_creation_landingzones.id}}"
         secret_permissions = ["Get"]
@@ -24,7 +24,7 @@ keyvaults = {
         secret_permissions = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
       }
 {% endif %}
-{% if resources.platform_identity.azuread_identity_mode == 'logged_in_user' %}
+{% if resources.azure_landing_zones.identity.azuread_identity_mode == 'logged_in_user' %}
       logged_in_user = {
         # if the key is set to "logged_in_user" add the user running terraform in the keyvault policy
         # More examples in /examples/keyvault
@@ -36,16 +36,16 @@ keyvaults = {
   }
 
   level4 = {
-    name               = "{{ resources[tfstate].subscriptions[subscription_key].keyvaults.level4.name }}"
-    resource_group_key = "{{ resources[tfstate].subscriptions[subscription_key].keyvaults.level4.resource_group_key }}"
-    sku_name           = "{{ resources[tfstate].subscriptions[subscription_key].keyvaults.level1.sku_name | default('standard') }}"
+    name               = "{{ resources[tfstate].resources[subscription_key].keyvaults.level4.name }}"
+    resource_group_key = "{{ resources[tfstate].resources[subscription_key].keyvaults.level4.resource_group_key }}"
+    sku_name           = "{{ resources[tfstate].resources[subscription_key].keyvaults.level1.sku_name | default('standard') }}"
     tags = {
       caf_tfstate     = "level4"
-      caf_environment = "{{ resources.caf_terraform.launchpad.caf_environment }}"
+      caf_environment = "{{ resources.caf_environment }}"
     }
 
     creation_policies = {
-{% if resources.platform_identity.azuread_identity_mode != 'logged_in_user' %}
+{% if resources.azure_landing_zones.identity.azuread_identity_mode != 'logged_in_user' %}
 {% if launchpad_azuread_groups is defined %}
       subscription_creation_landingzones = {
         object_id = "{{launchpad_azuread_groups.subscription_creation_landingzones.id}}"
@@ -71,7 +71,7 @@ keyvaults = {
       }
 {% endif %}
 {% endif %}
-{% if resources.platform_identity.azuread_identity_mode == 'logged_in_user' %}
+{% if resources.azure_landing_zones.identity.azuread_identity_mode == 'logged_in_user' %}
       logged_in_user = {
         # if the key is set to "logged_in_user" add the user running terraform in the keyvault policy
         # More examples in /examples/keyvault

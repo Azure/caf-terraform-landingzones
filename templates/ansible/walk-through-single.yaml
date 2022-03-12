@@ -1,0 +1,61 @@
+#
+# Initial script to select a topology and create the base templates for the definitions folder
+#
+# ansible-playbook /tf/caf/landingzones/templates/platform/walk-through-single.yaml \
+# -e topology_file=/tf/caf/landingzones/templates/platform/alz_single_subscription.yaml \
+# -e config_folder_platform_templates=/tf/caf/landingzones/templates/platform \
+# -e landingzones_folder=/tf/caf/landingzones \
+# -e destination_base_path=/tf/caf \
+# -e definitions_relative_path=definitions/v1 \
+# -e configuration_relative_path=configuration/demo
+#
+
+- name: Setup platform template repository
+  hosts: localhost
+  vars_prompt:
+    - name: customer_name
+      prompt: Set the short version of your customer name with no spaces
+      private: no
+      default: contoso
+
+    - name: caf_environment
+      prompt: Set the CAF Environment value
+      private: no
+      default: contoso
+
+    - name: prefix
+      prompt: Set the prefix to add to all resource.
+      private: no
+      default: caf
+
+    - name: alz_mg_prefix
+      prompt: Management group prefix (value must be between 2 to 10 characters long and can only contain alphanumeric characters and hyphens). 
+      private: no
+      default: es
+
+    - name: alz_mg_name
+      prompt: Management group name
+      private: no
+      default: Contoso
+
+    - name: default_email_address
+      prompt: Email address to send all notifications
+      private: no
+      default: email@address.com
+
+    - name: azure_regions
+      prompt: Azure regions (lowercase, short version)
+      private: no
+      default:
+        region1: southeastasia
+        region2: eastasia
+
+    - name: default_region_key
+      prompt: Default CAF Azure region key
+      private: no
+      default: region1
+
+
+  tasks:
+
+    - include_tasks: "walk-through.yaml"

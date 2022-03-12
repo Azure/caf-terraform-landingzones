@@ -1,0 +1,20 @@
+# ### {{landingzone_definition}} ###
+tfstates:
+  asvm:
+    asvm_subscriptions:
+      lz_key_name: {{landingzone_definition}}_subscriptions
+      tfstate: {{landingzone_definition}}_subscriptions.tfstate
+      workspace: tfstate
+      level: level3
+      sub_template_folder: platform/level3/subscriptions
+      yaml: platform/level3/ansible.yaml
+
+    {{landingzone_definition}}:
+{% for scod in scale_out_domains %}
+      {{scod}}:
+        lz_key_name: {{landingzone_definition}}_{{scod}}_level3
+        tfstate: {{landingzone_definition}}_{{scod}}_level3.tfstate
+        workspace: {{landingzone_definition | replace('_', '-')}}-{{scod}}
+        level: level3
+
+{% endfor %}

@@ -1,0 +1,25 @@
+asvm_subscriptions:
+  gitops:
+    caf_landingzone_branch: aci_network
+
+  relative_destination_folder: level3/{{landingzone_definition}}/subscriptions
+
+  deployments:
+    landingzone:
+      global_settings_key:
+        platform:
+          asvm:
+      remote_tfstates:
+        platform:
+          asvm:
+
+  resources:
+    asvm_subscriptions:
+      subscriptions:
+        {{landingzone_definition}}:
+{% for scod in deployments.asvm['scale_out_domains'][landingzone_definition].keys() %}
+          {{scod}}:
+            name: {{landingzone_definition}}-{{scod}}
+            create_alias: {{subscriptions[scod].create_alias}}
+            subscription_id: {{subscriptions[scod].subscription_id}}
+{% endfor %}

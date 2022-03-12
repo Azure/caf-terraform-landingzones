@@ -1,7 +1,0 @@
-customer_name: {{customer_name}}
-caf_environment: {{caf_environment}}
-default_email_address: {{default_email_address}}
-default_region_key: {{default_region_key}}
-eslz_mg_prefix: {{eslz_mg_prefix}}
-eslz_mg_name: {{eslz_mg_name}}
-azure_regions: {{azure_regions}}

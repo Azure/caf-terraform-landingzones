@@ -1,0 +1,90 @@
+subscription_id_overrides = {
+{% if resources.azure_landing_zones.enterprise_scale.subscription_id_overrides is defined %}
+{% if resources.azure_landing_zones.enterprise_scale.subscription_id_overrides.root is defined %}
+  root = {{ resources.azure_landing_zones.enterprise_scale.subscription_id_overrides.root | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"') }}
+{% else %}
+  root = []
+{% endif %}
+{% endif %}
+{% if resources.azure_landing_zones.enterprise_scale.subscription_id_overrides is defined %}
+{% if resources.azure_landing_zones.enterprise_scale.subscription_id_overrides.decommissioned is defined %}
+  decommissioned           = {{ resources.azure_landing_zones.enterprise_scale.subscription_id_overrides.decommissioned | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"') }}
+{% else %}
+  decommissioned = []
+{% endif %}
+{% if resources.azure_landing_zones.enterprise_scale.subscription_id_overrides.sandboxes is defined %}
+  sandboxes           = {{ resources.azure_landing_zones.enterprise_scale.subscription_id_overrides.sandboxes | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"') }}
+{% else %}
+  sandboxes = []
+{% endif %}
+{% if resources.azure_landing_zones.enterprise_scale.subscription_id_overrides['landing-zones'] is defined %}
+  landing-zones           = {{ resources.azure_landing_zones.enterprise_scale.subscription_id_overrides['landing-zones'] | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"') }}
+{% else %}
+  landing-zones = []
+{% endif %}
+{% if resources.azure_landing_zones.enterprise_scale.subscription_id_overrides.platform is defined %}
+  platform           = {{ resources.azure_landing_zones.enterprise_scale.subscription_id_overrides.platform | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"') }}
+{% else %}
+  platform = []
+{% endif %}
+{% if resources.azure_landing_zones.enterprise_scale.subscription_id_overrides.connectivity is defined %}
+  connectivity           = {{ resources.azure_landing_zones.enterprise_scale.subscription_id_overrides.connectivity | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"') }}
+{% else %}
+  connectivity = []
+{% endif %}
+{% if resources.azure_landing_zones.enterprise_scale.subscription_id_overrides.management is defined %}
+  management           = {{ resources.azure_landing_zones.enterprise_scale.subscription_id_overrides.management | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"') }}
+{% else %}
+  management = []
+{% endif %}
+{% if resources.azure_landing_zones.enterprise_scale.subscription_id_overrides.identity is defined %}
+  identity           = {{ resources.azure_landing_zones.enterprise_scale.subscription_id_overrides.identity | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"') }}
+{% else %}
+  identity = []
+{% endif %}
+{% else %}
+{% if resources.subscription_deployment_mode == 'single_reuse' %}
+  root           = [
+    "{{ resources.caf_launchpad.subscription_id }}"
+  ]
+{% else %}
+  root           = []
+{% endif %}
+  decommissioned = []
+  sandboxes      = []
+  landing-zones  = []
+  platform       = []
+  connectivity   = []
+  management     = []
+  identity       = []
+{% endif %}
+}
+
+{% if resources.azure_landing_zones.identity.azuread_identity_mode != 'logged_in_user' and resources.subscription_deployment_mode != 'single_reuse' %}
+subscription_id_overrides_by_keys = {
+  connectivity = {
+    connectivity = {
+      lz_key = "{{ resources.tfstates.platform.platform_subscriptions.lz_key_name }}"
+      key    = "connectivity"
+    }
+  }
+  management = {
+    launchpad = {
+      lz_key = "{{ resources.tfstates.platform.platform_subscriptions.lz_key_name }}"
+      key    = "launchpad"
+    }
+    management = {
+      lz_key = "{{ resources.tfstates.platform.platform_subscriptions.lz_key_name }}"
+      key    = "management"
+    }
+  }
+  identity = {
+    identity = {
+      lz_key = "{{ resources.tfstates.platform.platform_subscriptions.lz_key_name }}"
+      key    = "identity"
+    }
+  }
+}
+{% else %}
+subscription_id_overrides_by_keys = {}
+{% endif %}

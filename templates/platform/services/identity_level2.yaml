@@ -16,9 +16,6 @@ identity_level2_{{env}}:
 
   deployments:
     landingzone:
-      tfstate:
-        platform:
-          identity_level2: {{env}}
       global_settings_key:
         platform:
           identity:
@@ -26,7 +23,7 @@ identity_level2_{{env}}:
         platform:
           identity:
 
-  subscriptions:
+  resources:
     identity:
       azuread_groups:
         caf_{{env}}_landingzones_dns_contributors:

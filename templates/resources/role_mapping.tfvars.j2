@@ -1,5 +1,5 @@
 role_mapping = {
-{% for top_key, mappings in resources[tfstate_resource].subscriptions[subscription_key].role_mapping.items() %}
+{% for top_key, mappings in resources[tfstate_resource].resources[subscription_key].role_mapping.items() %}
   {{ top_key }} = {
 {% for key, role_mappings in mappings.items() %}
     {{ key }} = {

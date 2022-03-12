@@ -10,15 +10,12 @@ management:
     level: level1
     identity_aad_key: cred_management
     config_file: management.yaml
-    sub_template_folder: level1/management
+    sub_template_folder: platform/level1/management
     # Do not rename the tfstate_key_name
     tfstate_key_name: management
 
   deployments:
     landingzone:
-      tfstate:
-        platform:
-          management:
       global_settings_key:
         platform:
           launchpad:
@@ -26,7 +23,7 @@ management:
         platform:
           launchpad:
 
-  subscriptions:
+  resources:
     management:
       resource_groups:
         management:
@@ -44,12 +41,35 @@ management:
           account_replication_type: LRS
 
       diagnostic_log_analytics:
-        # if you change this key you also need to change it in the ESLZ deployment
-        # eslz/archetype_config_overrides.caf.platform.yaml
-        # eslz/custom_landing_zones.caf.platform.yaml
+        # if you change this key you also need to change it in the alz deployment
+        # alz/archetype_config_overrides.caf.platform.yaml
+        # alz/custom_landing_zones.caf.platform.yaml
         region1:
           name: logre1
           resource_group_key: management
+
+          solutions_maps:
+            NetworkMonitoring:
+              publisher: Microsoft
+              product: OMSGallery/NetworkMonitoring
+            ADAssessment:
+              publisher: Microsoft
+              product: OMSGallery/ADAssessment
+            ADReplication:
+              publisher: Microsoft
+              product: OMSGallery/ADReplication
+            AgentHealthAssessment:
+              publisher: Microsoft
+              product: OMSGallery/AgentHealthAssessment
+            DnsAnalytics:
+              publisher: Microsoft
+              product: OMSGallery/DnsAnalytics
+            ContainerInsights:
+              publisher: Microsoft
+              product: OMSGallery/ContainerInsights
+            KeyVaultAnalytics:
+              publisher: Microsoft
+              product: OMSGallery/KeyVaultAnalytics
 
       monitor_action_groups:
         networking_operations:

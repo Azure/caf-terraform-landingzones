@@ -16,9 +16,6 @@ virtual_hubs_{{env}}:
 
   deployments:
     landingzone:
-      tfstate:
-        platform:
-          virtual_hubs: {{env}}
       global_settings_key:
         platform:
           virtual_wans: prod
@@ -29,16 +26,16 @@ virtual_hubs_{{env}}:
       virtual_hub_lz_key: connectivity_virtual_hubs_{{env}}
       # ddos_protection_plan_id:
 
-  subscriptions:
+  resources:
     connectivity:
       virtual_hubs:
         {{env}}:
-          name: Production
+          name: {{env | replace('_', '-')}}
           virtual_wan:
-            lz_key: connectivity_virtual_wans_{{env}}
+            lz_key: connectivity_virtual_wans_prod
             key: global_wan
           region_key: region1
-          hub_address_prefix: 10.101.51.0/24
+          hub_address_prefix: {{variables.variables_cidr[deployment_mode][service]['region1'][env].address_prefix}}
           deploy_s2s: false
           s2s_config:
             name: {{env}}

@@ -1,0 +1,77 @@
+- debug:
+    msg:
+    - "{{deployment_mode}}"
+    - "{{stage}}"
+    - "{{region}}"
+    - "{{service}}"
+    
+- name: "{{destination_alz_path}} - Set tfstate_object"
+  set_fact:
+    tfstate_object: "{{topologies['alz_' + service].tfstate}}"
+
+- name: "{{destination_path}}/{{stage}} - Set landingzone file_path"
+  set_fact:
+    destination_alz_path: "{{destination_path}}/{{stage}}/{{service}}"
+    alz_template_folder: "{{public_templates_folder}}/{{ tfstate_object.template_lib_folder}}"
+
+- name: "{{destination_alz_path}} - Set landingzone file_path"
+  set_fact:
+    template_lib_folder: "{{alz_template_folder}}/lib/{{ tfstate_object.alz_version }}"
+
+- name: "{{destination_alz_path}} - Set landingzone file_path"
+  set_fact:
+    mg: "{{ lookup('template', '{{ template_lib_folder }}/archetype_config_overrides.caf.platform.yaml') | from_yaml }}"
+    mg_custom: "{{ lookup('template', '{{ template_lib_folder }}/custom_landing_zones.caf.platform.yaml') | from_yaml  }}"
+
+- debug:
+    msg: "{{destination_alz_path}}"
+
+- name: "Clean-up destination directory"
+  shell: |
+    rm -rf "{{ destination_alz_path }}"
+  when:
+    - topology.management_groups[region][service].clean_up_destination_folder | default(True)
+
+- name: "Creates directory structure - {{template_lib_folder}}"
+  shell: mkdir -p "{{ destination_alz_path }}/lib/{{ item.path }}"
+  with_filetree: "{{ template_lib_folder }}"
+  when: 
+    - item.state == 'directory'
+
+- name: "  Lib"
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ destination_alz_path }}/lib/{{ item.path }}"
+    force: yes
+  with_filetree: "{{ template_lib_folder }}"
+  when: 
+    - item.state == 'file'
+    - item.path is not search(".j2")
+    - item.path is not search(".yaml") or item.path is search(".json") or item.path is search(".md")
+    - topology.management_groups[region][service].update_lib_folder | default(False)
+
+
+- name: "  Lib"
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ destination_alz_path }}/{{ item.path }}"
+    force: yes
+  with_filetree: "{{ template_lib_folder }}"
+  when: 
+    - item.state == 'file'
+    - item.path is search(".yaml")
+    - topology.management_groups[region][service].update_lib_folder | default(False)
+
+# - name: "{{deployment_mode}}/{{stage}}/{{region}}/{{service}} to {{destination_path}}/{{'alz_' + service}}.yaml"
+#   ansible.builtin.template:
+#     src: "{{ lookup('template', '{{ platform_service_folder + \"/\" + topology.deployments[deployment_mode][stage][region][service]}}') | from_yaml }}"
+#     dest: "{{destination_path}}/{{'alz_' + service}}.yaml"
+#     force: yes
+#   vars:
+#     item: "{{service}}"
+
+- name: "{{deployment_mode}}/{{stage}}/{{region}}/{{service}} to {{destination_path}}/{{'alz_' + service}}.yaml"
+  ansible.builtin.template:
+    src: "{{platform_service_folder}}/{{topology.deployments[deployment_mode][stage][region][item]}}"
+    dest: "{{destination_path}}/{{topologies[stage + '_' + item].tfstate.config_file}}"  
+  loop: "{{topology.deployments[deployment_mode][stage][region].keys()}}"

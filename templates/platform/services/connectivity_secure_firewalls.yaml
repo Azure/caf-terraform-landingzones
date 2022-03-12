@@ -15,9 +15,6 @@ secure_firewalls_{{env}}:
 
   deployments:
     landingzone:
-      tfstate:
-        platform:
-          secure_firewalls: {{env}}
       global_settings_key:
         platform:
           virtual_hubs: {{env}}
@@ -27,7 +24,7 @@ secure_firewalls_{{env}}:
           azurerm_firewall_policies: {{env}}
 
 
-  subscriptions:
+  resources:
     connectivity:
       resource_groups:
           firewall:

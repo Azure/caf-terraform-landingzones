@@ -5,29 +5,26 @@ identity_level2_adds_{{env}}:
   relative_destination_folder: level2/identity/adds/{{env}}
 
   deployments:
-    identity:
-      landingzone:
-        tfstate:
-          platform:
-            identity_level2_adds: {{env}}
-        global_settings_key:
-          platform:
-            virtual_hubs: {{env}}
-        remote_tfstates:
-          platform:
-            management:
-            virtual_hubs: {{env}}
-            identity:
+    landingzone:
+      global_settings_key:
+        platform:
+          virtual_hubs: {{env}}
+      remote_tfstates:
+        platform:
+          management:
+          virtual_hubs: {{env}}
+          identity:
 
   tfstate:
     lz_key_name: identity_level2_adds_{{env}}
     tfstate: identity_level2_adds_{{env}}.tfstate
     level: level2
+    config_file: identity_level2_adds.yaml
     identity_aad_key: cred_identity
     # Do not rename the tfstate_key_name
-    tfstate_key_name: identity_level2
+    tfstate_key_name: identity_level2_adds
 
-  subscriptions:
+  resources:
     identity:
       resource_groups:
           rg:

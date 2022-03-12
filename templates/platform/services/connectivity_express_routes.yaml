@@ -1,5 +1,5 @@
 gitops:
-  caf_landingzone_branch: AL-azurerm2931
+  caf_landingzone_branch: int.2202
 
 express_route_circuits:
   {{env}}:

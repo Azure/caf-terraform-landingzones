@@ -1,5 +1,5 @@
 keyvault_access_policies = {
-  {% for key, policy in resources[tfstate_resource].subscriptions[subscription_key].keyvault_access_policies.items() %}
+  {% for key, policy in resources[tfstate_resource].resources[subscription_key].keyvault_access_policies.items() %}
   {{ key }} = {  
 {% for s_key, s_policy in policy.items() %}
     {{ s_key }} = {

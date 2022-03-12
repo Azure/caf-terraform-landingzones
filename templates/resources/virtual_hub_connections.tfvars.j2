@@ -1,5 +1,5 @@
 virtual_hub_connections = {
-{% for key, vhc in resources[tfstate_resource].subscriptions[subscription_key].virtual_hub_connections.items() %}
+{% for key, vhc in resources[tfstate_resource].resources[subscription_key].virtual_hub_connections.items() %}
   {{ key }} = {
     name = "{{ vhc.name }}"
     virtual_hub = {

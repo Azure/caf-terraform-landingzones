@@ -15,9 +15,6 @@ private_dns_{{env}}:
 
   deployments:
     landingzone:
-      tfstate:
-        platform:
-          private_dns: {{env}}
       global_settings_key:
         platform:
           private_dns_firewalls: {{env}}
@@ -26,9 +23,8 @@ private_dns_{{env}}:
           private_dns_firewalls: {{env}}
           identity_level2: {{env}}
 
-  subscriptions:
+  resources:
     connectivity:
-
       role_mapping:
         custom_role_mapping:
           resource_groups:
@@ -63,26 +59,26 @@ private_dns_{{env}}:
           name: dns-connectivity-{{env}}
 
       private_dns:
-{% for key in topology.connectivity.private_dns_zones.zones %}
+{% for key in variables.variables_private_dns_zones.zones.keys() %}
         {{key}}:
           name: {{key}}
           resource_group_key: dns_connectivity_{{env}}
           vnet_links:
-            fw_{{env}}_plinks_01:
-              name: fw-plinks-01
+            fw_{{env}}_01:
+              name: fw-{{env}}-01
               vnet_key: vnet
-              lz_key: connectivity_firewalls_{{env}}
+              lz_key: connectivity_private_dns_firewalls_{{env}}
 {% endfor %}
 {% for region in topology.resources_allowed_regions %}
-{% for z_key in topology.connectivity.private_dns_zones.regional_zones %}
+{% for z_key in variables.variables_private_dns_zones.regional_zones %}
         {{z_key | replace('region', region)}}:
           name: {{z_key | replace('region', region)}}
           resource_group_key: dns_connectivity_{{env}}
           vnet_links:
-            fw_{{env}}_plinks_01:
-              name: fw-plinks-01
+            fw_{{env}}_01:
+              name: fw-{{env}}-01
               vnet_key: vnet
-              lz_key: connectivity_firewalls_{{env}}
+              lz_key: connectivity_private_dns_firewalls_{{env}}
 {% endfor %}
 {% endfor %}
       
