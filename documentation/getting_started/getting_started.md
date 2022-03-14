@@ -5,7 +5,7 @@
 In order to start deploying your with CAF landing zones, you need an Azure subscription (Trial, MSDN, etc.) and you need to install the following components on your machine:
 
 - [Visual Studio Code](https://code.visualstudio.com/)
-- [Docker Desktop](https://docs.docker.com/docker-for-windows/install/)
+- [Docker Desktop](https://docs.docker.com/docker-for-windows/install/) or [Rancher Desktop](https://rancherdesktop.io/) in dockerd mode.
 - [Git](https://git-scm.com/downloads)
 
 You can deploy it easily on Windows and MacOS with the following software managers:
@@ -19,10 +19,11 @@ Once installed, open **Visual Studio Code** and install "**Remote Development**"
 ## Cloning the starter repository
 
 The starter repository contains the basic configuration files and scenarios. It will allow you to compose your configuration files in the integrated environment.
+You can find more information on the [platform starter repository](https://github.com/Azure/caf-terraform-landingzones-platform-starter)
 Clone the repository using the following command:
 
 ```bash
-git clone https://github.com/Azure/caf-terraform-landingzones-starter.git
+git clone https://github.com/Azure/caf-terraform-landingzones-platform-starter.git
 ```
 
 ## Open the repository in Visual Studio Code
@@ -54,11 +55,11 @@ We recommend that you verify the output of the login and make sure the subscript
 az account set --subscription <subscription_GUID>
 ```
 
-## Enjoy the starter kit
+## Follow the guide
 
-Follow the instructions in the readme files of the starter repo to bring up different environments.
+Please refer to instructions and documentation on the [central documentation](https://aka.ms/caf/terraform)
 
-## Updating your development environment
+<!-- ## Updating your development environment
 
 If you are using previous version of Azure landing zones (v1.0.1912), since we migrated to use new version of the rover, which uses non-root containers, you will have to re-create your volumes.
 You can achieve that running the following commands:
@@ -82,6 +83,6 @@ You can also purge Docker cache running the following command:
 
 ```bash
 docker system prune -a
-```
+``` -->
 
 Happy deployment with Azure landing zones, let us know your feedback and how you need it to evolve!

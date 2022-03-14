@@ -31,8 +31,7 @@
 
     // Uncomment the next line to run commands after the container is created.
     "postCreateCommand": "sudo cp -R /tmp/.ssh-localhost/* ~/.ssh && sudo chown -R $(whoami):$(whoami) /tf/caf ~/.ssh && sudo chmod 400 ~/.ssh/* && git config --global core.editor vim && pre-commit install && pre-commit autoupdate",
-    "postStartCommand": "sudo chmod 666 /var/run/docker.sock && cp -f /tf/rover/version.txt /tf/caf/scripts/version.txt && sudo rm -rf /tf/rover && sudo ln -s /tf/caf/scripts /tf/rover",
-
+    
     // Add the IDs of extensions you want installed when the container is created in the array below.
     "extensions": [
         "4ops.terraform",
