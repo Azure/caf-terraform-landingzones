@@ -1,0 +1,50 @@
+- debug:
+    msg:
+    - "{{deployment_mode}}"
+    - "{{stage}}"
+    - "{{region}}"
+    - "topology: {{topology}}"
+
+- name: "Process 1 deployment file {{stage}}/{{region}}"
+  set_fact:
+    "{{stage}}_{{region}}_{{item}}_deployment__to_merge": "{{ lookup('template', '{{ platform_service_folder + \"/\" + topology.deployments[deployment_mode][stage][region][item]}}') | from_yaml }}"
+  loop: "{{topology.deployments[deployment_mode][stage][region].keys()}}"
+  when: 
+    - stage == 'root' or stage == 'alz'
+    - topologies is not defined
+
+- name: "Copy file {{stage}} from {{platform_service_folder}}"
+  ansible.builtin.template:
+    src: "{{platform_service_folder}}/{{topology.deployments[deployment_mode][stage][region][item]}}"
+    dest: "{{destination_path}}/{{topologies[item].tfstate.config_file}}"  
+  loop: "{{topology.deployments[deployment_mode][stage][region].keys()}}"
+  when: 
+    - stage == 'root'
+    - topologies is defined
+
+- name: "Copy file {{stage}} from {{platform_service_folder}}"
+  ansible.builtin.template:
+    src: "{{platform_service_folder}}/{{topology.deployments[deployment_mode][stage][region][item]}}"
+    dest: "{{destination_path}}/{{topologies[stage + '_' + item].tfstate.config_file}}"  
+  loop: "{{topology.deployments[deployment_mode][stage][region].keys()}}"
+  when: 
+    - stage == 'alz'
+    - topologies is defined
+
+
+- name: "Process 2 deployment file {{stage}}"
+  include_tasks: "load_deployments_alz.yaml"
+  loop: "{{topology.deployments[deployment_mode][stage][region].keys()}}"
+  loop_control:
+    loop_var: service
+  when: 
+    - stage == 'alz'
+    - topologies is defined
+
+- name: "Process 2 deployment file {{stage}}"
+  include_tasks: "load_deployments_env.yaml"
+  loop: "{{topology.deployments[deployment_mode][stage][region].keys()}}"
+  loop_control:
+    loop_var: service
+  when: 
+    - stage == 'scale_out_domains'

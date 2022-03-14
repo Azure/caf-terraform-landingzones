@@ -1,0 +1,37 @@
+virtual_wans_{{env}}:
+  gitops:
+    caf_landingzone_branch: {{topology.caf_landingzone_branch}}
+
+  relative_destination_folder: level2/connectivity/virtual_wans
+
+  tfstate:
+    lz_key_name: connectivity_virtual_wans_{{env}}
+    tfstate: connectivity_virtual_wans_{{env}}.tfstate
+    level: level2
+    config_file: virtual_wans.yaml
+    identity_aad_key: cred_connectivity
+    # Do not rename the tfstate_key_name
+    tfstate_key_name: virtual_wans
+
+  deployments:
+    landingzone:
+      global_settings_key:
+        platform:
+          management:
+      remote_tfstates:
+        platform:
+          management:
+
+  resources:
+    connectivity:
+      virtual_wans:
+        global_wan:
+          name: vwan
+          resource_group_key: global_wan
+          region_key: region1
+
+      resource_groups:
+        global_wan:
+          name: connectivity-global-wan
+          region_key: region1
+          

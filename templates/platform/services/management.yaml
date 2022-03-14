@@ -1,0 +1,113 @@
+management:
+  gitops:
+    caf_landingzone_branch: {{topology.caf_landingzone_branch}}
+
+  relative_destination_folder: level1/management
+
+  tfstate:
+    lz_key_name: management
+    tfstate: management.tfstate
+    level: level1
+    identity_aad_key: cred_management
+    config_file: management.yaml
+    sub_template_folder: platform/level1/management
+    # Do not rename the tfstate_key_name
+    tfstate_key_name: management
+
+  deployments:
+    landingzone:
+      global_settings_key:
+        platform:
+          launchpad:
+      remote_tfstates:
+        platform:
+          launchpad:
+
+  resources:
+    management:
+      resource_groups:
+        management:
+          name: management
+        alerts:
+          name: alerts
+
+      storage_accounts:
+        nsgflogs:
+          name: nsglogs
+          resource_group_key: management
+          account_kind: BlobStorage
+          account_tier: Standard
+          shared_access_key_enabled: false
+          account_replication_type: LRS
+
+      diagnostic_log_analytics:
+        # if you change this key you also need to change it in the alz deployment
+        # alz/archetype_config_overrides.caf.platform.yaml
+        # alz/custom_landing_zones.caf.platform.yaml
+        region1:
+          name: logre1
+          resource_group_key: management
+
+          solutions_maps:
+            NetworkMonitoring:
+              publisher: Microsoft
+              product: OMSGallery/NetworkMonitoring
+            ADAssessment:
+              publisher: Microsoft
+              product: OMSGallery/ADAssessment
+            ADReplication:
+              publisher: Microsoft
+              product: OMSGallery/ADReplication
+            AgentHealthAssessment:
+              publisher: Microsoft
+              product: OMSGallery/AgentHealthAssessment
+            DnsAnalytics:
+              publisher: Microsoft
+              product: OMSGallery/DnsAnalytics
+            ContainerInsights:
+              publisher: Microsoft
+              product: OMSGallery/ContainerInsights
+            KeyVaultAnalytics:
+              publisher: Microsoft
+              product: OMSGallery/KeyVaultAnalytics
+
+      monitor_action_groups:
+        networking_operations:
+          action_group_name: Networking Operations
+          resource_group_key: alerts
+          shortname: netops
+          arm_role_alert:
+            contributors:
+              name: Monitoring Contributor
+              role_name: Monitoring Contributor
+              use_common_alert_schema: false
+          email_receiver:
+            noc:
+              name: email_alert_support1
+              email_address: {{topology.notifications.monitor_action_groups.networking_operations}}
+              use_common_alert_schema: false
+
+      service_health_alerts:
+        enable_service_health_alerts: true
+        name: alerts
+        shortname: HealthAlerts
+        resource_group_key: alerts
+        action_group_name: actiongrp
+        email_alert_settings:
+          support1:
+            name: email_alert_support1
+            email_address: {{topology.notifications.service_health_alerts}}
+            use_common_alert_schema: false
+
+      automation_accounts:
+        account1:
+          name: automationAccount1
+          resource_group_key: management
+
+      recovery_vaults:
+        asr:
+          name: asr
+          resource_group_key: management
+          soft_delete_enabled: true
+          backup_policies:
+            {{topology.backup_policies | to_nice_yaml(width=80, indent=2) | indent(12)}}

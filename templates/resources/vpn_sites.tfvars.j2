@@ -1,5 +1,5 @@
 vpn_sites = {
-{% for key, value in resources.subscriptions[subscription_key].vpn_sites.items() %}
+{% for key, value in resources[tfstate_resource].resources[subscription_key].vpn_sites.items() %}
   {{ key }} = {
     name = "{{ value.name }}"
     resource_group = {

@@ -1,0 +1,13 @@
+
+- debug:
+    msg: 
+      - "{{deployment_mode}}"
+      - "{{region}}"
+      - "{{tfstate}}"
+
+
+- name: "Including tasks process_tfstate.yaml"
+  include_tasks: "process_tfstate.yaml"
+  loop: "{{bootstrap.deployments[deployment_mode].scale_out_domains[region][tfstate].keys()}}"
+  loop_control:
+    loop_var: env

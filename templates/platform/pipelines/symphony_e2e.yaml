@@ -2,7 +2,7 @@ environment: {{ model }}
 repositories:
   - name: landingzones
     uri: https://github.com/Azure/caf-terraform-landingzones.git
-    branch: {{ config.caf_landingzone_branch }}
+    branch: {{ resources.caf_landingzone_branch }}
 
  # All paths are relative
 levels:
@@ -11,8 +11,8 @@ levels:
   stacks:
   - stack: launchpad
     landingZonePath: landingzones/caf_launchpad
-    configurationPath: "{{ config.configuration_folders.destination_relative_path }}/{{ config.tfstates.platform.launchpad.level }}/{{ config.tfstates.platform.launchpad.base_config_path }}"
-    tfState: {{ config.tfstates.platform.launchpad.tfstate }}
+    configurationPath: "{{ resources.configuration_folders.destination_relative_path }}/{{ resources.tfstates.platform.launchpad.level }}/{{ resources.tfstates.platform.launchpad.base_config_path }}"
+    tfState: {{ resources.tfstates.platform.launchpad.tfstate }}
     repository: landingzones
   launchpad: true
 
@@ -21,21 +21,21 @@ levels:
   stacks:
   - stack: management
     landingZonePath: landingzones/caf_solution
-    configurationPath: "{{ config.configuration_folders.destination_relative_path }}/{{ config.tfstates.platform.management.level }}/{{ config.tfstates.platform.management.base_config_path }}"
-    tfState: {{ config.tfstates.platform.management.tfstate }}
+    configurationPath: "{{ resources.configuration_folders.destination_relative_path }}/{{ resources.tfstates.platform.management.level }}/{{ resources.tfstates.platform.management.base_config_path }}"
+    tfState: {{ resources.tfstates.platform.management.tfstate }}
     repository: landingzones
-  - stack: eslz
-    landingZonePath: landingzones/caf_solution/add-ons/caf_eslz
-    configurationPath: "{{ config.configuration_folders.destination_relative_path }}/{{ config.tfstates.platform.eslz.level }}/{{ config.tfstates.platform.eslz.base_config_path }}"
-    tfState: {{ config.tfstates.platform.eslz.tfstate }}
+  - stack: alz
+    landingZonePath: landingzones/caf_solution/add-ons/caf_alz
+    configurationPath: "{{ resources.configuration_folders.destination_relative_path }}/{{ resources.tfstates.platform.alz.level }}/{{ resources.tfstates.platform.alz.base_config_path }}"
+    tfState: {{ resources.tfstates.platform.alz.tfstate }}
     repository: landingzones
-    branch: "{{ config.eslz.private_lib[config.eslz.private_lib.version_to_deploy].caf_landingzone_branch }}"
+    branch: "{{ resources.alz.private_lib[resources.alz.private_lib.version_to_deploy].caf_landingzone_branch }}"
 
 - level: level2
   type: platform
   stacks:
   - stack: connectivity_virtual_wan
     landingZonePath: landingzones/caf_solution
-    configurationPath: "{{ config.configuration_folders.destination_relative_path }}/{{ config.tfstates.platform.management.level }}/{{ config.tfstates.platform.management.base_config_path }}"
-    tfState: {{ config.tfstates.platform.management.tfstate }}
+    configurationPath: "{{ resources.configuration_folders.destination_relative_path }}/{{ resources.tfstates.platform.management.level }}/{{ resources.tfstates.platform.management.base_config_path }}"
+    tfState: {{ resources.tfstates.platform.management.tfstate }}
     repository: landingzones

@@ -1,0 +1,70 @@
+- name: Process deployment based on ignite.yaml
+  hosts: localhost
+
+  tasks:
+
+    - debug:
+        msg: "{{landingzone_definition}}"
+
+    - set_fact:
+        scale_out_domains: "{{scale_out_domains_input.split(',') }}"
+
+    - name: Load templates
+      set_fact:
+        subscriptions_asvm: "{{ lookup('template', '{{ template_folder }}/subscriptions.asvm.yaml') }}"
+        tfstates: "{{ lookup('template', '{{ template_folder }}/tfstates.asvm.yaml') }}"
+
+    - name: Load resources template
+      set_fact:
+        resources_{{env}}: "{{ lookup('template', '{{ template_folder }}/resources.asvm.yaml') }}"
+      loop: "{{scale_out_domains}}"
+      loop_control:
+        loop_var: env
+
+    - debug:
+        msg: 
+        - "subscriptions_asvm: {{subscriptions_asvm}}"
+        - "tfstates: {{tfstates}}"
+        
+    - debug:
+        msg: 
+        - "{{'resources_' + env}}: {{lookup('vars', 'resources_' + env)}}"
+      loop: "{{scale_out_domains}}"
+      loop_control:
+        loop_var: env
+
+#
+# Create definition folder structure
+#
+
+    - name: "Creates definition directory - {{definition_folder}}"
+      file:
+        path: "{{definition_folder}}"
+        state: directory
+
+    - name: "definition - tfstates"
+      copy:
+        content: "{{ tfstates }}"
+        dest: "{{ definition_folder }}/tfstates.asvm.yaml"
+
+    - name: "definition - subscriptions_asvm"
+      copy:
+        content: "{{ subscriptions_asvm }}"
+        dest: "{{ definition_folder }}/subscriptions.asvm.yaml"
+
+    - name: "definition - resources"
+      copy:
+        content: "{{lookup('vars', 'resources_' + env)}}"
+        dest: "{{ definition_folder }}/{{landingzone_definition}}_{{env}}.asvm.yaml"      
+      loop: "{{scale_out_domains}}"
+      loop_control:
+        loop_var: env
+
+    - name: "definition - readme"
+      ansible.builtin.template:
+        src: "{{ topology_folder }}/readme_definition.md"
+        dest: "{{ definition_folder }}/readme.md"
+
+    - debug:
+        msg: 
+        - "next steps: {{definition_folder}}/readme.md"

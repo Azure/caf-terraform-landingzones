@@ -1,5 +1,5 @@
 network_profiles = {
-{% for key, value in resources.subscriptions[subscription_key].network_profiles.items() %}
+{% for key, value in resources[tfstate_resource].resources[subscription_key].network_profiles.items() %}
   {{ key }} = {
       name  = "{{ value.name }}"
       resource_group = {

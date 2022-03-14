@@ -1,0 +1,90 @@
+{
+    "{{ mg.archetype_definitions[item].archetype_id }}": {
+        "policy_assignments": [
+{% if mg.archetype_definitions[item].policy_assignments is mapping %}
+{% for key in mg.archetype_definitions[item].policy_assignments.keys() %}
+{% if loop.last %}
+            "{{ key }}"
+{% else %}
+            "{{ key }}",
+{% endif %}
+{% endfor %}
+{% endif %}
+{% if mg_custom.archetype_definitions[item].policy_assignments is mapping %}
+{% for key in mg_custom.archetype_definitions[item].policy_assignments.keys() %}
+{% if loop.last %}
+            "{{ key }}"
+{% else %}
+            "{{ key }}",
+{% endif %}
+{% endfor %}
+{% endif %}
+        ],
+        "policy_definitions": [
+{% if mg.archetype_definitions[item].policy_definitions is mapping %}
+{% for key in mg.archetype_definitions[item].policy_definitions.keys() %}
+{% if loop.last %}
+            "{{ key }}"
+{% else %}
+            "{{ key }}",
+{% endif %}
+{% endfor %}
+{% endif %}
+{% if mg_custom.archetype_definitions[item].policy_definitions is mapping %}
+{% for key in mg_custom.archetype_definitions[item].policy_definitions.keys() %}
+{% if loop.last %}
+            "{{ key }}"
+{% else %}
+            "{{ key }}",
+{% endif %}
+{% endfor %}
+{% endif %}
+        ],
+        "policy_set_definitions": [
+{% if mg.archetype_definitions[item].policy_set_definitions is mapping %}
+{% for key in mg.archetype_definitions[item].policy_set_definitions.keys() %}
+{% if loop.last %}
+            "{{ key }}"
+{% else %}
+            "{{ key }}",
+{% endif %}
+{% endfor %}
+{% endif %}
+{% if mg_custom.archetype_definitions[item].policy_set_definitions is mapping %}
+{% for key in mg_custom.archetype_definitions[item].policy_set_definitions.keys() %}
+{% if loop.last %}
+            "{{ key }}"
+{% else %}
+            "{{ key }}",
+{% endif %}
+{% endfor %}
+{% endif %}
+        ],
+        "role_definitions": [
+{% if mg.archetype_definitions[item].role_definitions is mapping %}
+{% for key in mg.archetype_definitions[item].role_definitions.keys() %}
+{% if loop.last %}
+            "{{ key }}"
+{% else %}
+            "{{ key }}",
+{% endif %}
+{% endfor %}
+{% endif %}
+{% if mg_custom.archetype_definitions[item].role_definitions is mapping %}
+{% for key in mg_custom.archetype_definitions[item].role_definitions.keys() %}
+{% if loop.last %}
+            "{{ key }}"
+{% else %}
+            "{{ key }}",
+{% endif %}
+{% endfor %}
+{% endif %}
+        ],
+        "archetype_config": {
+            "parameters": {
+            },
+            "access_control": {
+            }
+        }
+    }
+}

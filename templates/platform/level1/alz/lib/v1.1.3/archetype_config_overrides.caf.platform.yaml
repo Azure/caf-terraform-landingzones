@@ -1,0 +1,374 @@
+archetype_definitions:
+  root:
+    archetype_id: root
+    policy_assignments:
+      Allowed-Locations:
+        listOfAllowedLocations:
+{% for region in topology.resources_allowed_regions %}
+          - {{topology.caf_regions[region]}}
+{% endfor %}
+      Deny-RSG-Locations:
+        listOfAllowedLocations:
+{% for region in topology.resource_groups_allowed_regions %}
+          - {{topology.caf_regions[region]}}
+{% endfor %}
+      # Set to Audit as Terraform cannot combine both in one operation yet.
+      Deny-Subnet-Without-Nsg:
+        effect: Audit
+      # Set to Audit as Terraform cannot combine both in one operation yet.
+      Deny-Subnet-Without-Udr:
+        effect: Audit
+      # More details on in the parameters in the Azure Policy definition (Azure Security Benchmark) 1f3afdf9-d0c9-4c3d-847f-89da613e70a8
+      # Change the attributes values as they are not the same. Some are DeployIfNotExist, Some Disabled, Enabled...
+      Deploy-ASC-Monitoring:
+        aadAuthenticationInSqlServerMonitoringEffect: Disabled
+        diskEncryptionMonitoringEffect: Disabled
+        encryptionOfAutomationAccountMonitoringEffect: Disabled
+        identityDesignateLessThanOwnersMonitoringEffect: Disabled
+        identityDesignateMoreThanOneOwnerMonitoringEffect: Disabled
+        identityEnableMFAForWritePermissionsMonitoringEffect: Disabled
+        identityRemoveDeprecatedAccountMonitoringEffect: Disabled
+        identityRemoveDeprecatedAccountWithOwnerPermissionsMonitoringEffect: Disabled
+        identityRemoveExternalAccountWithOwnerPermissionsMonitoringEffect: Disabled
+        identityRemoveExternalAccountWithReadPermissionsMonitoringEffect: Disabled
+        identityRemoveExternalAccountWithWritePermissionsMonitoringEffect: Disabled
+        jitNetworkAccessMonitoringEffect: Disabled
+        networkSecurityGroupsOnSubnetsMonitoringEffect: Disabled
+        sqlDbEncryptionMonitoringEffect: Disabled
+        sqlManagedInstanceAdvancedDataSecurityEmailAdminsMonitoringEffect: Disabled
+        sqlManagedInstanceAdvancedDataSecurityEmailsMonitoringEffect: Disabled
+        sqlServerAdvancedDataSecurityEmailAdminsMonitoringEffect: Disabled
+        sqlServerAdvancedDataSecurityMonitoringEffect: Disabled
+        systemUpdatesMonitoringEffect: AuditIfNotExists
+        useRbacRulesMonitoringEffect: Disabled
+        vmssSystemUpdatesMonitoringEffect: Disabled
+        windowsDefenderExploitGuardMonitoringEffect: Disabled
+      Deploy-ASCDF-Config:
+        emailSecurityContact: {{topology.notifications.azure_defender.emailSecurityContact}}
+        logAnalytics:
+          lz_key: management
+          output_key: diagnostics
+          resource_type: log_analytics
+          resource_key: region1
+          attribute_key: id
+        enableAscForKubernetes: DeployIfNotExists
+        enableAscForSql: DeployIfNotExists
+        enableAscForSqlOnVm: DeployIfNotExists
+        enableAscForDns: DeployIfNotExists
+        enableAscForArm: DeployIfNotExists
+        enableAscForOssDb: DeployIfNotExists
+        enableAscForAppServices: DeployIfNotExists
+        enableAscForRegistries: DeployIfNotExists
+        enableAscForKeyVault: DeployIfNotExists
+        enableAscForStorage: DeployIfNotExists
+        enableAscForServers: DeployIfNotExists
+      Deploy-AzActivity-Log:
+        logAnalytics:
+          lz_key: management
+          output_key: diagnostics
+          resource_type: log_analytics
+          resource_key: region1
+          attribute_key: id
+      Deploy-LX-Arc-Monitoring:
+      Deploy-Resource-Diag:
+        profileName: alz-diagnostic-log
+        logAnalytics:
+          lz_key: management
+          output_key: diagnostics
+          resource_type: log_analytics
+          resource_key: region1
+          attribute_key: id
+      Deploy-WS-Arc-Monitoring:
+        logAnalytics:
+          lz_key: management
+          output_key: diagnostics
+          resource_type: log_analytics
+          resource_key: region1
+          attribute_key: id
+      Deploy-VM-Monitoring:
+        logAnalytics_1:
+          lz_key: management
+          output_key: diagnostics
+          resource_type: log_analytics
+          resource_key: region1
+          attribute_key: id
+      Deploy-VMSS-Monitoring:
+        logAnalytics_1:
+          lz_key: management
+          output_key: diagnostics
+          resource_type: log_analytics
+          resource_key: region1
+          attribute_key: id
+    policy_definitions:
+      Append-AppService-httpsonly:
+      Append-AppService-latestTLS:
+      Append-KV-SoftDelete:
+      Append-Redis-disableNonSslPort:
+      Append-Redis-sslEnforcement:
+      Audit-MachineLearning-PrivateEndpointId:
+      CAF-Deploy-Nsg-FlowLogs:
+      Deny-AA-child-resources:
+      Deny-AppGW-Without-WAF:
+      Deny-AppServiceApiApp-http:
+      Deny-AppServiceFunctionApp-http:
+      Deny-AppServiceWebApp-http:
+      Deny-Databricks-NoPublicIp:
+      Deny-Databricks-Sku:
+      Deny-Databricks-VirtualNetwork:
+      Deny-MachineLearning-Aks:
+      Deny-MachineLearning-Compute-SubnetId:
+      Deny-MachineLearning-Compute-VmSize:
+      Deny-MachineLearning-ComputeCluster-RemoteLoginPortPublicAccess:
+      Deny-MachineLearning-ComputeCluster-Scale:
+      Deny-MachineLearning-HbiWorkspace:
+      Deny-MachineLearning-PublicAccessWhenBehindVnet:
+      Deny-MachineLearning-PublicNetworkAccess:
+      Deny-MySql-http:
+      Deny-PostgreSql-http:
+      Deny-Private-DNS-Zones:
+      Deny-PublicEndpoint-MariaDB:
+      Deny-PublicIP:
+      Deny-RDP-From-Internet:
+      Deny-Redis-http:
+      Deny-Sql-minTLS:
+      Deny-SqlMi-minTLS:
+      Deny-Storage-minTLS:
+      Deny-Subnet-Without-Nsg:
+      Deny-Subnet-Without-Udr:
+      Deny-VNET-Peer-Cross-Sub:
+      Deny-VNet-Peering:
+      Deploy-ASC-SecurityContacts:
+      Deploy-Budget:
+      Deploy-Custom-Route-Table:
+      Deploy-DDoSProtection:
+      Deploy-Diagnostics-AA:
+      Deploy-Diagnostics-ACI:
+      Deploy-Diagnostics-ACR:
+      Deploy-Diagnostics-AnalysisService:
+      Deploy-Diagnostics-ApiForFHIR:
+      Deploy-Diagnostics-APIMgmt:
+      Deploy-Diagnostics-ApplicationGateway:
+      Deploy-Diagnostics-CDNEndpoints:
+      Deploy-Diagnostics-CognitiveServices:
+      Deploy-Diagnostics-CosmosDB:
+      Deploy-Diagnostics-Databricks:
+      Deploy-Diagnostics-DataExplorerCluster:
+      Deploy-Diagnostics-DataFactory:
+      Deploy-Diagnostics-DLAnalytics:
+      Deploy-Diagnostics-EventGridSub:
+      Deploy-Diagnostics-EventGridSystemTopic:
+      Deploy-Diagnostics-EventGridTopic:
+      Deploy-Diagnostics-ExpressRoute:
+      Deploy-Diagnostics-Firewall:
+      Deploy-Diagnostics-FrontDoor:
+      Deploy-Diagnostics-Function:
+      Deploy-Diagnostics-HDInsight:
+      Deploy-Diagnostics-iotHub:
+      Deploy-Diagnostics-LoadBalancer:
+      Deploy-Diagnostics-LogicAppsISE:
+      Deploy-Diagnostics-MariaDB:
+      Deploy-Diagnostics-MediaService:
+      Deploy-Diagnostics-MlWorkspace:
+      Deploy-Diagnostics-MySQL:
+      Deploy-Diagnostics-NetworkSecurityGroups:
+      Deploy-Diagnostics-NIC:
+      Deploy-Diagnostics-PostgreSQL:
+      Deploy-Diagnostics-PowerBIEmbedded:
+      Deploy-Diagnostics-RedisCache:
+      Deploy-Diagnostics-Relay:
+      Deploy-Diagnostics-SignalR:
+      Deploy-Diagnostics-SQLElasticPools:
+      Deploy-Diagnostics-SQLMI:
+      Deploy-Diagnostics-TimeSeriesInsights:
+      Deploy-Diagnostics-TrafficManager:
+      Deploy-Diagnostics-VirtualNetwork:
+      Deploy-Diagnostics-VM:
+      Deploy-Diagnostics-VMSS:
+      Deploy-Diagnostics-VNetGW:
+      Deploy-Diagnostics-WebServerFarm:
+      Deploy-Diagnostics-Website:
+      Deploy-Diagnostics-WVDAppGroup:
+      Deploy-Diagnostics-WVDHostPools:
+      Deploy-Diagnostics-WVDWorkspace:
+      Deploy-FirewallPolicy:
+      Deploy-MySQL-sslEnforcement:
+      Deploy-Nsg-FlowLogs-to-LA:
+      Deploy-Nsg-FlowLogs:
+      Deploy-PostgreSQL-sslEnforcement:
+      Deploy-Sql-AuditingSettings:
+      Deploy-SQL-minTLS:
+      Deploy-Sql-SecurityAlertPolicies:
+      Deploy-Sql-Tde:
+      Deploy-Sql-vulnerabilityAssessments:
+      Deploy-SqlMi-minTLS:
+      Deploy-Storage-sslEnforcement:
+      Deploy-Windows-DomainJoin:
+    policy_set_definitions:
+      Deny-PublicPaaSEndpoints:
+      Deploy-ASCDF-Config:
+      Deploy-Diagnostics-LogAnalytics:
+      Deploy-Sql-Security:
+      Enforce-Encryption-CMK:
+      Enforce-EncryptTransit:
+    remediation:
+      policy:
+      policy_set_definitions:
+        # policyDefinitionReferenceId = https://github.com/Azure/terraform-azurerm-caf-enterprise-scale/blob/c7958266bd227e52dc1a3468e8c881633bc1b373/modules/archetypes/lib/policy_set_definitions/policy_set_definition_es_deploy_diagnostics_loganalytics.tmpl.json#L766
+        # /providers/microsoft.management/managementgroups/contlle/providers/microsoft.authorization/policyassignments/deploy-resource-diag
+        Deploy-Diagnostics-LogAnalytics:
+          - ExpressRouteDeployDiagnosticLogDeployLogAnalytics
+          - FirewallDeployDiagnosticLogDeployLogAnalytics
+          - KeyVaultDeployDiagnosticLogDeployLogAnalytics
+          - LoadBalancerDeployDiagnosticLogDeployLogAnalytics
+          - NetworkNICDeployDiagnosticLogDeployLogAnalytics
+          - NetworkPublicIPNicDeployDiagnosticLogDeployLogAnalytics
+          - NetworkSecurityGroupsDeployDiagnosticLogDeployLogAnalytics
+          - RecoveryVaultDeployDiagnosticLogDeployLogAnalytics
+          - storageaccountdeploydiagnosticlogdeployloganalytics
+          - VirtualNetworkDeployDiagnosticLogDeployLogAnalytics
+          - VNetGWDeployDiagnosticLogDeployLogAnalytics
+        Deploy-ASCDF-Config:
+          - defenderForOssDb
+          - defenderForVM
+          - defenderForSqlServerVirtualMachines
+          - defenderForAppServices
+          - defenderForStorageAccounts
+          - defenderForKubernetesService
+          - defenderForContainerRegistry
+          - defenderForKeyVaults
+          - defenderForDns
+          - defenderForArm
+          - defenderForSqlPaas
+          - securityEmailContact
+          - ascExport
+  landing-zones:
+    archetype_id: landing-zones
+    policy_assignments:
+      Deny-IP-Forwarding:
+      Deny-Priv-Containers-AKS:
+      Deny-Priv-Escalation-AKS:
+      Deny-Private-DNS-Zones:
+      Deny-RDP-From-Internet:
+      Deny-Storage-http:
+      Deploy-AKS-Policy:
+      Deploy-SQL-DB-Auditing:
+      Deploy-SQL-Threat:
+      Enable-DDoS-VNET:
+      Enforce-AKS-HTTPS:
+      Enforce-TLS-SSL:
+      CAF-Deploy-Nsg-FlowLogs:
+        effect: DeployIfNotExists
+        retention: 5
+        storageAccountResourceId: 
+          lz_key: management
+          output_key: objects
+          resource_type: storage_accounts
+          resource_key: nsgflogs
+          attribute_key: id
+        interval: 60
+        flowAnalyticsEnabled: true
+        logAnalytics:
+          lz_key: management
+          output_key: diagnostics
+          resource_type: log_analytics
+          resource_key: region1
+          attribute_key: id
+      Deny-Public-Endpoints:
+        ACRPublicIpDenyEffect: Audit
+        AFSPublicIpDenyEffect: Audit
+        AKSPublicIpDenyEffect: Audit
+        BatchPublicIpDenyEffect: Audit
+        CosmosPublicIpDenyEffect: Audit
+        KeyVaultPublicIpDenyEffect: Audit
+        MySQLFlexPublicIpDenyEffect: Audit
+        PostgreSQLFlexPublicIpDenyEffect: Audit
+        SqlServerPublicIpDenyEffect: Audit
+        StoragePublicIpDenyEffect: Audit
+    archetype_config:
+      access_control:
+        Owner:
+          azuread_groups:
+            lz_key: launchpad
+            attribute_key: id
+            resource_keys:
+              - subscription_creation_landingzones
+  connectivity:
+    archetype_id: platform_connectivity
+    policy_assignments:
+      Enable-DDoS-VNET:
+    role_definitions:
+      CAF-network-vhub-peering:
+    archetype_config:
+      access_control:
+        Owner:
+          azuread_groups:
+            lz_key: launchpad
+            attribute_key: id
+            resource_keys:
+              - connectivity
+        # Make sure you replace with the Management Group ID in UPPER CASE
+        '[{{topology.caf_environment | upper}}-CONNECTIVITY] CAF-network-vhub-peering':
+          azuread_groups:
+            lz_key: launchpad
+            attribute_key: id
+            resource_keys:
+              - subscription_creation_landingzones
+              - identity
+              - management
+  management:
+    archetype_id: platform_management
+    policy_assignments:
+      Deny-Private-DNS-Zones:
+    archetype_config:
+      access_control:
+        Owner:
+          azuread_groups:
+            lz_key: launchpad
+            attribute_key: id
+            resource_keys:
+              - management
+  identity:
+    archetype_id: platform_identity
+    policy_assignments:
+      Deny-RDP-From-Internet:
+      Deny-Public-IP:
+      Deny-Private-DNS-Zones:
+      Deny-IP-Forwarding:
+    archetype_config:
+      access_control:
+        Owner:
+          azuread_groups:
+            lz_key: launchpad
+            attribute_key: id
+            resource_keys:
+              - identity
+  decommissioned:
+    archetype_id: platform_decommissioned
+    policy_assignments:
+      Deny-IP-Forwarding:
+      Deny-Private-DNS-Zones:
+  platform:
+    archetype_id: platform
+    policy_assignments:
+      CAF-Deploy-Nsg-FlowLogs:
+        effect: DeployIfNotExists
+        retention: 5
+        storageAccountResourceId: 
+          lz_key: management
+          output_key: objects
+          resource_type: storage_accounts
+          resource_key: nsgflogs
+          attribute_key: id
+        interval: 60
+        flowAnalyticsEnabled: true
+        logAnalytics:
+          lz_key: management
+          output_key: diagnostics
+          resource_type: log_analytics
+          resource_key: region1
+          attribute_key: id
+  sandboxes:
+    archetype_id: platform_sandboxes
+    policy_assignments:
+      Deny-IP-Forwarding:
+      Deny-Private-DNS-Zones:

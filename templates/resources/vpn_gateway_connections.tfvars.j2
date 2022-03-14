@@ -1,5 +1,5 @@
 vpn_gateway_connections = {
-{% for key, value in resources.subscriptions[subscription_key].vpn_gateway_connections.items() %}
+{% for key, value in resources[tfstate_resource].resources[subscription_key].vpn_gateway_connections.items() %}
   {{ key }} = {
     name                      = "{{ value.name }}"
     internet_security_enabled = {{ value.internet_security_enabled | default(true) | string | lower }} // propagate to default route table

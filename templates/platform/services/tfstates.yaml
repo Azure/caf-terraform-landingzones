@@ -1,0 +1,35 @@
+tfstates:
+  {{deployment_mode}}:
+{% for a_key, value in topology.deployments[deployment_mode].root.items() %}
+{% for key in value.keys() %}
+    {{topologies[key].tfstate.tfstate_key_name}}:
+{% for l_key, l_value in topologies[key].tfstate.items() %}
+      {{l_key}}: {{l_value}}
+{% endfor %}
+
+{% endfor %}
+{% endfor %}
+
+{% for a_key, value in topology.deployments[deployment_mode].alz.items() %}
+{% for key in value.keys() %}
+    {{topologies['alz_' + key].tfstate.tfstate_key_name}}:
+{% for l_key, l_value in topologies['alz_' + key].tfstate.items() %}
+      {{l_key}}: {{l_value}}
+{% endfor %}
+
+{% endfor %}
+{% endfor %}
+
+
+{% for a_key, a_value in topology.deployments[deployment_mode].scale_out_domains.items() %}
+{% for key, value in a_value.items() %}
+    {{key}}:
+{% for b_key in value.keys() %}
+      {{b_key}}:
+{% for l_key, l_value in topologies[key + '_' + b_key].tfstate.items() %}
+        {{l_key}}: {{l_value}}
+{% endfor %}
+{% endfor %}
+
+{% endfor %}
+{% endfor %}

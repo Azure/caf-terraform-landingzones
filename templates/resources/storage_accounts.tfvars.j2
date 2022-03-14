@@ -1,11 +1,13 @@
 storage_accounts = {
-{% for key, value in resources.subscriptions[subscription_key].storage_accounts.items() %}
+{% for key, value in resources[tfstate_resource].resources[subscription_key].storage_accounts.items() %}
   {{ key }} = {
     name                      = "{{ value.name }}"
     resource_group_key        = "{{ value.resource_group_key }}"
     account_kind              = "{{ value.account_kind | default('BlobStorage') }}"
     account_tier              = "{{ value.account_tier | default('Standard') }}"
+{% if value.shared_access_key_enabled is defined %}
     shared_access_key_enabled = {{ value.shared_access_key_enabled | lower | default('false') }}
+{% endif %}
     account_replication_type  = "{{ value.account_replication_type }}"
 {% if value.access_tier is defined %}
     access_tier               = "{{ value.access_tier }}"
@@ -28,7 +30,6 @@ storage_accounts = {
 {% if value.enable_system_msi is defined %}
     enable_system_msi         = {{ value.enable_system_msi | lower }}
 {% endif %}
-    
 {% if value.blob_properties is defined %}
     blob_properties = {
 {% if value.blob_properties.versioning_enabled is defined %}
@@ -55,11 +56,10 @@ storage_accounts = {
 {% endif %}
     }
 {% endif %}
-
 {% if value.network is defined %}
     network = {
 {% if value.network.default_action is defined %}
-      default_action = {{ value.network.default_action | lower }}
+      default_action = "{{ value.network.default_action }}"
 {% endif %}
 {% if value.network.bypass is defined %}
       bypass = {{ value.network.bypass | replace('None','[]') | replace('\'','\"') }}
@@ -87,6 +87,68 @@ storage_accounts = {
     }
 {% endif %}
 
+
+{% if value.management_policies is defined %}
+    management_policies = {
+{% for mp_key, mp_value in value.management_policies.items() %}
+      {{ mp_key }} = {
+        enabled = {{mp_value.enabled | default(True) | lower}}
+        name    = "{{mp_value.name}}"
+        filters = {
+{% for mpf_key, mpf_value in mp_value.filters.items() %}
+          {{mpf_key}} = {
+{% if mpf_value.prefix_match is defined %}
+            prefix_match = {{ mpf_value.prefix_match | replace('None','[]') | replace('\'','\"') }}
+{% endif %}
+{% if mpf_value.blob_types is defined %}
+            blob_types = {{ mpf_value.blob_types | replace('None','[]') | replace('\'','\"') }}
+{% endif %}
+{% if mpf_value.match_blob_index_tag is defined %}
+            match_blob_index_tag = {
+              {{ mpf_value.match_blob_index_tag.0.keys() }} = {
+                name = "{{ mpf_value.match_blob_index_tag.0.name }}"
+                operation = "{{ mpf_value.match_blob_index_tag.0.operation }}"
+                value = "{{ mpf_value.match_blob_index_tag.0.value }}"
+              }
+            }
+{% endif %}
+          }
+{% endfor %}
+        }
+        actions = {
+          base_blob = {
+{% for aa_key, aa_value in mp_value.actions.base_blob.items() %}
+            {{ aa_key }} = {
+{% for ab_key, ab_value in aa_value.items() %}
+              {{ ab_key }} = {{ ab_value }}
+{% endfor %}
+            }
+{% endfor %}
+          }
+          snapshot = {
+{% for aa_key, aa_value in mp_value.actions.snapshot.items() %}
+            {{ aa_key }} = {
+{% for ab_key, ab_value in aa_value.items() %}
+              {{ ab_key }} = {{ ab_value }}
+{% endfor %}
+            }
+{% endfor %}
+          }
+          version = {
+{% for aa_key, aa_value in mp_value.actions.version.items() %}
+            {{ aa_key }} = {
+{% for ab_key, ab_value in aa_value.items() %}
+              {{ ab_key }} = {{ ab_value }}
+{% endfor %}
+            }
+{% endfor %}
+          }
+        }
+      }
+{% endfor %}
+    }
+{% endif %}
+
 {% if value.containers is defined %}
     containers = {
 {% for c_key, c_value in value.containers.items() %}
@@ -96,7 +158,6 @@ storage_accounts = {
 {% endfor %}
     }
 {% endif %}
-
 {% if value.tags is defined %}
     tags   = {
 {% for tag_key, tag_value in value.tags.items() %}

@@ -1,0 +1,84 @@
+private_dns_{{env}}:
+  gitops:
+    caf_landingzone_branch: {{topology.caf_landingzone_branch}}
+
+  relative_destination_folder: level2/connectivity/private_dns/{{env}}
+
+  tfstate:
+    lz_key_name: connectivity_private_dns_{{env}}
+    tfstate: connectivity_private_dns_{{env}}.tfstate
+    level: level2
+    config_file: private_dns.yaml
+    identity_aad_key: cred_connectivity
+    # Do not rename the tfstate_key_name
+    tfstate_key_name: private_dns
+
+  deployments:
+    landingzone:
+      global_settings_key:
+        platform:
+          private_dns_firewalls: {{env}}
+      remote_tfstates:
+        platform:
+          private_dns_firewalls: {{env}}
+          identity_level2: {{env}}
+
+  resources:
+    connectivity:
+      role_mapping:
+        custom_role_mapping:
+          resource_groups:
+            dns_connectivity_{{env}}:
+              landgingzone_extended:
+                azuread_groups:
+                  lz_key: identity_level2_{{env}}
+                  keys:
+                    - caf_{{env}}_landingzones_dns_contributors
+        built_in_role_mapping:
+          resource_groups:
+            dns_connectivity_{{env}}:
+              Private DNS Zone Contributor:
+                azuread_groups:
+                  lz_key: identity_level2_{{env}}
+                  keys:
+                    - caf_{{env}}_landingzones_dns_contributors
+
+      custom_role_definitions:
+        landgingzone_extended:
+          name: landingzone-networking-private-dns-extended
+          useprefix: true
+          description: "({{env}}) Provides additional permissions for the level4 principal to perform activies on the level2 private dns zones for private links."
+          permissions:
+            actions:
+              - Microsoft.Network/privateDnsZones/join/action
+              - Microsoft.Network/privateEndpoints/privateDnsZoneGroups/read
+              - Microsoft.Network/privateEndpoints/privateDnsZoneGroups/write
+
+      resource_groups:
+        dns_connectivity_{{env}}:
+          name: dns-connectivity-{{env}}
+
+      private_dns:
+{% for key in variables.variables_private_dns_zones.zones.keys() %}
+        {{key}}:
+          name: {{key}}
+          resource_group_key: dns_connectivity_{{env}}
+          vnet_links:
+            fw_{{env}}_01:
+              name: fw-{{env}}-01
+              vnet_key: vnet
+              lz_key: connectivity_private_dns_firewalls_{{env}}
+{% endfor %}
+{% for region in topology.resources_allowed_regions %}
+{% for z_key in variables.variables_private_dns_zones.regional_zones %}
+        {{z_key | replace('region', region)}}:
+          name: {{z_key | replace('region', region)}}
+          resource_group_key: dns_connectivity_{{env}}
+          vnet_links:
+            fw_{{env}}_01:
+              name: fw-{{env}}-01
+              vnet_key: vnet
+              lz_key: connectivity_private_dns_firewalls_{{env}}
+{% endfor %}
+{% endfor %}
+      

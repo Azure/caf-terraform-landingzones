@@ -1,0 +1,19 @@
+- debug:
+    msg: 
+      - "{{deployment_mode}}"
+      - "{{lz_type}}"
+      - "{{stage}}"
+
+- name: Process core deployments
+  include_tasks: "process_stages.yaml"
+  loop: "{{bootstrap.deployments[deployment_mode][stage][region].keys()}}"
+  loop_control:
+    loop_var: tfstate
+  when: stage != 'scale_out_domains'
+
+- name: Process core deployments
+  include_tasks: "process_deployments.yaml"
+  loop: "{{bootstrap.deployments[deployment_mode][stage][region].keys()}}"
+  loop_control:
+    loop_var: tfstate
+  when: stage == 'scale_out_domains'

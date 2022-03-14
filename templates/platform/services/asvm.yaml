@@ -1,0 +1,98 @@
+asvm:
+  gitops:
+    caf_landingzone_branch: {{topology.caf_landingzone_branch}}
+
+  relative_destination_folder: level2/asvm
+
+  tfstate:
+    lz_key_name: asvm
+    tfstate: asvm_subscription_vending_machine.tfstate
+    level: level2
+    config_file: asvm.yaml
+    identity_aad_key: cred_level0
+    sub_template_folder: platform/level2/asvm
+    yaml: platform/level2/asvm/ansible.yaml
+    # Do not rename the tfstate_key_name
+    tfstate_key_name: asvm
+
+  deployments:
+    landingzone:
+      global_settings_key:
+        platform:
+          management:
+      remote_tfstates:
+        platform:
+          management:
+
+  resources:
+    launchpad:
+      resource_groups:
+        level3:
+          name: caf-level3
+          tags:
+            level: level3
+        level4:
+          name: caf-level4
+          tags:
+            level: level4
+
+      storage_accounts:
+        level3:
+          name: l3
+          resource_group_key: level3
+          account_kind: BlobStorage
+          account_tier: Standard
+          shared_access_key_enabled: false
+          account_replication_type: GRS
+          blob_properties:
+            versioning_enabled: true
+            last_access_time_enabled: true
+            container_delete_retention_policy:
+              days: 7
+            delete_retention_policy:
+              days: 7
+          containers:
+            tfstate:
+              name: tfstate
+          tags:
+            ## Those tags must never be changed after being set as they are used by the rover to locate the launchpad and the tfstates.
+            # Only adjust the environment value at creation time
+            caf_environment: {{topology.caf_environment}}
+            caf_launchpad: launchpad
+            caf_tfstate: level3
+        level4:
+          name: l4
+          resource_group_key: level4
+          account_kind: BlobStorage
+          account_tier: Standard
+          shared_access_key_enabled: false
+          account_replication_type: GRS
+          blob_properties:
+            versioning_enabled: true
+            last_access_time_enabled: true
+            container_delete_retention_policy:
+              days: 7
+            delete_retention_policy:
+              days: 7
+          tags:
+            ## Those tags must never be changed after being set as they are used by the rover to locate the launchpad and the tfstates.
+            # Only adjust the environment value at creation time
+            caf_environment: {{topology.caf_environment}}
+            caf_launchpad: launchpad
+            caf_tfstate: level4
+
+      keyvaults:
+        level3:
+          name: l3
+          resource_group_key: level3
+        level4:
+          name: l4
+          resource_group_key: level4
+
+
+      azuread_groups:
+        caf_ac_landingzone_maintainers_non_prod:
+          name: caf_ac_landingzone_maintainers_non_prod
+
+        caf_ac_landingzone_maintainers_prod:
+          name: caf_ac_landingzone_maintainers_prod

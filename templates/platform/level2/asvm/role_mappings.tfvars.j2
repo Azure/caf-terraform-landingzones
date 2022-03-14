@@ -9,7 +9,7 @@ role_mapping = {
     resource_groups = {
       level3 = {
         "Reader" = {
-{% if config.platform_identity.azuread_identity_mode != 'logged_in_user' %}
+{% if resources.azure_landing_zones.identity.azuread_identity_mode != 'logged_in_user' and launchpad_azuread_groups is defined %}
           object_ids = {
             keys = [
               "{{launchpad_azuread_groups.caf_platform_maintainers.id}}",           // caf_platform_maintainers
@@ -31,7 +31,7 @@ role_mapping = {
       }
       level4 = {
         "Reader" = {
-{% if config.platform_identity.azuread_identity_mode != 'logged_in_user' %}
+{% if resources.azure_landing_zones.identity.azuread_identity_mode != 'logged_in_user' and launchpad_azuread_groups is defined %}
           object_ids = {
             keys = [
               "{{launchpad_azuread_groups.caf_platform_maintainers.id}}",           // caf_platform_maintainers
@@ -56,7 +56,7 @@ role_mapping = {
     storage_accounts = {
       level3 = {
         "Storage Blob Data Contributor" = {
-{% if config.platform_identity.azuread_identity_mode != 'logged_in_user' %}
+{% if resources.azure_landing_zones.identity.azuread_identity_mode != 'logged_in_user' and launchpad_azuread_groups is defined %}
           object_ids = {
             keys = [
               "{{launchpad_azuread_groups.caf_platform_maintainers.id}}",           // caf_platform_maintainers
@@ -69,7 +69,7 @@ role_mapping = {
           }
 {% endif %}
         }
-{% if config.platform_identity.azuread_identity_mode != 'logged_in_user' %}
+{% if resources.azure_landing_zones.identity.azuread_identity_mode != 'logged_in_user' and launchpad_azuread_groups is defined %}
         "Owner" = {
           object_ids = {
             keys = [
@@ -82,7 +82,7 @@ role_mapping = {
 
       level4 = {
         "Storage Blob Data Contributor" = {
-{% if config.platform_identity.azuread_identity_mode != 'logged_in_user' %}
+{% if resources.azure_landing_zones.identity.azuread_identity_mode != 'logged_in_user' and launchpad_azuread_groups is defined %}
           object_ids = {
             keys = [
               "{{launchpad_azuread_groups.caf_platform_maintainers.id}}",           // caf_platform_maintainers
@@ -95,7 +95,7 @@ role_mapping = {
           }
 {% endif %}
         }
-{% if config.platform_identity.azuread_identity_mode != 'logged_in_user' %}
+{% if resources.azure_landing_zones.identity.azuread_identity_mode != 'logged_in_user' and launchpad_azuread_groups is defined %}
         "Owner" = {
           object_ids = {
             keys = [

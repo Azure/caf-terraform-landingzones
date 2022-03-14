@@ -1,0 +1,64 @@
+virtual_hubs_{{env}}:
+  gitops:
+    caf_landingzone_branch: {{topology.caf_landingzone_branch}}
+
+  relative_destination_folder: level2/connectivity/virtual_hubs/{{env}}
+
+  tfstate:
+    lz_key_name: connectivity_virtual_hubs_{{env}}
+    tfstate: connectivity_virtual_hubs_{{env}}.tfstate
+    workspace: tfstate
+    level: level2
+    config_file: virtual_hubs.yaml
+    identity_aad_key: cred_connectivity
+    # Do not rename the tfstate_key_name
+    tfstate_key_name: virtual_hubs
+
+  deployments:
+    landingzone:
+      global_settings_key:
+        platform:
+          virtual_wans: prod
+      remote_tfstates:
+        platform:
+          virtual_wans: prod
+    custom_variables:
+      virtual_hub_lz_key: connectivity_virtual_hubs_{{env}}
+      # ddos_protection_plan_id:
+
+  resources:
+    connectivity:
+      virtual_hubs:
+        {{env}}:
+          name: {{env | replace('_', '-')}}
+          virtual_wan:
+            lz_key: connectivity_virtual_wans_prod
+            key: global_wan
+          region_key: region1
+          hub_address_prefix: {{variables.variables_cidr[deployment_mode][service]['region1'][env].address_prefix}}
+          deploy_s2s: false
+          s2s_config:
+            name: {{env}}
+            scale_unit: 1
+          deploy_er: false
+          er_config:
+            name: {{env}}
+            scale_units: 1
+          deploy_p2s: false
+          p2s_config:
+            name: {{env}}
+            scale_units: 1
+
+      express_route_connections:
+        {{env}}:
+          enable_er_connections: false
+          name: er-1-{{env}}
+          virtual_hub:
+            key: {{env}}
+          circuit_peering:
+            tfstate_key: {{env}}
+            key: private_peering
+          express_route_circuit_authorization:
+            tfstate_key: {{env}}
+            key: vhub-{{env}}
+

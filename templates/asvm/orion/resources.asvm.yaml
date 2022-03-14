@@ -1,0 +1,526 @@
+{{landingzone_definition}}_{{env}}:
+  gitops:
+    caf_landingzone_branch: 2203.0
+
+  relative_destination_folder: level3/{{landingzone_definition}}/{{env}}
+
+  deployments:
+    landingzone:
+      global_settings_key:
+        platform:
+          virtual_hubs: {{platform_mappings[env]}}
+      remote_tfstates:
+        asvm:
+          asvm_subscriptions:
+        platform:
+          virtual_hubs: {{platform_mappings[env]}}
+          virtual_hubs_route_tables: {{platform_mappings[env]}}
+          secure_firewalls: {{platform_mappings[env]}}
+          identity_level2: {{platform_mappings[env]}}
+          asvm:
+
+  resources:
+    {{landingzone_definition}}_{{env}}:
+      resource_groups:
+        rg:
+          name: {{landingzone_definition}}-{{env}}
+        backup:
+          name: {{landingzone_definition}}-{{env}}-backup
+        networking:
+          name: {{landingzone_definition}}-{{env}}-networking
+        preparation:
+          name: {{landingzone_definition}}-{{env}}-preparation
+        modeling:
+          name: {{landingzone_definition}}-{{env}}-modeling
+        consumption:
+          name: {{landingzone_definition}}-{{env}}-consumption
+        analytics:
+          name: {{landingzone_definition}}-{{env}}-analytics
+
+      virtual_networks:
+        vnet:
+          name: {{landingzone_definition}}-{{env}}
+          resource_group_key: networking
+          region_key: region1
+          dns_servers_keys:
+            fw_secure_{{platform_mappings[env]}}:
+              resource_type: azurerm_firewall
+              lz_key: connectivity_secure_firewalls_{{platform_mappings[env]}}
+              key: fw_secure_{{platform_mappings[env]}}
+          address_space:
+            - 10.101.8.0/23
+          subnets:
+            databricks_preparation_egress:
+              name: databricks-preparation-egress
+              nsg_key: databricks_egress
+              delegation:
+                name: databricks
+                service_delegation: Microsoft.Databricks/workspaces
+                actions:
+                  - Microsoft.Network/virtualNetworks/subnets/join/action
+                  - Microsoft.Network/virtualNetworks/subnets/prepareNetworkPolicies/action
+                  - Microsoft.Network/virtualNetworks/subnets/unprepareNetworkPolicies/action
+              cidr:
+                - 10.101.8.0/26
+            databricks_preparation_private:
+              name: databricks-preparation-private
+              nsg_key: databricks_private
+              delegation:
+                name: databricks
+                service_delegation: Microsoft.Databricks/workspaces
+                actions:
+                  - Microsoft.Network/virtualNetworks/subnets/join/action
+                  - Microsoft.Network/virtualNetworks/subnets/prepareNetworkPolicies/action
+                  - Microsoft.Network/virtualNetworks/subnets/unprepareNetworkPolicies/action
+              cidr:
+                - 10.101.8.64/26
+            databricks_modeling_egress:
+              name: databricks-modeling-egress
+              nsg_key: databricks_egress
+              delegation:
+                name: databricks
+                service_delegation: Microsoft.Databricks/workspaces
+                actions:
+                  - Microsoft.Network/virtualNetworks/subnets/join/action
+                  - Microsoft.Network/virtualNetworks/subnets/prepareNetworkPolicies/action
+                  - Microsoft.Network/virtualNetworks/subnets/unprepareNetworkPolicies/action
+              cidr:
+                - 10.101.9.0/26
+            databricks_modeling_private:
+              name: databricks-modeling-private
+              nsg_key: databricks_private
+              delegation:
+                name: databricks
+                service_delegation: Microsoft.Databricks/workspaces
+                actions:
+                  - Microsoft.Network/virtualNetworks/subnets/join/action
+                  - Microsoft.Network/virtualNetworks/subnets/prepareNetworkPolicies/action
+                  - Microsoft.Network/virtualNetworks/subnets/unprepareNetworkPolicies/action
+              cidr:
+                - 10.101.9.64/26
+            consumption:
+              name: consumption
+              enforce_private_link_endpoint_network_policies: true
+              cidr:
+                - 10.101.8.128/25
+            databricks_notebooks:
+              name: databricks-notebooks
+              service_endpoints:
+                - Microsoft.Storage
+                - Microsoft.KeyVault
+              nsg_key: databricks_notebooks
+              cidr:
+                - 10.101.9.128/27
+            private_endpoints:
+              name: private-endpoints
+              enforce_private_link_endpoint_network_policies: true
+              cidr:
+                - 10.101.9.192/27
+
+      network_security_group_definition:
+        databricks_egress:
+          version: 1
+          resource_group_key: networking
+          name: databricks-egress
+          nsg:
+            Inbound:
+              400:
+                name: Microsoft.Databricks-workspaces_UseOnly_databricks-control-plane-to-worker-proxy
+                access: Allow
+                protocol: tcp
+                source_port_range: "*"
+                source_address_prefix: "AzureDatabricks"
+                destination_port_range: 5557
+                destination_address_prefix: "*"
+              401:
+                name: Microsoft.Databricks-workspaces_UseOnly_databricks-control-plane-to-worker-ssh
+                access: Allow
+                protocol: tcp
+                source_port_range: "*"
+                source_address_prefix: "AzureDatabricks"
+                destination_port_range: 22
+                destination_address_prefix: "*"
+            Outbound:
+              400:
+                name: Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-databricks-webapp
+                access: Allow
+                protocol: tcp
+                source_port_range: "*"
+                source_address_prefix: "VirtualNetwork"
+                destination_port_range: 443
+                destination_address_prefix: "AzureDatabricks"
+              401:
+                name: Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-sql
+                access: Allow
+                protocol: tcp
+                source_port_range: "*"
+                source_address_prefix: "VirtualNetwork"
+                destination_port_range: 3306
+                destination_address_prefix: "Sql"
+              402:
+                name: Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-storage
+                access: Allow
+                protocol: tcp
+                source_port_range: "*"
+                source_address_prefix: "VirtualNetwork"
+                destination_port_range: 443
+                destination_address_prefix: "Storage"
+              403:
+                name: Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-worker-outbound
+                access: Allow
+                protocol: tcp
+                source_port_range: "*"
+                source_address_prefix: "VirtualNetwork"
+                destination_port_range: "*"
+                destination_address_prefix: "VirtualNetwork"
+              404:
+                name: Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-eventhub
+                access: Allow
+                protocol: tcp
+                source_port_range: "*"
+                source_address_prefix: "VirtualNetwork"
+                destination_port_range: 9093
+                destination_address_prefix: "EventHub"
+              405:
+                name: ICMP
+                access: Allow
+                protocol: icmp
+                source_port_range: "*"
+                source_address_prefix: "*"
+                destination_port_range: "*"
+                destination_address_prefix: "*"
+        databricks_private:
+          version: 1
+          resource_group_key: networking
+          name: databricks-private
+          nsg:
+            Inbound:
+              400:
+                name: Batch Node Management
+                access: Allow
+                protocol: tcp
+                source_port_range: "*"
+                source_address_prefix: "BatchNodeManagement"
+                destination_address_prefix: "*"
+                destination_port_ranges:
+                  - 29876
+                  - 29877
+              401:
+                name: Azure Machine Learning
+                access: Allow
+                protocol: tcp
+                source_port_range: "*"
+                source_address_prefix: "AzureMachineLearning"
+                destination_address_prefix: "*"
+                destination_port_ranges:
+                  - 44224
+            Outbound:
+              400:
+                name: Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-webapp
+                access: Allow
+                protocol: tcp
+                source_port_range: "*"
+                source_address_prefix: "VirtualNetwork"
+                destination_port_range: 443
+                destination_address_prefix: "AzureDatabricks"
+              401:
+                name: Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-sql
+                access: Allow
+                protocol: tcp
+                source_port_range: "*"
+                source_address_prefix: "VirtualNetwork"
+                destination_port_range: 3306
+                destination_address_prefix: "Sql"
+              402:
+                name: Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-storage
+                access: Allow
+                protocol: tcp
+                source_port_range: "*"
+                source_address_prefix: "VirtualNetwork"
+                destination_port_range: 443
+                destination_address_prefix: "Storage"
+              403:
+                name: Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-worker-outbound
+                access: Allow
+                protocol: tcp
+                source_port_range: "*"
+                source_address_prefix: "VirtualNetwork"
+                destination_port_range: "*"
+                destination_address_prefix: "VirtualNetwork"
+              404:
+                name: Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-eventhub
+                access: Allow
+                protocol: tcp
+                source_port_range: "*"
+                source_address_prefix: "VirtualNetwork"
+                destination_port_range: 9093
+                destination_address_prefix: "EventHub"
+        consumption:
+          version: 1
+          resource_group_key: networking
+          name: consumption
+        databricks_notebooks:
+          version: 1
+          resource_group_key: networking
+          name: databricks-notebooks
+          nsg:
+            Inbound:
+              500:
+                name: Batch Node Management
+                access: Allow
+                protocol: tcp
+                source_port_range: "*"
+                source_address_prefix: "BatchNodeManagement"
+                destination_address_prefix: "*"
+                destination_port_ranges:
+                  - 29876
+                  - 29877
+              501:
+                name: Azure Machine Learning
+                access: Allow
+                protocol: tcp
+                source_port_range: "*"
+                source_address_prefix: "AzureMachineLearning"
+                destination_address_prefix: "*"
+                destination_port_ranges:
+                  - 44224
+            Outbound:
+              500:
+                name: AzureActiveDirectory
+                access: Allow
+                protocol: tcp
+                source_port_range: "*"
+                source_address_prefix: "*"
+                destination_address_prefix: "AzureActiveDirectory"
+                destination_port_ranges:
+                  - 80
+                  - 443
+              501:
+                name: AzureMachineLearning
+                access: Allow
+                protocol: tcp
+                source_port_range: "*"
+                source_address_prefix: "*"
+                destination_address_prefix: "AzureMachineLearning"
+                destination_port_ranges:
+                  - 443
+              502:
+                name: AzureResourceManager
+                access: Allow
+                protocol: tcp
+                source_port_range: "*"
+                source_address_prefix: "*"
+                destination_address_prefix: "AzureResourceManager"
+                destination_port_ranges:
+                  - 443
+              503:
+                name: Storage
+                access: Allow
+                protocol: tcp
+                source_port_range: "*"
+                source_address_prefix: "*"
+                destination_address_prefix: "Storage"
+                destination_port_ranges:
+                  - 443
+              504:
+                name: AzureFrontDoor Frontend
+                access: Allow
+                protocol: tcp
+                source_port_range: "*"
+                source_address_prefix: "*"
+                destination_address_prefix: "AzureFrontDoor.Frontend"
+                destination_port_ranges:
+                  - 443
+              505:
+                name: Container Registry
+                access: Allow
+                protocol: tcp
+                source_port_range: "*"
+                source_address_prefix: "*"
+                destination_address_prefix: "AzureContainerRegistry"
+                destination_port_ranges:
+                  - 443
+              506:
+                name: Microsoft Container Registry
+                access: Allow
+                protocol: tcp
+                source_port_range: "*"
+                source_address_prefix: "*"
+                destination_address_prefix: "MicrosoftContainerRegistry"
+                destination_port_ranges:
+                  - 443
+              507:
+                name: Keyvault
+                access: Allow
+                protocol: tcp
+                source_port_range: "*"
+                source_address_prefix: "*"
+                destination_address_prefix: "AzureKeyVault"
+                destination_port_ranges:
+                  - 443
+              508:
+                name: AzureFrontDoor FirstParty
+                access: Allow
+                protocol: tcp
+                source_port_range: "*"
+                source_address_prefix: "*"
+                destination_address_prefix: "AzureFrontDoor.FirstParty"
+                destination_port_range: "*"
+
+      virtual_hub_connections:
+        vnet_to_{{platform_mappings[env]}}:
+          name: vnet-{{landingzone_definition}}-{{env}}-TO-{{platform_mappings[env]}}
+          virtual_hub:
+            lz_key: connectivity_virtual_hubs_{{platform_mappings[env]}}
+            key: {{platform_mappings[env]}}
+          vnet:
+            vnet_key: vnet
+          routing:
+            egress:
+              lz_key: virtual_hubs_route_tables_{{platform_mappings[env]}}
+
+      recovery_vaults:
+        asr:
+          name: vault-{{landingzone_definition}}-{{env}}
+          resource_group_key: backup
+          backup_policies:
+            vms:
+              default:
+                name: vm-default-policy
+                timezone: "SE Asia Standard Time"
+                backup:
+                  frequency: Daily
+                  time: "23:00"
+                retention_daily:
+                  count: 7
+
+      keyvaults:
+        kv_delegated_sp:
+          name: {{landingzone_definition}}{{env}}001
+          resource_group_key: rg
+          creation_policies:
+            logged_in_user:
+              secret_permissions:
+                - Set
+                - Get
+                - List
+                - Delete
+                - Purge
+                - Recover
+            landingzone_maintainers_{{platform_mappings[env]}}:
+              lz_key: asvm
+              azuread_group_key: caf_ac_landingzone_maintainers_{{platform_mappings[env]}}
+              secret_permissions:
+                - Set
+                - Get
+                - List
+                - Delete
+                - Purge
+                - Recover
+
+      keyvault_access_policies:
+        kv_delegated_sp:
+          app_LZContributors:
+            azuread_service_principal_key: sp_LZContributors
+            secret_permissions:
+              - Get
+
+      azuread_applications:
+        app_LZContributors:
+          application_name: app-asvm-{{landingzone_definition}}-{{env}}-Contributors
+
+      azuread_service_principals:
+        sp_LZContributors:
+          azuread_application:
+            key: app_LZContributors
+
+      azuread_credentials:
+        app_LZContributors:
+          type: password
+          azuread_credential_policy_key: default_policy
+          azuread_application:
+            key: app_LZContributors
+          keyvaults:
+            kv_delegated_sp:
+              secret_prefix: sp
+
+      azuread_credential_policies:
+        default_policy:
+          length: 250
+          special: false
+          upper: true
+          number: true
+          expire_in_days: 70
+          rotation_key0:
+            days: 33
+          rotation_key1:
+            days: 58
+
+      azuread_groups_membership:
+        caf_{{platform_mappings[env]}}_landingzones_dns_contributors:
+          azuread_service_principals:
+            sp_LZContributors:
+              group_lz_key: identity_level2_{{platform_mappings[env]}}
+              keys:
+                - sp_LZContributors
+        caf_ac_landingzone_maintainers_{{platform_mappings[env]}}:
+          azuread_service_principals:
+            sp_LZContributors:
+              group_lz_key: asvm
+              keys:
+                - sp_LZContributors
+
+      custom_role_definitions:
+        contributors_extended:
+            name: lz-{{landingzone_definition}}-{{env}}-contributors-extended
+            useprefix: true
+            description: "Provides additional permissions for the level4 principal to perform activies on the level3 landingzone services."
+            permissions:
+              actions:
+                - Microsoft.Network/privateDnsZones/join/action
+                - Microsoft.Network/virtualNetworks/join/action
+
+      role_mapping:
+        custom_role_mapping:
+          networking:
+            vnet:
+              contributors_extended:
+                azuread_service_principals:
+                  keys:
+                    - sp_LZContributors
+
+        built_in_role_mapping:
+          resource_groups:
+            preparation:
+              Owner:
+                azuread_service_principals:
+                  keys:
+                    - sp_LZContributors
+            modeling:
+              Owner:
+                azuread_service_principals:
+                  keys:
+                    - sp_LZContributors
+            consumption:
+              Owner:
+                azuread_service_principals:
+                  keys:
+                    - sp_LZContributors
+            analytics:
+              Owner:
+                azuread_service_principals:
+                  keys:
+                    - sp_LZContributors
+          storage_containers:
+            {{landingzone_definition}}_{{env}}_level3:
+              lz_key: {{landingzone_definition}}_subscriptions
+              Storage Blob Data Contributor:
+                azuread_service_principals:
+                  keys:
+                    - sp_LZContributors
+            {{landingzone_definition}}_{{env}}_level4:
+              lz_key: {{landingzone_definition}}_subscriptions
+              Storage Blob Data Contributor:
+                azuread_service_principals:
+                  keys:
+                    - sp_LZContributors
