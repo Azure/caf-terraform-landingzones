@@ -14,7 +14,7 @@ ansible-playbook {{public_templates_folder}}/ansible/asvm_definition.yaml \
 Note: This playbook will override the customization you have performed in your {{platform_configuration_folder}} folder.
 
 ```bash
-ansible-playbook {{public_templates_folder}}/asvm/walk-through.yaml \
+ansible-playbook {{public_templates_folder}}/asvm/orion/walk-through.yaml \
   --extra-vars "@{{template_folder}}/ignite.yaml"
 
 ```

@@ -19,8 +19,6 @@ deployments:
     root:
       region1:
         asvm_subscriptions: subscriptions.asvm.yaml
-    scale_out_domains:
-      region1:
 {% for scod in scale_out_domains %}
         {{landingzone_definition}}_{{scod}}: subscriptions.asvm.yaml
 {% endfor %}

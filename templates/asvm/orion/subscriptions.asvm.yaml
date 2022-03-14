@@ -16,11 +16,13 @@ asvm_subscriptions:
   resources:
     asvm_subscriptions:
       subscriptions:
-{% for region, value in deployments.asvm['scale_out_domains'].items() %}
-{% for scod, scod_value in value.subscriptions.items() %}
+{% for region, value in deployments.asvm['root'].items() %}
+{% for scod, scod_value in value.items() %}
+{% if scod != "asvm_subscriptions" %}
         {{scod}}:
 {% for key, kv in subscriptions[scod].items() %}
           {{key}}: {{kv}}
 {% endfor %}
+{% endif %}
 {% endfor %}
 {% endfor %}

@@ -68,7 +68,7 @@
 
     - name: Save parameters
       ansible.builtin.template:
-        src: "{{playbook_dir}}/ignite.yaml"
+        src: "{{topology_folder}}/ignite.yaml"
         dest: "{{template_folder}}/ignite.yaml"
 
     - name: readme

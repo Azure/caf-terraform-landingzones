@@ -9,13 +9,15 @@ tfstates:
       sub_template_folder: platform/level3/subscriptions
       yaml: platform/level3/ansible.yaml
 
-{% for region, value in deployments.asvm['scale_out_domains'].items() %}
-{% for scod in value.subscriptions.keys() %}
+{% for region, value in deployments.asvm['root'].items() %}
+{% for scod in value.keys() %}
+{% if scod != "asvm_subscriptions" %}
     {{scod}}:
       lz_key_name: {{scod}}_level3
       tfstate: {{scod}}_level3.tfstate
       workspace: {{scod | replace('_', '-')}}
       level: level3
 
+{% endif %}
 {% endfor %}
 {% endfor %}
