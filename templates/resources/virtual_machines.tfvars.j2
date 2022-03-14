@@ -1,5 +1,5 @@
 virtual_machines = {
-{% for key, value in resources.subscriptions[subscription_key].virtual_machines.items() %}
+{% for key, value in resources[tfstate_resource].resources[subscription_key].virtual_machines.items() %}
   {{ key }} = {
       resource_group = {
 {% if value.resource_group.lz_key is defined %}

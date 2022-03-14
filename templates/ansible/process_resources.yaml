@@ -1,0 +1,30 @@
+- name: "resources - {{resource_type}} - check file to process"
+  stat:
+    path: "{{ansible_to_process}}/{{resource_type}}.tfvars.j2"
+  register: override_file
+
+- name: "{{deployment}} - Set resource_type file_path"
+  set_fact:
+    resource_type_template: "{{resource_template_folder}}/{{resource_type}}.tfvars.j2"
+    resource_type_override: "{{ansible_to_process }}/{{resource_type}}.tfvars.j2"
+    verbosity: 2
+
+- debug:
+    msg: 
+    - "resource_type_template for {{resource_type_template}}"
+    - "{{resource_type_override}}"
+    - "{{override_file}}"
+    verbosity: 2
+
+
+#
+# resources
+#
+- name: "resources - {{resource_type}}"
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{resource_type_override if override_file.stat.exists else resource_type_template}}"
+

@@ -1,5 +1,5 @@
 azuread_api_permissions = {
-{% for key, value in resources.subscriptions[subscription_key].azuread_api_permissions.items() %}
+{% for key, value in resources[tfstate_resource].resources[subscription_key].azuread_api_permissions.items() %}
   {{ key }} = {
 {% if value.microsoft_graph is defined %}
     microsoft_graph = {

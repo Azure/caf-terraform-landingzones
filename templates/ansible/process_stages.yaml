@@ -1,0 +1,34 @@
+
+- debug:
+    msg: 
+      - "tfstate {{tfstate}}"
+      - "{{lz_type}}"
+      - "{{stage}}"
+      - "{{region}}"
+      - "{{tfstate}}"
+
+- name: "Set tfstate_object"
+  set_fact:
+    tfstate_object: "{{resources.tfstates[lz_type]['alz_' + tfstate] if stage == 'alz' else resources.tfstates[lz_type][tfstate] }}"
+    env: ''
+
+- name: "Set config_folder"
+  set_fact:
+    config_folder: '{{ tfstate_object.sub_template_folder | default() }}'
+
+- debug:
+    msg:
+      - "{{lz_type}}"
+      - "{{tfstate}}"
+      - "{{tfstate_object}}"
+      - "{{config_folder}}"
+    verbosity: 2
+
+- name: "Including tasks process_tfstate.yaml"
+  include_tasks: "process_tfstate.yaml"
+  loop: ["{{tfstate}}"]
+  loop_control:
+    loop_var: deployment
+  vars:
+    config_file: "{{config_folder + '/' + tfstate_object.config_file }}"
+  when: stage != 'scale_out_domains'

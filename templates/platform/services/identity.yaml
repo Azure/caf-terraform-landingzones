@@ -1,0 +1,65 @@
+identity:
+  gitops:
+    caf_landingzone_branch: {{topology.caf_landingzone_branch}}
+
+  relative_destination_folder: level1/identity
+
+  tfstate:
+    lz_key_name: identity
+    tfstate: identity.tfstate
+    level: level1
+    identity_aad_key: cred_identity
+    config_file: identity.yaml
+    sub_template_folder: platform/level1/identity
+    # Do not rename the tfstate_key_name
+    tfstate_key_name: identity
+
+  deployments:
+    landingzone:
+      global_settings_key:
+        platform:
+          launchpad:
+      remote_tfstates:
+        platform:
+          launchpad:
+
+  resources:
+    identity:
+      resource_groups:
+        management:
+          name: management
+        alerts:
+          name: alerts
+
+      service_health_alerts:
+        enable_service_health_alerts: true
+        name: alerts
+        shortname: HealthAlerts
+        resource_group_key: alerts
+        action_group_name: actiongrp
+        email_alert_settings:
+          support1:
+            name: email_alert_support1
+            email_address: {{topology.notifications.service_health_alerts}}
+            use_common_alert_schema: false
+
+      recovery_vaults:
+        asr:
+          name: asr
+          resource_group_key: management
+          soft_delete_enabled: true
+          backup_policies:
+            {{topology.backup_policies | to_nice_yaml(width=80, indent=2) | indent(12)}}
+
+# Bring here you existing active directory security groups.
+# Those are the groups you will inject to RBAC in the Enterprise Scale deployment.
+# Note Terraform will create a new Azure AD group and add the existing as a member
+
+        # azuread_groups:
+        #   network_ops_team:
+        #     name: netops
+        #     members:
+        #       # Set the list of the existing groups
+        #       objects_ids:
+        #       - existing_azure_ad_group_object_id
+

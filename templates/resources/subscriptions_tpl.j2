@@ -1,0 +1,26 @@
+
+{{ key }} = {
+    name                    = "{{ value.name }}"
+{% if value.create_alias is defined %}
+    create_alias            = {{ value.create_alias | lower}}
+{% endif %}
+{% if value.subscription_id is not defined %}
+    billing_account_name    = "{{ resources.caf_terraform.billing_subscription_role_delegations.billing_account_name }}"
+    enrollment_account_name = "{{ resources.caf_terraform.billing_subscription_role_delegations.enrollment_account_name }}"
+{% if value.management_group_suffix is defined %}
+    management_group_id     = "{{ resources.azure_landing_zones.enterprise_scale.management_group_prefix }}-{{ value.management_group_suffix }}"
+{% else %}
+    management_group_id     = "{{ value.management_group_id }}"
+{% endif %}
+    workload                = "{{ value.workload | default('Production') }}"
+{% if value.tags is defined %}
+    tags                    = {
+{% for tag_key in value.tags %}
+      {{ tag_key }} = "{{ value.tags[tag_key] }}"
+{% endfor %}
+    }
+{% endif %}
+{% else %}
+    subscription_id = "{{value.subscription_id}}"
+{% endif %}
+}

@@ -1,0 +1,24 @@
+custom_landing_zones = {
+  {{ resources.alz.root_id }}-corp = {
+    display_name               = "Corp"
+    parent_management_group_id = "{{ resources.alz.root_id }}-landing-zones"
+    archetype_config = {
+      archetype_id   = "landingzone_corp"
+      parameters     = {}
+      access_control = {}
+    }
+    subscriptions    = {}
+    subscription_ids = []
+  }
+  {{ resources.alz.root_id }}-online = {
+    display_name               = "Online"
+    parent_management_group_id = "{{ resources.alz.root_id }}-landing-zones"
+    archetype_config = {
+      archetype_id   = "landingzone_online"
+      parameters     = {}
+      access_control = {}
+    }
+    subscriptions    = {}
+    subscription_ids = []
+  }
+}

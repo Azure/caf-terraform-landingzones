@@ -1,0 +1,86 @@
+
+- debug:
+    msg: 
+    - "subscription_key {{subscription_key}}"
+    - "{{deployment_mode}}"
+    - "{{tfstate}}"
+    - "{{env}}"
+
+- name: "{{deployment_mode}} - Set ansible_to_process"
+  set_fact:
+    ansible_to_process: "{{public_templates_folder + '/' + tfstate_object.sub_template_folder if tfstate_object.sub_template_folder is defined else public_templates_folder + '/platform/generic'}}"
+    tfstate_resource: "{{ 'alz_' + tfstate if stage == 'alz' else tfstate if env == '' else tfstate + '_' + env }}"
+    verbosity: 2
+
+
+- debug:
+    msg: 
+    - "{{env}}"
+    - "{{tfstate_resource}}"
+
+
+- name: "{{tfstate_resource}} - Set landingzone file_path"
+  set_fact:
+    landingzone_template: "{{resource_template_folder}}/landingzone.tfvars.j2"
+    landingzone_override: "{{ansible_to_process}}/landingzone.tfvars.j2"
+    destination_path: "{{destination_base_path}}/{{resources['alz_' + tfstate].relative_destination_folder if stage == 'alz' else resources[tfstate_resource].relative_destination_folder}}"
+    level: "{{tfstate_object.level}}"
+    verbosity: 2
+
+
+- name: "[{{tfstate_resource}}] - landingzone - check overrides to process in {{ansible_to_process}}"
+  stat:
+    path: "{{landingzone_override}}"
+  register: landingzone_override_file
+
+
+- name: "[{{tfstate_resource}}] - landingzone -  Clean-up directory"
+  file:
+    path: "{{destination_path}}"
+    state: absent
+  when: resources.configuration_folders[deployment_mode].cleanup_destination | default(true)
+
+- name: "[{{tfstate_resource}}] - landingzone -  Creates directory"
+  file:
+    path: "{{destination_path}}"
+    state: directory
+
+
+
+- name: "{{tfstate_resource}} - process custom yaml process"
+  include_tasks: "{{public_templates_folder}}/{{tfstate_object.yaml}}"
+  when: tfstate_object.yaml is defined
+
+#
+# landingzone.tfvars
+#
+- name: "{{tfstate_resource}} - landingzone"
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{landingzone_override if landingzone_override_file.stat.exists else landingzone_template}}"
+
+#
+# Resources
+#
+
+- name: "{{tfstate_resource}} - process resources"
+  include_tasks: "process_resources.yaml"
+  loop: "{{resources[tfstate_resource].resources[subscription_key] | list if resources[tfstate_resource].resources[subscription_key] is mapping else [] }}"
+  loop_control:
+    loop_var: resource_type
+
+#
+# overrides
+#
+- name: "[{{tfstate_resource}} - {{resources[tfstate_resource].relative_destination_folder}}] - resources - overrides from path {{ ansible_to_process }} to {{ destination_path }}"
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{ ansible_to_process }}/*.j2"
+    - "{{ ansible_to_process }}/*.md"
+

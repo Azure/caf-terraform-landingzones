@@ -1,0 +1,37 @@
+virtual_hub_route_tables = {
+{% for key, value in resources[tfstate_resource].resources[subscription_key].virtual_hub_route_tables.items() %}
+  {{ key }} = {
+    name = "{{ value.name }}"
+    virtual_hub = {
+{% if value.virtual_hub.id is defined %}
+      id = "{{value.virtual_hub.id}}"
+{% else %}
+{% for k, v in value.virtual_hub.items() %}
+      {{k}} = "{{v}}"
+{% endfor %}
+{% endif %}
+    }
+{% if value.labels is defined %}
+    labels = {{value.labels | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"') }}
+{% endif %}
+{% if value.routes is defined %}
+    routes = {
+{% for k, v in value.routes.items() %}
+      {{k}} = {
+        name = "{{v.name}}"
+        destinations_type = "{{v.destinations_type}}"
+        destinations = {{v.destinations | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"') }}
+{% if v.next_hop is defined %}
+        next_hop = {
+{% for l, w in v.next_hop.items() %}
+          {{l}} = "{{w}}"
+{% endfor %}
+        }
+{% endif %}
+      }
+{% endfor %}
+    }
+{% endif %}
+  }
+{% endfor %}
+}

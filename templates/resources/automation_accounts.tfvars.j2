@@ -1,5 +1,5 @@
 automations = {
-{% for key, automation in resources.subscriptions[subscription_key].automation_accounts.items() %}
+{% for key, automation in resources[tfstate_resource].resources[subscription_key].automation_accounts.items() %}
   {{ key }}  = {
     name               = "{{ automation.name }}"
     sku                = "{{ automation.sku | default('Basic') }}"

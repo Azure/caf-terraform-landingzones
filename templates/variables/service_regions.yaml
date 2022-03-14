@@ -1,0 +1,139 @@
+defaults:
+  firewall_premium_regions:
+    - australiacentral
+    - australiacentral2
+    - australiaeast
+    - australiasoutheast
+    - brazilsouth
+    - brazilsoutheast
+    - canadacentral
+    - canadaeast
+    - centralindia
+    - centralus
+    - centraluseuap
+    - chinanorth2
+    - chinaeast2
+    - eastasia
+    - eastus
+    - eastus2
+    - francecentral
+    - francesouth
+    - germanywestcentral
+    - japaneast
+    - japanwest
+    - koreacentral
+    - koreasouth
+    - northcentralus
+    - northeurope
+    - norwayeast
+    - southafricanorth
+    - southcentralus
+    - southindia
+    - southeastasia
+    - swedencentral
+    - switzerlandnorth
+    - uaecentral
+    - uaenorth
+    - uksouth
+    - ukwest
+    - usgovarizona
+    - usgovtexas
+    - usgovvirginia
+    - westcentralus
+    - westeurope
+    - westindia
+    - westus
+    - westus2
+    - westus3
+
+  availability_zone_regions:
+    - australiaeast
+    - brazilsouth
+    - canadacentral
+    - centralus
+    - centralindia
+    - eastasia
+    - eastus
+    - eastus2
+    - francecentral
+    - germanywestcentral
+    - japaneast
+    - koreacentral
+    - northeurope
+    - norwayeast
+    - uksouth
+    - southeastasia
+    - southcentralus
+    - swedencentral
+    - usgovvirginia
+    - westeurope
+    - westus2
+    - westus3
+
+  synapse_privatelink_hub_regions:
+    - westus2
+    - eastus
+    - northeurope
+    - westeurope
+    - southeastasia
+    - australiaeast
+    - westcentralus
+    - southcentralus
+    - eastus2
+    - uksouth
+    - westus
+    - australiasoutheast
+    - eastasia
+    - brazilsouth
+    - centralus
+    - centralindia
+    - japaneast
+    - northcentralus
+    - canadacentral
+    - canadaeast
+    - koreacentral
+    - southafricanorth
+    - ukwest
+    - japanwest
+    - francecentral
+    - switzerlandnorth
+    - germanywestcentral
+    - norwayeast
+    - uaenorth
+    - westus3
+    - jioindiawest
+
+  storage_zrs_regions:
+    # Africa
+    - southafricanorth
+
+    # Asia
+    - australiaeast
+    - centralindia
+    - eastasia
+    - japaneast
+    - koreacentral
+    - southeastasia
+
+    # Canada
+    - canadacentral
+
+    # Europe
+    - francecentral
+    - germanywestcentral
+    - northeurope
+    - norwayeast
+    - swedencentral
+    - uksouth
+    - westeurope
+
+    # South America
+    - brazilsouth
+
+    # US
+    - centralus
+    - eastus
+    - eastus2
+    - southcentralus
+    - westus2
+    - westus3

@@ -1,5 +1,5 @@
 ## Introduction
-This directory contains details around the configurations which are deployed to the config. All the components are deployed in a layered approach.
+This directory contains details around the configurations which are deployed to the resources. All the components are deployed in a layered approach.
 
 ### Level 0
 Deployment Elements  | Resources Deployed
@@ -15,7 +15,7 @@ Platform- Subscriptions       | Deploys platform subscriptions such as managemen
 management                    | Foundation resources to management subscription such as service health alerts, log analytics
 gitops                        | This directory hosts the Azure DevOps configurations such as Azure DevOps projects, pipelines variable groups
 Identity                      | This hosts the identities for the pipelines and identies are pushed to vault after created
-Enterprise scale - Platform   | Deploys eslz resources suych as management groups, custom roles, policies, and map that to management groups
+Enterprise scale - Platform   | Deploys alz resources suych as management groups, custom roles, policies, and map that to management groups
 
 
 ### Level 2

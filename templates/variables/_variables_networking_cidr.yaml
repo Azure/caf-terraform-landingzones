@@ -1,0 +1,85 @@
+variables_cidr:
+  platform:
+  #
+  # launchpad landingzone
+  #
+    launchpad:
+      region1:
+        prod:
+          address_prefixes:
+            - 10.101.10.0/24
+          subnets:
+            available_cidr:
+              - 10.101.10.32/28
+              - 10.101.10.128/26
+            gitops_agents:
+              - 10.101.10.0/27
+            jumpbox:
+              - 10.101.10.48/28
+            bastion:
+              - 10.101.10.64/26
+            private_endpoints:
+              - 10.101.10.192/26
+      region2:
+        prod:
+          address_prefixes:
+            - 10.102.10.0/24
+          subnets:
+            available_cidr:
+              - 10.102.10.32/28
+              - 10.102.10.128/26
+            gitops_agents:
+              - 10.102.10.0/27
+            jumpbox:
+              - 10.102.10.48/28
+            bastion:
+              - 10.102.10.64/26
+            private_endpoints:
+              - 10.102.10.192/26
+
+  #
+  # connectivity landingzone
+  #
+    virtual_hubs:
+      region1:
+        prod:
+          address_prefix: 10.101.51.0/24
+        non_prod:
+          address_prefix: 10.101.52.0/24
+      region2:
+        prod:
+          address_prefix: 10.102.51.0/24
+        non_prod:
+          address_prefix: 10.102.52.0/24
+
+
+  #
+  # private_dns_firewalls landingzone
+  #
+    private_dns_firewalls:
+      region1:
+        prod:
+          address_prefixes:
+            - 10.101.61.0/24
+          subnets:
+            AzureFirewallSubnet:
+              - 10.101.61.0/26
+        non_prod:
+          address_prefixes:
+            - 10.101.62.0/24
+          subnets:
+            AzureFirewallSubnet:
+              - 10.101.62.0/26
+      region2:
+        prod:
+          address_prefixes:
+            - 10.102.61.0/24
+          subnets:
+            AzureFirewallSubnet:
+              - 10.101.62.0/26
+        non_prod:
+          address_prefixes:
+            - 10.102.62.0/24
+          subnets:
+            AzureFirewallSubnet:
+              - 10.101.62.0/26

@@ -1,0 +1,32 @@
+subscriptions:
+  gitops:
+    caf_landingzone_branch: {{topology.caf_landingzone_branch}}
+
+  relative_destination_folder: level1/subscriptions
+
+  tfstate:
+    lz_key_name: subscriptions
+    tfstate: platform_subscriptions.tfstate
+    level: level1
+    identity_aad_key: cred_subscription_creation_platform
+    config_file: subscriptions.yaml
+    sub_template_folder: platform/level1/subscriptions
+    # Do not rename the tfstate_key_name
+    tfstate_key_name: subscriptions
+
+  resources:
+    landingzone:
+
+  subscriptions:
+    launchpad:
+      subscriptions:
+{% for key, value in topology.subscriptions.items() %}
+        {{key}}:
+{% for l_key, l_value in value.items() %}
+{% if l_key == 'create_alias' %}
+          {{l_key}}: {{l_value | lower }}
+{% else %}
+          {{l_key}}: {{l_value}}
+{% endif %}
+{% endfor %}
+{% endfor %}

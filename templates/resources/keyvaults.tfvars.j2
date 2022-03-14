@@ -1,9 +1,9 @@
 keyvaults = {
-{% for key, keyvault in resources.subscriptions[subscription_key].keyvaults.items() %}
+{% for key, keyvault in resources[tfstate_resource].resources[subscription_key].keyvaults.items() %}
   {{ key }} = {
-    name               = "{{ resources.subscriptions[subscription_key].keyvaults[key].name }}"
-    resource_group_key = "{{ resources.subscriptions[subscription_key].keyvaults[key].resource_group_key }}"
-    sku_name           = "{{ resources.subscriptions[subscription_key].keyvaults[key].sku_name | default('standard')}}"
+    name               = "{{ resources[tfstate_resource].resources[subscription_key].keyvaults[key].name }}"
+    resource_group_key = "{{ resources[tfstate_resource].resources[subscription_key].keyvaults[key].resource_group_key }}"
+    sku_name           = "{{ resources[tfstate_resource].resources[subscription_key].keyvaults[key].sku_name | default('standard')}}"
 {% if keyvault.enabled_for_deployment is defined %}
     enabled_for_deployment = "{{ keyvault.enabled_for_deployment | string | lower }}"
 {% endif %}
@@ -30,8 +30,8 @@ keyvaults = {
       }
 {% endif %}
     creation_policies = {
-{% if config.platform_identity is defined %}
-{% if config.platform_identity.azuread_identity_mode == 'logged_in_user' %}
+{% if resources.platform_identity is defined %}
+{% if resources.azure_landing_zones.identity.azuread_identity_mode == 'logged_in_user' %}
       logged_in_user = {
         secret_permissions = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
       }

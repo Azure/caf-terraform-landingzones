@@ -9,28 +9,28 @@ Note you need to adjust the branch {{ resources.gitops.caf_landingzone_branch }}
 
 ```bash
 # login a with a user member of the caf-platform-maintainers group
-rover login -t {{ config.platform_identity.tenant_name }}
+rover login -t {{ resources.azure_landing_zones.identity.tenant_name }}
 
 cd {{ landingzones_folder }}
 git fetch origin
 git checkout {{ resources.gitops.caf_landingzone_branch }}
 
 rover \
-{% if keyvaults is defined and config.platform_identity.azuread_identity_mode != "logged_in_user" %}
+{% if keyvaults is defined and resources.azure_landing_zones.identity.azuread_identity_mode != "logged_in_user" %}
   --impersonate-sp-from-keyvault-url {{ keyvaults.cred_connectivity.vault_uri }} \
 {% endif %}
   -lz {{ landingzones_folder }}/caf_solution \
   -var-folder {{ destination_path }} \
-  -tfstate_subscription_id {{ config.caf_terraform.launchpad.subscription_id }} \
+  -tfstate_subscription_id {{ resources.caf_launchpad.subscription_id }} \
 {% if platform_subscriptions_details is defined %}
   -target_subscription {{ platform_subscriptions_details.connectivity.subscription_id }} \
 {% else %}
-  -target_subscription {{ config.caf_terraform.launchpad.subscription_id }} \
+  -target_subscription {{ resources.caf_launchpad.subscription_id }} \
 {% endif %}
-  -tfstate {{ config.tfstates.platform.azurerm_firewalls[deployment].tfstate }} \
-  -env {{ config.caf_terraform.launchpad.caf_environment }} \
+  -tfstate {{ resources.tfstates.platform.azurerm_firewalls[deployment].tfstate }} \
+  -env {{ resources.caf_environment }} \
   -level {{ level }} \
-  -p ${TF_DATA_DIR}/{{ config.tfstates.platform.azurerm_firewalls[deployment].tfstate }}.tfplan \
+  -p ${TF_DATA_DIR}/{{ resources.tfstates.platform.azurerm_firewalls[deployment].tfstate }}.tfplan \
   -a plan
 
 ```

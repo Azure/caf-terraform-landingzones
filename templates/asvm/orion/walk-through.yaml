@@ -1,0 +1,81 @@
+#
+# Initial script to select a topology and create the base templates for the definition folder
+#
+
+
+- name: Deploy template to definition's folder  
+  hosts: localhost
+  vars_prompt:
+    - name: landingzone_definition
+      prompt: Name of the landingzone group definition (no spaces)
+      private: no
+
+    - name: scale_out_domains_input
+      prompt: List of the scale-out domains. Will create one landingzone per domain.
+      private: no
+      default: dev,prod
+
+    - name: platform_domain_mapping_input
+      prompt: Mapping between the landingzones and platform scale-out domains.
+      private: no
+      default:
+        dev: non_prod
+        prod: prod
+
+    - name: generate_new_subscriptions
+      prompt: Do you want to deploy in the current logged_in subscription (True) or create new one (False)?
+      private: no
+      default: True
+
+
+  tasks:
+
+    - name: Get default subscription id
+      shell: az account show --query id -o tsv
+      register: subscription_id_cmd
+      when: generate_new_subscriptions
+
+    - set_fact:
+        scale_out_domains: "{{scale_out_domains_input.split(',') }}"
+        platform_domain_mapping: "{{platform_domain_mapping_input}}"
+        subscription_id: "{{subscription_id_cmd.stdout}}"
+      
+    - name: Get template files
+      register: asvm_files
+      find:
+        paths: "{{topology_folder}}"
+        file_type: file
+        excludes: 
+          - "readme_definition.md"
+          - "deploy_template.sh"
+
+    - debug:
+        msg: 
+          - "{{asvm_files}}"
+          - "{{playbook_dir}}"
+        verbosity: 1
+
+    - name: "Creates template_folder directory - {{template_folder}}"
+      file:
+        path: "{{template_folder}}"
+        state: directory
+
+    - name: Deploy files
+      ansible.builtin.copy:
+        src: "{{item.path}}"
+        dest: "{{template_folder}}/{{ item.path | basename }}"
+      loop: "{{asvm_files.files}}"
+
+    - name: Save parameters
+      ansible.builtin.template:
+        src: "{{topology_folder}}/ignite.yaml"
+        dest: "{{template_folder}}/ignite.yaml"
+
+    - name: readme
+      ansible.builtin.template:
+        src: "{{topology_folder}}/readme.md"
+        dest: "{{template_folder}}/readme.md"
+
+    - debug:
+        msg: 
+        - "next steps: {{template_folder}}/readme.md"

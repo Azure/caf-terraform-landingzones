@@ -1,0 +1,178 @@
+identity_level2_aadds_{{env}}:
+  gitops:
+    caf_landingzone_branch: {{topology.caf_landingzone_branch}}
+
+  relative_destination_folder: level2/identity/aadds
+
+  tfstate:
+    lz_key_name: connectivity_virtual_wans_{{env}}
+    tfstate: connectivity_virtual_wans_{{env}}.tfstate
+    level: level2
+    config_file: virtual_wans.yaml
+    identity_aad_key: cred_connectivity
+    # Do not rename the tfstate_key_name
+    tfstate_key_name: virtual_wans
+
+  deployments:
+    landingzone:
+      global_settings_key:
+        platform:
+          virtual_hubs: {{env}}
+      remote_tfstates:
+        platform:
+          management:
+          virtual_hubs: {{env}}
+          identity_level2: {{env}}
+
+  resources:
+    identity:
+      resource_groups:
+          rg:
+            name: identity-{{env}}-aadds
+            region_key: region1
+
+
+      virtual_networks:
+        vnet:
+          name: vnet-identity-{{env}}-aadds
+          resource_group_key: rg
+          region_key: region1
+          address_space:
+            - 10.10.100.0/27
+          dns_servers:
+            - 10.10.100.4
+            - 10.10.100.5
+          subnets:
+            aadds:
+              name: snet-aadds
+              cidr:
+                - 10.10.100.0/28
+              nsg_key: aadds_re1
+            management:
+              name: snet-aadds-management
+              cidr:
+                - 10.10.100.16/28
+
+      virtual_hub_connections:
+        vnet_to_hub:
+          name: vnet-identity-{{env}}-aadds-TO-vhub-{{env}}
+          virtual_hub:
+            lz_key: connectivity_virtual_hub_{{env}}
+            key: {{env}}
+          vnet:
+            vnet_key: vnet
+
+      active_directory_domain_service:
+        aadds:
+          name: aadds
+          region: region1
+          resource_group:
+            key: rg
+          domain_name: aadds-contoso.net
+          sku: Standard
+          filtered_sync_enabled: false
+          initial_replica_set:
+            region: region1
+            subnet:
+              vnet_key: vnet
+              key: aadds
+          notifications:
+            additional_recipients:
+              - notifyA@example.net
+              - notifyB@example.net
+            notify_dc_admins: true
+            notify_global_admins: false
+          security:
+            ntlm_v1_enabled: false
+            sync_kerberos_passwords: true
+            sync_ntlm_passwords: false
+            sync_on_prem_passwords: true
+            tls_v1_enabled: false
+
+      azuread_groups:
+        aad_dc_administrators:
+          name: AAD DC Administrators
+          prevent_duplicate_name: true
+
+      network_security_group_definition:
+        aadds_re1:
+          version: 1
+          resource_group_key: rg
+          region: region1
+          name: nsg-aadds-re1
+          nsg:
+            Inbound:
+              400:
+                name: Debugging for support.
+                access: Allow
+                protocol: tcp
+                source_port_range: "*"
+                destination_port_range: "3389"
+                source_address_prefix: CorpNetSaw
+                destination_address_prefix: "*"
+              401:
+                name: Powershell remoting.
+                access: Allow
+                protocol: tcp
+                source_port_range: "*"
+                destination_port_range: "5986"
+                source_address_prefix: AzureActiveDirectoryDomainServices
+                destination_address_prefix: "*"
+            Outbound:
+              400:
+                name: Communication with the Azure AD Domain Services management service.
+                access: Allow
+                protocol: tcp
+                source_port_range: "*"
+                destination_port_range: "443"
+                source_address_prefix: "*"
+                destination_address_prefix: "AzureActiveDirectoryDomainServices"
+              401:
+                name: Monitoring of the virtual machines.
+                access: Allow
+                protocol: tcp
+                source_port_range: "*"
+                destination_port_range: "443"
+                source_address_prefix: "*"
+                destination_address_prefix: "AzureMonitor"
+              402:
+                name: Communication with Azure Storage.
+                access: Allow
+                protocol: tcp
+                source_port_range: "*"
+                destination_port_range: "443"
+                source_address_prefix: "*"
+                destination_address_prefix: "Storage"
+              403:
+                name: Communication with Azure Active Directory.
+                access: Allow
+                protocol: tcp
+                source_port_range: "*"
+                destination_port_range: "443"
+                source_address_prefix: "*"
+                destination_address_prefix: "AzureActiveDirectory"
+              404:
+                name: Communication with Windows Update.
+                access: Allow
+                protocol: tcp
+                source_port_range: "*"
+                destination_port_range: "443"
+                source_address_prefix: "*"
+                destination_address_prefix: "AzureUpdateDelivery"
+              405:
+                name: Download of patches from Windows Update.
+                access: Allow
+                protocol: tcp
+                source_port_range: "*"
+                destination_port_range: "443"
+                source_address_prefix: "*"
+                destination_address_prefix: "AzureFrontDoor.FirstParty"
+              406:
+                name: Automated management of security patches.
+                access: Allow
+                protocol: tcp
+                source_port_range: "*"
+                destination_port_range: "443"
+                source_address_prefix: "*"
+                destination_address_prefix: "GuestAndHybridManagement"
+

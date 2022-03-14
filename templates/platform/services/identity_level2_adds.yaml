@@ -1,0 +1,404 @@
+identity_level2_adds_{{env}}:
+  gitops:
+    landingzones: {{topology.caf_landingzone_branch}}
+
+  relative_destination_folder: level2/identity/adds/{{env}}
+
+  deployments:
+    landingzone:
+      global_settings_key:
+        platform:
+          virtual_hubs: {{env}}
+      remote_tfstates:
+        platform:
+          management:
+          virtual_hubs: {{env}}
+          identity:
+
+  tfstate:
+    lz_key_name: identity_level2_adds_{{env}}
+    tfstate: identity_level2_adds_{{env}}.tfstate
+    level: level2
+    config_file: identity_level2_adds.yaml
+    identity_aad_key: cred_identity
+    # Do not rename the tfstate_key_name
+    tfstate_key_name: identity_level2_adds
+
+  resources:
+    identity:
+      resource_groups:
+          rg:
+            name: identity-{{env}}-adds
+            region_key: region1
+
+      virtual_networks:
+        vnet:
+          name: identity-{{env}}-adds
+          resource_group_key: rg
+          region_key: region1
+          address_space:
+            - 10.10.100.0/27
+          dns_servers:
+            - 10.10.100.4
+            - 10.10.100.5
+          subnets:
+            adds:
+              name: snet-adds
+              cidr:
+                - 10.10.100.0/28
+              nsg_key: adds_re1
+            management:
+              name: snet-adds-management
+              cidr:
+                - 10.10.100.16/28
+
+      keyvaults:
+        adds_credentials:
+          name: addskv
+          resource_group_key: rg
+          sku_name: premium
+          purge_protection_enabled: false
+          creation_policies:
+            logged_in_user:
+              secret_permissions:
+                - Set
+                - Get
+                - List
+                - Delete
+                - Purge
+                - Recover
+
+      dynamic_keyvault_secrets:
+        adds_credentials:
+          vmadmin-username:
+            secret_name: vmadmin-username
+            value: vmadmin
+          vmadmin-password:
+            secret_name: vmadmin-password
+            value: Very@Str5ngP!44w0rdToChaNge#
+
+      virtual_machines:
+        adds1:
+          resource_group:
+            key: rg
+          region: region1
+          os_type: windows
+          keyvault_key: adds_credentials
+          backup:
+            vault_key: asr
+            policy_key: default
+            lz_key: identity
+
+          virtual_machine_settings:
+            windows:
+              computer_name: adds1
+              name: adds1
+              admin_password_key: vmadmin-password
+              admin_username_key: vmadmin-username
+              network_interface_keys:
+                - nic0
+              provision_vm_agent: true
+              size: Standard_F2
+              zone: 1
+              os_disk:
+                name: adds1-os
+                caching: ReadWrite
+                storage_account_type: Standard_LRS
+                disk_size_gb: 128
+              # identity:
+              #   type: SystemAssigned, UserAssigned
+              #   managed_identity_keys:
+              #     - id1
+              #   remote:
+              #     lz_key_name1:
+              #       managed_identity_keys:
+              #         - id2
+              #         - id3
+              #     lz_key_name2:
+              #       managed_identity_keys:
+              #         - id4
+              #         - id5
+
+              # custom_image_id: 
+
+              source_image_reference:
+                publisher: MicrosoftWindowsServer
+                offer: WindowsServer
+                sku: 2019-Datacenter
+                version: latest
+
+          data_disks:
+            lun1:
+              name: adds1-data1
+              lun: "1"
+              caching: None
+              storage_account_type: Standard_LRS
+              create_option: Empty
+              disk_size_gb: 10
+              zones:
+                - "1"
+
+          networking_interfaces:
+            nic0:
+              name: 0
+              vnet_key: vnet
+              subnet_key: adds
+              enable_ip_forwarding: false
+              internal_dns_name_label: adds1-nic0
+              private_ip_address_allocation: Static
+              private_ip_address: 10.10.100.4
+              primary: true
+              tags:
+                adds: "ok"
+              dns_servers:
+                # - Set on-prem dns
+                - 10.10.100.5
+              network_security_group:
+                key: adds_re1
+              # ip_configurations:
+              #   conf2:
+              #     name: 0-conf
+              #     vnet_key: vnet
+              #     subnet_key: management
+              #     enable_ip_forwarding: false
+              #     private_ip_address_allocation: Static
+              #     private_ip_address: 10.10.100.20
+
+        adds2:
+          resource_group:
+            key: rg
+          region: region1
+          os_type: windows
+          keyvault_key: adds_credentials
+          backup:
+            vault_key: asr
+            policy_key: default
+            lz_key: identity_level2
+
+          virtual_machine_settings:
+            windows:
+              computer_name: adds2
+              name: adds2
+              admin_password_key: vmadmin-password
+              admin_username_key: vmadmin-username
+              network_interface_keys:
+                - nic0
+              provision_vm_agent: true
+              size: Standard_F2
+              zone: 2
+              os_disk:
+                name: adds2-os
+                caching: ReadWrite
+                storage_account_type: Standard_LRS
+                disk_size_gb: 128
+              # identity:
+              #   type: SystemAssigned, UserAssigned
+              #   managed_identity_keys:
+              #     - id1
+              #   remote:
+              #     lz_key_name1:
+              #       managed_identity_keys:
+              #         - id2
+              #         - id3
+              #     lz_key_name2:
+              #       managed_identity_keys:
+              #         - id4
+              #         - id5
+
+
+              source_image_reference:
+                publisher: MicrosoftWindowsServer
+                offer: WindowsServer
+                sku: 2019-Datacenter
+                version: latest
+
+          data_disks:
+            lun1:
+              name: adds2-data1
+              lun: "1"
+              storage_account_type: Standard_LRS
+              create_option: Empty
+              disk_size_gb: 10
+              zones:
+                - "2"
+
+          networking_interfaces:
+            nic0:
+              name: 0
+              vnet_key: vnet
+              subnet_key: adds
+              enable_ip_forwarding: false
+              internal_dns_name_label: adds2-nic0
+              private_ip_address_allocation: Static
+              private_ip_address: 10.10.100.5
+              primary: true
+              tags:
+                adds: "ok"
+              dns_servers:
+                # - Set on-prem ADDS dns
+                - 10.10.100.4
+              network_security_group:
+                key: adds_re1
+              # ip_configurations:
+              #   conf2:
+              #     name: 0-conf
+              #     vnet_key: vnet
+              #     subnet_key: management
+              #     enable_ip_forwarding: false
+              #     private_ip_address_allocation: Static
+              #     private_ip_address: 10.10.100.21
+
+      virtual_hub_connections:
+        vnet_to_hub:
+          name: vnet-identity-prod-adds-TO-vhub-prod
+          virtual_hub:
+            lz_key: connectivity_virtual_hub_prod
+            key: prod
+          vnet:
+            vnet_key: vnet
+
+      network_security_group_definition:
+        adds_re1:
+          version: 1
+          resource_group_key: rg
+          region: region1
+          name: nsg-adds-re1
+          # Reference - https://docs.microsoft.com/en-us/troubleshoot/windows-server/identity/config-firewall-for-ad-domains-and-trusts
+          # following is for Windows Server 2008 and later
+          nsg:
+            Inbound:
+              400:
+                name: W32Time.
+                access: Allow
+                protocol: udp
+                source_address_prefix: "VirtualNetwork"
+                # source_address_prefixes:
+                #   - on-prem CIDR for ADDS 
+                source_port_range: "49152-65535"
+                destination_port_range: "123"
+                destination_address_prefix: "*"
+              401:
+                name: RPC Endpoint Mapper.
+                access: Allow
+                protocol: tcp
+                source_address_prefix: "VirtualNetwork"
+                source_port_range: "49152-65535"
+                destination_port_range: "135"
+                destination_address_prefix: "*"
+              402:
+                name: Kerberos password change tcp.
+                access: Allow
+                protocol: tcp
+                source_address_prefix: "VirtualNetwork"
+                source_port_range: "49152-65535"
+                destination_port_range: "464"
+                destination_address_prefix: "*"
+              403:
+                name: Kerberos password change udp.
+                access: Allow
+                protocol: udp
+                source_address_prefix: "VirtualNetwork"
+                source_port_range: "49152-65535"
+                destination_port_range: "464"
+                destination_address_prefix: "*"
+              404:
+                name: RPC for LSA, SAM, NetLogon.
+                access: Allow
+                protocol: tcp
+                source_address_prefix: "VirtualNetwork"
+                source_port_range: "49152-65535"
+                destination_port_range: "49152-65535"
+                destination_address_prefix: "*"
+              405:
+                name: LDAP-tcp.
+                access: Allow
+                protocol: tcp
+                source_address_prefix: "VirtualNetwork"
+                source_port_range: "49152-65535"
+                destination_port_range: "389"
+                destination_address_prefix: "*"
+              406:
+                name: LDAP-udp.
+                access: Allow
+                protocol: udp
+                source_address_prefix: "VirtualNetwork"
+                source_port_range: "49152-65535"
+                destination_port_range: "389"
+                destination_address_prefix: "*"
+              407:
+                name: LDAP SSL.
+                access: Allow
+                protocol: tcp
+                source_address_prefix: "VirtualNetwork"
+                source_port_range: "49152-65535"
+                destination_port_range: "636"
+                destination_address_prefix: "*"
+              408:
+                name: LDAP GC.
+                access: Allow
+                protocol: tcp
+                source_address_prefix: "VirtualNetwork"
+                source_port_range: "49152-65535"
+                destination_port_range: "3268"
+                destination_address_prefix: "*"
+              409:
+                name: LDAP GC SSL.
+                access: Allow
+                protocol: tcp
+                source_address_prefix: "VirtualNetwork"
+                source_port_range: "49152-65535"
+                destination_port_range: "3269"
+                destination_address_prefix: "*"
+              410:
+                name: DNS tcp.
+                access: Allow
+                protocol: tcp
+                source_address_prefix: "VirtualNetwork"
+                source_port_ranges:
+                  - "53"
+                  - "49152-65535"
+                destination_port_range: "53"
+                destination_address_prefix: "*"
+              411:
+                name: DNS udp.
+                access: Allow
+                protocol: udp
+                source_address_prefix: "VirtualNetwork"
+                source_port_ranges:
+                  - "53"
+                  - "49152-65535"
+                destination_port_range: "53"
+                destination_address_prefix: "*"
+              412:
+                name: Kerberos tcp.
+                access: Allow
+                protocol: tcp
+                source_address_prefix: "VirtualNetwork"
+                source_port_range: "49152-65535"
+                destination_port_range: "88"
+                destination_address_prefix: "*"
+              413:
+                name: Kerberos udp.
+                access: Allow
+                protocol: udp
+                source_address_prefix: "VirtualNetwork"
+                source_port_range: "49152-65535"
+                destination_port_range: "88"
+                destination_address_prefix: "*"
+              414:
+                name: SMB.
+                access: Allow
+                protocol: tcp
+                source_address_prefix: "VirtualNetwork"
+                source_port_range: "49152-65535"
+                destination_port_range: "445"
+                destination_address_prefix: "*"
+              # Adjust the following based on your RPC custom ports configuration 
+              415:
+                name: FRS RPC.
+                access: Allow
+                protocol: tcp
+                source_address_prefix: "VirtualNetwork"
+                source_port_range: "49152-65535"
+                destination_port_range: "49152-65535"
+                destination_address_prefix: "*"
