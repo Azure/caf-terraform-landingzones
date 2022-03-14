@@ -121,6 +121,7 @@
       loop_control:
         loop_var: region
       when:
+        - bootstrap.deployments[deployment_mode].scale_out_domains is defined
         - (launchpad_tfstate_exists is defined and launchpad_tfstate_exists.rc == 0) or (storage_account_level3 is defined and storage_account_level3.rc == 0)
       vars:
         lz_type: "{{deployment_mode}}"

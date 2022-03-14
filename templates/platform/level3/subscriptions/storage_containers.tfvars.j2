@@ -1,18 +1,16 @@
 storage_containers = {
-{% for app_key, app_value in resources[tfstate_resource].resources[subscription_key].subscriptions.items() %}
-{% for scod_key in app_value.keys() %}
-  {{app_key}}_{{ scod_key }}_level3 = {
-    name = "{{ resources.tfstates[lz_type][app_key][scod_key].workspace }}"
+{% for key, value in resources[tfstate_resource].resources[subscription_key].subscriptions.items() %}
+  {{key }}_level3 = {
+    name = "{{ resources.tfstates[lz_type][key].workspace }}"
     storage_account = {
       name = "{{storage_account_level3.stdout|from_json|json_query('name')}}"
     }
   }
-  {{app_key}}_{{ scod_key }}_level4 = {
-    name = "{{ resources.tfstates[lz_type][app_key][scod_key].workspace }}"
+  {{key }}_level4 = {
+    name = "{{ resources.tfstates[lz_type][key].workspace }}"
     storage_account = {
       name = "{{storage_account_level4.stdout|from_json|json_query('name')}}"
     }
   }
-{% endfor %}
 {% endfor %}
 }

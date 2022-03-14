@@ -3,7 +3,7 @@
   register: keyvault_scl
   shell: |
     az keyvault list \
-      --subscription {{ resources.launchpad.subscription_id }} \
+      --subscription {{ resources.caf_launchpad.subscription_id }} \
       --query "[?tags.caf_identity_aad_key=='cred_subscription_creation_landingzones' && tags.caf_environment=='{{ resources.caf_environment }}'].{name:name}[0]" -o json | jq -r --arg http "https://" --arg suffix ".vault.azure.net/" '$http + (.name) + $suffix'
 
 - debug:
@@ -24,14 +24,14 @@
   register: storage_account_level3
   shell: |
     az storage account list \
-      --subscription {{ resources.launchpad.subscription_id }} \
+      --subscription {{ resources.caf_launchpad.subscription_id }} \
       --query "[?tags.caf_tfstate=='level3' && tags.caf_environment=='{{ resources.caf_environment }}'].{name:name, resource_group:resourceGroup}[0]" -o json | jq -r
 
 - name: "[{{ level }}-asvm] - storage_containers - launchpad level4"
   register: storage_account_level4
   shell: |
     az storage account list \
-      --subscription {{ resources.launchpad.subscription_id }} \
+      --subscription {{ resources.caf_launchpad.subscription_id }} \
       --query "[?tags.caf_tfstate=='level4' && tags.caf_environment=='{{ resources.caf_environment }}'].{name:name, resource_group:resourceGroup}[0]" -o json | jq -r
 
 - debug:

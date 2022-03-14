@@ -16,10 +16,11 @@ asvm_subscriptions:
   resources:
     asvm_subscriptions:
       subscriptions:
-        {{landingzone_definition}}:
-{% for scod in deployments.asvm['scale_out_domains'][landingzone_definition].keys() %}
-          {{scod}}:
-            name: {{landingzone_definition}}-{{scod}}
-            create_alias: {{subscriptions[scod].create_alias}}
-            subscription_id: {{subscriptions[scod].subscription_id}}
+{% for region, value in deployments.asvm['scale_out_domains'].items() %}
+{% for scod, scod_value in value.subscriptions.items() %}
+        {{scod}}:
+{% for key, kv in subscriptions[scod].items() %}
+          {{key}}: {{kv}}
+{% endfor %}
+{% endfor %}
 {% endfor %}

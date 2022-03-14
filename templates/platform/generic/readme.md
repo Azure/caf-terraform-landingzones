@@ -9,6 +9,8 @@ rover login -t {{ resources.azure_landing_zones.identity.tenant_name }}
 rover \
 {% if resources.azure_landing_zones.identity.azuread_identity_mode != "logged_in_user" and keyvaults is defined %}
   --impersonate-sp-from-keyvault-url {{ keyvaults[ tfstate_object.identity_aad_key].vault_uri }} \
+{% elif resources.azure_landing_zones.identity.azuread_identity_mode != "logged_in_user" and keyvault_scl is defined %}
+  --impersonate-sp-from-keyvault-url {{ keyvault_scl.stdout }} \
 {% endif %}
   -lz /tf/caf/landingzones/caf_solution \
   -var-folder {{ destination_path }} \

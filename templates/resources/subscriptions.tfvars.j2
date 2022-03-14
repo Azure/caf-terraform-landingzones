@@ -11,17 +11,8 @@
 #
 
 subscriptions = {
-{% if deployments[lz_type]['scale_out_domains'] is defined %}
-{%  for app_key, app_value in resources[tfstate_resource].resources[subscription_key].subscriptions.items() %}
-{%    for scod_key, value in app_value.items() %}
-{%      set key = app_key + '_' + scod_key %}
-{%      include 'subscriptions_tpl.j2' %}
-{%    endfor %}
-{%  endfor %}
-{% else %}
 {%  for key, value in resources[tfstate_resource].resources[subscription_key].subscriptions.items() %}
 {%    include 'subscriptions_tpl.j2' %}
 {%  endfor %}
-{% endif %}
 
 }

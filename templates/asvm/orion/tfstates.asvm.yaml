@@ -1,4 +1,4 @@
-# ### {{landingzone_definition}} ###
+
 tfstates:
   asvm:
     asvm_subscriptions:
@@ -9,12 +9,13 @@ tfstates:
       sub_template_folder: platform/level3/subscriptions
       yaml: platform/level3/ansible.yaml
 
-    {{landingzone_definition}}:
-{% for scod in scale_out_domains %}
-      {{scod}}:
-        lz_key_name: {{landingzone_definition}}_{{scod}}_level3
-        tfstate: {{landingzone_definition}}_{{scod}}_level3.tfstate
-        workspace: {{landingzone_definition | replace('_', '-')}}-{{scod}}
-        level: level3
+{% for region, value in deployments.asvm['scale_out_domains'].items() %}
+{% for scod in value.subscriptions.keys() %}
+    {{scod}}:
+      lz_key_name: {{scod}}_level3
+      tfstate: {{scod}}_level3.tfstate
+      workspace: {{scod | replace('_', '-')}}
+      level: level3
 
+{% endfor %}
 {% endfor %}

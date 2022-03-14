@@ -14,8 +14,8 @@ rover \
 {% endif %}
   -lz {{landingzones_folder}}/caf_solution \
   -var-folder {{ destination_path }} \
-  -tfstate_subscription_id {{ resources.launchpad.subscription_id }} \
-  -target_subscription {{resources.launchpad.subscription_id }} \
+  -tfstate_subscription_id {{ resources.caf_launchpad.subscription_id }} \
+  -target_subscription {{resources.caf_launchpad.subscription_id }} \
   -tfstate {{ tfstate_object.tfstate }} \
   --workspace {{ tfstate_object.workspace | default('tfstate') }} \
   -env {{ resources.caf_environment }} \
