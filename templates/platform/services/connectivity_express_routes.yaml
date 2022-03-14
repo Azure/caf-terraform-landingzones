@@ -1,5 +1,5 @@
 gitops:
-  caf_landingzone_branch: int.2202
+  caf_landingzone_branch: 2203.0
 
 express_route_circuits:
   {{env}}:

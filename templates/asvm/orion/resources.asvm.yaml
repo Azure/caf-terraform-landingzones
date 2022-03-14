@@ -1,52 +1,52 @@
-{{landingzone_definition}}_{{scod}}:
+{{landingzone_definition}}_{{env}}:
   gitops:
-    caf_landingzone_branch: aci_network
+    caf_landingzone_branch: 2203.0
 
-  relative_destination_folder: level3/{{landingzone_definition}}/{{scod}}
+  relative_destination_folder: level3/{{landingzone_definition}}/{{env}}
 
   deployments:
     landingzone:
       global_settings_key:
         platform:
-          virtual_hubs: {{platform_mappings[scod]}}
+          virtual_hubs: {{platform_mappings[env]}}
       remote_tfstates:
         asvm:
           asvm_subscriptions:
         platform:
-          virtual_hubs: {{platform_mappings[scod]}}
-          virtual_hubs_route_tables: {{platform_mappings[scod]}}
-          secure_firewalls: {{platform_mappings[scod]}}
-          identity_level2: {{platform_mappings[scod]}}
+          virtual_hubs: {{platform_mappings[env]}}
+          virtual_hubs_route_tables: {{platform_mappings[env]}}
+          secure_firewalls: {{platform_mappings[env]}}
+          identity_level2: {{platform_mappings[env]}}
           asvm:
 
   resources:
-    {{landingzone_definition}}_{{scod}}:
+    {{landingzone_definition}}_{{env}}:
       resource_groups:
         rg:
-          name: {{landingzone_definition}}-{{scod}}
+          name: {{landingzone_definition}}-{{env}}
         backup:
-          name: {{landingzone_definition}}-{{scod}}-backup
+          name: {{landingzone_definition}}-{{env}}-backup
         networking:
-          name: {{landingzone_definition}}-{{scod}}-networking
+          name: {{landingzone_definition}}-{{env}}-networking
         preparation:
-          name: {{landingzone_definition}}-{{scod}}-preparation
+          name: {{landingzone_definition}}-{{env}}-preparation
         modeling:
-          name: {{landingzone_definition}}-{{scod}}-modeling
+          name: {{landingzone_definition}}-{{env}}-modeling
         consumption:
-          name: {{landingzone_definition}}-{{scod}}-consumption
+          name: {{landingzone_definition}}-{{env}}-consumption
         analytics:
-          name: {{landingzone_definition}}-{{scod}}-analytics
+          name: {{landingzone_definition}}-{{env}}-analytics
 
       virtual_networks:
         vnet:
-          name: {{landingzone_definition}}-{{scod}}
+          name: {{landingzone_definition}}-{{env}}
           resource_group_key: networking
           region_key: region1
           dns_servers_keys:
-            fw_secure_{{platform_mappings[scod]}}:
+            fw_secure_{{platform_mappings[env]}}:
               resource_type: azurerm_firewall
-              lz_key: connectivity_secure_firewalls_{{platform_mappings[scod]}}
-              key: fw_secure_{{platform_mappings[scod]}}
+              lz_key: connectivity_secure_firewalls_{{platform_mappings[env]}}
+              key: fw_secure_{{platform_mappings[env]}}
           address_space:
             - 10.101.8.0/23
           subnets:
@@ -368,20 +368,20 @@
                 destination_port_range: "*"
 
       virtual_hub_connections:
-        vnet_to_{{platform_mappings[scod]}}:
-          name: vnet-{{landingzone_definition}}-{{scod}}-TO-{{platform_mappings[scod]}}
+        vnet_to_{{platform_mappings[env]}}:
+          name: vnet-{{landingzone_definition}}-{{env}}-TO-{{platform_mappings[env]}}
           virtual_hub:
-            lz_key: connectivity_virtual_hubs_{{platform_mappings[scod]}}
-            key: {{platform_mappings[scod]}}
+            lz_key: connectivity_virtual_hubs_{{platform_mappings[env]}}
+            key: {{platform_mappings[env]}}
           vnet:
             vnet_key: vnet
           routing:
             egress:
-              lz_key: virtual_hubs_route_tables_{{platform_mappings[scod]}}
+              lz_key: virtual_hubs_route_tables_{{platform_mappings[env]}}
 
       recovery_vaults:
         asr:
-          name: vault-{{landingzone_definition}}-{{scod}}
+          name: vault-{{landingzone_definition}}-{{env}}
           resource_group_key: backup
           backup_policies:
             vms:
@@ -396,7 +396,7 @@
 
       keyvaults:
         kv_delegated_sp:
-          name: {{landingzone_definition}}{{scod}}001
+          name: {{landingzone_definition}}{{env}}001
           resource_group_key: rg
           creation_policies:
             logged_in_user:
@@ -407,9 +407,9 @@
                 - Delete
                 - Purge
                 - Recover
-            landingzone_maintainers_{{platform_mappings[scod]}}:
+            landingzone_maintainers_{{platform_mappings[env]}}:
               lz_key: asvm
-              azuread_group_key: caf_ac_landingzone_maintainers_{{platform_mappings[scod]}}
+              azuread_group_key: caf_ac_landingzone_maintainers_{{platform_mappings[env]}}
               secret_permissions:
                 - Set
                 - Get
@@ -427,7 +427,7 @@
 
       azuread_applications:
         app_LZContributors:
-          application_name: app-asvm-{{landingzone_definition}}-{{scod}}-Contributors
+          application_name: app-asvm-{{landingzone_definition}}-{{env}}-Contributors
 
       azuread_service_principals:
         sp_LZContributors:
@@ -457,13 +457,13 @@
             days: 58
 
       azuread_groups_membership:
-        caf_{{platform_mappings[scod]}}_landingzones_dns_contributors:
+        caf_{{platform_mappings[env]}}_landingzones_dns_contributors:
           azuread_service_principals:
             sp_LZContributors:
-              group_lz_key: identity_level2_{{platform_mappings[scod]}}
+              group_lz_key: identity_level2_{{platform_mappings[env]}}
               keys:
                 - sp_LZContributors
-        caf_ac_landingzone_maintainers_{{platform_mappings[scod]}}:
+        caf_ac_landingzone_maintainers_{{platform_mappings[env]}}:
           azuread_service_principals:
             sp_LZContributors:
               group_lz_key: asvm
@@ -472,7 +472,7 @@
 
       custom_role_definitions:
         contributors_extended:
-            name: lz-{{landingzone_definition}}-{{scod}}-contributors-extended
+            name: lz-{{landingzone_definition}}-{{env}}-contributors-extended
             useprefix: true
             description: "Provides additional permissions for the level4 principal to perform activies on the level3 landingzone services."
             permissions:
@@ -512,13 +512,13 @@
                   keys:
                     - sp_LZContributors
           storage_containers:
-            {{landingzone_definition}}_{{scod}}_level3:
+            {{landingzone_definition}}_{{env}}_level3:
               lz_key: {{landingzone_definition}}_subscriptions
               Storage Blob Data Contributor:
                 azuread_service_principals:
                   keys:
                     - sp_LZContributors
-            {{landingzone_definition}}_{{scod}}_level4:
+            {{landingzone_definition}}_{{env}}_level4:
               lz_key: {{landingzone_definition}}_subscriptions
               Storage Blob Data Contributor:
                 azuread_service_principals:

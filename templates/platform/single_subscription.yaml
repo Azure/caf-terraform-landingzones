@@ -16,7 +16,7 @@ platform_template_folder: {{platform_template_folder}}
 
 deployment_mode: {{deployment_mode}}
 
-caf_landingzone_branch: int.2202
+caf_landingzone_branch: 2203.0
 
 caf_regions:
 {% for region, location in regions.items() %}

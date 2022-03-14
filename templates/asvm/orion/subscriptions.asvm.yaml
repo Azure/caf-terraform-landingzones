@@ -1,6 +1,6 @@
 asvm_subscriptions:
   gitops:
-    caf_landingzone_branch: aci_network
+    caf_landingzone_branch: 2203.0
 
   relative_destination_folder: level3/{{landingzone_definition}}/subscriptions
 
@@ -17,10 +17,10 @@ asvm_subscriptions:
     asvm_subscriptions:
       subscriptions:
 {% for region, value in deployments.asvm['root'].items() %}
-{% for scod, scod_value in value.items() %}
-{% if scod != "asvm_subscriptions" %}
-        {{scod}}:
-{% for key, kv in subscriptions[scod].items() %}
+{% for env, env_value in value.items() %}
+{% if env != "asvm_subscriptions" %}
+        {{env}}:
+{% for key, kv in subscriptions[env].items() %}
           {{key}}: {{kv}}
 {% endfor %}
 {% endif %}

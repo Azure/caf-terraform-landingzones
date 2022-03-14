@@ -10,12 +10,12 @@ tfstates:
       yaml: platform/level3/ansible.yaml
 
 {% for region, value in deployments.asvm['root'].items() %}
-{% for scod in value.keys() %}
-{% if scod != "asvm_subscriptions" %}
-    {{scod}}:
-      lz_key_name: {{scod}}_level3
-      tfstate: {{scod}}_level3.tfstate
-      workspace: {{scod | replace('_', '-')}}
+{% for env in value.keys() %}
+{% if env != "asvm_subscriptions" %}
+    {{env}}:
+      lz_key_name: {{env}}_level3
+      tfstate: {{env}}_level3.tfstate
+      workspace: {{env | replace('_', '-')}}
       level: level3
 
 {% endif %}

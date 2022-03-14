@@ -42,7 +42,7 @@ secure_firewalls_{{env}}:
               virtual_hub_key: {{env}}
           public_ip_count: 1
           firewall_policy:
-            key: root
+            key: secure_root
             lz_key: connectivity_firewall_policies_{{env}}
           zones:
             - 1

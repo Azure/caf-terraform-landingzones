@@ -2,9 +2,9 @@
 landingzone_definition: {{landingzone_definition}}
 
 subscriptions:
-{% for scod in scale_out_domains %}
-  {{landingzone_definition}}_{{scod}}:
-    name: {{landingzone_definition}}-{{scod}}
+{% for env in scale_out_domains %}
+  {{landingzone_definition}}_{{env}}:
+    name: {{landingzone_definition}}-{{env}}
     # Set to false if you do not have permissions to create an alias
     create_alias: false
     subscription_id: {{subscription_id}}
@@ -19,8 +19,8 @@ deployments:
     root:
       region1:
         asvm_subscriptions: subscriptions.asvm.yaml
-{% for scod in scale_out_domains %}
-        {{landingzone_definition}}_{{scod}}: subscriptions.asvm.yaml
+{% for env in scale_out_domains %}
+        {{landingzone_definition}}_{{env}}: subscriptions.asvm.yaml
 {% endfor %}
 
 platform_mappings:

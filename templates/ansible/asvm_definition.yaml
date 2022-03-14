@@ -16,10 +16,10 @@
 
     - name: Load resources template
       set_fact:
-        resources_{{scod}}: "{{ lookup('template', '{{ template_folder }}/resources.asvm.yaml') }}"
+        resources_{{env}}: "{{ lookup('template', '{{ template_folder }}/resources.asvm.yaml') }}"
       loop: "{{scale_out_domains}}"
       loop_control:
-        loop_var: scod
+        loop_var: env
 
     - debug:
         msg: 
@@ -28,10 +28,10 @@
         
     - debug:
         msg: 
-        - "{{'resources_' + scod}}: {{lookup('vars', 'resources_' + scod)}}"
+        - "{{'resources_' + env}}: {{lookup('vars', 'resources_' + env)}}"
       loop: "{{scale_out_domains}}"
       loop_control:
-        loop_var: scod
+        loop_var: env
 
 #
 # Create definition folder structure
@@ -54,11 +54,11 @@
 
     - name: "definition - resources"
       copy:
-        content: "{{lookup('vars', 'resources_' + scod)}}"
-        dest: "{{ definition_folder }}/{{landingzone_definition}}_{{scod}}.asvm.yaml"      
+        content: "{{lookup('vars', 'resources_' + env)}}"
+        dest: "{{ definition_folder }}/{{landingzone_definition}}_{{env}}.asvm.yaml"      
       loop: "{{scale_out_domains}}"
       loop_control:
-        loop_var: scod
+        loop_var: env
 
     - name: "definition - readme"
       ansible.builtin.template:
