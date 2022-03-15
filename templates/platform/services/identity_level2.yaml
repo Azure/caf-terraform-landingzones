@@ -1,0 +1,30 @@
+identity_level2_{{env}}:
+  gitops:
+    caf_landingzone_branch: {{topology.caf_landingzone_branch}}
+
+  relative_destination_folder: level2/identity/{{env}}
+
+  tfstate:
+    lz_key_name: identity_level2_{{env}}
+    tfstate: identity_level2_{{env}}.tfstate
+    level: level2
+    config_file: identity_level2.yaml
+    identity_aad_key: cred_identity
+    # Do not rename the tfstate_key_name
+    tfstate_key_name: identity_level2
+
+
+  deployments:
+    landingzone:
+      global_settings_key:
+        platform:
+          identity:
+      remote_tfstates:
+        platform:
+          identity:
+
+  resources:
+    identity:
+      azuread_groups:
+        caf_{{env}}_landingzones_dns_contributors:
+          name: caf ac {{env}} landingzones dns contributors

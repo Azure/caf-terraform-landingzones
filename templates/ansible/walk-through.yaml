@@ -1,0 +1,147 @@
+#
+# Get launchpad subscription details
+#
+
+- name: Get deployment user object_id (make sure you are logged-in to the launchpad Azure subscription first.)
+  shell: az ad signed-in-user show --query objectId -o tsv
+  register: object_id
+
+- name: Get deployment user UPN
+  shell: az ad signed-in-user show --query userPrincipalName -o tsv
+  register: upn
+
+- name: Get default user's tenant name
+  shell: az rest --method get --url "https://graph.microsoft.com/v1.0/organization" --query "value[0].verifiedDomains[?isDefault].name" -o tsv
+  register: tenant_name
+  
+- name: Get default user's tenant guid
+  shell: az account show --query tenantId -o tsv
+  register: tenant_id
+  
+- name: Get default subscription id
+  shell: az account show --query id -o tsv
+  register: subscription_id
+  
+- name: Get default subscription name
+  shell: az account show --query name -o tsv
+  register: subscription_name
+
+
+- set_fact:
+    regions:  "{{ azure_regions }}"
+    deployment_mode: "platform"
+    topology: "{{bootstrap | default()}}"
+
+- set_fact:
+    topology: "{{ lookup('template', '{{ topology_file }}') | from_yaml }}"
+    destination_path: "{{definition_folder | default(platform_definition_folder)}}"
+    resource_template_folder: "{{ public_templates_folder }}/resources"
+    platform_service_folder: "{{ public_templates_folder }}/platform/services"
+    public_templates_variables_folder: "{{ public_templates_folder }}/variables"
+
+- name: "Creates directory - {{destination_path}}"
+  file:
+    path: "{{destination_path}}"
+    state: directory
+       
+#
+# Load the files into variables
+#
+- name: "load _variables files"
+  include_vars:
+    name: variables
+    dir: "{{  public_templates_variables_folder}}"
+    depth: 1
+    ignore_unknown_extensions: true
+    files_matching: "_variables"
+
+
+- debug:
+    msg: 
+      - "variables: {{variables}}"
+      - "{{topology}}"
+
+- include_tasks: "load_regions.yaml"
+  loop: "{{topology.deployments[deployment_mode].keys()}}"
+  loop_control:
+    loop_var: stage
+
+- name: Merge deployment files into topologies variable
+  merge_vars:
+    suffix_to_merge: _deployment__to_merge
+    merged_var_name: merged_topologies
+    expected_type: 'dict'
+    recursive_dict_merge: True
+
+- name: "Topologies merged"
+  set_fact:
+    topologies:  "{{ merged_topologies }}"
+
+# Need topologies to render the following templates
+- name: "load tfstates"
+  set_fact:
+    "tfstates_deployment__to_merge": "{{ lookup('template', '{{platform_service_folder}}/tfstates.yaml') | from_yaml }}"
+
+- name: Merge deployment files into topologies variable
+  merge_vars:
+    suffix_to_merge: _deployment__to_merge
+    merged_var_name: merged_topologies
+    expected_type: 'dict'
+    recursive_dict_merge: True
+
+- set_fact:
+    topologies:  "{{ merged_topologies }}"
+
+- debug:
+    msg: "topologies: {{topologies}}"
+
+#
+# Generate target folder structure and files
+#
+
+- name: Copy files
+  include_tasks: "load_regions.yaml"
+  loop: "{{topology.deployments[deployment_mode].keys()}}"
+  loop_control:
+    loop_var: stage
+
+- find:
+    paths: "{{public_templates_variables_folder}}"
+    recurse: no
+    patterns: "_variables*.yaml"
+    file_type: file
+  register: variable_files_to_process
+
+- name: copy variables files
+  ansible.builtin.copy:
+    src: "{{ item.path }}"
+    dest: "{{destination_path}}/{{ item.path | basename }}"
+  loop: "{{variable_files_to_process.files}}"
+
+- name: tfstates.yaml
+  ansible.builtin.template:
+    src: "{{platform_service_folder}}/tfstates.yaml"
+    dest: "{{destination_path}}/tfstates.yaml"
+    
+- name: ignite.yaml
+  ansible.builtin.template:
+    src: "{{public_templates_folder}}/platform/single_subscription.yaml"
+    dest: "{{destination_path}}/ignite.yaml"
+            
+# - name: template.caf.platform.yaml
+#   ansible.builtin.template:
+#     src: "{{platform_service_folder}}/template.caf.platform.yaml"
+#     dest: "{{destination_path}}/{{topology.customer_name}}.caf.platform.yaml"
+                    
+- name: readme.md
+  ansible.builtin.template:
+    src: "{{platform_service_folder}}/README.md"
+    dest: "{{destination_path}}/GETTING-STARTED.md"
+    
+
+- debug:
+    msg:
+    - "You have now initialized the definition of the platform"
+    - "You can review and adjust the yaml files."
+    - "configuration folder: - {{destination_path}}"
+    - "readme: {{destination_path}}/GETTING-STARTED.md"

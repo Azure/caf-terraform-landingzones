@@ -1,0 +1,6 @@
+variables_azure_landing_zones:
+  private_lib:
+    v1.1.3:
+      caf_landingzone_branch: 2203.0
+    v1.1.1:
+      caf_landingzone_branch: 2201.0

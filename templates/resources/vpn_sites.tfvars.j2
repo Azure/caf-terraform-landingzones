@@ -1,0 +1,38 @@
+vpn_sites = {
+{% for key, value in resources[tfstate_resource].resources[subscription_key].vpn_sites.items() %}
+  {{ key }} = {
+    name = "{{ value.name }}"
+    resource_group = {
+      lz_key = "{{ value.resource_group.lz_key }}"
+      key    = "{{ value.resource_group.key }}"
+    }
+    virtual_wan = {
+      lz_key = "{{ value.virtual_wan.lz_key }}"
+      key    = "{{ value.virtual_wan.key }}"
+    }
+    device_vendor = "{{ value.device_vendor }}"
+  }
+{% if value.address_cidrs is defined %}
+    address_cidrs = {{ value.address_cidrs | replace('None','[]') | replace('\'','\"') }}
+{% endif %}
+    links = {
+{% for link_key, link in value.links.items() %}
+      {{ link_key }} = {
+        name          = "{{ link.name }}"
+        ip_address    = "{{ link.ip_address }}"
+        provider_name = "{{ link.provider_name }}"
+        speed_in_mbps = "{{ link.speed_in_mbps }}"
+{% if link.fqdn is defined %}
+        fqdn          = "{{ ink.fqdn }}"
+{% endif %}
+{% if link.bgp is defined %}
+        bgp = {
+          asn             = "{{ link.bgp.asn }}"
+          peering_address = "{{ link.bgp.peering_address }}"
+        }
+{% endif %}
+      }
+{% endfor %}
+    }
+{% endfor %}
+}

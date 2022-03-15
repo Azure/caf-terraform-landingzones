@@ -1,0 +1,87 @@
+
+- name: "[{{ level }}-asvm]  Get asvm keyvault credentials name"
+  register: keyvault_scl
+  shell: |
+    az keyvault list \
+      --subscription {{ resources.caf_launchpad.subscription_id }} \
+      --query "[?tags.caf_identity_aad_key=='cred_subscription_creation_landingzones' && tags.caf_environment=='{{ resources.caf_environment }}'].{name:name}[0]" -o json | jq -r --arg http "https://" --arg suffix ".vault.azure.net/" '$http + (.name) + $suffix'
+
+- debug:
+    msg: "{{keyvault_scl.stdout}}"
+
+#
+# Get landingzones subscriptions
+#
+
+- name: "[{{ level }}-asvm] - get keyvault credentials"
+  register: keyvault_scl
+  shell: |
+    az keyvault list \
+      --query "[?tags.caf_identity_aad_key=='cred_subscription_creation_landingzones'].{name:name}[0]" | \
+      jq -r --arg http "https://" --arg suffix ".vault.azure.net/" '$http + (.name) + $suffix'
+
+- name: "[{{ level }}-asvm] - storage_containers - launchpad level3"
+  register: storage_account_level3
+  shell: |
+    az storage account list \
+      --subscription {{ resources.caf_launchpad.subscription_id }} \
+      --query "[?tags.caf_tfstate=='level3' && tags.caf_environment=='{{ resources.caf_environment }}'].{name:name, resource_group:resourceGroup}[0]" -o json | jq -r
+
+- name: "[{{ level }}-asvm] - storage_containers - launchpad level4"
+  register: storage_account_level4
+  shell: |
+    az storage account list \
+      --subscription {{ resources.caf_launchpad.subscription_id }} \
+      --query "[?tags.caf_tfstate=='level4' && tags.caf_environment=='{{ resources.caf_environment }}'].{name:name, resource_group:resourceGroup}[0]" -o json | jq -r
+
+- debug:
+    msg: 
+    - "{{storage_account_level3.stdout}}"
+    - "{{storage_account_level4.stdout}}"
+
+- name: "[{{ level }}-asvm]  Get credentials tfstate details"
+  register: landingzones_subscriptions
+  ignore_errors: true
+  shell: |
+    az storage blob download \
+      --name "{{ resources.tfstates[lz_type][tfstate_resource].tfstate }}" \
+      --account-name "{{ storage_account_level3.stdout|from_json|json_query('name') }}" \
+      --container-name "{{ resources.tfstates[lz_type][tfstate_resource].workspace | default('tfstate') }}" \
+      --auth-mode "login" \
+      --file "~/.terraform.cache/launchpad/{{ resources.tfstates[lz_type][tfstate_resource].tfstate }}"
+
+- debug:
+    msg: "{{landingzones_subscriptions}}"
+    verbosity: 1
+    
+- name: "[{{ level }}-asvm]  Get subscription_creation_landingzones details"
+  when:
+    - landingzones_subscriptions.rc == 0
+  shell: "cat ~/.terraform.cache/launchpad/{{ resources.tfstates[lz_type][tfstate_resource].tfstate }}"
+  register: landingzones_tfstate
+
+- debug:
+    msg: "{{landingzones_tfstate.stdout | from_json }}"
+    verbosity: 1
+  when:
+    - landingzones_subscriptions.rc == 0
+
+- name: "[{{ level }}-asvm]  Get landingzone json data"
+  when:
+    - landingzones_subscriptions.rc == 0
+  set_fact:
+    scljsondata: "{{ landingzones_tfstate.stdout | from_json }}"
+
+- name: "[{{ level }}-asvm]  Get landingzone subscription ids"
+  when:
+    - landingzones_subscriptions.rc == 0
+  set_fact:
+    asvm_subscriptions_details: "{{ scljsondata | json_query(path) }}"
+  vars:
+    path: 'outputs.objects.value.{{resources.tfstates[lz_type][tfstate_resource].lz_key_name}}.subscriptions'
+
+- debug:
+    msg: "{{asvm_subscriptions_details}}"
+    verbosity: 1
+  when:
+    - landingzones_subscriptions.rc == 0

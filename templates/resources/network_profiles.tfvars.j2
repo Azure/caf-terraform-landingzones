@@ -1,0 +1,38 @@
+network_profiles = {
+{% for key, value in resources[tfstate_resource].resources[subscription_key].network_profiles.items() %}
+  {{ key }} = {
+      name  = "{{ value.name }}"
+      resource_group = {
+{% if value.resource_group.lz_key is defined %}
+        lz_key = "{{ value.resource_group.lz_key }}"
+{% endif %}
+        key  = "{{ value.resource_group.key }}"
+      }
+      container_network_interface = {
+        name  = "{{ value.container_network_interface.name }}"
+        ip_configurations = {
+{% for ip_key, ip_value in value.container_network_interface.ip_configurations.items() %}
+          {{ip_key}} = {
+            name  = "{{ ip_value.name }}"
+{% if ip_value.subnet_id is defined %}
+            subnet_id  = "{{ ip_value.subnet_id }}"
+{% endif %}
+{% if ip_value.lz_key is defined %}
+            subnetlz_key_id  = "{{ ip_value.lz_key }}"
+{% endif %}
+{% if ip_value.vnet_key is defined %}
+            vnet_key  = "{{ ip_value.vnet_key }}"
+{% endif %}
+{% if ip_value.subnet_key is defined %}
+            subnet_key  = "{{ ip_value.subnet_key }}"
+{% endif %}
+{% if ip_value.virtual_subnet_key is defined %}
+            virtual_subnet_key  = "{{ ip_value.virtual_subnet_key }}"
+{% endif %}
+          }
+{% endfor %}
+        }
+      }
+  }
+{% endfor %}
+}

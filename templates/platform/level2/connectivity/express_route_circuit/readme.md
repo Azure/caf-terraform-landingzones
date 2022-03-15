@@ -9,28 +9,28 @@ Note you need to adjust the branch {{ connectivity_express_routes.gitops.caf_lan
 
 ```bash
 # login a with a user member of the caf-platform-maintainers group
-rover login -t {{ config.platform_identity.tenant_name }}
+rover login -t {{ resources.azure_landing_zones.identity.tenant_name }}
 
-cd {{ destination_base }}/landingzones
+cd {{ landingzones_folder }}
 git fetch origin
 git checkout {{ connectivity_express_routes.gitops.caf_landingzone_branch }}
 
 rover \
-{% if keyvaults is defined and config.platform_identity.azuread_identity_mode != "logged_in_user" %}
+{% if keyvaults is defined and resources.azure_landing_zones.identity.azuread_identity_mode != "logged_in_user" %}
   --impersonate-sp-from-keyvault-url {{ keyvaults.cred_connectivity.vault_uri }} \
 {% endif %}
-  -lz {{ destination_base }}/landingzones/caf_solution \
-  -var-folder {{ destination_base }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/express_route_circuit/{{ circuit }} \
-  -tfstate_subscription_id {{ config.caf_terraform.launchpad.subscription_id }} \
+  -lz {{ landingzones_folder }}/caf_solution \
+  -var-folder {{ destination_base }}/{{ resources.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/express_route_circuit/{{ circuit }} \
+  -tfstate_subscription_id {{ resources.caf_launchpad.subscription_id }} \
 {% if platform_subscriptions_details is defined %}
   -target_subscription {{ platform_subscriptions_details.connectivity.subscription_id }} \
 {% else %}
-  -target_subscription {{ config.caf_terraform.launchpad.subscription_id }} \
+  -target_subscription {{ resources.caf_launchpad.subscription_id }} \
 {% endif %}
-  -tfstate {{ config.tfstates.platform.express_route_circuits[circuit].tfstate }} \
-  -env {{ config.caf_terraform.launchpad.caf_environment }} \
+  -tfstate {{ resources.tfstates.platform.express_route_circuits[circuit].tfstate }} \
+  -env {{ resources.caf_environment }} \
   -level {{ level }} \
-  -p ${TF_DATA_DIR}/{{ config.tfstates.platform.express_route_circuits[circuit].tfstate }}.tfplan \
+  -p ${TF_DATA_DIR}/{{ resources.tfstates.platform.express_route_circuits[circuit].tfstate }}.tfplan \
   -a plan
 
 ```

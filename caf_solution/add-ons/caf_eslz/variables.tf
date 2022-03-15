@@ -85,6 +85,12 @@ variable "root_name" {
   }
 }
 
+variable "root_parent_id" {
+  type        = string
+  description = "If specified, will deploy the Enterprise scale bellow the root_parent_id."
+  default     = null
+}
+
 variable "deploy_core_landing_zones" {
   type        = bool
   description = "If set to true, will include the core Enterprise-scale Management Group hierarchy."

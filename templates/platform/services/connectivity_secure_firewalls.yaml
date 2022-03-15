@@ -1,0 +1,50 @@
+secure_firewalls_{{env}}:
+  gitops:
+    caf_landingzone_branch: {{topology.caf_landingzone_branch}}
+
+  relative_destination_folder: level2/connectivity/secure_firewalls/{{env}}
+
+  tfstate:
+    lz_key_name: connectivity_secure_firewalls_{{env}}
+    tfstate: connectivity_secure_firewalls_{{env}}.tfstate
+    level: level2
+    config_file: connectivity_secure_firewalls.yaml
+    identity_aad_key: cred_connectivity
+    # Do not rename the tfstate_key_name
+    tfstate_key_name: secure_firewalls
+
+  deployments:
+    landingzone:
+      global_settings_key:
+        platform:
+          virtual_hubs: {{env}}
+      remote_tfstates:
+        platform:
+          virtual_hubs: {{env}}
+          azurerm_firewall_policies: {{env}}
+
+
+  resources:
+    connectivity:
+      resource_groups:
+          firewall:
+            name: connectivity-{{env}}-secure-firewall
+            region_key: region1
+      azurerm_firewalls:
+        fw_secure_{{env}}:
+          name: fw-secure-{{env}}
+          resource_group_key: firewall
+          sku_name: AZFW_Hub
+          sku_tier: Standard
+          virtual_hub:
+            {{env}}:
+              lz_key: connectivity_virtual_hubs_{{env}}
+              virtual_hub_key: {{env}}
+          public_ip_count: 1
+          firewall_policy:
+            key: secure_root
+            lz_key: connectivity_firewall_policies_{{env}}
+          zones:
+            - 1
+            - 2
+            - 3

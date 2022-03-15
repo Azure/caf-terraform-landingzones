@@ -1,8 +1,9 @@
 module "solution" {
   source  = "aztfmod/caf/azurerm"
-  version = "5.5.1"
+  version = "5.5.4"
 
-  # source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=master"
+  # during dev cycles for the module, you can pick dev branches from GitHub, or from a local fork
+  # source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=patch.5.5.4"
   # source = "../../aztfmod"
 
   providers = {

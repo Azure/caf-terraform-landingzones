@@ -1,0 +1,28 @@
+asvm_subscriptions:
+  gitops:
+    caf_landingzone_branch: 2203.0
+
+  relative_destination_folder: level3/{{landingzone_definition}}/subscriptions
+
+  deployments:
+    landingzone:
+      global_settings_key:
+        platform:
+          asvm:
+      remote_tfstates:
+        platform:
+          asvm:
+
+  resources:
+    asvm_subscriptions:
+      subscriptions:
+{% for region, value in deployments.asvm['root'].items() %}
+{% for env, env_value in value.items() %}
+{% if env != "asvm_subscriptions" %}
+        {{env}}:
+{% for key, kv in subscriptions[env].items() %}
+          {{key}}: {{kv}}
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endfor %}

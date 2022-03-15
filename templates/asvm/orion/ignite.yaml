@@ -1,0 +1,66 @@
+
+landingzone_definition: {{landingzone_definition}}
+
+subscriptions:
+{% for env in scale_out_domains %}
+  {{landingzone_definition}}_{{env}}:
+    name: {{landingzone_definition}}-{{env}}
+    # Set to false if you do not have permissions to create an alias
+    create_alias: false
+    subscription_id: {{subscription_id}}
+{% endfor %}
+
+#
+# deployments
+#
+
+deployments:
+  asvm:
+    root:
+      region1:
+        asvm_subscriptions: subscriptions.asvm.yaml
+{% for env in scale_out_domains %}
+        {{landingzone_definition}}_{{env}}: subscriptions.asvm.yaml
+{% endfor %}
+
+platform_mappings:
+{%for key, value in platform_domain_mapping.items() %}
+  {{key}}: {{value}}
+{% endfor %}
+
+#
+# If platform folder and config not accessible to the asvm repo you need to add the following variables
+#
+
+# caf_terraform:
+#   launchpad:
+#     caf_environment: cont0226
+#     subscription_id: 
+
+# cleanup_destination - recommended to clean and recreated a clean state from template.
+configuration_folders:
+  asvm:
+    cleanup_destination: true
+
+#
+# paths
+#
+topology_folder: {{topology_folder}}
+public_templates_folder: {{public_templates_folder}}
+landingzones_folder: {{landingzones_folder}}
+template_folder: {{template_folder}}
+definition_folder: {{definition_folder}}
+platform_configuration_folder: {{platform_configuration_folder}}
+platform_definition_folder: {{platform_definition_folder}}
+
+deployment_mode: {{deployment_mode}}
+
+#
+# Ansible input responses
+#
+
+# don't change the structure of the values for ansible to process them properly.
+# you can update the values following the structure.
+scale_out_domains_input: {{scale_out_domains_input}}
+platform_domain_mapping_input: {{platform_domain_mapping_input}}
+generate_new_subscriptions: {{generate_new_subscriptions}}

@@ -1,0 +1,20 @@
+ddos_services = {
+{% for key, value in resources[tfstate_resource].resources[subscription_key].ddos_services.items() %}
+  "{{key}}" = {
+    resource_group_key = "{{ value.resource_group_key }}"
+    name               = "{{ value.name }}"
+{% if value.region_key is defined %}
+    region             = "{{ value.region_key}}"
+{% elif value.region is defined %}
+    region             = "{{ value.region}}"
+{% endif %}
+{% if value.tags is defined %}
+    tags = {
+{% for tag_key, tag_value in value.tags.items() %}
+      {{ tag_key }} = "{{ tag_value }}"
+{% endfor %}
+    }
+{% endif %}
+  }
+{% endfor %}
+}

@@ -2,9 +2,9 @@
 
 module "enterprise_scale" {
   source  = "Azure/caf-enterprise-scale/azurerm"
-  version = "1.1.1"
+  version = "1.1.3"
 
-  # source = "../../../../eslz"
+  # source = "/tf/caf/alz"
 
   providers = {
     azurerm              = azurerm
@@ -12,7 +12,7 @@ module "enterprise_scale" {
     azurerm.management   = azurerm
   }
 
-  root_parent_id   = data.azurerm_client_config.current.tenant_id
+  root_parent_id   = var.root_parent_id == null ? data.azurerm_client_config.current.tenant_id : var.root_parent_id
   default_location = local.global_settings.regions[local.global_settings.default_region]
 
   #path to the policies definition and assignment repo

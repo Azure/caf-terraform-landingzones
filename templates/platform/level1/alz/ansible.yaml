@@ -1,0 +1,79 @@
+- name: "{{level }}-{{ tfstate}} - Set landingzone file_path"
+  set_fact:
+    mg: "{{ lookup('file', '{{ platform_definition_folder }}/alz/{{tfstate}}/archetype_config_overrides.caf.platform.yaml') | from_yaml }}"
+    mg_custom: "{{ lookup('file', '{{ platform_definition_folder }}/alz/{{tfstate}}/custom_landing_zones.caf.platform.yaml') | from_yaml }}"
+    level: "{{tfstate_object.level}}"
+    definition_source_folder: "{{platform_definition_folder}}/alz/{{ tfstate}}"
+    template_source_folder: "{{public_templates_folder}}/{{tfstate_object.template_lib_folder}}"
+    verbosity: 2
+
+- debug:
+    msg: "{{destination_path}}"
+
+- name: "{{ level }}-{{ tfstate }} |  Clean-up base directory"
+  shell: |
+    rm -rf "{{ destination_path }}"
+  when:
+    - bootstrap.management_groups[region][tfstate].clean_up_destination_folder
+
+- name: "{{ level }}-{{ tfstate }} | Creates directory structure"
+  shell: mkdir -p "{{ destination_path }}/{{ item.path }}"
+  with_filetree: "{{ definition_source_folder }}"
+  when: item.state == 'directory'
+
+- name: "{{ level }}-{{ tfstate }} |  Tfvars"
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{ template_source_folder }}/*.j2"
+    - "{{ template_source_folder }}/*.md"
+
+- name: "{{ level }}-{{ tfstate }} |  Lib - archetypes - built-in"
+  ansible.builtin.template:
+      src: "{{ template_source_folder }}/lib/{{tfstate_object.alz_version}}/archetype_definitions/archetype_definition_template.json.j2"
+      dest: "{{ destination_path }}/lib/archetype_definitions/archetype_definition_{{ mg.archetype_definitions[item].archetype_id }}.json"
+      force: yes
+  loop: "{{ mg.archetype_definitions.keys() }}"
+  loop_control:
+    loop_var: item
+
+- name: "{{ level }}-{{ tfstate }} |  Lib - archetypes - custom"
+  when:
+    - mg_custom.archetype_definitions is defined
+  ansible.builtin.template:
+      src: "{{ template_source_folder }}/lib/{{tfstate_object.alz_version}}/archetype_definitions/custom_landing_zone_template.json.j2"
+      dest: "{{ destination_path }}/lib/archetype_definitions/archetype_definition_{{ mg_custom.archetype_definitions[item].archetype_id }}.json"
+      force: yes
+  loop: "{{ mg_custom.archetype_definitions.keys() }}"
+  loop_control:
+    loop_var: item
+
+- name: "{{ level }}-{{ tfstate }} | archetypes"
+  ansible.builtin.template:
+      src: "{{ template_source_folder }}/lib/{{tfstate_object.alz_version}}/{{item}}"
+      dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"
+      force: yes
+  loop: 
+    - archetype_config_overrides.tfvars.j2
+    - custom_landing_zones.tfvars.j2
+
+- name: "{{ level }}-{{ tfstate }} |  Lib"
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ destination_path }}/{{ item.path }}"
+    force: yes
+  with_filetree: "{{ definition_source_folder }}"
+  when: 
+    - item.state == 'file' and bootstrap.management_groups[region][tfstate].update_lib_folder
+
+- name: "{{ level }}-{{ tfstate }} |  overrides"
+  when:
+    - mg_custom.archetype_definitions is defined
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"
+    force: yes
+  with_fileglob:
+    - "{{ definition_source_folder }}/*.tfvars.j2"

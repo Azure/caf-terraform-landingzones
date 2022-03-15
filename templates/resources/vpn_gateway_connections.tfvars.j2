@@ -1,0 +1,42 @@
+vpn_gateway_connections = {
+{% for key, value in resources[tfstate_resource].resources[subscription_key].vpn_gateway_connections.items() %}
+  {{ key }} = {
+    name                      = "{{ value.name }}"
+    internet_security_enabled = {{ value.internet_security_enabled | default(true) | string | lower }} // propagate to default route table
+    vpn_site = {
+      key = "{{ value.vpn_site.key }}"
+    }
+    virtual_hub = {
+      lz_key = "{{ value.virtual_hub.lz_key }}"
+      key    = "{{ value.virtual_hub.key }}"
+    }
+
+    vpn_links = {
+{% for link_key, link in value.vpn_links.items() %}
+      {{ link_key }} = {
+        name           = "{{ link.name }}"
+        shared_key     = "{{ link.shared_key }}"
+        bgp_enabled    = {{ link.bgp_enabled | default(false) | string | lower }}
+        bandwidth_mbps = {{ link.bandwidth_mbps }}
+        link_index     = {{ link.link_index }}
+        protocol       = "{{ link.protocol }}"
+        ipsec_policies = {
+{% for pol_key, policy in link.ipsec_policies.items() %}
+          {{ pol_key }} = {
+            dh_group                 = "{{policy.dh_group}}"
+            ike_encryption_algorithm = "{{policy.ike_encryption_algorithm}}"
+            ike_integrity_algorithm  = "{{policy.ike_integrity_algorithm}}"
+            encryption_algorithm     = "{{policy.encryption_algorithm}}"
+            integrity_algorithm      = "{{policy.integrity_algorithm}}"
+            pfs_group                = "{{policy.pfs_group}}"
+            sa_data_size_kb          = "{{policy.sa_data_size_kb}}"
+            sa_lifetime_sec          = "{{policy.sa_lifetime_sec}}"
+          }
+{% endfor %}
+        }
+      }
+{% endfor %}
+    }
+  }
+{% endfor %}
+}

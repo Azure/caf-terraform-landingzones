@@ -1,10 +1,10 @@
 recovery_vaults = {
-{% for key, asr in resources.subscriptions[subscription_key].recovery_vaults.items() %}
+{% for key, asr in resources[tfstate_resource].resources[subscription_key].recovery_vaults.items() %}
   {{ key }} = {
     name               = "{{ asr.name }}"
     resource_group_key = "{{ asr.resource_group_key }}"
 
-    region              = "{{ asr.region | default(config.caf_terraform.launchpad.default_region_key) }}"
+    region              = "{{ asr.region | default(resources.default_region_key) }}"
     soft_delete_enabled = {{ asr.soft_delete_enabled | default(true) | string | lower }}
 {% if asr.backup_policies is defined %}
     backup_policies = {

@@ -1,0 +1,7 @@
+
+- include_tasks: "load_deployments_alz.yaml"
+  loop: "{{topology.deployments[deployment_mode][stage][region].keys()}}"
+  loop_control:
+    loop_var: service
+  when: stage == 'alz'
+

@@ -1,0 +1,35 @@
+alz_{{item}}:
+  gitops:
+    caf_landingzone_branch: {{topology.caf_landingzone_branch}}
+
+  relative_destination_folder: level1/alz/{{item}}
+
+
+  tfstate:
+    lz_key_name: alz_{{item}}
+    tfstate: alz_{{item}}.tfstate
+    level: level1
+    identity_aad_key: cred_alz
+    config_file: alz_{{item}}.yaml
+    template_lib_folder: platform/level1/alz
+    sub_template_folder: platform/level1/alz
+    alz_version: {{topology.management_groups[region][item].version_to_deploy | default('v1.1.3')}}
+    yaml: platform/level1/alz/ansible.yaml
+    # Do not rename the item_key_name
+    tfstate_key_name: alz_{{item}}
+
+  deployments:
+    landingzone:
+      global_settings_key:
+        platform:
+          launchpad:
+      remote_tfstates:
+        platform:
+          launchpad:
+          identity:
+          management:
+          subscriptions:
+
+  # Keep the following to allow rover ignite to process the deployment.
+  resources:
+    launchpad:

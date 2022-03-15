@@ -1,29 +1,31 @@
-# Launchpad - {{ config.caf_terraform.launchpad.caf_environment }}
+# Launchpad - {{ bootstrap.caf_environment }}
 
 ## Pre-requisites
 
 This scenario requires the following privileges:
 
-| Component          | Privileges         |
-|--------------------|--------------------|
-| Active Directory   | None               |
-| Azure subscription | Subscription owner |
+| Component          | Privileges           |
+|--------------------|----------------------|
+| Active Directory   | Global Administrator |
+| Azure subscription | Subscription owner   |
 
 ## Deployment
 
-{% if config.caf_terraform.billing_subscription_role_delegations is defined %}
+{% if bootstrap.billing_subscription_role_delegations is defined %}
 ### Pre-requisite
 
 Elevate your credentials to the tenant root level to have enough privileges to create the management group hierarchy.
 
 ```bash
-{% if config.caf_terraform.billing_subscription_role_delegations.enable %}
-# Login to the subscription {{ config.caf_terraform.launchpad.subscription_name }} with the user {{ config.caf_terraform.billing_subscription_role_delegations.azuread_user_ea_account_owner }}
+{% if bootstrap.billing_subscription_role_delegations.azuread_user_ea_account_owner is defined %}
+# Login to the subscription {{ bootstrap.caf_launchpad.subscription_name }} with the user {{ bootstrap.billing_subscription_role_delegations.azuread_user_ea_account_owner }}
 {% else %}
-# Login to the subscription {{ config.caf_terraform.launchpad.subscription_name }} with an account owner.
+# Login to the subscription {{ bootstrap.caf_launchpad.subscription_name }} with an account owner.
 {% endif %}
-rover login -t {{ config.platform_identity.tenant_name }}
+rover login -t {{ bootstrap.azure_landing_zones.identity.tenant_name }}
+{% if bootstrap.azure_landing_zones.identity.azuread_identity_mode != 'logged_in_user' %}
 az rest --method post --url "/providers/Microsoft.Authorization/elevateAccess?api-version=2016-07-01"
+{% endif %}
 
 ```
 {% endif %}
@@ -31,69 +33,57 @@ az rest --method post --url "/providers/Microsoft.Authorization/elevateAccess?ap
 ### Launchpad
 
 ```bash
-{% if config.caf_terraform.billing_subscription_role_delegations is defined %}
-{% if config.caf_terraform.billing_subscription_role_delegations.enable %}
-# Login to the subscription {{ config.caf_terraform.launchpad.subscription_name }} with the user {{ config.caf_terraform.billing_subscription_role_delegations.azuread_user_ea_account_owner }}
+{% if bootstrap.billing_subscription_role_delegations is defined %}
+{% if bootstrap.billing_subscription_role_delegations.azuread_user_ea_account_owner is defined %}
+# Login to the subscription {{ bootstrap.caf_launchpad.subscription_name }} with the user {{ bootstrap.billing_subscription_role_delegations.azuread_user_ea_account_owner }}
 {% else %}
-# Login to the subscription {{ config.caf_terraform.launchpad.subscription_name }} with an account owner.
+# Login to the subscription {{ bootstrap.caf_launchpad.subscription_name }} with an account owner.
 {% endif %}
 {% endif %}
-rover login -t {{ config.platform_identity.tenant_name }} -s {{ config.caf_terraform.launchpad.subscription_id }}
+rover login -t {{ bootstrap.azure_landing_zones.identity.tenant_name }} -s {{ bootstrap.caf_launchpad.subscription_id }}
 
-cd /tf/caf/landingzones
+cd {{ landingzones_folder }}
 git fetch origin
-git checkout {{ config.gitops.caf_landingzone_branch }}
+git checkout {{ bootstrap.caf_landingzone_branch }}
+git pull
 
 rover \
-{% if ((config.platform_identity.azuread_identity_mode != "logged_in_user") and (credentials_tfstate_exists.rc == 0)) %}
-  --impersonate-sp-from-keyvault-url {{ keyvaults.cred_level0.vault_uri }} \
+{% if bootstrap.azure_landing_zones.identity.azuread_identity_mode != "logged_in_user" and credentials_tfstate_exists.rc == 0 %}
+  --impersonate-sp-from-keyvault-url {{ keyvaults[tfstate_object.identity_aad_key].vault_uri }} \
 {% endif %}
-  -lz /tf/caf/landingzones/caf_launchpad \
-  -var-folder {{ destination_base }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }} \
-  -tfstate_subscription_id {{ config.caf_terraform.launchpad.subscription_id }} \
-  -target_subscription {{ config.caf_terraform.launchpad.subscription_id }} \
-  -tfstate {{ config.tfstates.platform.launchpad.tfstate }} \
-  -log-severity {{ config.gitops.rover_log_error }} \
+  -lz {{ landingzones_folder }}/caf_launchpad \
+  -var-folder {{ destination_path }} \
+  -tfstate_subscription_id {{ bootstrap.caf_launchpad.subscription_id }} \
+  -target_subscription {{ bootstrap.caf_launchpad.subscription_id }} \
+  -tfstate {{ tfstate_object.tfstate }} \
   -launchpad \
-  -env {{ config.caf_terraform.launchpad.caf_environment }} \
+  -env {{ bootstrap.caf_environment }} \
   -level {{ level }} \
-  -p ${TF_DATA_DIR}/{{ config.tfstates.platform.launchpad.tfstate }}.tfplan \
+  -p ${TF_DATA_DIR}/{{ tfstate_object.tfstate }}.tfplan \
   -a plan
 
 ```
 
-If the plan is not successfull you need to come back to the yaml contoso.caf.platform.yaml, fix the values, re-execute the rover ignite and then rover plan.
+If the plan is not successfull you need to come back to the yaml ignite.yaml, fix the values, re-execute the rover ignite and then rover plan.
 
 
 ```bash 
 # On success plan, execute
 
 rover \
-{% if ((config.platform_identity.azuread_identity_mode != "logged_in_user") and (credentials_tfstate_exists.rc == 0)) %}
+{% if bootstrap.azure_landing_zones.identity.azuread_identity_mode != "logged_in_user" and credentials_tfstate_exists.rc == 0 %}
   --impersonate-sp-from-keyvault-url {{ keyvaults.cred_level0.vault_uri }} \
 {% endif %}
-  -lz /tf/caf/landingzones/caf_launchpad \
-  -var-folder {{ destination_base }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }} \
-  -tfstate_subscription_id {{ config.caf_terraform.launchpad.subscription_id }} \
-  -target_subscription {{ config.caf_terraform.launchpad.subscription_id }} \
-  -tfstate {{ config.tfstates.platform.launchpad.tfstate }} \
-  -log-severity {{ config.gitops.rover_log_error }} \
+  -lz {{ landingzones_folder }}/caf_launchpad \
+  -var-folder {{ destination_path }} \
+  -tfstate_subscription_id {{ bootstrap.caf_launchpad.subscription_id }} \
+  -target_subscription {{ bootstrap.caf_launchpad.subscription_id }} \
+  -tfstate {{ tfstate_object.tfstate }} \
   -launchpad \
-  -env {{ config.caf_terraform.launchpad.caf_environment }} \
+  -env {{ bootstrap.caf_environment }} \
   -level {{ level }} \
-  -p ${TF_DATA_DIR}/{{ config.tfstates.platform.launchpad.tfstate }}.tfplan \
+  -p ${TF_DATA_DIR}/{{ tfstate_object.tfstate }}.tfplan \
   -a apply
-
-```
-
-```bash
-# On success, re-execute the rover ignite
-
-rover ignite \
-  --playbook /tf/caf/landingzones/templates/platform/ansible.yaml \
-  -e base_templates_folder={{ base_templates_folder }} \
-  -e resource_template_folder={{resource_template_folder}} \
-  -e config_folder={{ config_folder }}
 
 ```
 
@@ -102,7 +92,12 @@ Execute a rover logout and rover login in order to make sure your azure sessions
 ```bash
 rover logout
 
-rover login -t {{ config.platform_identity.tenant_name }}
+rover login -t {{ bootstrap.azure_landing_zones.identity.tenant_name }}
+
+# On success, re-execute the rover ignite
+
+ansible-playbook {{public_templates_folder}}/ansible/ansible.yaml \
+  --extra-vars "@{{platform_definition_folder}}/ignite.yaml"
 
 ```
 
@@ -110,8 +105,29 @@ rover login -t {{ config.platform_identity.tenant_name }}
 
 When you have successfully deployed the launchpad you can  move to the next step.
 
-{% if config.platform_identity.azuread_identity_mode == 'service_principal' %}
+{% if bootstrap.azure_landing_zones.identity.azuread_identity_mode == 'service_principal' %}
  [Deploy the credentials landing zone](../credentials/readme.md)
 {% else %}
  [Deploy the management services](../../level1/management/readme.md)
 {% endif %}
+
+
+# To destroy the launchpad
+
+Destroying the launchpad is a specific opertion that requires the tfstate to be first downloaded in the rover and then run the terraform destroy command. Note the action to use is -a destroy
+
+```bash
+
+rover \
+  -lz {{ landingzones_folder }}/caf_launchpad \
+  -var-folder {{ destination_path }} \
+  -tfstate_subscription_id {{ bootstrap.caf_launchpad.subscription_id }} \
+  -target_subscription {{ bootstrap.caf_launchpad.subscription_id }} \
+  -tfstate {{ tfstate_object.tfstate }} \
+  -launchpad \
+  -env {{ bootstrap.caf_environment }} \
+  -level {{ level }} \
+  -p ${TF_DATA_DIR}/{{ tfstate_object.tfstate }}.tfplan \
+  -a destroy
+
+```

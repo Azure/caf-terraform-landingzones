@@ -1,0 +1,56 @@
+archetype_config_overrides = {
+{% for key, level in mg.archetype_definitions.items() %}
+  {{ key }} = {
+      archetype_id     = "{{mg.archetype_definitions[key].archetype_id }}"
+{% if mg.archetype_definitions[key].policy_assignments is defined %}
+      parameters = {
+{% for pa_key, pa_value in mg.archetype_definitions[key].policy_assignments.items() %}
+{% if pa_value is mapping %}
+        "{{ pa_key }}" = {
+{% for attribute, attribute_value in pa_value.items()  %}
+          "{{attribute}}" = {
+{% if attribute_value is string %}
+          value = "{{ attribute_value }}"
+{% elif attribute_value is boolean %}
+          value = {{ attribute_value | string | lower }}
+{% elif attribute_value is number %}
+          value = {{ attribute_value }}
+{% else %}
+{% if attribute_value is mapping %}
+{% for caf_key, caf_value in attribute_value.items() %}
+          {{ caf_key }} = "{{ caf_value }}"
+{% endfor %}
+{% else %}
+          values = {{ attribute_value | replace('None','[]') | replace('\'','\"') }}
+{% endif %}
+{% endif %}
+          }
+{% endfor %}
+        }
+{% endif %}
+{% endfor %}
+      }
+{% else %}
+      parameters       = {}
+{% endif %}
+{% if level.archetype_resources.access_control is defined %}
+      access_control = {
+{% for level_ac_key, level_ac in level.archetype_resources.access_control.items() %}
+        "{{level_ac_key}}" = {
+{% for level_role_key, level_role in level_ac.items()  %}
+          "{{ level_role_key }}" = {
+            lz_key        = "{{ level_role.lz_key }}"
+            attribute_key = "{{ level_role.attribute_key }}"
+            resource_keys = {{ level_role.resource_keys | replace('None','[]') | replace('\'','\"') }}
+          }
+{% endfor %}
+        }
+{% endfor %}
+      }
+{% else %}
+      access_control   = {}
+{% endif %}
+  }
+
+{% endfor %}
+}

@@ -1,0 +1,16 @@
+storage_containers = {
+{% for key, value in resources[tfstate_resource].resources[subscription_key].subscriptions.items() %}
+  {{key }}_level3 = {
+    name = "{{ resources.tfstates[lz_type][key].workspace }}"
+    storage_account = {
+      name = "{{storage_account_level3.stdout|from_json|json_query('name')}}"
+    }
+  }
+  {{key }}_level4 = {
+    name = "{{ resources.tfstates[lz_type][key].workspace }}"
+    storage_account = {
+      name = "{{storage_account_level4.stdout|from_json|json_query('name')}}"
+    }
+  }
+{% endfor %}
+}

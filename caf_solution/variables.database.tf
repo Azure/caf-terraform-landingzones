@@ -71,6 +71,9 @@ variable "mysql_databases" {
 variable "mysql_servers" {
   default = {}
 }
+variable "postgresql_flexible_servers" {
+  default = {}
+}
 variable "postgresql_servers" {
   default = {}
 }

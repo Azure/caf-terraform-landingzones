@@ -1,14 +1,14 @@
 monitoring = {
-{% if resources.subscriptions[subscription_key].service_health_alerts is defined %}
+{% if resources[tfstate_resource].resources[subscription_key].service_health_alerts is defined %}
   service_health_alerts = {
-    enable_service_health_alerts = {{resources.subscriptions[subscription_key].service_health_alerts.enable_service_health_alerts | lower | default(true)}}
-    name                         = "{{resources.subscriptions[subscription_key].service_health_alerts.name}}"
-    action_group_name            = "{{resources.subscriptions[subscription_key].service_health_alerts.action_group_name}}"
-    shortname                    = "{{resources.subscriptions[subscription_key].service_health_alerts.shortname}}"
-    resource_group_key           = "{{resources.subscriptions[subscription_key].service_health_alerts.resource_group_key}}"
-{% if resources.subscriptions[subscription_key].service_health_alerts.email_alert_settings is defined %}
+    enable_service_health_alerts = {{resources[tfstate_resource].resources[subscription_key].service_health_alerts.enable_service_health_alerts | lower | default(true)}}
+    name                         = "{{resources[tfstate_resource].resources[subscription_key].service_health_alerts.name}}"
+    action_group_name            = "{{resources[tfstate_resource].resources[subscription_key].service_health_alerts.action_group_name}}"
+    shortname                    = "{{resources[tfstate_resource].resources[subscription_key].service_health_alerts.shortname}}"
+    resource_group_key           = "{{resources[tfstate_resource].resources[subscription_key].service_health_alerts.resource_group_key}}"
+{% if resources[tfstate_resource].resources[subscription_key].service_health_alerts.email_alert_settings is defined %}
     email_alert_settings = {
-{% for key, sha in resources.subscriptions[subscription_key].service_health_alerts.email_alert_settings.items() %}
+{% for key, sha in resources[tfstate_resource].resources[subscription_key].service_health_alerts.email_alert_settings.items() %}
       {{ key }} = {
         name                    = "{{ sha.name }}"
         email_address           = "{{ sha.email_address }}"

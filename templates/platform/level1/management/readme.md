@@ -8,34 +8,31 @@ rover logout
 
 # login a with a user member of the caf-maintainers group
 {% if platform_subscriptions_details is defined %}
-rover login -t {{ config.platform_identity.tenant_name }} -s {{ platform_subscriptions_details.management.subscription_id }}
+rover login -t {{ resources.azure_landing_zones.identity.tenant_name }} -s {{ platform_subscriptions_details.management.subscription_id }}
 {% elif subscriptions.platform_subscriptions.management.subscription_id is defined %}
-rover login -t {{ config.platform_identity.tenant_name }} -s {{ subscriptions.platform_subscriptions.management.subscription_id }}
+rover login -t {{ resources.azure_landing_zones.identity.tenant_name }} -s {{ subscriptions.platform_subscriptions.management.subscription_id }}
 {% else %}
-rover login -t {{ config.platform_identity.tenant_name }} -s {{ config.caf_terraform.launchpad.subscription_id }}
+rover login -t {{ resources.azure_landing_zones.identity.tenant_name }} -s {{ resources.caf_launchpad.subscription_id }}
 {% endif %}
 
 rover \
-{% if platform_subscriptions_details.eslz is defined %}
-{% if keyvaults is defined and config.platform_identity.azuread_identity_mode != "logged_in_user" %}
-  --impersonate-sp-from-keyvault-url {{ keyvaults.cred_management.vault_uri }} \
+{% if resources.azure_landing_zones.identity.azuread_identity_mode != "logged_in_user" and keyvaults is defined %}
+  --impersonate-sp-from-keyvault-url {{ keyvaults[tfstate_object.identity_aad_key].vault_uri }} \
 {% endif %}
-{% endif %}
-  -lz /tf/caf/landingzones/caf_solution \
-  -var-folder {{ destination_base }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }} \
-  -tfstate_subscription_id {{ config.caf_terraform.launchpad.subscription_id }} \
+  -lz {{ landingzones_folder }}/caf_solution \
+  -var-folder {{ destination_path }} \
+  -tfstate_subscription_id {{ resources.caf_launchpad.subscription_id }} \
 {% if platform_subscriptions_details is defined %}
   -target_subscription {{ platform_subscriptions_details.management.subscription_id }} \
 {% elif subscriptions.platform_subscriptions.management.subscription_id is defined %}
   -target_subscription {{ subscriptions.platform_subscriptions.management.subscription_id }} \
 {% else %}
-  -target_subscription {{ config.caf_terraform.launchpad.subscription_id }} \
+  -target_subscription {{ resources.caf_launchpad.subscription_id }} \
 {% endif %}
-  -tfstate {{ config.tfstates.platform.management.tfstate }} \
-  -log-severity {{ config.gitops.rover_log_error }} \
-  -env {{ config.caf_terraform.launchpad.caf_environment }} \
+  -tfstate {{ resources.tfstates.platform.management.tfstate }} \
+  -env {{ resources.caf_environment }} \
   -level {{ level }} \
-  -p ${TF_DATA_DIR}/{{ config.tfstates.platform.management.tfstate }}.tfplan \
+  -p ${TF_DATA_DIR}/{{ resources.tfstates.platform.management.tfstate }}.tfplan \
   -a plan
 
 ```
@@ -45,8 +42,4 @@ rover \
 
 When you have successfully deployed the management landing zone, you can move to the next step:
 
-{% if config.platform_core_setup.enterprise_scale.enable %}
- [Deploy Enterprise Scale](../../level1/eslz/readme.md)
-{% else %}
- [Deploy Connectivity](../../level2/connectivity/readme.md)
-{% endif %}
+[Deploy Identity](../../level1/identity/readme.md)

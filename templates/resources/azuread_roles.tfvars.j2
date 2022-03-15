@@ -1,0 +1,15 @@
+#
+# Available roles:
+# az rest --method Get --uri https://graph.microsoft.com/v1.0/directoryRoleTemplates -o json | jq -r .value[].displayName
+#
+azuread_roles = {
+{% for key, value in resources[tfstate_resource].resources[subscription_key].azuread_roles.items() %}
+  {{ key }} = {
+{% for l_key, l_value in value.items() %}
+    {{l_key}} = {
+      roles = {{ l_value.roles | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"') }}
+    }
+{% endfor %}
+  }
+{% endfor %}
+}

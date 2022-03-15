@@ -1,0 +1,358 @@
+virtual_machines = {
+{% for key, value in resources[tfstate_resource].resources[subscription_key].virtual_machines.items() %}
+  {{ key }} = {
+      resource_group = {
+{% if value.resource_group.lz_key is defined %}
+        lz_key = "{{ value.resource_group.lz_key }}"
+{% endif %}
+        key  = "{{ value.resource_group.key }}"
+      }
+{% if value.region is defined %}
+      region = "{{ value.region }}"
+{% endif %}
+{% if value.os_type is defined %}
+      os_type = "{{ value.os_type }}"
+{% endif %}
+{% if value.lz_key is defined %}
+      // lz_key name of the keyvault key holding the user_name and password when using admin_username_key and admin_password_key
+      lz_key = "{{ value.lz_key }}"
+{% endif %}
+{% if value.keyvault_key is defined %}
+      // keyvault key holding the user_name and password when using admin_username_key and admin_password_key
+      keyvault_key = "{{ value.keyvault_key }}"
+{% endif %}
+{% if value.public_key_pem_file is defined %}
+      public_key_pem_file = "{{ value.public_key_pem_file }}"
+{% endif %}
+{% if value.backup is defined %}
+      backup = {
+{% if value.backup.backup_vault_rg is defined %}
+        backup_vault_rg = "{{ value.backup.backup_vault_rg }}"
+{% endif %}
+{% if value.backup.backup_vault_id is defined %}
+        backup_vault_id = "{{ value.backup.backup_vault_id }}"
+{% endif %}
+{% if value.backup.backup_policy_id is defined %}
+        backup_policy_id = "{{ value.backup.backup_policy_id }}"
+{% endif %}
+{% if value.backup.vault_key is defined %}
+        vault_key = "{{ value.backup.vault_key }}"
+{% endif %}
+{% if value.backup.policy_key is defined %}
+        policy_key = "{{ value.backup.policy_key }}"
+{% endif %}
+{% if value.backup.lz_key is defined %}
+        lz_key = "{{ value.backup.lz_key }}"
+{% endif %}
+      }
+{% endif %}
+{% if value.tags is defined %}
+      tags   = {
+{% for tag_key, tag_value in value.tags.items() %}
+        {{ tag_key }} = "{{ tag_value }}"
+{% endfor %}
+      }
+{% endif %}
+
+      virtual_machine_settings = {
+{% for os_key, os_value in value.virtual_machine_settings.items() %}
+        {{ os_key }} = {
+{% if os_value.name is defined %}
+          name = "{{ os_value.name }}"
+{% endif %}
+{% if os_value.computer_name is defined %}
+          computer_name = "{{ os_value.computer_name }}"
+{% endif %}
+{% if os_value.admin_username_key is defined %}
+          admin_username_key = "{{ os_value.admin_username_key }}"
+{% endif %}
+{% if os_value.admin_password_key is defined %}
+          admin_password_key = "{{ os_value.admin_password_key }}"
+{% endif %}
+{% if os_value.allow_extension_operations is defined %}
+          allow_extension_operations = "{{ os_value.allow_extension_operations }}"
+{% endif %}
+{% if os_value.availability_set_key is defined %}
+          availability_set_key = "{{ os_value.availability_set_key }}"
+{% endif %}
+{% if os_value.enable_automatic_updates is defined %}
+          enable_automatic_updates = "{{ os_value.enable_automatic_updates }}"
+{% endif %}
+{% if os_value.eviction_policy is defined %}
+          eviction_policy = "{{ os_value.eviction_policy }}"
+{% endif %}
+{% if os_value.license_type is defined %}
+          license_type = "{{ os_value.license_type }}"
+{% endif %}
+{% if os_value.max_bid_price is defined %}
+          max_bid_price = "{{ os_value.max_bid_price }}"
+{% endif %}
+{% if os_value.network_interface_keys is defined %}
+          network_interface_keys = {{ os_value.network_interface_keys | replace('None','[]') | replace('\'','\"') }}
+{% endif %}
+{% if os_value.priority is defined %}
+          priority = "{{ os_value.priority }}"
+{% endif %}
+{% if os_value.provision_vm_agent is defined %}
+          provision_vm_agent = {{ os_value.provision_vm_agent | lower }}
+{% endif %}
+{% if os_value.proximity_placement_group_key is defined %}
+          proximity_placement_group_key = "{{ os_value.proximity_placement_group_key }}"
+{% endif %}
+{% if os_value.size is defined %}
+          size = "{{ os_value.size }}"
+{% endif %}
+{% if os_value.timezone is defined %}
+          timezone = "{{ os_value.timezone }}"
+{% endif %}
+{% if os_value.zone is defined %}
+          zone = "{{ os_value.zone }}"
+{% endif %}
+          os_disk = {
+            name = "{{ os_value.os_disk.name }}"
+            caching = "{{ os_value.os_disk.caching }}"
+{% if os_value.os_disk.disk_size_gb is defined %}
+            disk_size_gb = "{{ os_value.os_disk.disk_size_gb }}"
+{% endif %}
+{% if os_value.os_disk.storage_account_type is defined %}
+            storage_account_type = "{{ os_value.os_disk.storage_account_type }}"
+{% endif %}
+{% if os_value.os_disk.write_accelerator_enabled is defined %}
+            write_accelerator_enabled = {{ os_value.os_disk.write_accelerator_enabled | lower }}
+{% endif %}
+{% if os_value.os_disk.disk_encryption_set_key is defined %}
+            disk_encryption_set_key = "{{ os_value.os_disk.disk_encryption_set_key }}"
+{% endif %}
+{% if os_value.os_disk.lz_key is defined %}
+            lz_key = "{{ os_value.os_disk.lz_key }}"
+{% endif %}
+{% if os_value.os_disk.diff_disk_settings is defined %}
+            diff_disk_settings = {
+              option = os_value.os_disk.diff_disk_settings.option
+            }
+{% endif %}
+          }
+{% if os_value.custom_data is defined %}
+          custom_data = "{{ os_value.custom_data }}"
+{% endif %}
+{% if os_value.dedicated_host is defined %}
+          diff_disk_settings = {
+{% if os_value.dedicated_host.id is defined %}
+            id = "{{ os_value.dedicated_host.id }}"
+{% else %}
+            key = "{{ os_value.dedicated_host.key }}"
+{% if os_value.dedicated_host.lz_key is defined %}
+            lz_key = "{{ os_value.dedicated_host.lz_key }}"
+{% endif %}
+{% endif %}
+          }
+{% endif %}
+{% if os_value.source_image_reference is defined %}
+          source_image_reference = {
+{% if os_value.source_image_reference.publisher is defined %}
+          publisher = "{{ os_value.source_image_reference.publisher }}"
+{% endif %}
+{% if os_value.source_image_reference.offer is defined %}
+          offer = "{{ os_value.source_image_reference.offer }}"
+{% endif %}
+{% if os_value.source_image_reference.sku is defined %}
+          sku = "{{ os_value.source_image_reference.sku }}"
+{% endif %}
+{% if os_value.source_image_reference.version is defined %}
+          version = "{{ os_value.source_image_reference.version }}"
+{% endif %}
+          }
+{% endif %}
+{% if os_value.plan is defined %}
+          plan = {
+            name      = "{{ os_value.plan.name }}"
+            product   = "{{ os_value.plan.product }}"
+            publisher = "{{ os_value.plan.publisher }}"
+          }
+{% endif %}
+{% if os_value.custom_image_id is defined %}
+          custom_image_id = "{{ os_value.custom_image_id }}"
+{% else %}
+{% if os_value.custom_image_key is defined %}
+          custom_image_key = "{{ os_value.custom_image_key }}"
+{% endif %}
+{% endif %}
+{% if os_value.additional_capabilities is defined %}
+          additional_capabilities = {
+            ultra_ssd_enabled = {{ os_value.additional_capabilities.ultra_ssd_enabled | lower }}
+          }
+{% endif %}
+{% if os_value.additional_unattend_content is defined %}
+          additional_unattend_content = {
+            content = "{{ os_value.additional_capabilities.content }}"
+            setting = "{{ os_value.additional_capabilities.setting }}"
+          }
+{% endif %}
+{% if os_value.identity is defined %}
+          identity = {
+            type = "{{ os_value.identity.type }}"
+{% if os_value.identity.managed_identity_keys is defined %}
+            managed_identity_keys = {{ os_value.identity.managed_identity_keys | replace('None','[]') | replace('\'','\"') }}
+{% endif %}
+{% if os_value.identity.remote is defined %}
+            remote = {
+{% for msi_key, msi_value in os_value.identity.remote.items() %}
+              {{ msi_key }} = {
+                managed_identity_keys = {{ msi_value.managed_identity_keys | replace('None','[]') | replace('\'','\"') }}
+              }
+{% endfor %}
+            }
+{% endif %}
+          }
+{% endif %}
+        }
+{% endfor %}
+      }
+{% if value.data_disks is defined %}
+      data_disks = {
+{% for disk_key, disk_value in value.data_disks.items() %}
+        {{ disk_key }} = {
+          name = "{{ disk_value.name }}"
+          lun = {{ disk_value.lun }}
+          storage_account_type = "{{ disk_value.storage_account_type }}"
+          create_option = "{{ disk_value.create_option }}"
+{% if disk_value.write_accelerator_enabled is defined %}
+          write_accelerator_enabled = {{ disk_value.write_accelerator_enabled | lower }}
+{% endif %}
+{% if disk_value.caching is defined %}
+          caching = "{{ disk_value.caching }}"
+{% endif %}
+{% if disk_value.disk_size_gb is defined %}
+          disk_size_gb = "{{ disk_value.disk_size_gb }}"
+{% endif %}
+{% if disk_value.disk_iops_read_write is defined %}
+          disk_iops_read_write = "{{ disk_value.disk_iops_read_write }}"
+{% endif %}
+{% if disk_value.disk_mbps_read_write is defined %}
+          disk_mbps_read_write = "{{ disk_value.disk_mbps_read_write }}"
+{% endif %}
+{% if disk_value.disk_encryption_set_key is defined %}
+          disk_encryption_set_key = "{{ disk_value.disk_encryption_set_key }}"
+{% endif %}
+{% if disk_value.zones is defined %}
+          zones = {{ disk_value.zones | map('string') | replace('None','[]') | replace('\'','\"') }}
+{% endif %}
+{% if disk_value.tags is defined %}
+          tags   = {
+{% for tag_key, tag_value in nic_value.tags.items() %}
+            {{ tag_key }} = "{{ tag_value }}"
+{% endfor %}
+          }
+{% endif %}
+        }
+{% endfor %}
+      }
+{% endif %}
+      networking_interfaces = {
+{% for nic_key, nic_value in value.networking_interfaces.items() %}
+      {{ nic_key }} = {
+            name = "{{ nic_value.name }}"
+{% if nic_value.dns_servers is defined %}
+            dns_servers = {{ nic_value.dns_servers | replace('None','[]') | replace('\'','\"') }}
+{% endif %}
+{% if nic_value.enable_ip_forwarding is defined %}
+            enable_ip_forwarding = {{ nic_value.enable_ip_forwarding | lower }}
+{% endif %}
+{% if nic_value.enable_accelerated_networking is defined %}
+            enable_accelerated_networking = {{ nic_value.enable_accelerated_networking | lower }}
+{% endif %}
+{% if nic_value.internal_dns_name_label is defined %}
+            internal_dns_name_label = "{{ nic_value.internal_dns_name_label }}"
+{% endif %}
+{% if nic_value.tags is defined %}
+        tags   = {
+{% for tag_key, tag_value in nic_value.tags.items() %}
+          {{ tag_key }} = "{{ tag_value }}"
+{% endfor %}
+        }
+{% endif %}
+{% if nic_value.subnet_id is defined %}
+        subnet_id = "{{ nic_value.subnet_id }}"
+{% endif %}
+{% if nic_value.lz_key is defined %}
+        lz_key = "{{ nic_value.lz_key }}"
+{% endif %}
+{% if nic_value.vnet_key is defined %}
+        vnet_key = "{{ nic_value.vnet_key }}"
+{% endif %}
+{% if nic_value.subnet_key is defined %}
+        subnet_key = "{{ nic_value.subnet_key }}"
+{% endif %}
+{% if nic_value.private_ip_address_allocation is defined %}
+        private_ip_address_allocation = "{{ nic_value.private_ip_address_allocation }}"
+{% endif %}
+{% if nic_value.private_ip_address_version is defined %}
+        private_ip_address_version = "{{ nic_value.private_ip_address_version }}"
+{% endif %}
+{% if nic_value.private_ip_address is defined %}
+        private_ip_address = "{{ nic_value.private_ip_address }}"
+{% endif %}
+{% if nic_value.primary is defined %}
+        primary = {{ nic_value.primary | lower }}
+{% endif %}
+{% if nic_value.public_ip_address_id is defined %}
+        public_ip_address_id = "{{ nic_value.public_ip_address_id }}"
+{% endif %}
+{% if nic_value.public_ip_address_key is defined %}
+        public_ip_address_key = "{{ nic_value.public_ip_address_key }}"
+{% endif %}
+{% if nic_value.ip_configurations is defined %}
+      ip_configurations = {
+{% for ipc_key, ipc_value in nic_value.ip_configurations.items() %}
+        {{ ipc_key }} = {
+            name = "{{ ipc_value.name }}"
+{% if ipc_value.subnet_id is defined %}
+            subnet_id = "{{ ipc_value.subnet_id }}"
+{% endif %}
+{% if ipc_value.lz_key is defined %}
+            lz_key = "{{ ipc_value.lz_key }}"
+{% endif %}
+{% if ipc_value.vnet_key is defined %}
+            vnet_key = "{{ ipc_value.vnet_key }}"
+{% endif %}
+{% if ipc_value.subnet_key is defined %}
+            subnet_key = "{{ ipc_value.subnet_key }}"
+{% endif %}
+{% if ipc_value.private_ip_address_allocation is defined %}
+            private_ip_address_allocation = "{{ ipc_value.private_ip_address_allocation }}"
+{% endif %}
+{% if ipc_value.private_ip_address_version is defined %}
+            private_ip_address_version = "{{ ipc_value.private_ip_address_version }}"
+{% endif %}
+{% if ipc_value.private_ip_address is defined %}
+            private_ip_address = "{{ ipc_value.private_ip_address }}"
+{% endif %}
+{% if ipc_value.primary is defined %}
+            primary = {{ ipc_value.primary | lower }}
+{% endif %}
+{% if ipc_value.public_ip_address_id is defined %}
+            public_ip_address_id = "{{ ipc_value.public_ip_address_id }}"
+{% endif %}
+{% if ipc_value.public_ip_address_key is defined %}
+            public_ip_address_key = "{{ ipc_value.public_ip_address_key }}"
+{% endif %}
+          }
+{% endfor %}
+        }
+{% endif %}
+{% if nic_value.network_security_group is defined %}
+        network_security_group = {
+{% if nic_value.network_security_group.lz_key is defined %}
+          lz_key = "{{ nic_value.network_security_group.lz_key }}"
+{% endif %}
+{% if nic_value.network_security_group.key is defined %}
+          key = "{{ nic_value.network_security_group.key }}"
+{% endif %}
+        }
+{% endif %}
+      }
+{% endfor %}
+    }
+  }
+{% endfor %}
+}

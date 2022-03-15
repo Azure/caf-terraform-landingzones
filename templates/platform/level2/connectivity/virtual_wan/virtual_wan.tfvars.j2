@@ -1,9 +1,0 @@
-virtual_wans = {
-{% for key, vwan in connectivity_virtual_wan.virtual_wans.items() %}
-  "{{key}}" = {
-    resource_group_key = "{{ vwan.resource_group_key }}"
-    name               = "{{ vwan.name }}"
-    region             = "{{ vwan.region_key }}"
-  }
-{% endfor %}
-}

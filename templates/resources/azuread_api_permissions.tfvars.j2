@@ -1,0 +1,32 @@
+azuread_api_permissions = {
+{% for key, value in resources[tfstate_resource].resources[subscription_key].azuread_api_permissions.items() %}
+  {{ key }} = {
+{% if value.microsoft_graph is defined %}
+    microsoft_graph = {
+      resource_app_id = "{{ value.microsoft_graph.resource_app_id }}"
+      resource_access = {
+{% for r_key, r_value in value.microsoft_graph.resource_access.items() %}
+        {{r_key}} = {
+          id   = "{{ r_value.id }}"
+          type = "{{ r_value.type }}"
+        }
+{% endfor%}
+      }
+    }
+{% endif %}
+{% if value.active_directory_graph is defined %}
+    active_directory_graph = {
+      resource_app_id = "{{ value.active_directory_graph.resource_app_id }}"
+      resource_access = {
+{% for r_key, r_value in value.active_directory_graph.resource_access.items() %}
+        {{r_key}} = {
+          id   = "{{ r_value.id }}"
+          type = "{{ r_value.type }}"
+        }
+{% endfor%}
+      }
+    }
+{% endif %}
+  }
+{% endfor %}
+}

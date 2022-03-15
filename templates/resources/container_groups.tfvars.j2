@@ -1,0 +1,205 @@
+container_groups = {
+{% for key, value in resources[tfstate_resource].resources[subscription_key].container_groups.items() %}
+  {{ key }} = {
+      name = "{{ value.name }}"
+{% if value.region is defined %}
+      region = "{{ value.region }}"
+{% endif %}
+{% if value.resource_group_key is defined %}
+      resource_group_key = "{{ value.resource_group_key }}"
+{% endif %}
+{% if value.resource_group is defined %}
+      resource_group = {
+{% if value.resource_group.lz_key is defined %}
+        lz_key = "{{ value.resource_group.lz_key }}"
+{% endif %}
+        key = "{{ value.resource_group.key }}"
+      }
+{% endif %}
+      ip_address_type = "{{ value.ip_address_type | default('Private') }}"
+      os_type = "{{ value.os_type | default('Linux') }}"
+      restart_policy = "{{ value.restart_policy | default('Never') }}"
+{% if value.network_profile is defined %}
+      network_profile = {
+{% if value.network_profile.lz_key is defined %}
+      lz_key = "{{ value.network_profile.lz_key }}"
+{% endif %}
+{% if value.network_profile.key is defined %}
+      key = "{{ value.network_profile.key }}"
+{% endif %}
+      }
+{% endif %}
+{% for c_key, c_value in value.containers.items() %}
+    containers = {
+      {{ c_key }} = {
+{% if c_value.count is defined %}
+        count = "{{ c_value.count }}"
+{% endif %}
+        name   = "{{ c_value.name }}"
+        image  = "{{ c_value.image }}"
+        cpu    = "{{ c_value.cpu }}"
+        memory = "{{ c_value.memory }}"
+{% if c_value.commands is defined %}
+      commands = "{{ c_value.commands }}"
+{% endif %}
+{% if c_value.gpu is defined %}
+      gpu = {
+        count = c_value.gpu.count
+        sku   = c_value.gpu.sku
+      }
+{% endif %}
+{% if c_value.ports is defined %}
+      ports = {
+{% for p_key, p_value in c_value.ports.items() %}
+        {{p_key}} = {
+          port = "{{p_value.port}}"
+{% if p_value.protocol is defined %}
+          protocol = "{{p_value.protocol}}"
+{% endif %}
+        }
+{% endfor %}
+      }
+{% endif %}
+{% if c_value.readiness_probe is defined %}
+      readiness_probe = {
+{% if c_value.readiness_probe.exec is defined %}
+        exec = "{{ c_value.readiness_probe.exec }}"
+{% endif %}
+{% if c_value.readiness_probe.initial_delay_seconds is defined %}
+        initial_delay_seconds = {{ c_value.readiness_probe.initial_delay_seconds }}
+{% endif %}
+{% if c_value.readiness_probe.period_seconds is defined %}
+        period_seconds = {{ c_value.readiness_probe.period_seconds }}
+{% endif %}
+{% if c_value.readiness_probe.failure_threshold is defined %}
+        failure_threshold = {{ c_value.readiness_probe.failure_threshold }}
+{% endif %}
+{% if c_value.readiness_probe.success_threshold is defined %}
+        success_threshold = {{ c_value.readiness_probe.success_threshold }}
+{% endif %}
+{% if c_value.readiness_probe.timeout_seconds is defined %}
+        timeout_seconds = {{ c_value.readiness_probe.timeout_seconds }}
+{% endif %}
+      }
+{% endif %}
+{% if c_value.liveness_probe is defined %}
+      liveness_probe = {
+{% if c_value.liveness_probe.exec is defined %}
+        exec = "{{ c_value.liveness_probe.exec }}"
+{% endif %}
+{% if c_value.liveness_probe.initial_delay_seconds is defined %}
+        initial_delay_seconds = {{ c_value.liveness_probe.initial_delay_seconds }}
+{% endif %}
+{% if c_value.liveness_probe.period_seconds is defined %}
+        period_seconds = {{ c_value.liveness_probe.period_seconds }}
+{% endif %}
+{% if c_value.liveness_probe.failure_threshold is defined %}
+        failure_threshold = {{ c_value.liveness_probe.failure_threshold }}
+{% endif %}
+{% if c_value.liveness_probe.success_threshold is defined %}
+        success_threshold = {{ c_value.liveness_probe.success_threshold }}
+{% endif %}
+{% if c_value.liveness_probe.timeout_seconds is defined %}
+        timeout_seconds = {{ c_value.liveness_probe.timeout_seconds }}
+{% endif %}
+{% if c_value.liveness_probe.http_get is defined %}
+        http_get = {
+{% if c_value.liveness_probe.http_get.path is defined %}
+          path = "{{c_value.liveness_probe.http_get.path}}"
+{% endif %}
+{% if c_value.liveness_probe.http_get.port is defined %}
+          port = "{{c_value.liveness_probe.http_get.port}}"
+{% endif %}
+{% if c_value.liveness_probe.http_get.scheme is defined %}
+          scheme = "{{c_value.liveness_probe.http_get.paschemeth}}"
+{% endif %}
+        }
+{% endif %}
+      }
+{% endif %}
+{% if c_value.volume is defined %}
+      volume = {
+        name = "{{c_value.volume.name}}"
+        mount_path = "{{c_value.volume.mount_path}}"
+        read_only = {{c_value.volume.read_only | lower | default(false)}}
+        empty_dir = {{c_value.volume.empty_dir | lower | default(false)}}
+{% if c_value.volume.storage_account_name is defined %}
+        storage_account_name = {{ c_value.volume.storage_account_name }}
+{% endif %}
+{% if c_value.volume.storage_account_key is defined %}
+        storage_account_key = {{ c_value.volume.storage_account_key }}
+{% endif %}
+{% if c_value.volume.share_name is defined %}
+        share_name = {{ c_value.volume.share_name }}
+{% endif %}
+{% if c_value.volume.secret is defined %}
+        secret = {{ c_value.volume.secret }}
+{% endif %}
+{% if c_value.volume.git_repo is defined %}
+        git_repo = {
+          url = "{{c_value.volume.git_repo.git_repo}}"
+{% if c_value.volume.git_repo.directory is defined %}
+          directory = "{{c_value.volume.git_repo.directory}}"
+{% endif %}
+{% if c_value.volume.git_repo.revision is defined %}
+          revision = "{{c_value.volume.git_repo.revision}}"
+{% endif %}
+        }
+{% endif %}
+      }
+{% endif %}
+{% if c_value.environment_variables is defined %}
+      environment_variables = {
+{% for ev_key, ev_value in c_value.environment_variables.items() %}
+        {{ev_key}} = "{{ev_value}}"
+{% endfor %}
+      }
+{% endif %}
+{% if c_value.secure_environment_variables is defined %}
+      secure_environment_variables = {
+{% for sev_key, sev_value in c_value.secure_environment_variables.items() %}
+        {{sev_key}} = "{{sev_value}}"
+{% endfor %}
+      }
+{% endif %}
+{% if c_value.environment_variables_from_resources is defined %}
+      environment_variables_from_resources = {
+{% for evr_key, evr_value in c_value.environment_variables_from_resources.items() %}
+        {{evr_key}} = {
+          lz_key        = "{{evr_value.lz_key}}"
+          output_key    = "{{evr_value.output_key}}"
+          resource_key  = "{{evr_value.resource_key}}"
+          attribute_key = "{{evr_value.attribute_key}}"
+        }
+{% endfor %}
+      }
+{% endif %}
+      }
+    }
+{% endfor%}
+{% if value.identity is defined %}
+    identity = {
+      type = "{{ value.identity.type }}"
+{% if value.identity.managed_identity_keys is defined %}
+      managed_identity_keys = {{ value.identity.managed_identity_keys | replace('None','[]') | replace('\'','\"') }}
+{% endif %}
+{% if value.identity.remote is defined %}
+      remote = {
+{% for msi_key, msi_value in value.identity.remote.items() %}
+        {{ msi_key }} = {
+          managed_identity_keys = {{ msi_value.managed_identity_keys | replace('None','[]') | replace('\'','\"') }}
+        }
+{% endfor %}
+      }
+{% endif %}
+    }
+{% endif %}
+{% if value.dns_config is defined %}
+    dns_config = {
+      nameservers = {{ value.dns_resources.nameservers | replace('None','[]') | replace('\'','\"') }}
+      search_domains = {{ value.dns_resources.search_domains | replace('None','[]') | replace('\'','\"') }}
+    }
+{% endif %}
+  }
+{% endfor %}
+}

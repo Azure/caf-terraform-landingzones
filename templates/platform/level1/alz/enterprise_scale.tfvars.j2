@@ -1,0 +1,11 @@
+# relative path to {{ landingzones_folder }}/caf_solution/add-ons/caf_alz
+library_path                    = "{{ destination_base_path }}/{{tfstate_object.level}}/{{stage}}/{{tfstate}}/lib"
+{% if bootstrap.management_groups[region][tfstate].root_parent_id is defined %}
+root_parent_id                  = "{{ bootstrap.management_groups[region][tfstate].root_parent_id }}"
+{% endif %}
+root_id                         = "{{ bootstrap.management_groups[region][tfstate].management_group_prefix }}"
+root_name                       = "{{ bootstrap.management_groups[region][tfstate].management_group_name }}"
+deploy_core_landing_zones       = {{ bootstrap.management_groups[region][tfstate].deploy_core_landing_zones | string | lower }}
+{% if (bootstrap.enable_azure_subscription_vending_machine | default(false)) and bootstrap.azure_landing_zones.identity.azuread_identity_mode != 'logged_in_user' %}
+reconcile_vending_subscriptions = true
+{% endif %}

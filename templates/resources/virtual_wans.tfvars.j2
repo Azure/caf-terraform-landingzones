@@ -1,0 +1,9 @@
+virtual_wans = {
+{% for key, vwan in resources[tfstate_resource].resources[subscription_key].virtual_wans.items() %}
+  "{{key}}" = {
+    resource_group_key = "{{ vwan.resource_group_key }}"
+    name               = "{{ vwan.name }}"
+    region             = "{{ vwan.region_key }}"
+  }
+{% endfor %}
+}

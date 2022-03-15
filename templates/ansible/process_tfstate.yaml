@@ -1,0 +1,31 @@
+- debug:
+    msg:
+      - "{{deployment_mode}}"
+      - "{{stage}}"
+      - "{{tfstate}}"
+      - "{{env}}"
+
+
+- name: "Set tfstate_object"
+  set_fact:
+    tfstate_object: "{{resources.tfstates[deployment_mode]['alz_' + tfstate] if stage == 'alz' else resources.tfstates[deployment_mode][tfstate] if env == '' else resources.tfstates[deployment_mode][tfstate][env]}}"
+
+- name: "Verify {{deployment_mode}}/{{stage}}/{{tfstate}}/{{env | default('')}}  is defined under tfstates/{{deployment_mode}} in {{platform_definition_folder}}/tfstates.yaml :"
+  debug:
+    msg: 
+    - "{{tfstate_object}}"
+
+- name: "{{deployment_mode}} - tfstate_object sub_template_folder- {{env | default('')}}"
+  debug:
+    msg: 
+    - 'sub_template_folder - {{tfstate_object.sub_template_folder | default()}}'
+    - 'tfstate_object      - {{tfstate_object}}'
+    # - "{{resources}}"
+
+- name: "{{deployment_mode}}/{{stage}}/{{tfstate}} - process subscription resources"
+  include_tasks: "process_subscription_resources.yaml"
+  loop: "{{resources['alz_' + tfstate].resources.keys() if stage == 'alz' else resources[tfstate].resources.keys() if env == '' else resources[tfstate + '_' + env].resources.keys() }}"
+  loop_control:
+    loop_var: subscription_key
+  vars:
+    level: "{{tfstate_object.level}}"

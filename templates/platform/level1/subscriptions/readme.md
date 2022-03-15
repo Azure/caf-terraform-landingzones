@@ -4,23 +4,20 @@ Set-up the subscription delegations for platform and landingzone subscriptions
 
 ```bash
 # For manual bootstrap:
-# Login to the subscription {{ config.caf_terraform.launchpad.subscription_name }} with the user {{ config.caf_terraform.billing_subscription_role_delegations.azuread_user_ea_account_owner }}
-rover login -t {{ config.platform_identity.tenant_name }} -s {{ config.caf_terraform.launchpad.subscription_id }}
+# Login to the subscription {{ resources.caf_launchpad.subscription_name }} with the user {{ resources.billing_subscription_role_delegations.azuread_user_ea_account_owner }}
+rover login -t {{ resources.azure_landing_zones.identity.tenant_name }} -s {{ resources.caf_launchpad.subscription_id }}
 
 rover \
-{% if platform_subscriptions_details.eslz is defined %}
-{% if config.platform_identity.azuread_identity_mode != "logged_in_user" %}
-  --impersonate-sp-from-keyvault-url {{ keyvaults.cred_subscription_creation_platform.vault_uri }} \
+{% if resources.azure_landing_zones.identity.azuread_identity_mode != "logged_in_user" and keyvaults is defined %}
+  --impersonate-sp-from-keyvault-url {{ keyvaults[tfstate_object.identity_aad_key].vault_uri }} \
 {% endif %}
-{% endif %}
-  -lz /tf/caf/landingzones/caf_solution \
-  -var-folder {{ destination_base }}/{{ config.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }} \
-  -tfstate_subscription_id {{ config.caf_terraform.launchpad.subscription_id }} \
-  -tfstate {{ config.tfstates.platform.platform_subscriptions.tfstate }} \
-  -log-severity {{ config.gitops.rover_log_error }} \
-  -env {{ config.caf_terraform.launchpad.caf_environment }} \
-  -level {{ level }} \
-  -p ${TF_DATA_DIR}/{{ config.tfstates.platform.platform_subscriptions.tfstate }}.tfplan \
+  -lz {{ landingzones_folder }}/caf_solution \
+  -var-folder {{ destination_path }} \
+  -tfstate_subscription_id {{ resources.caf_launchpad.subscription_id }} \
+  -tfstate {{ tfstate_object.tfstate }} \
+  -env {{ resources.caf_environment }} \
+  -level {{ tfstate_object.level }} \
+  -p ${TF_DATA_DIR}/{{ tfstate_object.tfstate }}.tfplan \
   -a plan
 
 ```

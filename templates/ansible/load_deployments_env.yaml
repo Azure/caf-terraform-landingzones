@@ -1,0 +1,38 @@
+- debug:
+    msg:
+    - "{{deployment_mode}}"
+    - "{{stage}}"
+    - "{{region}}"
+    - "{{service}}"
+
+- name: "Process 3 deployment file {{stage}}/{{service}}"
+  set_fact:
+    "{{service}}_{{env}}_deployment__to_merge": "{{ lookup('template', '{{ platform_service_folder + \"/\" + topology.deployments[deployment_mode][stage][region][service][env]}}') | from_yaml }}"
+  loop: "{{topology.deployments[deployment_mode][stage][region][service].keys()}}"
+  loop_control:
+    loop_var: env
+  when:
+    - topologies is not defined
+
+
+- name: "Creates directory"
+  file:
+    path: "{{destination_path}}/{{stage}}/{{env}}"
+    state: directory
+  loop: "{{topology.deployments[deployment_mode][stage][region][service].keys()}}"
+  loop_control:
+    loop_var: env
+  when: 
+    - topologies is defined
+
+- name: "Copy file {{stage}}/{{service}}"
+  ansible.builtin.template:
+    src: "{{platform_service_folder}}/{{topology.deployments[deployment_mode][stage][region][service][env]}}"
+    dest: "{{destination_path}}/{{stage}}/{{env}}/{{topologies[service + '_' + env].tfstate.config_file}}"  
+  loop: "{{topology.deployments[deployment_mode][stage][region][service].keys()}}"
+  loop_control:
+    loop_var: env
+  when:
+    - topologies is defined
+
+
