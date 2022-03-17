@@ -48,7 +48,7 @@
     - item.state == 'file'
     - item.path is not search(".j2")
     - item.path is not search(".yaml") or item.path is search(".json") or item.path is search(".md")
-    - topology.management_groups[region][service].update_lib_folder | default(False)
+    - topology.management_groups[region][service].update_lib_folder | default(True)
 
 
 - name: "  Lib"
@@ -60,15 +60,7 @@
   when: 
     - item.state == 'file'
     - item.path is search(".yaml")
-    - topology.management_groups[region][service].update_lib_folder | default(False)
-
-# - name: "{{deployment_mode}}/{{stage}}/{{region}}/{{service}} to {{destination_path}}/{{'alz_' + service}}.yaml"
-#   ansible.builtin.template:
-#     src: "{{ lookup('template', '{{ platform_service_folder + \"/\" + topology.deployments[deployment_mode][stage][region][service]}}') | from_yaml }}"
-#     dest: "{{destination_path}}/{{'alz_' + service}}.yaml"
-#     force: yes
-#   vars:
-#     item: "{{service}}"
+    - topology.management_groups[region][service].update_lib_folder | default(True)
 
 - name: "{{deployment_mode}}/{{stage}}/{{region}}/{{service}} to {{destination_path}}/{{'alz_' + service}}.yaml"
   ansible.builtin.template:
