@@ -1,3 +1,16 @@
+#
+# If you are changing a value in this file you need to execute the following command to update the definition folder
+# 
+# ansible-playbook {{public_templates_folder}}/ansible/walk-through-single.yaml \
+# --extra-vars "@{{platform_definition_folder}}/ignite.yaml"
+# 
+# then update the Terraform configuration files with
+#
+# ansible-playbook {{public_templates_folder}}/ansible/ansible.yaml \
+#  --extra-vars "@{{platform_definition_folder}}/ignite.yaml"
+# 
+# 
+
 customer_name: {{customer_name}}
 caf_environment: {{caf_environment}}
 default_email_address: {{default_email_address}}
