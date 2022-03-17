@@ -29,7 +29,7 @@ There are two launchpad versions that can be deployed in an Azure subscription. 
 |---|
 ```hcl
 default = {
-  default_location  = "southeastasia"
+  default_location  = "australiacentral"
   prefix            = null
 }
 ```

@@ -13,8 +13,8 @@ enable = {
 default_region = "region1"
 
 regions = {
-  region1 = "southeastasia"
-  region2 = "eastasia"
+  region1 = "australiaeast"
+  region2 = "australiacentral"
 }
 
 # core tags to be applied accross this landing zone

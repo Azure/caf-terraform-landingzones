@@ -64,7 +64,7 @@ vnets = {
 }
 
 azurerm_firewalls = {
-  # Southeastasia firewall (do not change the key when created)
+  # firewall (do not change the key when created)
   fw_re1 = {
     region             = "region1"
     name               = "azfwre1"

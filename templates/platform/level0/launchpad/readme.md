@@ -127,7 +127,6 @@ rover \
   -launchpad \
   -env {{ bootstrap.caf_environment }} \
   -level {{ level }} \
-  -p ${TF_DATA_DIR}/{{ tfstate_object.tfstate }}.tfplan \
   -a destroy
 
 ```
