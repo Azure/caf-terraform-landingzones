@@ -47,8 +47,8 @@
       prompt: Azure regions (lowercase, short version)
       private: no
       default:
-        region1: southeastasia
-        region2: eastasia
+        region1: australiacentral
+        region2: australiaeast
 
     - name: default_region_key
       prompt: Default CAF Azure region key
