@@ -20,6 +20,10 @@ variable "image_definitions" {
   default = {}
 }
 
+variable "log_analytics_storage_insights" {
+  default = {}
+}
+
 variable "monitor_action_groups" {
   default = {}
 }
