@@ -24,3 +24,5 @@ module "enterprise_scale" {
   root_name                  = var.root_name
   subscription_id_overrides  = local.subscription_id_overrides
 }  deploy_identity_resources  = var.deploy_identity_resources
+  subscription_id_identity   = var.subscription_id_identity
+}

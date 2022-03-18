@@ -239,3 +239,7 @@ variable "deploy_identity_resources" {
   type    = bool
   default = false
 }
+
+variable "subscription_id_identity" {
+  type = string
+}
