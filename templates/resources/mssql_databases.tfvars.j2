@@ -1,0 +1,74 @@
+mssql_databases = {
+{% for key, value in resources[tfstate_resource].resources[subscription_key].mssql_databases.items() %}
+  {{ key }} = {
+      name  = "{{ value.name }}"
+      resource_group = {
+        key  = "{{ value.resource_group.key }}"
+      }
+{% if value.lz_key is defined %}
+          lz_key: {{ value.lz_key }}
+{% endif %}
+      mssql_server_key = "{{ value.mssql_server_key }}"
+{% if value.elastic_pool_key is defined %}
+        elastic_pool_key = "{{ value.elastic_pool_key }}"
+{% endif %}
+{% if value.license_type is defined %}
+        license_type = "{{ value.license_type }}"
+{% endif %}
+{% if value.max_size_gb is defined %}
+        max_size_gb = {{ value.max_size_gb }}
+{% endif %}
+{% if value.sku_name is defined %}
+        sku_name = "{{ value.sku_name }}"
+{% endif %}
+{% if value.auto_pause_delay_in_minutes is defined %}
+        auto_pause_delay_in_minutes = {{ value.auto_pause_delay_in_minutes }}
+{% endif %}
+{% if value.collation is defined %}
+        collation = "{{ value.collation }}"
+{% endif %}
+{% if value.create_mode is defined %}
+        create_mode = "{{ value.create_mode }}"
+{% endif %}
+{% if value.readScale is defined %}
+        readScale = {{ value.readScale | lower }}
+{% endif %}
+{% if value.read_replica_count is defined %}
+        read_replica_count = {{ value.read_replica_count }}
+{% endif %}
+{% if value.min_capacity is defined %}
+        min_capacity = {{ value.min_capacity }}
+{% endif %}
+{% if value.creation_source_database_id is defined %}
+        creation_source_database_id = "{{ value.creation_source_database_id }}"
+{% endif %}
+{% if value.geo_backup_enabled is defined %}
+        geo_backup_enabled = {{ value.geo_backup_enabled | lower }}
+{% endif %}
+{% if value.read_scale is defined %}
+        read_scale = {{ value.read_scale | lower }}
+{% endif %}
+{% if value.restore_point_in_time is defined %}
+        restore_point_in_time = "{{ value.restore_point_in_time }}"
+{% endif %}
+{% if value.sample_name is defined %}
+        sample_name = "{{ value.sample_name }}"
+{% endif %}
+{% if value.storage_account_type is defined %}
+        storage_account_type = "{{ value.storage_account_type }}"
+{% endif %}
+{% if value.zone_redundant is defined %}
+        zone_redundant = {{ value.zone_redundant | lower }}
+{% endif %}
+{% if value.recover_database_id is defined %}
+        recover_database_id = "{{ value.recover_database_id }}"
+{% endif %}
+{% if value.restore_dropped_database_id is defined %}
+        restore_dropped_database_id = "{{ value.restore_dropped_database_id }}"
+{% endif %}
+{% if value.restore_point_in_time is defined %}
+        restore_point_in_time = "{{ value.restore_point_in_time }}"
+{% endif %}
+  }
+{% endfor %}
+}

@@ -1,0 +1,34 @@
+{% if value.network is defined %}
+    network = {
+{% if value.network.default_action is defined %}
+      default_action = "{{ value.network.default_action }}"
+{% endif %}
+{% if value.network.bypass is defined %}
+{% if resource_parent_type == 'storage' %}
+      bypass = {{ value.network.bypass | replace('None','[]') | replace('\'','\"') }}
+{% else %}
+      bypass = "{{ value.network.bypass }}"
+{% endif %}
+{% endif %}
+{% if value.network.ip_rules is defined %}
+      ip_rules = {{ value.network.ip_rules | replace('None','[]') | replace('\'','\"') }}
+{% endif %}
+{% if value.network.subnets is defined %}
+      subnets = {
+{% for s_key, s_value in value.network.subnets.items() %}
+        {{ s_key }} = {
+{% if s_value.remote_subnet_id is defined %}
+          remote_subnet_id = "{{ s_value.remote_subnet_id  }}"
+{% else %}
+{% if s_value.lz_key is defined %}
+          lz_key     = "{{ s_value.lz_key }}"
+{% endif %}
+          vnet_key   = "{{ s_value.vnet_key }}"
+          subnet_key = "{{ s_value.subnet_key }}"
+{% endif %}
+        }
+{% endfor %}
+      }
+{% endif %}
+    }
+{% endif %}

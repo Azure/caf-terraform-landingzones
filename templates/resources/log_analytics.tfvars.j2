@@ -1,0 +1,10 @@
+#
+# Define the settings for log analytics workspace and solution map
+#
+
+log_analytics = {
+{% for key, value in resources[tfstate_resource].resources[subscription_key].log_analytics.items() %}
+{% include 'log_analytics.j2' %}
+
+{% endfor %}
+}

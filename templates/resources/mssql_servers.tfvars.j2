@@ -1,0 +1,46 @@
+mssql_servers = {
+{% for key, value in resources[tfstate_resource].resources[subscription_key].mssql_servers.items() %}
+  {{ key }} = {
+      name  = "{{ value.name }}"
+      resource_group = {
+{% if value.resource_group.lz_key is defined %}
+        lz_key = "{{ value.resource_group.lz_key }}"
+{% endif %}
+        key  = "{{ value.resource_group.key }}"
+      }
+{% if value.version is defined %}
+        version = "{{ value.version }}"
+{% endif %}
+{% if value.region is defined %}
+        region = "{{ value.region }}"
+{% endif %}
+{% if value.public_network_access_enabled is defined %}
+        public_network_access_enabled = {{ value.public_network_access_enabled | lower }}
+{% endif %}
+{% if value.keyvault_key is defined %}
+        keyvault_key = "{{ value.keyvault_key }}"
+{% endif %}
+{% if value.azuread_administrator is defined %}
+        azuread_administrator = {
+{% if value.azuread_administrator.login_username is defined %}
+          login_username = "{{value.azuread_administrator.login_username}}"
+{% endif %}
+{% if value.azuread_administrator.azuread_group_key is defined %}
+          azuread_group_key = "{{value.azuread_administrator.azuread_group_key}}"
+{% endif %}
+{% if value.azuread_administrator.object_id is defined %}
+          object_id = "{{value.azuread_administrator.object_id}}"
+{% endif %}
+{% if value.azuread_administrator.tenant_id is defined %}
+          tenant_id = "{{value.azuread_administrator.tenant_id}}"
+{% endif %}
+{% if value.azuread_administrator.azuread_authentication_only is defined %}
+          azuread_authentication_only = {{value.azuread_administrator.azuread_authentication_only | lower }}
+{% endif %}
+        }
+{% endif %}
+{% include 'identity.j2' %}
+{% include 'private_endpoints.tfvars.j2' %}
+  }
+{% endfor %}
+}

@@ -15,10 +15,7 @@ subscriptions:
     tfstate_key_name: subscriptions
 
   resources:
-    landingzone:
-
-  subscriptions:
-    launchpad:
+    subscriptions:
       subscriptions:
 {% for key, value in topology.subscriptions.items() %}
         {{key}}:
