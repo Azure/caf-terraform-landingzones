@@ -85,6 +85,12 @@ variable "root_name" {
   }
 }
 
+variable "root_parent_id" {
+  type        = string
+  description = "If specified, will deploy the Enterprise scale bellow the root_parent_id."
+  default     = null
+}
+
 variable "deploy_core_landing_zones" {
   type        = bool
   description = "If set to true, will include the core Enterprise-scale Management Group hierarchy."
@@ -242,4 +248,152 @@ variable "deploy_identity_resources" {
 
 variable "subscription_id_identity" {
   type = string
+}
+
+variable "configure_identity_resources" {
+  type = object({
+    settings = object({
+      identity = object({
+        enabled = bool
+        config = object({
+          enable_deny_public_ip             = bool
+          enable_deny_rdp_from_internet     = bool
+          enable_deny_subnet_without_nsg    = bool
+          enable_deploy_azure_backup_on_vms = bool
+        })
+      })
+    })
+  })
+  description = "If specified, will customize the \"Identity\" landing zone settings."
+  default = {
+    settings = {
+      identity = {
+        enabled = true
+        config = {
+          enable_deny_public_ip             = true
+          enable_deny_rdp_from_internet     = true
+          enable_deny_subnet_without_nsg    = true
+          enable_deploy_azure_backup_on_vms = true
+        }
+      }
+    }
+  }
+}
+
+variable "deploy_management_resources" {
+  type        = bool
+  description = "If set to true, will enable the \"Management\" landing zone settings and add \"Management\" resources into the current Subscription context."
+  default     = false
+}
+
+variable "configure_management_resources" {
+  type = object({
+    settings = object({
+      log_analytics = object({
+        enabled = bool
+        config = object({
+          retention_in_days                           = number
+          enable_monitoring_for_arc                   = bool
+          enable_monitoring_for_vm                    = bool
+          enable_monitoring_for_vmss                  = bool
+          enable_solution_for_agent_health_assessment = bool
+          enable_solution_for_anti_malware            = bool
+          enable_solution_for_azure_activity          = bool
+          enable_solution_for_change_tracking         = bool
+          enable_solution_for_service_map             = bool
+          enable_solution_for_sql_assessment          = bool
+          enable_solution_for_updates                 = bool
+          enable_solution_for_vm_insights             = bool
+          enable_sentinel                             = bool
+        })
+      })
+      security_center = object({
+        enabled = bool
+        config = object({
+          email_security_contact             = string
+          enable_defender_for_app_services   = bool
+          enable_defender_for_arm            = bool
+          enable_defender_for_containers     = bool
+          enable_defender_for_dns            = bool
+          enable_defender_for_key_vault      = bool
+          enable_defender_for_oss_databases  = bool
+          enable_defender_for_servers        = bool
+          enable_defender_for_sql_servers    = bool
+          enable_defender_for_sql_server_vms = bool
+          enable_defender_for_storage        = bool
+        })
+      })
+    })
+    location = any
+    tags     = any
+    advanced = any
+  })
+  description = "If specified, will customize the \"Management\" landing zone settings and resources."
+  default = {
+    settings = {
+      log_analytics = {
+        enabled = true
+        config = {
+          retention_in_days                           = 30
+          enable_monitoring_for_arc                   = true
+          enable_monitoring_for_vm                    = true
+          enable_monitoring_for_vmss                  = true
+          enable_solution_for_agent_health_assessment = true
+          enable_solution_for_anti_malware            = true
+          enable_solution_for_azure_activity          = true
+          enable_solution_for_change_tracking         = true
+          enable_solution_for_service_map             = true
+          enable_solution_for_sql_assessment          = true
+          enable_solution_for_updates                 = true
+          enable_solution_for_vm_insights             = true
+          enable_sentinel                             = true
+        }
+      }
+      security_center = {
+        enabled = true
+        config = {
+          email_security_contact             = "security_contact@replace_me"
+          enable_defender_for_app_services   = true
+          enable_defender_for_arm            = true
+          enable_defender_for_containers     = true
+          enable_defender_for_dns            = true
+          enable_defender_for_key_vault      = true
+          enable_defender_for_oss_databases  = true
+          enable_defender_for_servers        = true
+          enable_defender_for_sql_servers    = true
+          enable_defender_for_sql_server_vms = true
+          enable_defender_for_storage        = true
+        }
+      }
+    }
+    location = null
+    tags     = null
+    advanced = null
+  }
+}
+
+variable "deploy_connectivity_resources" {
+  type        = bool
+  description = "If set to true, will enable the \"Connectivity\" landing zone settings and add \"Connectivity\" resources into the current Subscription context."
+  default     = false
+}
+
+variable "subscription_id_management" {
+  type = string
+}
+
+variable "subscription_id_connectivity" {
+  type = string
+}
+
+variable "disable_base_module_tags" {
+  type = bool
+}
+
+variable "tags" {
+  type = map(any)
+}
+
+variable "default_tags" {
+  type = map(any)
 }
