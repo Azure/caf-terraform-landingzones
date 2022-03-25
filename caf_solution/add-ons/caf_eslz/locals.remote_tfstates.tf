@@ -29,7 +29,7 @@ locals {
         resource_group_name  = try(value.resource_group_name, local.landingzone[try(value.level, "current")].resource_group_name)
         storage_account_name = try(value.storage_account_name, local.landingzone[try(value.level, "current")].storage_account_name)
         subscription_id      = try(value.subscription_id, var.tfstate_subscription_id)
-        tenant_id            = try(value.tenant_id, data.azurerm_client_config.current.tenant_id)
+        tenant_id            = try(value.tenant_id, data.azurerm_client_config.core.tenant_id)
       }
     }
   }
