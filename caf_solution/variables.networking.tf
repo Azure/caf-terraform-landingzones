@@ -153,3 +153,7 @@ variable "vpn_sites" {
 variable "vpn_gateway_connections" {
   default = {}
 }
+variable "public_ip_prefixes" {
+  default = {}
+}
+
