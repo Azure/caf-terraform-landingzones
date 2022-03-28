@@ -4,7 +4,7 @@ resource "databricks_cluster" "cluster" {
   #
   # Required
   #
-  
+
   spark_version = data.databricks_spark_version.runtime[each.key].id
 
   #
