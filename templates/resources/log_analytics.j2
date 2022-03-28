@@ -1,0 +1,45 @@
+  {{ key }} = {
+    region             = "{{ value.region | default(resources.default_region_key)}}"
+    name               = "{{ value.name }}"
+    resource_group_key = "{{ value.resource_group_key }}"
+{% if value.sku is defined %}
+    sku = "{{ value.sku }}"
+{% endif %}
+{% if value.retention_in_days is defined %}
+    retention_in_days = {{ value.retention_in_days }}
+{% endif %}
+{% if value.tags is defined %}
+      tags   = {
+{% for tag_key, tag_value in value.tags.items() %}
+        {{ tag_key }} = "{{ tag_value }}"
+{% endfor %}
+      }
+{% endif %}
+{% if value.diagnostic_profiles is defined %}
+    # you can setup up to 5 key
+    diagnostic_profiles = {
+{% for dp_key, dp_value in value.diagnostic_profiles.items() %}
+      {{ dp_key }} = {
+        definition_key   = "{{ dp_value.definition_key }}"
+        destination_type = "{{ dp_value.destination_type }}"
+        destination_key  = "{{ dp_value.destination_key }}"
+      }
+{% endfor %}
+    }
+{% endif %}
+{% if value.solutions_maps is defined %}
+    solutions_maps = {
+{% for sol_key, sol_value in value.solutions_maps.items() %}
+      {{ sol_key }} = {
+        "publisher" = "{{ sol_value.publisher }}"
+        "product"   = "{{ sol_value.product }}"
+{% if sol_value.promotion_code is defined %}
+        promotion_code = "{{ sol_value.promotion_code }}"
+{% endif %}
+      }
+{% endfor %}
+
+    }
+{% endif %}
+{% include 'private_endpoints.tfvars.j2' %}
+  }

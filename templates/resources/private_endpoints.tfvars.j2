@@ -1,0 +1,38 @@
+{% if value.private_endpoints is defined %}
+private_endpoints = {
+{% for k, v in value.private_endpoints.items() %}
+  {{ k }} = {
+    name                 = "{{ v.name }}"
+    resource_group_key   = "{{ v.resource_group_key | default(v.resource_group.key) }}"
+{% if v.resource_group.lz_key is defined %}
+    lz_key               = "{{ v.resource_group.lz_key }}"
+{% endif %}
+{% if v.lz_key is defined %}
+    lz_key               = "{{ v.lz_key }}"
+{% endif %}
+    vnet_key             = "{{ v.vnet_key }}"
+    subnet_key           = "{{ v.subnet_key }}"
+    private_service_connection = {
+      name                 = "{{ v.private_service_connection.name }}"
+      is_manual_connection = {{ v.private_service_connection.is_manual_connection | lower }}
+{% if v.private_service_connection.request_message is defined %}
+      request_message      = "{{ v.private_service_connection.request_message }}"
+{% endif %}
+      subresource_names    = {{ v.private_service_connection.subresource_names | replace('None','[]') | replace('\'','\"') }}
+    }
+{% if v.private_dns is defined %}
+    private_dns = {
+      zone_group_name = "{{v.private_dns.zone_group_name}}"
+      lz_key          = "{{v.private_dns.lz_key}}"
+{% if v.private_dns['keys'] is defined %}
+      keys            = {{v.private_dns['keys'] | replace('None','[]') | replace('\'','\"') }}
+{% endif %}
+{% if v.private_dns.ids is defined %}
+      ids             = {{v.private_dns.ids | replace('None','[]') | replace('\'','\"') }}
+{% endif %} 
+    }
+{% endif %}
+  }
+{% endfor %}
+}
+{% endif %}

@@ -17,7 +17,7 @@ variable "landingzone" {
 }
 variable "databricks_clusters" {
   description = "This resource allows you to create, update, and delete clusters."
-  default = {}
+  default     = {}
 }
 variable "databricks_workspace" {
   description = "Azure Databricks workspace where the resources will be created"

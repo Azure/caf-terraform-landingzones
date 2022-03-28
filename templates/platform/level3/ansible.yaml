@@ -72,16 +72,29 @@
   set_fact:
     scljsondata: "{{ landingzones_tfstate.stdout | from_json }}"
 
-- name: "[{{ level }}-asvm]  Get landingzone subscription ids"
+- name: "[{{ level }}-asvm]  Get landingzone subscription outputs"
   when:
     - landingzones_subscriptions.rc == 0
   set_fact:
+    asvm_subscriptions_output: "{{ scljsondata | json_query(path) }}"
+  vars:
+    path: 'outputs.objects.value'
+
+- debug:
+    msg: "{{asvm_subscriptions_output}}"
+
+- name: "[{{ level }}-asvm]  Get landingzone subscription ids"
+  when:
+    - landingzones_subscriptions.rc == 0
+    - asvm_subscriptions_output != "{}"
+  set_fact:
     asvm_subscriptions_details: "{{ scljsondata | json_query(path) }}"
   vars:
-    path: 'outputs.objects.value.{{resources.tfstates[lz_type][tfstate_resource].lz_key_name}}.subscriptions'
+    path: "outputs.objects.value.\"{{resources.tfstates[lz_type][tfstate_resource].lz_key_name}}\".subscriptions"
 
 - debug:
     msg: "{{asvm_subscriptions_details}}"
     verbosity: 1
   when:
     - landingzones_subscriptions.rc == 0
+    - asvm_subscriptions_output != "{}"

@@ -2,7 +2,7 @@ module "caf" {
   source  = "aztfmod/caf/azurerm"
   version = "~>5.4.2"
 
-  azuread                     = local.azuread  
+  azuread                     = local.azuread
   current_landingzone_key     = var.landingzone.key
   tenant_id                   = var.tenant_id
   tfstates                    = local.tfstates

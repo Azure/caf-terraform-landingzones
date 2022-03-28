@@ -1,0 +1,20 @@
+storage_containers = {
+{% for key, value in resources[tfstate_resource].resources[subscription_key].storage_containers.items() %}
+  {{ key }} = {
+    name                  = "{{ value.name }}"
+    container_access_type = "{{ value.container_access_type | default('private') }}"
+{% if value.metadata is defined %}
+    metadata              = "{{ value.metadata }}"
+{% endif %}
+    storage_account = {
+{% if value.storage_account.name is defined %}
+      name                 = "{{ value.storage_account.name }}"
+{% elif value.storage_account.lz_key is defined %}
+      lz_key               = "{{ value.storage_account.lz_key }}"
+{% elif value.storage_account.key is defined %}
+      key                  = "{{ value.storage_account.key }}"
+{% endif %}
+    }
+  }
+{% endfor %}
+}

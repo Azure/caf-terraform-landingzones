@@ -1,10 +1,6 @@
 #
 # Check if the launchpad and the credentials for service principal have been deployed.
 #
-- name: "Creates cache directory"
-  file:
-    path: "{{ job_cache_base_path }}/launchpad"
-    state: directory
 
 - name: "[{{resources[tfstate].relative_destination_folder}}] Get tfstate account name"
   register: launchpad_storage_account

@@ -1,0 +1,7 @@
+{% if value.identity is defined %}
+        identity = {
+{% if value.identity.type is defined %}
+          type = "{{ value.identity.type }}"
+{% endif %}
+        }
+{% endif %}

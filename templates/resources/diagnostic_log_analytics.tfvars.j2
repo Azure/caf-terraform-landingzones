@@ -1,53 +1,10 @@
 #
-# Define the settings for log analytics workspace and solution map
+# Define the settings for CAF diagnostics log analytics workspace and solution map
 #
 
 diagnostic_log_analytics = {
-{% for key, dla in resources[tfstate_resource].resources[subscription_key].diagnostic_log_analytics.items() %}
-  {{ key }} = {
-    region             = "{{ dla.region | default(resources.default_region_key)}}"
-    name               = "{{ dla.name }}"
-    resource_group_key = "{{ dla.resource_group_key }}"
-{% if dla.sku is defined %}
-    sku = "{{ dla.sku }}"
-{% endif %}
-{% if dla.retention_in_days is defined %}
-    retention_in_days = {{ dla.retention_in_days }}
-{% endif %}
-{% if dla.tags is defined %}
-      tags   = {
-{% for tag_key, tag_value in dla.tags.items() %}
-        {{ tag_key }} = "{{ tag_value }}"
-{% endfor %}
-      }
-{% endif %}
-
-{% if dla.diagnostic_profiles is defined %}
-    # you can setup up to 5 key
-    diagnostic_profiles = {
-{% for dp_key, dp_value in dla.diagnostic_profiles.items() %}
-      {{ dp_key }} = {
-        definition_key   = "{{ dp_value.definition_key }}"
-        destination_type = "{{ dp_value.destination_type }}"
-        destination_key  = "{{ dp_value.destination_key }}"
-      }
-{% endfor %}
-    }
-{% endif %}
-{% if dla.solutions_maps is defined %}
-    solutions_maps = {
-{% for sol_key, sol_value in dla.solutions_maps.items() %}
-      {{ sol_key }} = {
-        "publisher" = "{{ sol_value.publisher }}"
-        "product"   = "{{ sol_value.product }}"
-{% if sol_value.promotion_code is defined %}
-        promotion_code = "{{ sol_value.promotion_code }}"
-{% endif %}
-      }
+{% for key, value in resources[tfstate_resource].resources[subscription_key].diagnostic_log_analytics.items() %}
+{% include 'log_analytics.j2' %}
 {% endfor %}
 
-    }
-{% endif %}
-  }
-{% endfor %}
 }
