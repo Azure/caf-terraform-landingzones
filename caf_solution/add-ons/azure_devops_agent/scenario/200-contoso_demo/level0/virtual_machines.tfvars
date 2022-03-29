@@ -69,6 +69,8 @@ virtual_machines = {
         version             = 1
         virtual_machine_key = "vm_devops_level0"
         agent_init_script   = "devops_runtime_baremetal.sh"
+        # You can define storage_account_blobs_urls directly
+        # storage_account_blobs_urls = ["https://somelocation/container/script.ps1"]
         storage_account_blobs = [
           "devops_runtime_baremetal"
         ]
