@@ -153,3 +153,6 @@ variable "vpn_sites" {
 variable "vpn_gateway_connections" {
   default = {}
 }
+variable "network_profiles" {
+  default = {}
+}
