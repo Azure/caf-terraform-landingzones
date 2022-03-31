@@ -38,7 +38,9 @@ locals {
     content : v
     }
   ]
-  sync = [for v in data.kubectl_file_documents.sync.documents : {
+  flux_sync_yaml_without_secret = [for x in data.kubectl_file_documents.sync.documents : (length(regexall("kind: GitRepository", x)) == 0) ? x : replace(x, "/\n.*(secretRef:)\n.*(name: flux-system)/", "")]
+
+  sync = [for v in can (var.setting.secret.data) ? data.kubectl_file_documents.sync.documents : local.flux_sync_yaml_without_secret : {
     data : yamldecode(v)
     content : v
     }
@@ -60,6 +62,7 @@ resource "kubectl_manifest" "sync" {
 
 
 resource "kubernetes_secret" "fluxauth" {
+  count = can(var.setting.secret.data) ? 1 : 0
   depends_on = [kubectl_manifest.install]
 
   metadata {
