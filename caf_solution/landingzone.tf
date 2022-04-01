@@ -18,6 +18,7 @@ module "solution" {
   current_landingzone_key               = var.landingzone.key
   custom_role_definitions               = var.custom_role_definitions
   data_factory                          = local.data_factory
+  data_sources                          = local.data_sources
   database                              = local.database
   diagnostic_storage_accounts           = var.diagnostic_storage_accounts
   diagnostics_definition                = var.diagnostics_definition
