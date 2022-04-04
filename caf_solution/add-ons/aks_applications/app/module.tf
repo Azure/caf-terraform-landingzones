@@ -13,7 +13,7 @@ resource "helm_release" "charts" {
   for_each = var.helm_charts
 
   name       = each.value.name
-  repository = each.value.repository
+  repository = try(each.value.repository, null)
   chart      = each.value.chart
 
   namespace        = each.value.namespace
