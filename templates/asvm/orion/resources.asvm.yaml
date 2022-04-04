@@ -15,7 +15,7 @@
         platform:
           virtual_hubs: {{platform_mappings[env]}}
           virtual_hubs_route_tables: {{platform_mappings[env]}}
-          secure_firewalls: {{platform_mappings[env]}}
+          private_dns_firewalls: {{platform_mappings[env]}}
           identity_level2: {{platform_mappings[env]}}
           asvm:
 
@@ -371,7 +371,7 @@
         vnet_to_{{platform_mappings[env]}}:
           name: vnet-{{landingzone_definition}}-{{env}}-TO-{{platform_mappings[env]}}
           virtual_hub:
-            lz_key: connectivity_virtual_hubs_{{platform_mappings[env]}}
+            lz_key: connectivity_virtual_hub_{{platform_mappings[env]}}
             key: {{platform_mappings[env]}}
           vnet:
             vnet_key: vnet
