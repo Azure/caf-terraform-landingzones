@@ -244,3 +244,8 @@ variable "container_groups" {
 variable "network_profiles" {
   default = {}
 }
+
+variable "data_sources" {
+  description = "Data gathering for resources not managed by CAF Module"
+  default = {}
+}

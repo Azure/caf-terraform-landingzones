@@ -243,3 +243,8 @@ variable "propagate_launchpad_identities" {
 variable "random_strings" {
   default = {}
 }
+
+variable "data_sources" {
+  description = "Data gathering for resources not managed by CAF Module"
+  default = {}
+}
