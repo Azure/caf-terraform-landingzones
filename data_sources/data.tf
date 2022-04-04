@@ -145,8 +145,8 @@ data "azurerm_cdn_profile" "data" {
 data "azurerm_consumption_budget_resource_group" "data" {
   for_each = try(var.data_sources.consumption_budgets_resource_groups, {})
 
-  name                = each.value.name
-  resource_group_name = each.value.resource_group_name
+  name              = each.value.name
+  resource_group_id = each.value.resource_group_id
 }
 
 # Consumption Budget Subscription
