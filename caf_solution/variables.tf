@@ -141,6 +141,11 @@ variable "remote_objects" {
   default     = {}
 }
 
+variable "data_sources" {
+  description = "Data gathering for resources not managed by CAF Module"
+  default = {}
+}
+
 ## Diagnostics settings
 variable "diagnostics_definition" {
   default     = null

@@ -1,10 +1,10 @@
 module "solution" {
-  source  = "aztfmod/caf/azurerm"
-  version = "5.5.5"
+  #source  = "aztfmod/caf/azurerm"
+  #version = "5.5.5"
 
   # during dev cycles for the module, you can pick dev branches from GitHub, or from a local fork
   # source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=main"
-  # source = "../../aztfmod"
+  source = "../../terraform-azurerm-caf"
 
   providers = {
     azurerm.vhub = azurerm.vhub
@@ -18,6 +18,7 @@ module "solution" {
   current_landingzone_key               = var.landingzone.key
   custom_role_definitions               = var.custom_role_definitions
   data_factory                          = local.data_factory
+  data_sources                          = local.data_sources
   database                              = local.database
   diagnostic_storage_accounts           = var.diagnostic_storage_accounts
   diagnostics_definition                = var.diagnostics_definition

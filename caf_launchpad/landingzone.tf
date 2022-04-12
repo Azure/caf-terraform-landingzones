@@ -1,10 +1,10 @@
 module "launchpad" {
-  source  = "aztfmod/caf/azurerm"
-  version = "5.5.5"
+  #source  = "aztfmod/caf/azurerm"
+  #version = "5.5.5"
 
   # during dev cycles for the module, you can pick dev branches from GitHub, or from a local fork
   # source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=main"
-  # source = "../../aztfmod"
+  source = "../../terraform-azurerm-caf"
 
   providers = {
     azurerm.vhub = azurerm
@@ -12,6 +12,7 @@ module "launchpad" {
 
   current_landingzone_key               = var.landingzone.key
   custom_role_definitions               = var.custom_role_definitions
+  data_sources                          = try(local.data_sources.data, {})
   enable                                = var.enable
   event_hub_namespaces                  = var.event_hub_namespaces
   global_settings                       = local.global_settings
