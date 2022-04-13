@@ -20,6 +20,7 @@ locals {
       wvd_applications                    = var.wvd_applications
       wvd_host_pools                      = var.wvd_host_pools
       wvd_workspaces                      = var.wvd_workspaces
+      runbooks                            = var.runbooks
     }
   )
 }

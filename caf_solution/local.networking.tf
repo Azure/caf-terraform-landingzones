@@ -29,12 +29,16 @@ locals {
       front_doors                                             = var.front_doors
       ip_groups                                               = var.ip_groups
       load_balancers                                          = var.load_balancers
+      lb                                                      = var.lb
+      lb_backend_address_pool                                 = var.lb_backend_address_pool
+      lb_backend_address_pool_address                         = var.lb_backend_address_pool_address
       local_network_gateways                                  = var.local_network_gateways
       nat_gateways                                            = var.nat_gateways
       network_profiles                                        = var.network_profiles
       network_security_group_definition                       = var.network_security_group_definition
       network_watchers                                        = var.network_watchers
       networking_interface_asg_associations                   = var.networking_interface_asg_associations
+      network_interface_backend_address_pool_association      = var.network_interface_backend_address_pool_association
       private_dns                                             = var.private_dns
       private_dns_vnet_links                                  = var.private_dns_vnet_links
       private_endpoints                                       = var.private_endpoints
