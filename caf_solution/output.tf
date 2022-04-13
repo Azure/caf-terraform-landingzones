@@ -7,7 +7,7 @@ output "objects" {
       }
     }
   )
-  sensitive = true
+  sensitive = false
 }
 
 output "global_settings" {
