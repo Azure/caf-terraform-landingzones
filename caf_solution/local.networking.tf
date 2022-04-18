@@ -28,9 +28,13 @@ locals {
       front_door_waf_policies                                 = var.front_door_waf_policies
       front_doors                                             = var.front_doors
       ip_groups                                               = var.ip_groups
+      lb                                                      = var.lb
+      lb_backend_address_pool                                 = var.lb_backend_address_pool
+      lb_backend_address_pool_address                         = var.lb_backend_address_pool_address
       load_balancers                                          = var.load_balancers
       local_network_gateways                                  = var.local_network_gateways
       nat_gateways                                            = var.nat_gateways
+      network_interface_backend_address_pool_association      = var.network_interface_backend_address_pool_association
       network_profiles                                        = var.network_profiles
       network_security_group_definition                       = var.network_security_group_definition
       network_watchers                                        = var.network_watchers
@@ -43,6 +47,7 @@ locals {
       vhub_peerings                                           = var.vhub_peerings
       virtual_hub_connections                                 = var.virtual_hub_connections
       virtual_hub_er_gateway_connections                      = var.virtual_hub_er_gateway_connections
+      virtual_hub_route_table_routes                          = var.virtual_hub_route_table_routes
       virtual_hub_route_tables                                = var.virtual_hub_route_tables
       virtual_hubs                                            = var.virtual_hubs
       virtual_network_gateway_connections                     = var.virtual_network_gateway_connections

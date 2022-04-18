@@ -141,6 +141,9 @@ variable "vnet_peerings" {
 variable "virtual_hub_er_gateway_connections" {
   default = {}
 }
+variable "virtual_hub_route_table_routes" {
+  default = {}
+}
 variable "virtual_hub_route_tables" {
   default = {}
 }
@@ -154,5 +157,17 @@ variable "vpn_gateway_connections" {
   default = {}
 }
 variable "network_profiles" {
+  default = {}
+}
+variable "lb" {
+  default = {}
+}
+variable "lb_backend_address_pool" {
+  default = {}
+}
+variable "lb_backend_address_pool_address" {
+  default = {}
+}
+variable "network_interface_backend_address_pool_association" {
   default = {}
 }
