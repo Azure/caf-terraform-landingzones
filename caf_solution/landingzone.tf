@@ -3,7 +3,7 @@ module "solution" {
 #   version = "5.5.5"
 
   # during dev cycles for the module, you can pick dev branches from GitHub, or from a local fork
-  source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=AL-2203-nets"
+  source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=main"
   # source = "../../aztfmod"
 
   providers = {
