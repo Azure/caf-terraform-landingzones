@@ -12,7 +12,7 @@ output "objects" {
 
 output "global_settings" {
   value     = local.global_settings
-  sensitive = true
+  sensitive = false
 }
 
 output "diagnostics" {
@@ -22,7 +22,7 @@ output "diagnostics" {
 
 output "tfstates" {
   value     = local.tfstates
-  sensitive = true
+  sensitive = false
 }
 
 output "launchpad_identities" {

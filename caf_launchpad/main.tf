@@ -78,6 +78,13 @@ locals {
       tenant_id            = data.azurerm_client_config.current.tenant_id
       subscription_id      = data.azurerm_client_config.current.subscription_id
     }
+    remote = {
+      hostname     = var.tfstate_hostname
+      organization = var.tfstate_organization
+      workspaces = {
+        name = var.workspace
+      }
+    }
   }
 
 }
