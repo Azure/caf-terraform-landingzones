@@ -171,3 +171,7 @@ variable "lb_backend_address_pool_address" {
 variable "network_interface_backend_address_pool_association" {
   default = {}
 }
+variable "public_ip_prefixes" {
+  default = {}
+}
+

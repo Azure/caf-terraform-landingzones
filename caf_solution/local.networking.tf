@@ -42,6 +42,7 @@ locals {
       private_dns                                             = var.private_dns
       private_dns_vnet_links                                  = var.private_dns_vnet_links
       private_endpoints                                       = var.private_endpoints
+      public_ip_prefixes                                      = var.public_ip_prefixes
       public_ip_addresses                                     = var.public_ip_addresses
       route_tables                                            = var.route_tables
       vhub_peerings                                           = var.vhub_peerings
