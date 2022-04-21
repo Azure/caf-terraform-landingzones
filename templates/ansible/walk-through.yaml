@@ -28,7 +28,7 @@
 
 
 - set_fact:
-    regions:  "{{ azure_regions }}"
+    regions:  "{{ azure_regions | from_json }}"
     deployment_mode: "platform"
     topology: "{{bootstrap | default()}}"
 
