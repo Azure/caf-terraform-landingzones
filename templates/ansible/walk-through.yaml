@@ -28,14 +28,14 @@
 
 
 - set_fact:
-    regions:  "{{ azure_regions | from_json }}"
+    regions:  "{{ azure_regions }}"
     deployment_mode: "platform"
     topology: "{{bootstrap | default()}}"
 
 - debug:
     msg:
       - "{{ azure_regions }}"
-      
+
 - set_fact:
     topology: "{{ lookup('template', '{{ topology_file }}') | from_yaml }}"
     destination_path: "{{definition_folder | default(platform_definition_folder)}}"
