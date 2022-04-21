@@ -35,6 +35,7 @@
 - debug:
     msg:
       - "{{ azure_regions }}"
+      - "{{ customer_name }}"
 
 - set_fact:
     topology: "{{ lookup('template', '{{ topology_file }}') | from_yaml }}"
