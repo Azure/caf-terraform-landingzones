@@ -19,7 +19,7 @@ The best course of actions is to follow the readme files generated within each l
 Once you are ready to ingite, just run:
 
 ```bash
-rover login -t {{tenant_name.stdout}} -s {{subscription_id.stdout}}
+rover login -t {{tenant_name}} -s {{subscription_id.stdout}}
 
 ansible-playbook {{public_templates_folder}}/ansible/ansible.yaml \
   --extra-vars "@{{platform_definition_folder}}/ignite.yaml"
