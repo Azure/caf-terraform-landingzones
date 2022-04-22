@@ -2,7 +2,6 @@
 # Get launchpad subscription details
 #
 
-
 - name: Get deployment user object_id (make sure you are logged-in to the launchpad Azure subscription first.)
   shell: az ad signed-in-user show --query objectId -o tsv
   register: bash_object_id
@@ -10,7 +9,8 @@
 
 - name: Get deployment user UPN
   shell: az ad signed-in-user show --query userPrincipalName -o tsv
-  register: upn
+  register: bash_upn
+  when: upn_owner is not defined
 
 - name: Get default user's tenant name
   shell: az rest --method get --url "https://graph.microsoft.com/v1.0/organization" --query "value[0].verifiedDomains[?isDefault].name" -o tsv
@@ -34,11 +34,14 @@
     deployment_mode: "platform"
     topology: "{{bootstrap | default()}}"
     object_id: "{{ bash_object_id | default(lookup('env', 'AZURE_OBJECT_ID') }}"
+    upn: "{{ bash_upn | default (upn) }}"
 
 - debug:
     msg:
       - "{{ azure_regions }}"
       - "{{ customer_name }}"
+      - "{{ object_id }}"
+      - "{{ upn }}"
 
 - set_fact:
     topology: "{{ lookup('template', '{{ topology_file }}') | from_yaml }}"
