@@ -34,7 +34,7 @@
     regions:  "{{ azure_regions }}"
     deployment_mode: "platform"
     topology: "{{bootstrap | default()}}"
-    object_id: "{{ bash_object_id | default(lookup('env', 'AZURE_OBJECT_ID') }}"
+    object_id: "{{ bash_object_id | default(lookup('env', 'AZURE_OBJECT_ID')) }}"
     upn: "{{ bash_upn | default(upn) }}"
     tenant_name: "{{ bash_tenant_name | default(tenant_name) }}"
 
