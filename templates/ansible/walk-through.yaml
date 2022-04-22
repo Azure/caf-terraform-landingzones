@@ -3,13 +3,10 @@
 #
 
 
-- name: Get default user's details
-  shell: az rest --method get --url "https://graph.microsoft.com/beta/me"
-  register: me
-
 - name: Get deployment user object_id (make sure you are logged-in to the launchpad Azure subscription first.)
   shell: az ad signed-in-user show --query objectId -o tsv
   register: object_id
+  when: lookup('env', 'AZURE_OBJECT_ID') != ''
 
 - name: Get deployment user UPN
   shell: az ad signed-in-user show --query userPrincipalName -o tsv
@@ -36,6 +33,7 @@
     regions:  "{{ azure_regions }}"
     deployment_mode: "platform"
     topology: "{{bootstrap | default()}}"
+    object_id: "{{ object_id | default(lookup('env', 'AZURE_OBJECT_ID') }}"
 
 - debug:
     msg:
