@@ -2,6 +2,11 @@
 # Get launchpad subscription details
 #
 
+
+- name: Get default user's details
+  shell: az rest --method get --url "https://graph.microsoft.com/beta/me"
+  register: me
+
 - name: Get deployment user object_id (make sure you are logged-in to the launchpad Azure subscription first.)
   shell: az ad signed-in-user show --query objectId -o tsv
   register: object_id
