@@ -64,14 +64,14 @@ caf_launchpad:
   # Subscription_id to deploy the launchpad. Note 1 existing manual subscription is required to deploy the launhchapd.
   subscription_id: {{subscription_id.stdout}}
   subscription_name: {{subscription_name.stdout}}
-  tenant_id: {{tenant_id.stdout}}
+  tenant_id: {{tenant_id}}
   global_tags_propagated: yes
   tags:
     caf_deployment_mode: demo_single_subscription
 
 
-azuread_user_ea_account_owner: {{upn.stdout}}
-ea_owner_object_id: {{object_id.stdout}}
+azuread_user_ea_account_owner: {{upn}}
+ea_owner_object_id: {{object_id}}
 
 azuread_identity_mode: service_principal
 enable_azuread_groups: True
