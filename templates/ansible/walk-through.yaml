@@ -35,8 +35,8 @@
     deployment_mode: "platform"
     topology: "{{bootstrap | default()}}"
     object_id: "{{ bash_object_id | default(lookup('env', 'AZURE_OBJECT_ID')) }}"
-    upn: "{{ bash_upn | default(upn_owner) }}"
-    tenant_name: "{{ bash_tenant_name | default(tenant_name) }}"
+    upn: "{{ upn_owner | default(bash_upn) }}"
+    tenant_name: "{{ tenant_name | default(bash_tenant_name) }}"
 
 - debug:
     msg:
