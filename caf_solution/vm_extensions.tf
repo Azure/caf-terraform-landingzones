@@ -3,10 +3,10 @@
 # #
 
 # module "vm_extension_monitoring_agent" {
-#   source  = "aztfmod/caf/azurerm//modules/compute/virtual_machine_extensions"
-#   version = "5.5.5"
+#   # source  = "aztfmod/caf/azurerm//modules/compute/virtual_machine_extensions"
+#   # version = "5.5.5"
 
-#   #source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git//modules/compute/virtual_machine_extensions?ref=master"
+#   source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git//modules/compute/virtual_machine_extensions?ref=AL-base-tags"
 
 #   depends_on = [module.solution]
 
@@ -25,10 +25,10 @@
 # }
 
 # module "vm_extension_diagnostics" {
-#   source  = "aztfmod/caf/azurerm//modules/compute/virtual_machine_extensions"
-#   version = "5.5.5"
+#   # source  = "aztfmod/caf/azurerm//modules/compute/virtual_machine_extensions"
+#   # version = "5.5.5"
 
-#   #source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git//modules/compute/virtual_machine_extensions?ref=master"
+#   source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git//modules/compute/virtual_machine_extensions?ref=AL-base-tags"
 
 #   depends_on = [module.solution]
 
@@ -50,10 +50,10 @@
 # }
 
 # module "vm_extension_microsoft_azure_domainjoin" {
-#   source  = "aztfmod/caf/azurerm//modules/compute/virtual_machine_extensions"
-#   version = "5.5.5"
+#   # source  = "aztfmod/caf/azurerm//modules/compute/virtual_machine_extensions"
+#   # version = "5.5.5"
 
-#   #source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git//modules/compute/virtual_machine_extensions?ref=master"
+#   source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git//modules/compute/virtual_machine_extensions?ref=AL-base-tags"
 
 #   depends_on = [module.solution]
 
@@ -70,10 +70,10 @@
 # }
 
 # module "vm_extension_session_host_dscextension" {
-#   source  = "aztfmod/caf/azurerm//modules/compute/virtual_machine_extensions"
-#   version = "5.5.5"
+#   # source  = "aztfmod/caf/azurerm//modules/compute/virtual_machine_extensions"
+#   # version = "5.5.5"
 
-#   #source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git//modules/compute/virtual_machine_extensions?ref=master"
+#   source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git//modules/compute/virtual_machine_extensions?ref=AL-base-tags"
 
 #   depends_on = [module.vm_extension_microsoft_azure_domainjoin]
 
@@ -92,10 +92,10 @@
 
 
 # module "vm_extension_custom_scriptextension" {
-#   source  = "aztfmod/caf/azurerm//modules/compute/virtual_machine_extensions"
-#   version = "5.5.5"
+#   # source  = "aztfmod/caf/azurerm//modules/compute/virtual_machine_extensions"
+#   # version = "5.5.5"
 
-#   #source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git//modules/compute/virtual_machine_extensions?ref=master"
+#   source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git//modules/compute/virtual_machine_extensions?ref=AL-base-tags"
 
 #   depends_on = [module.solution, module.vm_extension_microsoft_azure_domainjoin]
 
