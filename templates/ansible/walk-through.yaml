@@ -140,12 +140,7 @@
   ansible.builtin.template:
     src: "{{public_templates_folder}}/platform/single_subscription.yaml"
     dest: "{{destination_path}}/ignite.yaml"
-            
-# - name: template.caf.platform.yaml
-#   ansible.builtin.template:
-#     src: "{{platform_service_folder}}/template.caf.platform.yaml"
-#     dest: "{{destination_path}}/{{topology.customer_name}}.caf.platform.yaml"
-                    
+        
 - name: readme.md
   ansible.builtin.template:
     src: "{{platform_service_folder}}/README.md"

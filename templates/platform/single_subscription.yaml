@@ -11,12 +11,12 @@
 # 
 # 
 
-customer_name: {{customer_name}}
+customer_name: {{customer_nameq}}
 caf_environment: {{caf_environment}}
 default_email_address: {{default_email_address}}
 alz_mg_prefix: {{alz_mg_prefix}}
 alz_mg_name: {{alz_mg_name}}
-azure_regions: {{azure_regions | from_json }}
+azure_regions: {{azure_regions }}
 prefix: {{prefix}}
 
 # folder parameters
@@ -29,21 +29,21 @@ platform_template_folder: {{platform_template_folder}}
 
 deployment_mode: {{deployment_mode}}
 
-caf_landingzone_branch: 2203.0
+caf_landingzone_branch: {{terraform_landingzone_branch}}
 
 caf_regions:
-{% for region, location in regions.items() %}
+{% for region, location in azure_regions.items() %}
   {{region}}: {{location}}
 {% endfor %}
 
 # Use the lower-case region's name, short version with no space
 resources_allowed_regions:
-{% for region in regions.keys() %}
+{% for region in azure_regions.keys() %}
   - {{region}}
 {% endfor %}
 
 resource_groups_allowed_regions:
-{% for region in regions.keys() %}
+{% for region in azure_regions.keys() %}
   - {{region}}
 {% endfor %}
 
