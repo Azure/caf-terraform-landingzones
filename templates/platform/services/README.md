@@ -19,7 +19,7 @@ The best course of actions is to follow the readme files generated within each l
 Once you are ready to ingite, just run:
 
 ```bash
-rover login -t {{tenant_name}} -s {{subscription_id.stdout}}
+rover login -t {{ azure_landing_zones.identity.tenant_name | default(tenant_name)}} -s {{subscription_id.stdout}}
 
 ansible-playbook {{public_templates_folder}}/ansible/ansible.yaml \
   --extra-vars "@{{platform_definition_folder}}/ignite.yaml"
@@ -43,7 +43,7 @@ Whenever needed, or under a profesional supervision you can use the following co
 ```bash
 git clone https://github.com/Azure/caf-terraform-landingzones.git {{landingzones_folder}}
 cd {{landingzones_folder}} && git pull
-git checkout {{topology.caf_landingzone_branch}}
+git checkout {{terraform_landingzone_branch}}
 
 ```
 

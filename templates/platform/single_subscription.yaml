@@ -70,8 +70,8 @@ caf_launchpad:
     caf_deployment_mode: demo_single_subscription
 
 
-azuread_user_ea_account_owner: {{upn}}
-ea_owner_object_id: {{object_id}}
+azuread_user_ea_account_owner: {{azuread_user_ea_account_owner | default(upn)}}
+ea_owner_object_id: {{ea_owner_object_id | default(object_id)}}
 
 azuread_identity_mode: service_principal
 enable_azuread_groups: True
@@ -223,7 +223,7 @@ azure_landing_zones:
     # Set the Azure Active Directory tenant name (primary domain name)
     # has to be the default domain name (custom dns name or tenantname.onmicrosoft.com)
     # check the AAD property
-    tenant_name: {{tenant_name}}
+    tenant_name: {{ azure_landing_zones.identity.tenant_name | default(tenant_name)}}
     # only service_principal supported with rover ignite at the moment
     azuread_identity_mode: {{topology.azuread_identity_mode}}
     enable_azuread_groups: {{topology.enable_azuread_groups}}
