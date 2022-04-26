@@ -11,7 +11,7 @@
 # 
 # 
 
-customer_name: {{customer_nameq}}
+customer_name: {{customer_name}}
 caf_environment: {{caf_environment}}
 default_email_address: {{default_email_address}}
 alz_mg_prefix: {{alz_mg_prefix}}
