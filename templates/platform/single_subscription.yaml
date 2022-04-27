@@ -1,13 +1,15 @@
 #
 # If you are changing a value in this file you need to execute the following command to update the definition folder
 # 
-# ansible-playbook {{public_templates_folder}}/ansible/walk-through-single.yaml \
-# --extra-vars "@{{platform_definition_folder}}/ignite.yaml"
+# ansible-playbook $(readlink -f ./landingzones/templates/ansible/walk-through-single.yaml) \
+#  --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)" \
+#  -e base_folder=$(pwd)
 # 
 # then update the Terraform configuration files with
 #
-# ansible-playbook {{public_templates_folder}}/ansible/ansible.yaml \
-#  --extra-vars "@{{platform_definition_folder}}/ignite.yaml"
+# ansible-playbook $(readlink -f ./landingzones/templates/ansible/ansible.yaml) \
+#  --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)" \
+#  -e base_folder=$(pwd)
 # 
 # 
 
@@ -20,12 +22,12 @@ azure_regions: {{azure_regions }}
 prefix: {{prefix}}
 
 # folder parameters
-topology_file: {{platform_definition_folder}}/ignite.yaml
-landingzones_folder: {{landingzones_folder}}
-public_templates_folder: {{public_templates_folder}}
-platform_configuration_folder: {{platform_configuration_folder}}
-platform_definition_folder: {{platform_definition_folder}}
-platform_template_folder: {{platform_template_folder}}
+topology_file: "{{base_folder}}/platform/definition/ignite.yaml"
+landingzones_folder: "{{base_folder}}/landingzones"
+public_templates_folder: "{{base_folder}}/landingzones/templates"
+platform_configuration_folder: "{{base_folder}}/platform/configuration"
+platform_definition_folder: "{{base_folder}}/platform/definition"
+platform_template_folder: "{{base_folder}}/platform/template"
 
 deployment_mode: {{deployment_mode}}
 
