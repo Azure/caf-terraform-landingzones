@@ -29,7 +29,7 @@ platform_template_folder: {{platform_template_folder}}
 
 deployment_mode: {{deployment_mode}}
 
-caf_landingzone_branch: {{terraform_landingzone_branch}}
+caf_landingzone_branch: {{caf_landingzone_branch | default('2203.0')}}
 
 caf_regions:
 {% for region, location in azure_regions.items() %}
@@ -118,7 +118,7 @@ billing_subscription_role_delegations:
   billing_account_name: <replace>
   enrollment_account_name: <replace>
 
-subscriptions:
+platform_subscriptions:
   launchpad:  # Do not rename the key
     name: {{subscription_name.stdout}}
     create_alias: false 

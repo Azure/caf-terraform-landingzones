@@ -107,6 +107,10 @@ launchpad:
           management_group:
             # if you are using a root_parent_id, replace the following root by the root_parent_id value
             root:
+              User Access Administrator:
+                azuread_groups:
+                  keys:
+                    - level0
               Management Group Contributor:
                 azuread_groups:
                   keys:
@@ -535,7 +539,7 @@ launchpad:
 
       container_groups:
         level0:
-          name: over-level0
+          name: rover-level0
           region: region1
           resource_group_key: gitops
           ip_address_type: Private
@@ -550,12 +554,14 @@ launchpad:
               cpu: 4
               memory: 2
               ports:
-                port: 22
-                protocol: TCP
+                ssh:
+                  port: 22
+                  protocol: TCP
 
       network_profiles:
         level0:
-          resource_group_key: gitops
+          resource_group:
+            key: gitops
           name: level0
           container_network_interface:
             name: level0
@@ -565,7 +571,7 @@ launchpad:
                 vnet_key: vnet_region1
                 subnet_key: level0
 
-      vnets:
+      virtual_networks:
         vnet_region1:
           resource_group_key: gitops
           vnet:
@@ -594,8 +600,8 @@ launchpad:
               service_endpoints:
                 - Microsoft.KeyVault
                 - Microsoft.Storage
-            level1:
-              name: caf-level1
+            level2:
+              name: caf-level2
               cidr: ["10.100.0.64/27"]
               delegation:
                 name: Microsoft.ContainerInstance/containerGroups

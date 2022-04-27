@@ -5,7 +5,7 @@ keyvaults = {
     resource_group_key        = "{{ resources[tfstate].resources[subscription_key].keyvaults.level0.resource_group_key }}"
     sku_name                  = "{{ resources[tfstate].resources[subscription_key].keyvaults.level1.sku_name | default('standard') }}"
 {% if resources[tfstate].resources[subscription_key].keyvaults.level2.enable_rbac_authorization is defined %}
-    enable_rbac_authorization = {{ resources[tfstate].resources[subscription_key].keyvaults.level0.enable_rbac_authorization }}
+    enable_rbac_authorization = {{ resources[tfstate].resources[subscription_key].keyvaults.level0.enable_rbac_authorization | lower }}
 {% endif %}
     tags = {
       caf_tfstate     = "level0"
@@ -44,7 +44,7 @@ keyvaults = {
     resource_group_key        = "{{ resources[tfstate].resources[subscription_key].keyvaults.level1.resource_group_key }}"
     sku_name                  = "{{ resources[tfstate].resources[subscription_key].keyvaults.level1.sku_name | default('standard') }}"
 {% if resources[tfstate].resources[subscription_key].keyvaults.level2.enable_rbac_authorization is defined %}
-    enable_rbac_authorization = {{ resources[tfstate].resources[subscription_key].keyvaults.level1.enable_rbac_authorization }}
+    enable_rbac_authorization = {{ resources[tfstate].resources[subscription_key].keyvaults.level1.enable_rbac_authorization | lower }}
 {% endif %}
     tags = {
       caf_tfstate     = "level1"
@@ -83,7 +83,7 @@ keyvaults = {
     resource_group_key        = "{{ resources[tfstate].resources[subscription_key].keyvaults.level2.resource_group_key }}"
     sku_name                  = "{{ resources[tfstate].resources[subscription_key].keyvaults.level1.sku_name | default('standard') }}"
 {% if resources[tfstate].resources[subscription_key].keyvaults.level2.enable_rbac_authorization is defined %}
-    enable_rbac_authorization = {{ resources[tfstate].resources[subscription_key].keyvaults.level2.enable_rbac_authorization }}
+    enable_rbac_authorization = {{ resources[tfstate].resources[subscription_key].keyvaults.level2.enable_rbac_authorization | lower }}
 {% endif %}
     tags = {
       caf_tfstate     = "level2"
