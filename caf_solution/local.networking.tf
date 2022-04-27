@@ -31,6 +31,7 @@ locals {
       load_balancers                                          = var.load_balancers
       local_network_gateways                                  = var.local_network_gateways
       nat_gateways                                            = var.nat_gateways
+      network_profiles                                        = var.network_profiles
       network_security_group_definition                       = var.network_security_group_definition
       network_watchers                                        = var.network_watchers
       networking_interface_asg_associations                   = var.networking_interface_asg_associations

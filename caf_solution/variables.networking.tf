@@ -81,6 +81,9 @@ variable "networking" {
   default = {}
   type    = map(any)
 }
+variable "network_profiles" {
+  default = {}
+}
 variable "front_door_waf_policies" {
   default = {}
 }
