@@ -48,7 +48,7 @@
       --account-name "{{ storage_account_level3.stdout|from_json|json_query('name') }}" \
       --container-name "{{ resources.tfstates[lz_type][tfstate_resource].workspace | default('tfstate') }}" \
       --auth-mode "login" \
-      --file "~/.terraform.cache/launchpad/{{ resources.tfstates[lz_type][tfstate_resource].tfstate }}"
+      --file "{{ job_cache_base_path }}/launchpad/{{ resources.tfstates[lz_type][tfstate_resource].tfstate }}"
 
 - debug:
     msg: "{{landingzones_subscriptions}}"
@@ -57,7 +57,7 @@
 - name: "[{{ level }}-asvm]  Get subscription_creation_landingzones details"
   when:
     - landingzones_subscriptions.rc == 0
-  shell: "cat ~/.terraform.cache/launchpad/{{ resources.tfstates[lz_type][tfstate_resource].tfstate }}"
+  shell: "cat {{ job_cache_base_path }}/launchpad/{{ resources.tfstates[lz_type][tfstate_resource].tfstate }}"
   register: landingzones_tfstate
 
 - debug:
