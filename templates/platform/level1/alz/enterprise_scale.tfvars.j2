@@ -1,5 +1,5 @@
 # relative path to {{ landingzones_folder }}/caf_solution/add-ons/caf_alz
-library_path                    = "../../../../platform/configuration/{{tfstate_object.level}}/{{stage}}/{{tfstate}}/lib"
+library_path                    = "{{ destination_base_path }}/{{tfstate_object.level}}/{{stage}}/{{tfstate}}/lib"
 {% if bootstrap.management_groups[region][tfstate].root_parent_id is defined %}
 root_parent_id                  = "{{ bootstrap.management_groups[region][tfstate].root_parent_id }}"
 {% endif %}
