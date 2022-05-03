@@ -14,7 +14,7 @@ data_factory = {
     }
 {% endif %}
 {% if value.managed_virtual_network_enabled is defined %}
-    managed_virtual_network_enabled = {{ value.managed_virtual_network_enabled }}
+    managed_virtual_network_enabled = {{ value.managed_virtual_network_enabled | lower }}
 {% endif %}
 
 {% if value.private_endpoints is defined %}
@@ -33,7 +33,7 @@ data_factory = {
 {% endif %}
         private_service_connection = {
           name = "{{pep_config.private_service_connection.name}}"
-          is_manual_connection = {{pep_config.private_service_connection.is_manual_connection}}
+          is_manual_connection = {{pep_config.private_service_connection.is_manual_connection | lower}}
           subresource_names = {{pep_config.private_service_connection.subresource_names | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"')}}
         }
 {% if pep_config.private_dns is defined %}
