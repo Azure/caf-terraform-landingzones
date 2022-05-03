@@ -28,7 +28,7 @@ azure_container_registries = {
     sku = "{{value.sku}}"
 {% endif %}
 {% if value.admin_enabled is defined %}
-    admin_enabled = "{{value.admin_enabled}}"
+    admin_enabled = {{value.admin_enabled | lower}}
 {% endif %}
 {% if value.tags is defined %}
     tags   = {
