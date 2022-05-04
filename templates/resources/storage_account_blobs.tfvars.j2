@@ -5,7 +5,7 @@ storage_account_blobs = {
     storage_account_key       = "{{ value.storage_account_key }}"
     storage_container_name    = "{{ value.storage_container_name }}"
 {% if value.type is defined %}
-    type = {{ value.type }}
+    type = "{{ value.type }}"
 {% endif %}
 {% if value.size is defined %}
     size = {{ value.size }}
