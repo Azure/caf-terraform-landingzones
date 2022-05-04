@@ -111,7 +111,7 @@ azure_container_registries = {
 {% endif %}
         private_service_connection = {
           name = "{{pep_config.private_service_connection.name}}"
-          is_manual_connection = {{pep_config.private_service_connection.is_manual_connection}}
+          is_manual_connection = {{pep_config.private_service_connection.is_manual_connection | lower}}
           subresource_names = {{pep_config.private_service_connection.subresource_names | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"')}}
         }
 {% if pep_config.private_dns is defined %}
