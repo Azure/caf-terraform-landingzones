@@ -63,7 +63,11 @@ bastion_hosts = {
     }
 {% endif %}
 {% if value.tags is defined %}
-    tags = "{{value.tags}}"
+    tags   = {
+{% for tag_key, tag_value in value.tags.items() %}
+      {{ tag_key }} = "{{ tag_value }}"
+{% endfor %}
+    }
 {% endif %}
   }
 {% endfor %}
