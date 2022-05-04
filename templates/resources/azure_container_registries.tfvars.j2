@@ -38,7 +38,7 @@ azure_container_registries = {
     }
 {% endif %}
 {% if value.public_network_access_enabled is defined %}
-    public_network_access_enabled = {{value.public_network_access_enabled}}
+    public_network_access_enabled = {{value.public_network_access_enabled | lower}}
 {% endif %}
 {% if value.georeplications is defined %}
     georeplications = {
