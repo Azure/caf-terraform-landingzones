@@ -56,6 +56,7 @@ locals {
       virtual_subnets                                         = var.virtual_subnets
       virtual_wans                                            = var.virtual_wans
       vnet_peerings                                           = var.vnet_peerings
+      vnet_peerings_v1                                        = var.vnet_peerings_v1
       vnets                                                   = var.vnets
       vpn_gateway_connections                                 = var.vpn_gateway_connections
       vpn_sites                                               = var.vpn_sites
