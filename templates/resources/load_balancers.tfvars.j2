@@ -37,14 +37,18 @@ load_balancers = {
         lz_key     = "{{ config.lz_key }}"
 {% endif %}
 {% if config.zones is defined %}
-        zones     = "{{ config.zones }}"
+        zones     = {{ config.zones  | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"')}}
 {% endif %}
       }
 {% endfor %}
     }
 {% endif %}
-{% if lbs.tags is defined %}
-      tags                = {{ lbs.tags }}
+{% if value.tags is defined %}
+    tags   = {
+{% for tag_key, tag_value in value.tags.items() %}
+      {{ tag_key }} = "{{ tag_value }}"
+{% endfor %}
+    }
 {% endif %}
 {% if lbs.backend_address_pool_addresses is defined %}
     backend_address_pool_addresses = {
