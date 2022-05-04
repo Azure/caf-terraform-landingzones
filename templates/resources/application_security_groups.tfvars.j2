@@ -4,7 +4,11 @@ application_security_groups = {
     name                      = "{{ value.name }}"
     resource_group_key        = "{{ value.resource_group_key }}"
 {% if value.tags is defined %}
-    tags = "{{ value.tags }}"
+    tags   = {
+{% for tag_key, tag_value in value.tags.items() %}
+      {{ tag_key }} = "{{ tag_value }}"
+{% endfor %}
+    }
 {% endif %}
   }
 {% endfor %}
