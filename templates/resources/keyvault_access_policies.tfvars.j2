@@ -1,6 +1,6 @@
 keyvault_access_policies = {
   {% for key, policy in resources[tfstate_resource].resources[subscription_key].keyvault_access_policies.items() %}
-  {{ key }} = {  
+  {{ key }} = {
 {% for s_key, s_policy in policy.items() %}
     {{ s_key }} = {
 {% if s_policy.lz_key is defined %}
@@ -12,6 +12,8 @@ keyvault_access_policies = {
         azuread_service_principal_key = "{{ s_policy.azuread_service_principal_key }}"
 {% elif s_policy.managed_identity_key is defined %}
         managed_identity_key = "{{ s_policy.managed_identity_key }}"
+{% elif s_policy.object_id is defined %}
+        object_id = "{{ s_policy.object_id }}"
 {% endif %}
 {% if s_policy.secret_permissions is defined %}
         secret_permissions = {{ s_policy.secret_permissions | replace('None','[]') | replace('\'','\"') }}
