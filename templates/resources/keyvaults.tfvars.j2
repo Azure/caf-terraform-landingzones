@@ -1,34 +1,35 @@
 keyvaults = {
-{% for key, keyvault in resources[tfstate_resource].resources[subscription_key].keyvaults.items() %}
+{% for key, value in resources[tfstate_resource].resources[subscription_key].keyvaults.items() %}
   {{ key }} = {
     name               = "{{ resources[tfstate_resource].resources[subscription_key].keyvaults[key].name }}"
     resource_group_key = "{{ resources[tfstate_resource].resources[subscription_key].keyvaults[key].resource_group_key }}"
     sku_name           = "{{ resources[tfstate_resource].resources[subscription_key].keyvaults[key].sku_name | default('standard')}}"
-{% if keyvault.enabled_for_deployment is defined %}
-    enabled_for_deployment = {{ keyvault.enabled_for_deployment | string | lower }}
+{% if value.enabled_for_deployment is defined %}
+    enabled_for_deployment = {{ value.enabled_for_deployment | string | lower }}
 {% endif %}
-{% if keyvault.enabled_for_disk_encryption is defined %}
-    enabled_for_disk_encryption = {{ keyvault.enabled_for_disk_encryption | string | lower }}
+{% if value.enabled_for_disk_encryption is defined %}
+    enabled_for_disk_encryption = {{ value.enabled_for_disk_encryption | string | lower }}
 {% endif %}
-{% if keyvault.enabled_for_template_deployment is defined %}
-    enabled_for_template_deployment = {{ keyvault.enabled_for_template_deployment | string | lower }}
+{% if value.enabled_for_template_deployment is defined %}
+    enabled_for_template_deployment = {{ value.enabled_for_template_deployment | string | lower }}
 {% endif %}
-{% if keyvault.purge_protection_enabled is defined %}
-    purge_protection_enabled = {{ keyvault.purge_protection_enabled | string | lower }}
+{% if value.purge_protection_enabled is defined %}
+    purge_protection_enabled = {{ value.purge_protection_enabled | string | lower }}
 {% endif %}
-{% if keyvault.enable_rbac_authorization is defined %}
-    enable_rbac_authorization = {{ keyvault.enable_rbac_authorization | string | lower }}
+{% if value.enable_rbac_authorization is defined %}
+    enable_rbac_authorization = {{ value.enable_rbac_authorization | string | lower }}
 {% endif %}
-{% if keyvault.soft_delete_retention_days is defined %}
-    soft_delete_retention_days = {{ keyvault.soft_delete_retention_days }}
+{% if value.soft_delete_retention_days is defined %}
+    soft_delete_retention_days = {{ value.soft_delete_retention_days }}
 {% endif %}
-{% if keyvault.tags is defined %}
+{% if value.tags is defined %}
       tags   = {
-{% for tag_key, tag_value in keyvault.tags.items() %}
+{% for tag_key, tag_value in value.tags.items() %}
         {{ tag_key }} = "{{ tag_value }}"
 {% endfor %}
       }
 {% endif %}
+{% include 'network_acls.j2' %}
     creation_policies = {
 {% if resources.platform_identity is defined %}
 {% if resources.azure_landing_zones.identity.azuread_identity_mode == 'logged_in_user' %}
@@ -37,7 +38,7 @@ keyvaults = {
       }
 {% endif %}
 {% endif %}
-{% for p_key, policy in keyvault.creation_policies.items() %}
+{% for p_key, policy in value.creation_policies.items() %}
       {{ p_key }} = {
 {% if policy.lz_key is defined %}
         lz_key = "{{ policy.lz_key }}"

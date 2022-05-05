@@ -1,7 +1,7 @@
 {% if value.network is defined %}
 {% set acls_key = 'network' %}
 {% endif %}
-{% if value[acls_key] is defined %}
+{% if acls_key is defined %}
     {{acls_key}} = {
 {% if value[acls_key].default_action is defined %}
       default_action = "{{ value[acls_key].default_action }}"
@@ -9,7 +9,7 @@
 {% if value[acls_key].bypass is defined %}
       bypass = {{ value[acls_key].bypass | replace('None','[]') | replace('\'','\"') }}
 {% endif %}
-{% if value.[acls_key].ip_rules is defined %}
+{% if value[acls_key].ip_rules is defined %}
       ip_rules = {{ value[acls_key].ip_rules | replace('None','[]') | replace('\'','\"') }}
 {% endif %}
 {% if value[acls_key].subnets is defined %}
