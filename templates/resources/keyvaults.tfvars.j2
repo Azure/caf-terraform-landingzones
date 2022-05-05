@@ -29,6 +29,7 @@ keyvaults = {
 {% endfor %}
       }
 {% endif %}
+{% include 'network_acls.j2' %}
     creation_policies = {
 {% if resources.platform_identity is defined %}
 {% if resources.azure_landing_zones.identity.azuread_identity_mode == 'logged_in_user' %}
