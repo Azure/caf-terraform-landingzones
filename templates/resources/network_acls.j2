@@ -1,7 +1,7 @@
-{% if value.network_acls is defined %}
+{% if value.network is defined %}
 {% set acls_key = 'network' %}
 {% endif %}
-{% if acls_key %}
+{% if acls_key is defined %}
     {{acls_key}} = {
 {% if value[acls_key].default_action is defined %}
       default_action = "{{ value[acls_key].default_action }}"
