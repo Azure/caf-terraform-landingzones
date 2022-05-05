@@ -1,4 +1,5 @@
-keyvaults = {
+{% resource_type = 'keyvaults' %}
+{{resource_type}} = {
 {% for key, value in resources[tfstate_resource].resources[subscription_key].keyvaults.items() %}
   {{ key }} = {
     name               = "{{ resources[tfstate_resource].resources[subscription_key].keyvaults[key].name }}"

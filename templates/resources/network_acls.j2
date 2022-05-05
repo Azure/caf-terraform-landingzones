@@ -7,7 +7,11 @@
       default_action = "{{ value[acls_key].default_action }}"
 {% endif %}
 {% if value[acls_key].bypass is defined %}
+{% if resource_type == 'keyvaults' %}
+      bypass = "{{ value[acls_key].bypass }}"
+{% else %}
       bypass = {{ value[acls_key].bypass | replace('None','[]') | replace('\'','\"') }}
+{% endif %}
 {% endif %}
 {% if value[acls_key].ip_rules is defined %}
       ip_rules = {{ value[acls_key].ip_rules | replace('None','[]') | replace('\'','\"') }}

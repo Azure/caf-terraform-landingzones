@@ -1,4 +1,5 @@
-storage_accounts = {
+{% resource_type = 'storage_accounts' %}
+{{resource_type}} = {
 {% for key, value in resources[tfstate_resource].resources[subscription_key].storage_accounts.items() %}
   {{ key }} = {
     name                      = "{{ value.name }}"
@@ -56,37 +57,7 @@ storage_accounts = {
 {% endif %}
     }
 {% endif %}
-{% if value.network is defined %}
-    network = {
-{% if value.network.default_action is defined %}
-      default_action = "{{ value.network.default_action }}"
-{% endif %}
-{% if value.network.bypass is defined %}
-      bypass = {{ value.network.bypass | replace('None','[]') | replace('\'','\"') }}
-{% endif %}
-{% if value.network.ip_rules is defined %}
-      ip_rules = {{ value.network.ip_rules | replace('None','[]') | replace('\'','\"') }}
-{% endif %}
-{% if value.network.subnets is defined %}
-      subnets = {
-{% for s_key, s_value in value.network.subnets.items() %}
-        {{ s_key }} = {
-{% if s_value.remote_subnet_id is defined %}
-          remote_subnet_id = "{{ s_value.remote_subnet_id  }}"
-{% else %}
-{% if s_value.lz_key is defined %}
-          lz_key     = "{{ s_value.lz_key }}"
-{% endif %}
-          vnet_key   = "{{ s_value.vnet_key }}"
-          subnet_key = "{{ s_value.subnet_key }}"
-{% endif %}
-        }
-{% endfor %}
-      }
-{% endif %}
-    }
-{% endif %}
-
+{% include 'network_acls.j2' %}
 
 {% if value.management_policies is defined %}
     management_policies = {
