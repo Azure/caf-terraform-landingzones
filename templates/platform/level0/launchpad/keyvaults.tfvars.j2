@@ -44,11 +44,7 @@ keyvaults = {
       default_action = "{{ value['network'].default_action }}"
 {% endif %}
 {% if value['network'].bypass is defined %}
-{% if resource_type == 'keyvaults' %}
       bypass = "{{ value['network'].bypass }}"
-{% else %}
-      bypass = {{ value['network'].bypass | replace('None','[]') | replace('\'','\"') }}
-{% endif %}
 {% endif %}
 {% if value['network'].ip_rules is defined %}
       ip_rules = {{ value['network'].ip_rules | replace('None','[]') | replace('\'','\"') }}
@@ -119,11 +115,7 @@ keyvaults = {
       default_action = "{{ value['network'].default_action }}"
 {% endif %}
 {% if value['network'].bypass is defined %}
-{% if resource_type == 'keyvaults' %}
       bypass = "{{ value['network'].bypass }}"
-{% else %}
-      bypass = {{ value['network'].bypass | replace('None','[]') | replace('\'','\"') }}
-{% endif %}
 {% endif %}
 {% if value['network'].ip_rules is defined %}
       ip_rules = {{ value['network'].ip_rules | replace('None','[]') | replace('\'','\"') }}
@@ -194,11 +186,7 @@ keyvaults = {
       default_action = "{{ value['network'].default_action }}"
 {% endif %}
 {% if value['network'].bypass is defined %}
-{% if resource_type == 'keyvaults' %}
       bypass = "{{ value['network'].bypass }}"
-{% else %}
-      bypass = {{ value['network'].bypass | replace('None','[]') | replace('\'','\"') }}
-{% endif %}
 {% endif %}
 {% if value['network'].ip_rules is defined %}
       ip_rules = {{ value['network'].ip_rules | replace('None','[]') | replace('\'','\"') }}
