@@ -1,0 +1,54 @@
+data_factory = {
+{% for key, value in resources[tfstate_resource].resources[subscription_key].data_factory.items() %}
+  {{ key }} = {
+    name = "{{ value.name }}"
+{% if value.resource_group_key is defined %}
+    resource_group_key = "{{ value.resource_group_key }}"
+{% endif %}
+{% if value.resource_group is defined %}
+    resource_group = {
+      key = "{{value.resource_group.key}}"
+{% if value.resource_group.lz_key is defined %}
+      lz_key = "{{ value.resource_group.lz_key }}"
+{% endif %}
+    }
+{% endif %}
+{% if value.managed_virtual_network_enabled is defined %}
+    managed_virtual_network_enabled = {{ value.managed_virtual_network_enabled | lower }}
+{% endif %}
+
+{% if value.private_endpoints is defined %}
+    private_endpoints = {
+{% for pep_key, pep_config in value.private_endpoints.items() %}
+      {{ pep_key }} = {
+        name = "{{pep_config.name}}"
+        vnet_key = "{{pep_config.vnet_key}}"
+        subnet_key = "{{pep_config.subnet_key}}"
+        resource_group_key = "{{pep_config.resource_group_key}}"
+{% if pep_config.identity is defined %}
+        identity = {
+          type = "{{pep_config.identity.type}}"
+          identity_ids = {{pep_config.identity.identity_ids | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"')}}
+        }
+{% endif %}
+        private_service_connection = {
+          name = "{{pep_config.private_service_connection.name}}"
+          is_manual_connection = {{pep_config.private_service_connection.is_manual_connection | lower}}
+          subresource_names = {{pep_config.private_service_connection.subresource_names | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"')}}
+        }
+{% if pep_config.private_dns is defined %}
+        private_dns = {
+          zone_group_name = "{{pep_config.private_dns.zone_group_name}}"
+          keys = {{pep_config.private_dns.zone_keys | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"')}}
+{% if pep_config.private_dns.lz_key is defined %}
+          lz_key = "{{pep_config.private_dns.lz_key}}"
+{% endif %}
+        }
+{% endif %}
+      }
+{% endfor %}
+    }
+{% endif %}
+  }
+{% endfor %}
+}

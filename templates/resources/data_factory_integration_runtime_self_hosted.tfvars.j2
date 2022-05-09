@@ -1,0 +1,40 @@
+data_factory_integration_runtime_self_hosted = {
+{% for key, value in resources[tfstate_resource].resources[subscription_key].data_factory_integration_runtime_self_hosted.items() %}
+  {{ key }} = {
+    name = "{{ value.name }}"
+{% if value.resource_group is defined %}
+    resource_group = {
+{% if value.resource_group.key is defined %}
+      key = "{{value.resource_group.key}}"
+{% endif %}
+{% if value.resource_group.name is defined %}
+      name = "{{value.resource_group.name}}"
+{% endif %}
+{% if value.resource_group.lz_key is defined %}
+      lz_key = "{{value.resource_group.lz_key}}"
+{% endif %}
+    }
+{% endif %}
+{% if value.resource_group_key is defined %}
+    resource_group_key = "{{value.resource_group_key}}"
+{% endif %}
+{% if value.resource_group_name is defined %}
+    resource_group_name = "{{value.resource_group_name}}"
+{% endif %}
+
+{% if value.data_factory is defined %}
+    data_factory = {
+{% if value.data_factory.name is defined %}
+      name = "{{value.data_factory.name}}"
+{% endif %}
+{% if value.data_factory.lz_key is defined %}
+      lz_key = "{{value.data_factory.lz_key}}"
+{% endif %}
+{% if value.data_factory.key is defined %}
+      key = "{{value.data_factory.key}}"
+{% endif %}
+    }
+{% endif %}
+  }
+{% endfor %}
+}

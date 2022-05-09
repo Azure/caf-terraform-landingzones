@@ -1,0 +1,11 @@
+shared_image_galleries = {
+{% for key, value in resources[tfstate_resource].resources[subscription_key].shared_image_galleries.items() %}
+  {{ key }} = {
+    name                      = "{{ value.name }}"
+    resource_group_key        = "{{ value.resource_group_key }}"
+{% if value.description is defined %}
+    description = {{ value.description }}
+{% endif %}
+  }
+{% endfor %}
+}
