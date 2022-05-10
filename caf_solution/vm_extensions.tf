@@ -8,7 +8,7 @@ module "vm_extension_monitoring_agent" {
 
   source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git//modules/compute/virtual_machine_extensions?ref=main"
 
-  depends_on = [module.solution]
+  #depends_on = [module.solution]
 
   for_each = {
     for key, value in try(var.virtual_machines, {}) : key => value
@@ -30,7 +30,7 @@ module "vm_extension_diagnostics" {
 
   source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git//modules/compute/virtual_machine_extensions?ref=main"
 
-  depends_on = [module.solution]
+  #depends_on = [module.solution]
 
   for_each = {
     for key, value in try(var.virtual_machines, {}) : key => value
@@ -55,7 +55,7 @@ module "vm_extension_microsoft_azure_domainjoin" {
 
   source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git//modules/compute/virtual_machine_extensions?ref=main"
 
-  depends_on = [module.solution]
+  #depends_on = [module.solution]
 
   for_each = {
     for key, value in try(var.virtual_machines, {}) : key => value
@@ -97,7 +97,7 @@ module "vm_extension_custom_scriptextension" {
 
   source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git//modules/compute/virtual_machine_extensions?ref=main"
 
-  depends_on = [module.solution, module.vm_extension_microsoft_azure_domainjoin]
+  #depends_on = [module.solution, module.vm_extension_microsoft_azure_domainjoin]
 
   for_each = {
     for key, value in try(var.virtual_machines, {}) : key => value

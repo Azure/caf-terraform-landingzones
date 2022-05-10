@@ -4,7 +4,7 @@ module "vmss_extension_microsoft_azure_domainjoin" {
 
   source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git//modules/compute/virtual_machine_scale_set_extensions?ref=main"
 
-  depends_on = [module.solution]
+  #depends_on = [module.solution]
 
   for_each = {
     for key, value in try(var.virtual_machine_scale_sets, {}) : key => value
@@ -25,7 +25,7 @@ module "vmss_extension_custom_scriptextension" {
 
   source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git//modules/compute/virtual_machine_scale_set_extensions?ref=main"
 
-  depends_on = [module.solution]
+  #depends_on = [module.solution]
 
   for_each = {
     for key, value in try(var.virtual_machine_scale_sets, {}) : key => value
