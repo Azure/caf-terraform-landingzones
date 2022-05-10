@@ -574,9 +574,8 @@ launchpad:
       virtual_networks:
         vnet_region1:
           resource_group_key: gitops
-          vnet:
-            name: gitops-vnet
-            address_space: ["10.100.0.0/24"]
+          name: gitops-vnet
+          address_space: ["10.100.0.0/24"]
           subnets:
             level0:
               name: caf-level0

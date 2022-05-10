@@ -34,16 +34,18 @@
     regions:  "{{ azure_regions }}"
     deployment_mode: "platform"
     topology: "{{bootstrap | default()}}"
-    object_id: "{{ lookup('env', 'AZURE_OBJECT_ID') | default(bash_object_id.stdout) }}"
+    object_id: "{{ bash_object_id.stdout | default(lookup('env', 'AZURE_OBJECT_ID')) }}"
     upn: "{{ upn_owner | default(bash_upn.stdout) }}"
     tenant_name: "{{ tenant_name | default(bash_tenant_name.stdout) }}"
+    base_folder: "{{ lookup('env', 'AZURE_OBJECT_ID') if lookup('env', 'AZURE_OBJECT_ID') != '' else '/tf/caf' }}"
 
 - debug:
     msg:
-      - "{{ azure_regions }}"
+      - "{{ regions }}"
       - "{{ customer_name }}"
       - "{{ object_id }}"
       - "{{ upn }}"
+      - "{{ base_folder }}"
 
 - set_fact:
     topology: "{{ lookup('template', '{{ topology_file }}') | from_yaml }}"
