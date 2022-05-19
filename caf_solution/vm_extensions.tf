@@ -29,7 +29,7 @@ module "vm_extension_diagnostics" {
   # version = "5.5.5"
 
   # source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git//modules/compute/virtual_machine_extensions?ref=main"
-  source = "git::https://github.com/weareplanet/terraform-azure-landingzones.git//modules/compute/virtual_machine_extensions?ref=main"
+  source = "git::https://github.com/weareplanet/terraform-azure-caf.git//modules/compute/virtual_machine_extensions?ref=main"
 
   #depends_on = [module.solution]
 
