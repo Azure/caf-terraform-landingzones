@@ -21,7 +21,7 @@ data "terraform_remote_state" "remote" {
 }
 
 locals {
-  
+
   remote_state = {
     azurerm = {
       for key, value in try(var.landingzone.tfstates, {}) : key => {

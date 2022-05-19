@@ -148,6 +148,7 @@ deployments:
         identity: identity.yaml
         management: management.yaml
         asvm: asvm.yaml
+        gitops_agents: gitops_agents_aci.yaml
     alz:
       {{default_region_key}}:
         {{alz_mg_prefix}}: alz.yaml

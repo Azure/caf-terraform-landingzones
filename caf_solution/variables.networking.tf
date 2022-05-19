@@ -156,3 +156,15 @@ variable "vpn_sites" {
 variable "vpn_gateway_connections" {
   default = {}
 }
+variable "lb" {
+  default = {}
+}
+variable "lb_backend_address_pool" {
+  default = {}
+}
+variable "lb_backend_address_pool_address" {
+  default = {}
+}
+variable "network_interface_backend_address_pool_association" {
+  default = {}
+}

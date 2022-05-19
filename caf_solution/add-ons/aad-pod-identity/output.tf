@@ -3,6 +3,6 @@ output "manifests" {
 }
 
 output "managed_identities" {
-  value = local.remote.managed_identities
+  value     = local.remote.managed_identities
   sensitive = true
 }

@@ -23,7 +23,7 @@ terraform {
       version = "~> 1.2.0"
     }
   }
-  required_version = ">= 0.15"
+  required_version = ">= 1.1.0"
 }
 
 
@@ -32,7 +32,10 @@ provider "azurerm" {
   # partner identifier for CAF Terraform landing zones.
   features {
     key_vault {
-      purge_soft_delete_on_destroy = var.provider_azurerm_features_keyvault.purge_soft_delete_on_destroy
+      purge_soft_delete_on_destroy        = var.provider_azurerm_features_keyvault.purge_soft_delete_on_destroy
+    }
+    template_deployment {
+      delete_nested_items_during_deletion = false
     }
   }
 }
@@ -58,7 +61,7 @@ locals {
       }
     )
     ,
-    try(data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.tfstates, {})
+    data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.tfstates
   )
 
 
@@ -71,6 +74,13 @@ locals {
       level                = var.landingzone.level
       tenant_id            = var.tenant_id
       subscription_id      = data.azurerm_client_config.current.subscription_id
+    }
+    remote = {
+      hostname     = try(var.tfstate_hostname, "app.terraform.io")
+      organization = var.tfstate_organization
+      workspaces = {
+        name = var.workspace
+      }
     }
   }
 

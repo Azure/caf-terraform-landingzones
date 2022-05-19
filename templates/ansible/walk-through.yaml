@@ -29,7 +29,6 @@
   shell: az account show --query name -o tsv
   register: subscription_name
 
-
 - set_fact:
     regions:  "{{ azure_regions }}"
     deployment_mode: "platform"

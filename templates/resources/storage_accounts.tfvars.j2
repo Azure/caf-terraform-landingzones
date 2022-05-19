@@ -57,69 +57,70 @@
 {% endif %}
     }
 {% endif %}
-{% include 'network_acls.j2' %}
-
+{% set resource_parent_type = 'storage' %}
+{% include 'network_rules.j2' %}
 {% if value.management_policies is defined %}
     management_policies = {
-{% for mp_key, mp_value in value.management_policies.items() %}
-      {{ mp_key }} = {
-        enabled = {{mp_value.enabled | default(True) | lower}}
-        name    = "{{mp_value.name}}"
-        filters = {
+      rules = {
+{% for mp_key, mp_value in value.management_policies.rules.items() %}
+        {{ mp_key }} = {
+          enabled = {{mp_value.enabled | default(True) | lower}}
+          name    = "{{mp_value.name}}"
+          filters = {
 {% for mpf_key, mpf_value in mp_value.filters.items() %}
-          {{mpf_key}} = {
+           {{mpf_key}} = {
 {% if mpf_value.prefix_match is defined %}
-            prefix_match = {{ mpf_value.prefix_match | replace('None','[]') | replace('\'','\"') }}
+             prefix_match = {{ mpf_value.prefix_match | replace('None','[]') | replace('\'','\"') }}
 {% endif %}
 {% if mpf_value.blob_types is defined %}
-            blob_types = {{ mpf_value.blob_types | replace('None','[]') | replace('\'','\"') }}
+             blob_types = {{ mpf_value.blob_types | replace('None','[]') | replace('\'','\"') }}
 {% endif %}
 {% if mpf_value.match_blob_index_tag is defined %}
-            match_blob_index_tag = {
-              {{ mpf_value.match_blob_index_tag.0.keys() }} = {
-                name = "{{ mpf_value.match_blob_index_tag.0.name }}"
-                operation = "{{ mpf_value.match_blob_index_tag.0.operation }}"
-                value = "{{ mpf_value.match_blob_index_tag.0.value }}"
+              match_blob_index_tag = {
+                {{ mpf_value.match_blob_index_tag.0.keys() }} = {
+                  name = "{{ mpf_value.match_blob_index_tag.0.name }}"
+                  operation = "{{ mpf_value.match_blob_index_tag.0.operation }}"
+                  value = "{{ mpf_value.match_blob_index_tag.0.value }}"
+                }
               }
-            }
 {% endif %}
-          }
+           }
 {% endfor %}
-        }
-        actions = {
-          base_blob = {
+          }
+          actions = {
+            base_blob = {
 {% for aa_key, aa_value in mp_value.actions.base_blob.items() %}
-            {{ aa_key }} = {
+             {{ aa_key }} = {
 {% for ab_key, ab_value in aa_value.items() %}
-              {{ ab_key }} = {{ ab_value }}
+                {{ ab_key }} = {{ ab_value }}
+{% endfor %}
+              }
 {% endfor %}
             }
-{% endfor %}
-          }
-          snapshot = {
+            snapshot = {
 {% for aa_key, aa_value in mp_value.actions.snapshot.items() %}
-            {{ aa_key }} = {
+             {{ aa_key }} = {
 {% for ab_key, ab_value in aa_value.items() %}
-              {{ ab_key }} = {{ ab_value }}
+                {{ ab_key }} = {{ ab_value }}
+{% endfor %}
+             }
 {% endfor %}
             }
-{% endfor %}
-          }
-          version = {
+            version = {
 {% for aa_key, aa_value in mp_value.actions.version.items() %}
-            {{ aa_key }} = {
+             {{ aa_key }} = {
 {% for ab_key, ab_value in aa_value.items() %}
-              {{ ab_key }} = {{ ab_value }}
+                {{ ab_key }} = {{ ab_value }}
+{% endfor %}
+            } 
 {% endfor %}
             }
-{% endfor %}
           }
         }
-      }
 {% endfor %}
+      }
     }
 {% endif %}
-
 {% if value.containers is defined %}
     containers = {
 {% for c_key, c_value in value.containers.items() %}
@@ -129,6 +130,7 @@
 {% endfor %}
     }
 {% endif %}
+{%    include 'private_endpoints.tfvars.j2' %}
 {% if value.tags is defined %}
     tags   = {
 {% for tag_key, tag_value in value.tags.items() %}
@@ -137,6 +139,6 @@
     }
 {% endif %}
   }
-  
+
 {% endfor %}
 }

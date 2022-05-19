@@ -81,6 +81,11 @@
         path: "{{destination_base_path}}"
         state: directory
 
+    - name: "Creates cache directory"
+      file:
+        path: "{{ job_cache_base_path }}/launchpad"
+        state: directory
+
     - debug:
         msg: 
         - "bootstrap: {{bootstrap}}"

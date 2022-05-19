@@ -1,10 +1,10 @@
 {% set resource_type = 'keyvaults' %}
 {{resource_type}} = {
 {% for key, value in resources[tfstate_resource].resources[subscription_key].keyvaults.items() %}
-  {{ key }} = {
-    name               = "{{ resources[tfstate_resource].resources[subscription_key].keyvaults[key].name }}"
-    resource_group_key = "{{ resources[tfstate_resource].resources[subscription_key].keyvaults[key].resource_group_key }}"
-    sku_name           = "{{ resources[tfstate_resource].resources[subscription_key].keyvaults[key].sku_name | default('standard')}}"
+  "{{ key | string }}" = {
+    name                       = "{{ value.name }}"
+    resource_group_key         = "{{ value.resource_group_key }}"
+    sku_name                   = "{{ value.sku_name | default('standard')}}"
 {% if value.enabled_for_deployment is defined %}
     enabled_for_deployment = {{ value.enabled_for_deployment | string | lower }}
 {% endif %}
@@ -31,6 +31,7 @@
       }
 {% endif %}
 {% include 'network_acls.j2' %}
+{% if value.creation_policies is defined %}
     creation_policies = {
 {% if resources.platform_identity is defined %}
 {% if resources.azure_landing_zones.identity.azuread_identity_mode == 'logged_in_user' %}
@@ -57,6 +58,10 @@
       }
 {% endfor %}
     }
+{% endif %}
+{% set resource_parent_type = 'keyvault' %}
+{% include 'network_rules.j2' %}
+{% include 'private_endpoints.tfvars.j2' %}
   }
 {% endfor %}
 }

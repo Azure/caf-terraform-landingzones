@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">= 0.15"
+  required_version = ">= 1.1"
   required_providers {
     // azurerm version driven by the caf module
     // azuread version driven by the caf module
@@ -30,8 +30,13 @@ terraform {
 provider "azurerm" {
   partner_id = "ca4078f8-9bc4-471b-ab5b-3af6b86a42c8"
   # partner identifier for CAF Terraform landing zones.
-  features {}
+  features {
+    template_deployment {
+      delete_nested_items_during_deletion = false
+    }
+  }
 }
+
 
 resource "random_string" "prefix" {
   count   = var.prefix == null ? 1 : 0
@@ -77,6 +82,13 @@ locals {
       level                = var.landingzone.level
       tenant_id            = data.azurerm_client_config.current.tenant_id
       subscription_id      = data.azurerm_client_config.current.subscription_id
+    }
+    remote = {
+      hostname     = try(var.tfstate_hostname, "app.terraform.io")
+      organization = var.tfstate_organization
+      workspaces = {
+        name = var.workspace
+      }
     }
   }
 

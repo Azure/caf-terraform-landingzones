@@ -29,7 +29,7 @@ locals {
           [
             for key, value in mg_value.subscriptions : local.caf.subscriptions[value.lz_key][value.key].subscription_id
           ],
-          try(split(",",data.external.reconcile_susbscription_ids_from_management_groups[mg_id].result.subscription_ids), []),
+          try(split(",", data.external.reconcile_susbscription_ids_from_management_groups[mg_id].result.subscription_ids), []),
           try(mg_value.subscription_ids, [])
         )
       )
