@@ -245,8 +245,3 @@ variable "network_profiles" {
   default = {}
 }
 
-variable "provider_azurerm_features_keyvault" {
-  default = {
-    purge_soft_delete_on_destroy = false
-  }
-}

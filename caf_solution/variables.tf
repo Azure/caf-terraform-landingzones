@@ -52,13 +52,6 @@ variable "global_settings" {
   default = {}
 }
 
-variable "provider_azurerm_features_keyvault" {
-  default = {
-    purge_soft_delete_on_destroy = false
-  }
-}
-
-
 variable "rover_version" {
   default = "caf_standalone"
 }
