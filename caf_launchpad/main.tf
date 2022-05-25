@@ -1,5 +1,4 @@
 terraform {
-  required_version = ">= 1.1"
   required_providers {
     // azurerm version driven by the caf module
     // azuread version driven by the caf module
@@ -24,6 +23,7 @@ terraform {
       version = "~> 1.2.0"
     }
   }
+  required_version = ">= 0.15"
 }
 
 
