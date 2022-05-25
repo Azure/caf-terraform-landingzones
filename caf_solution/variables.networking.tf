@@ -144,6 +144,9 @@ variable "vnet_peerings" {
 variable "virtual_hub_er_gateway_connections" {
   default = {}
 }
+variable "virtual_hub_route_table_routes" {
+  default = {}
+}
 variable "virtual_hub_route_tables" {
   default = {}
 }
@@ -168,3 +171,7 @@ variable "lb_backend_address_pool_address" {
 variable "network_interface_backend_address_pool_association" {
   default = {}
 }
+variable "public_ip_prefixes" {
+  default = {}
+}
+

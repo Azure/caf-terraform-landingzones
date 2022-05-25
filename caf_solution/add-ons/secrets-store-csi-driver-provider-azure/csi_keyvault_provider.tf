@@ -71,7 +71,7 @@ data "kustomization_overlay" "csi_keyvault_provider" {
     patch = <<-EOF
       - op: replace
         path: /spec/parameters/keyvaultName
-        value: ${var.csi_keyvault_provider.keyvault_name}
+        value: ${local.keyvault_name}
     EOF
 
     target = {
