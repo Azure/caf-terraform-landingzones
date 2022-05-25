@@ -4,15 +4,18 @@
 
 - name: Get deployment user object_id (make sure you are logged-in to the launchpad Azure subscription first.)
   shell: az ad signed-in-user show --query objectId -o tsv
-  register: object_id
+  register: bash_object_id
+  when: lookup('env', 'AZURE_OBJECT_ID') == ''
 
 - name: Get deployment user UPN
   shell: az ad signed-in-user show --query userPrincipalName -o tsv
-  register: upn
+  register: bash_upn
+  when: upn_owner is not defined
 
 - name: Get default user's tenant name
   shell: az rest --method get --url "https://graph.microsoft.com/v1.0/organization" --query "value[0].verifiedDomains[?isDefault].name" -o tsv
-  register: tenant_name
+  register: bash_tenant_name
+  when: tenant_name is not defined
   
 - name: Get default user's tenant guid
   shell: az account show --query tenantId -o tsv
@@ -26,11 +29,22 @@
   shell: az account show --query name -o tsv
   register: subscription_name
 
-
 - set_fact:
     regions:  "{{ azure_regions }}"
     deployment_mode: "platform"
     topology: "{{bootstrap | default()}}"
+    object_id: "{{ bash_object_id.stdout | default(lookup('env', 'AZURE_OBJECT_ID')) }}"
+    upn: "{{ upn_owner | default(bash_upn.stdout) }}"
+    tenant_name: "{{ tenant_name | default(bash_tenant_name.stdout) }}"
+    base_folder: "{{ lookup('env', 'AZURE_OBJECT_ID') if lookup('env', 'AZURE_OBJECT_ID') != '' else '/tf/caf' }}"
+
+- debug:
+    msg:
+      - "{{ regions }}"
+      - "{{ customer_name }}"
+      - "{{ object_id }}"
+      - "{{ upn }}"
+      - "{{ base_folder }}"
 
 - set_fact:
     topology: "{{ lookup('template', '{{ topology_file }}') | from_yaml }}"
@@ -127,7 +141,7 @@
   ansible.builtin.template:
     src: "{{public_templates_folder}}/platform/single_subscription.yaml"
     dest: "{{destination_path}}/ignite.yaml"
-                         
+        
 - name: readme.md
   ansible.builtin.template:
     src: "{{platform_service_folder}}/README.md"

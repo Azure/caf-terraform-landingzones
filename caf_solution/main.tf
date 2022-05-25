@@ -26,6 +26,9 @@ terraform {
   required_version = ">= 0.15"
 }
 
+provider "azuread" {
+  partner_id = "ca4078f8-9bc4-471b-ab5b-3af6b86a42c8"
+}
 
 provider "azurerm" {
   partner_id = "ca4078f8-9bc4-471b-ab5b-3af6b86a42c8"
@@ -94,7 +97,7 @@ locals {
       }
     )
     ,
-    try(data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.tfstates, {})
+    data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.tfstates
   )
 
 
@@ -107,6 +110,13 @@ locals {
       level                = var.landingzone.level
       tenant_id            = var.tenant_id
       subscription_id      = data.azurerm_client_config.current.subscription_id
+    }
+    remote = {
+      hostname     = try(var.tfstate_hostname, "app.terraform.io")
+      organization = var.tfstate_organization
+      workspaces = {
+        name = var.workspace
+      }
     }
   }
 

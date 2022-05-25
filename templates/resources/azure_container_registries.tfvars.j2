@@ -1,0 +1,132 @@
+azure_container_registries = {
+{% for key, value in resources[tfstate_resource].resources[subscription_key].azure_container_registries.items() %}
+  {{ key }} = {
+    name = "{{ value.name }}"
+{% if value.resource_group_key is defined %}
+    resource_group_key = "{{ value.resource_group_key }}"
+{% endif %}
+{% if value.resource_group_name is defined %}
+    resource_group_name = "{{ value.resource_group_name }}"
+{% endif %}
+{% if value.resource_group is defined %}
+    resource_group = {
+{% if value.resource_group.key is defined %}
+      key = "{{value.resource_group.key}}"
+{% endif %}
+{% if value.resource_group.name is defined %}
+      name = "{{value.resource_group.name}}"
+{% endif %}
+{% if value.resource_group.lz_key is defined %}
+      lz_key = "{{ value.resource_group.lz_key }}"
+{% endif %}
+    }
+{% endif %}
+{% if value.location is defined %}
+    location = "{{value.location}}"
+{% endif %}
+{% if value.sku is defined %}
+    sku = "{{value.sku}}"
+{% endif %}
+{% if value.admin_enabled is defined %}
+    admin_enabled = {{value.admin_enabled | lower}}
+{% endif %}
+{% if value.tags is defined %}
+    tags   = {
+{% for tag_key, tag_value in value.tags.items() %}
+      {{ tag_key }} = "{{ tag_value }}"
+{% endfor %}
+    }
+{% endif %}
+{% if value.public_network_access_enabled is defined %}
+    public_network_access_enabled = {{value.public_network_access_enabled | lower}}
+{% endif %}
+{% if value.georeplications is defined %}
+    georeplications = {
+{% for rep_key, rep_config in value.georeplications.items() %}
+      {{ rep_key }} = {
+        key = "{{rep_key}}"
+{% if rep_config.tags is defined %}
+        tags   = {
+{% for tag_key, tag_value in rep_config.tags.items() %}
+      {{ tag_key }} = "{{ tag_value }}"
+{% endfor %}
+      }
+{% endif %}
+    }
+{% endfor %}
+  }
+{% endif %}
+{#
+{% if value.network_rule_set is defined %}
+    network_rule_set = {
+{% for nrs_key, nrs_config in value.network_rule_set.items() %}
+      {{ nrs_key }} = {
+        default_action = "{{nrs_config.default_action}}"
+{% if nrs_config.ip_rules is defined %}
+        ip_rule = {
+{% for ipr_key, ipr_config in nrs_config.ip_rules.items() %}
+      {{ ipr_key }} = {
+          ip_range = {{ipr_config.ip_range}}
+        }
+{% endfor %}
+      }
+{% endif %}
+{% if nrs_config.virtual_networks is defined %}
+        virtual_network = {
+{% for vnet_key, vnet_config in nrs_config.virtual_networks.items() %}
+      {{ vnet_key }} = {
+{% if vnet_config.subnet_id is defined %}
+          subnet_id = {{vnet_config.subnet_id}}
+{% endif %}
+{% if vnet_config.subnet_key is defined %}
+          subnet_key = {{vnet_config.subnet_key}}
+{% endif %}
+{% if vnet_config.lz_key is defined %}
+          lz_key = {{vnet_config.lz_key}}
+{% endif %}
+{% if vnet_config.vnet_key is defined %}
+          vnet_key = {{vnet_config.vnet_key}}
+{% endif %}
+        }
+{% endfor %}
+        }
+{% endif %}
+{% endfor %}
+    }
+{% endif %}
+#}
+{% if value.private_endpoints is defined %}
+    private_endpoints = {
+{% for pep_key, pep_config in value.private_endpoints.items() %}
+      {{ pep_key }} = {
+        name = "{{pep_config.name}}"
+        vnet_key = "{{pep_config.vnet_key}}"
+        subnet_key = "{{pep_config.subnet_key}}"
+        resource_group_key = "{{pep_config.resource_group_key}}"
+{% if pep_config.identity is defined %}
+        identity = {
+          type = "{{pep_config.identity.type}}"
+          identity_ids = {{pep_config.identity.identity_ids | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"')}}
+        }
+{% endif %}
+        private_service_connection = {
+          name = "{{pep_config.private_service_connection.name}}"
+          is_manual_connection = {{pep_config.private_service_connection.is_manual_connection | lower}}
+          subresource_names = {{pep_config.private_service_connection.subresource_names | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"')}}
+        }
+{% if pep_config.private_dns is defined %}
+        private_dns = {
+          zone_group_name = "{{pep_config.private_dns.zone_group_name}}"
+          keys = {{pep_config.private_dns.zone_keys | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"')}}
+{% if pep_config.private_dns.lz_key is defined %}
+          lz_key = "{{pep_config.private_dns.lz_key}}"
+{% endif %}
+        }
+{% endif %}
+      }
+{% endfor %}
+    }
+{% endif %}
+  }
+{% endfor %}
+}

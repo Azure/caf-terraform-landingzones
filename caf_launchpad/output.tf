@@ -22,7 +22,7 @@ output "diagnostics" {
 
 output "tfstates" {
   value     = local.tfstates
-  sensitive = true
+  sensitive = false
 }
 
 

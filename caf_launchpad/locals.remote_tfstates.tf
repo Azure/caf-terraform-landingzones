@@ -28,7 +28,16 @@ locals {
         subscription_id      = value.subscription_id
         tenant_id            = value.tenant_id
         sas_token            = try(value.sas_token, null) != null ? var.sas_token : null
-      }
+      } if try(value.backend_type, "azurerm") == "azurerm"
+    } 
+    remote = {
+      for key, value in try(var.landingzone.tfstates, {}) : key => {
+        hostname     = try(value.hostname, null)
+        organization = value.organization
+        workspaces = {
+          name = value.workspace
+        }
+      } if try(value.backend_type, "azurerm") == "remote"
     }
 
   }

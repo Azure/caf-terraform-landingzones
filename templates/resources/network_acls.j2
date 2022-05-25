@@ -1,0 +1,37 @@
+{% if value.network is defined %}
+{% set acls_key = 'network' %}
+{% endif %}
+{% if acls_key is defined %}
+    {{acls_key}} = {
+{% if value[acls_key].default_action is defined %}
+      default_action = "{{ value[acls_key].default_action }}"
+{% endif %}
+{% if value[acls_key].bypass is defined %}
+{% if resource_type == 'keyvaults' %}
+      bypass = "{{ value[acls_key].bypass }}"
+{% else %}
+      bypass = {{ value[acls_key].bypass | replace('None','[]') | replace('\'','\"') }}
+{% endif %}
+{% endif %}
+{% if value[acls_key].ip_rules is defined %}
+      ip_rules = {{ value[acls_key].ip_rules | replace('None','[]') | replace('\'','\"') }}
+{% endif %}
+{% if value[acls_key].subnets is defined %}
+      subnets = {
+{% for s_key, s_value in value[acls_key].subnets.items() %}
+        {{ s_key }} = {
+{% if s_value.remote_subnet_id is defined %}
+          remote_subnet_id = "{{ s_value.remote_subnet_id  }}"
+{% else %}
+{% if s_value.lz_key is defined %}
+          lz_key     = "{{ s_value.lz_key }}"
+{% endif %}
+          vnet_key   = "{{ s_value.vnet_key }}"
+          subnet_key = "{{ s_value.subnet_key }}"
+{% endif %}
+        }
+{% endfor %}
+      }
+{% endif %}
+    }
+{% endif %}

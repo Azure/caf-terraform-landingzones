@@ -55,6 +55,12 @@
       private: no
       default: region1
 
+    - name: gitops_agent
+      prompt: "github or tfcloud. Select the gitops agent you are using to deploy the landing zones."
+      private: no
+      default: github
+
+
 
   tasks:
 

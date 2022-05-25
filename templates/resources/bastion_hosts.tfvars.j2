@@ -1,0 +1,74 @@
+bastion_hosts = {
+{% for key, value in resources[tfstate_resource].resources[subscription_key].bastion_hosts.items() %}
+  {{ key }} = {
+    name = "{{ value.name }}"
+{% if value.sku is defined %}
+    sku = "{{value.sku}}"
+{% endif %}
+{% if value.region is defined %}
+    region = "{{value.region}}"
+{% endif %}
+{% if value.resource_group_key is defined %}
+    resource_group_key = "{{value.resource_group_key}}"
+{% endif %}
+{% if value.vnet_key is defined %}
+    vnet_key = "{{value.vnet_key}}"
+{% endif %}
+{% if value.subnet_key is defined %}
+    subnet_key = "{{value.subnet_key}}"
+{% endif %}
+{% if value.public_ip_key is defined %}
+    public_ip_key = "{{value.public_ip_key}}"
+{% endif %}
+{% if value.resource_group is defined %}
+    resource_group = {
+{% if value.resource_group.key is defined %}
+      key = "{{value.resource_group.key}}"
+{% endif %}
+{% if value.resource_group.name is defined %}
+      name = "{{value.resource_group.name}}"
+{% endif %}
+{% if value.resource_group.lz_key is defined %}
+      lz_key = "{{value.resource_group.lz_key}}"
+{% endif %}
+    }
+{% endif %}
+{% if value.vnet is defined %}
+    vnet = {
+{% if value.vnet.vnet_key is defined %}
+      vnet_key = "{{value.vnet.vnet_key}}"
+{% endif %}
+{% if value.vnet.subnet_key is defined %}
+      subnet_key = "{{value.vnet.subnet_key}}"
+{% endif %}
+{% if value.vnet.lz_key is defined %}
+      lz_key = "{{value.vnet.lz_key}}"
+{% endif %}
+    }
+{% endif %}
+{% if value.public_ip is defined %}
+    public_ip = {
+{% if value.public_ip.lz_key is defined %}
+      lz_key = "{{value.public_ip.lz_key}}"
+{% endif %}
+{% if value.public_ip.id is defined %}
+      id = "{{value.public_ip.id}}"
+{% endif %}
+{% if value.public_ip.key is defined %}
+      key = "{{value.public_ip.key}}"
+{% endif %}
+{% if value.public_ip.public_ip_key is defined %}
+      public_ip_key = "{{value.public_ip.public_ip_key}}"
+{% endif %}
+    }
+{% endif %}
+{% if value.tags is defined %}
+    tags   = {
+{% for tag_key, tag_value in value.tags.items() %}
+      {{ tag_key }} = "{{ tag_value }}"
+{% endfor %}
+    }
+{% endif %}
+  }
+{% endfor %}
+}
