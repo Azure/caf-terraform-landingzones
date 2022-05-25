@@ -1,7 +1,7 @@
 # Cloud Adoption Framework landing zones for Terraform - Ignite the Azure Platform and landing zones
 
 
-:rocket: START HERE: [Follow the onboarding guide from](https://aztfmod.github.io/documentation/docs/enterprise-scale/landingzones/platform/org-setup)
+:rocket: START HERE: [Follow the onboarding guide from](https://aztfmod.github.io/documentation/docs/azure-landing-zones/landingzones/platform/org-setup)
 
 
 For further executions or command, you can refer to the following sections
