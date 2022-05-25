@@ -81,6 +81,9 @@ variable "networking" {
   default = {}
   type    = map(any)
 }
+variable "network_profiles" {
+  default = {}
+}
 variable "front_door_waf_policies" {
   default = {}
 }
@@ -157,9 +160,6 @@ variable "vpn_sites" {
   default = {}
 }
 variable "vpn_gateway_connections" {
-  default = {}
-}
-variable "network_profiles" {
   default = {}
 }
 variable "lb" {

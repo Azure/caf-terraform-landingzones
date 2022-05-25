@@ -1,4 +1,5 @@
-storage_accounts = {
+{% set resource_type = 'storage_accounts' %}
+{{resource_type}} = {
 {% for key, value in resources[tfstate_resource].resources[subscription_key].storage_accounts.items() %}
   {{ key }} = {
     name                      = "{{ value.name }}"

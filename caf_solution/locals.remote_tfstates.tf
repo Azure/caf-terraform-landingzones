@@ -33,7 +33,16 @@ locals {
         tenant_id            = try(value.tenant_id, data.azurerm_client_config.current.tenant_id)
         sas_token            = try(value.sas_token, null) != null ? var.sas_token : null
         use_azuread_auth     = try(value.use_azuread_auth, true)
-      }
+      } if try(value.backend_type, "azurerm") == "azurerm"
+    } 
+    remote = {
+      for key, value in try(var.landingzone.tfstates, {}) : key => {
+        hostname     = try(value.hostname, null)
+        organization = value.organization
+        workspaces = {
+          name = value.workspace
+        }
+      } if try(value.backend_type, "azurerm") == "remote"
     }
   }
 

@@ -56,7 +56,7 @@ private_dns_{{env}}:
 
       resource_groups:
         dns_connectivity_{{env}}:
-          name: dns-connectivity-{{env}}
+          name: connectivity-dns-{{env}}
 
       private_dns:
 {% for key in variables.variables_private_dns_zones.zones.keys() %}

@@ -151,7 +151,11 @@ container_groups = {
 {% if c_value.environment_variables is defined %}
       environment_variables = {
 {% for ev_key, ev_value in c_value.environment_variables.items() %}
+{% if (ev_value | type_debug) == 'bool' %}
+        {{ev_key}} = {{ev_value | lower }}
+{% else %}
         {{ev_key}} = "{{ev_value}}"
+{% endif %}
 {% endfor %}
       }
 {% endif %}

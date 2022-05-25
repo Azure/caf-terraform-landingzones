@@ -51,21 +51,27 @@
         files_matching: "tfstates.yaml"
       when: deployment_mode == 'asvm'
 
-    - name: "Load variable for platform config from {{platform_definition_folder}}"
-      include_vars:
-        name: platform_resource__to_merge
-        dir: "{{platform_definition_folder | default(template_folder)}}"
-        depth: 0
-        ignore_unknown_extensions: true
-        files_matching: ".yaml"
+    - find:
+        paths: "{{definition_folder | default(platform_definition_folder)}}"
+        recurse: yes
+        patterns: "*.yaml"
+        file_type: file
+        excludes: "*.caf.platform.yaml"
+      register: yaml_files_to_process
       when: deployment_mode == 'platform'
 
-    - name: Merge resources variables
-      merge_vars:
-        suffix_to_merge: _resource__to_merge
-        merged_var_name: merged_resources
-        expected_type: 'dict'
-        recursive_dict_merge: True
+
+    - name: load variables
+      set_fact:
+        "{{item.path | basename | regex_replace('.yaml$', '')}}_resource__to_merge": "{{ lookup('template', item.path )}}"
+      with_items: "{{yaml_files_to_process.files}}"
+      when: deployment_mode == 'platform'
+
+    - name: load variables
+      set_fact:
+        merged_resources: "{{ merged_resources | default({}) | combine( lookup('template', item.path ) | from_yaml )}}"
+      with_items: "{{yaml_files_to_process.files}}"
+      when: deployment_mode == 'platform'
 
     - set_fact:
         resources:  "{{ merged_resources }}"
