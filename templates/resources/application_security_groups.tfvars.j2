@@ -1,0 +1,15 @@
+application_security_groups = {
+{% for key, value in resources[tfstate_resource].resources[subscription_key].application_security_groups.items() %}
+  {{ key }} = {
+    name                      = "{{ value.name }}"
+    resource_group_key        = "{{ value.resource_group_key }}"
+{% if value.tags is defined %}
+    tags   = {
+{% for tag_key, tag_value in value.tags.items() %}
+      {{ tag_key }} = "{{ tag_value }}"
+{% endfor %}
+    }
+{% endif %}
+  }
+{% endfor %}
+}
