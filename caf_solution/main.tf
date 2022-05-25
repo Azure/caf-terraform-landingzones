@@ -26,6 +26,9 @@ terraform {
   required_version = ">= 1.1.0"
 }
 
+provider "azuread" {
+  partner_id = "ca4078f8-9bc4-471b-ab5b-3af6b86a42c8"
+}
 
 provider "azurerm" {
   partner_id = "ca4078f8-9bc4-471b-ab5b-3af6b86a42c8"
