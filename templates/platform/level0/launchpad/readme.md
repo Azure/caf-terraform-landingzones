@@ -96,8 +96,8 @@ rover login -t {{ bootstrap.azure_landing_zones.identity.tenant_name }}
 
 # On success, re-execute the rover ignite
 
-ansible-playbook {{public_templates_folder}}/ansible/ansible.yaml \
-  --extra-vars "@{{platform_definition_folder}}/ignite.yaml"
+ansible-playbook $(readlink -f ./landingzones/templates/ansible/ansible.yaml) \
+  --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)"
 
 ```
 

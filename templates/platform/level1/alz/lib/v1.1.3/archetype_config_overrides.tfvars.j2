@@ -12,9 +12,9 @@ archetype_config_overrides = {
 {% if attribute_value is string %}
           value = "{{ attribute_value }}"
 {% elif attribute_value is boolean %}
-          value = {{ attribute_value | string | lower }}
+          boolean = {{ attribute_value | string | lower }}
 {% elif attribute_value is number %}
-          value = {{ attribute_value }}
+          integer = {{ attribute_value }}
 {% else %}
 {% if attribute_value is mapping %}
 {% for caf_key, caf_value in attribute_value.items() %}

@@ -1,13 +1,15 @@
 #
 # If you are changing a value in this file you need to execute the following command to update the definition folder
 # 
-# ansible-playbook {{public_templates_folder}}/ansible/walk-through-single.yaml \
-# --extra-vars "@{{platform_definition_folder}}/ignite.yaml"
+# ansible-playbook $(readlink -f ./landingzones/templates/ansible/walk-through-single.yaml) \
+#  --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)" \
+#  -e base_folder=$(pwd)
 # 
 # then update the Terraform configuration files with
 #
-# ansible-playbook {{public_templates_folder}}/ansible/ansible.yaml \
-#  --extra-vars "@{{platform_definition_folder}}/ignite.yaml"
+# ansible-playbook $(readlink -f ./landingzones/templates/ansible/ansible.yaml) \
+#  --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)" \
+#  -e base_folder=$(pwd)
 # 
 # 
 
@@ -16,20 +18,20 @@ caf_environment: {{caf_environment}}
 default_email_address: {{default_email_address}}
 alz_mg_prefix: {{alz_mg_prefix}}
 alz_mg_name: {{alz_mg_name}}
-azure_regions: {{azure_regions}}
+azure_regions: {{azure_regions }}
 prefix: {{prefix}}
 
 # folder parameters
-topology_file: {{platform_definition_folder}}/ignite.yaml
-landingzones_folder: {{landingzones_folder}}
-public_templates_folder: {{public_templates_folder}}
-platform_configuration_folder: {{platform_configuration_folder}}
-platform_definition_folder: {{platform_definition_folder}}
-platform_template_folder: {{platform_template_folder}}
+topology_file: "{{base_folder}}/platform/definition/ignite.yaml"
+landingzones_folder: "{{base_folder}}/landingzones"
+public_templates_folder: "{{base_folder}}/landingzones/templates"
+platform_configuration_folder: "{{base_folder}}/platform/configuration"
+platform_definition_folder: "{{base_folder}}/platform/definition"
+platform_template_folder: "{{base_folder}}/platform/template"
 
 deployment_mode: {{deployment_mode}}
 
-caf_landingzone_branch: 2203.0
+caf_landingzone_branch: {{caf_landingzone_branch | default('2204.1.int')}}
 
 caf_regions:
 {% for region, location in regions.items() %}
@@ -70,8 +72,8 @@ caf_launchpad:
     caf_deployment_mode: demo_single_subscription
 
 
-azuread_user_ea_account_owner: {{upn.stdout}}
-ea_owner_object_id: {{object_id.stdout}}
+azuread_user_ea_account_owner: {{azuread_user_ea_account_owner | default(upn)}}
+ea_owner_object_id: {{ea_owner_object_id | default(object_id)}}
 
 azuread_identity_mode: service_principal
 enable_azuread_groups: True
@@ -108,17 +110,17 @@ billing_subscription_role_delegations:
   enable: false
   # Azure Active Directory User (UPN) that is Account Owner in the EA portal
   # if enable=false, set the upn of the user doing the manual deployment
-  azuread_user_ea_account_owner: {{topology.azuread_user_ea_account_owner | default(upn.stdout)}}
+  azuread_user_ea_account_owner: {{topology.azuread_user_ea_account_owner | default(upn)}}
   # see comments above to get the object_id
   #
   # Also set this GUID to the owner of the launchpad azuread_groups
   #
-  azuread_user_ea_account_owner_object_id: {{topology.ea_owner_object_id | default(object_id.stdout)}}
+  azuread_user_ea_account_owner_object_id: {{topology.ea_owner_object_id | default(object_id)}}
   # Only set the following two attributes when enable=true
   billing_account_name: <replace>
   enrollment_account_name: <replace>
 
-subscriptions:
+platform_subscriptions:
   launchpad:  # Do not rename the key
     name: {{subscription_name.stdout}}
     create_alias: false 
@@ -146,6 +148,7 @@ deployments:
         identity: identity.yaml
         management: management.yaml
         asvm: asvm.yaml
+        gitops_agents: gitops_agents_aci.yaml
     alz:
       {{default_region_key}}:
         {{alz_mg_prefix}}: alz.yaml
@@ -223,7 +226,7 @@ azure_landing_zones:
     # Set the Azure Active Directory tenant name (primary domain name)
     # has to be the default domain name (custom dns name or tenantname.onmicrosoft.com)
     # check the AAD property
-    tenant_name: {{tenant_name.stdout}}
+    tenant_name: {{ azure_landing_zones.identity.tenant_name | default(tenant_name)}}
     # only service_principal supported with rover ignite at the moment
     azuread_identity_mode: {{topology.azuread_identity_mode}}
     enable_azuread_groups: {{topology.enable_azuread_groups}}

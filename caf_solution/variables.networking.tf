@@ -81,6 +81,9 @@ variable "networking" {
   default = {}
   type    = map(any)
 }
+variable "network_profiles" {
+  default = {}
+}
 variable "front_door_waf_policies" {
   default = {}
 }
@@ -138,6 +141,9 @@ variable "vhub_peerings" {
 variable "vnet_peerings" {
   default = {}
 }
+variable "vnet_peerings_v1" {
+  default = {}
+}
 variable "virtual_hub_er_gateway_connections" {
   default = {}
 }
@@ -154,9 +160,6 @@ variable "vpn_sites" {
   default = {}
 }
 variable "vpn_gateway_connections" {
-  default = {}
-}
-variable "network_profiles" {
   default = {}
 }
 variable "lb" {
