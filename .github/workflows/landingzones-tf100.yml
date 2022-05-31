@@ -197,8 +197,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-          with:
-            submodules: true
+        with:
+          submodules: true
       - run: |
           git submodule update --remote --checkout
 
