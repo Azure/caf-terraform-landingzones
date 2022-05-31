@@ -10,5 +10,4 @@
 **/*.log
 **/backend.azurerm.tf
 public
-aztfmod
 *output.json
