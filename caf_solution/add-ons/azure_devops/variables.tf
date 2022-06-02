@@ -34,9 +34,6 @@ variable "tags" {
 variable "app_service_environments" {
   default = {}
 }
-variable "app_service_environments_v3" {
-  default = {}
-}
 variable "app_service_plans" {
   default = {}
 }
