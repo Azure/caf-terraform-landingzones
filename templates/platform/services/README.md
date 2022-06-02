@@ -1,7 +1,7 @@
 # Cloud Adoption Framework landing zones for Terraform - Ignite the Azure Platform and landing zones
 
 
-:rocket: START HERE: [Follow the onboarding guide from](https://aztfmod.github.io/documentation/docs/enterprise-scale/landingzones/platform/org-setup)
+:rocket: START HERE: [Follow the onboarding guide from](https://aztfmod.github.io/documentation/docs/azure-landing-zones/landingzones/platform/org-setup)
 
 
 For further executions or command, you can refer to the following sections
@@ -19,10 +19,10 @@ The best course of actions is to follow the readme files generated within each l
 Once you are ready to ingite, just run:
 
 ```bash
-rover login -t {{tenant_name.stdout}} -s {{subscription_id.stdout}}
+rover login -t {{ azure_landing_zones.identity.tenant_name | default(tenant_name)}} -s {{subscription_id.stdout}}
 
-ansible-playbook {{public_templates_folder}}/ansible/ansible.yaml \
-  --extra-vars "@{{platform_definition_folder}}/ignite.yaml"
+ansible-playbook $(readlink -f ./landingzones/templates/ansible/ansible.yaml) \
+  --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)"
 
 ```
 
@@ -42,8 +42,8 @@ Whenever needed, or under a profesional supervision you can use the following co
 
 ```bash
 git clone https://github.com/Azure/caf-terraform-landingzones.git {{landingzones_folder}}
-cd {{landingzones_folder}} && git pull
-git checkout {{topology.caf_landingzone_branch}}
+cd {{landingzones_folder}} && git fetch origin
+git checkout {{caf_landingzone_branch}}
 
 ```
 
@@ -52,7 +52,7 @@ git checkout {{topology.caf_landingzone_branch}}
 For your reference, if you need to re-generate the YAML definition files later, you can run the following command: 
 
 ```bash
-ansible-playbook {{public_templates_folder}}/ansible/walk-through-single.yaml \
-  --extra-vars "@{{platform_definition_folder}}/ignite.yaml"
+ansible-playbook $(readlink -f ./landingzones/templates/ansible/walk-through-single.yaml) \
+  --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)"
 
 ```

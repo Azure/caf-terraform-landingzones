@@ -18,13 +18,13 @@
       --account-name "{{ launchpad_storage_account.stdout | default('') }}" \
       --container-name "{{ resources.tfstates.platform.launchpad.workspace | default('tfstate') }}" \
       --auth-mode "login" \
-      --file "~/.terraform.cache/launchpad/{{ resources.tfstates.platform.launchpad.tfstate }}"
+      --file "{{ job_cache_base_path }}/launchpad/{{ resources.tfstates.platform.launchpad.tfstate }}"
 
 - name: "[{{deployment_mode}}/{{stage}}] - Get subscription_creation_landingzones details"
   when:
     - launchpad_tfstate_exists.rc == 0
     - resources.enable_azure_subscription_vending_machine
-  shell: "cat ~/.terraform.cache/launchpad/{{ resources.tfstates.platform.launchpad.tfstate }}"
+  shell: "cat {{ job_cache_base_path }}/launchpad/{{ resources.tfstates.platform.launchpad.tfstate }}"
   register: launchpad_tfstate
 
 - name: "[{{deployment_mode}}/{{stage}}] - Get launchpad json data"

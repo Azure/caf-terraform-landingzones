@@ -70,6 +70,9 @@ management:
             KeyVaultAnalytics:
               publisher: Microsoft
               product: OMSGallery/KeyVaultAnalytics
+            SecurityInsights:
+              publisher: Microsoft
+              product: OMSGallery/SecurityInsights
 
       monitor_action_groups:
         networking_operations:

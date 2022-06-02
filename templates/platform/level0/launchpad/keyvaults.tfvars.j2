@@ -1,9 +1,12 @@
 
 keyvaults = {
   level0 = {
-    name               = "{{ resources[tfstate].resources[subscription_key].keyvaults.level0.name }}"
-    resource_group_key = "{{ resources[tfstate].resources[subscription_key].keyvaults.level0.resource_group_key }}"
-    sku_name           = "{{ resources[tfstate].resources[subscription_key].keyvaults.level1.sku_name | default('standard') }}"
+    name                      = "{{ resources[tfstate].resources[subscription_key].keyvaults.level0.name }}"
+    resource_group_key        = "{{ resources[tfstate].resources[subscription_key].keyvaults.level0.resource_group_key }}"
+    sku_name                  = "{{ resources[tfstate].resources[subscription_key].keyvaults.level1.sku_name | default('standard') }}"
+{% if resources[tfstate].resources[subscription_key].keyvaults.level2.enable_rbac_authorization is defined %}
+    enable_rbac_authorization = {{ resources[tfstate].resources[subscription_key].keyvaults.level0.enable_rbac_authorization | lower }}
+{% endif %}
     tags = {
       caf_tfstate     = "level0"
       caf_environment = "{{ bootstrap.caf_environment }}"
@@ -34,12 +37,47 @@ keyvaults = {
 {% endif %}
     }
 
+{% set value = resources[tfstate].resources[subscription_key].keyvaults.level0 %}
+{% if value.network is defined %}
+    network = {
+{% if value['network'].default_action is defined %}
+      default_action = "{{ value['network'].default_action }}"
+{% endif %}
+{% if value['network'].bypass is defined %}
+      bypass = "{{ value['network'].bypass }}"
+{% endif %}
+{% if value['network'].ip_rules is defined %}
+      ip_rules = {{ value['network'].ip_rules | replace('None','[]') | replace('\'','\"') }}
+{% endif %}
+{% if value['network'].subnets is defined %}
+      subnets = {
+{% for s_key, s_value in value['network'].subnets.items() %}
+        {{ s_key }} = {
+{% if s_value.remote_subnet_id is defined %}
+          remote_subnet_id = "{{ s_value.remote_subnet_id  }}"
+{% else %}
+{% if s_value.lz_key is defined %}
+          lz_key     = "{{ s_value.lz_key }}"
+{% endif %}
+          vnet_key   = "{{ s_value.vnet_key }}"
+          subnet_key = "{{ s_value.subnet_key }}"
+{% endif %}
+        }
+{% endfor %}
+      }
+{% endif %}
+    }
+{% endif %}
+
   }
 
   level1 = {
-    name               = "{{ resources[tfstate].resources[subscription_key].keyvaults.level1.name }}"
-    resource_group_key = "{{ resources[tfstate].resources[subscription_key].keyvaults.level1.resource_group_key }}"
-    sku_name           = "{{ resources[tfstate].resources[subscription_key].keyvaults.level1.sku_name | default('standard') }}"
+    name                      = "{{ resources[tfstate].resources[subscription_key].keyvaults.level1.name }}"
+    resource_group_key        = "{{ resources[tfstate].resources[subscription_key].keyvaults.level1.resource_group_key }}"
+    sku_name                  = "{{ resources[tfstate].resources[subscription_key].keyvaults.level1.sku_name | default('standard') }}"
+{% if resources[tfstate].resources[subscription_key].keyvaults.level2.enable_rbac_authorization is defined %}
+    enable_rbac_authorization = {{ resources[tfstate].resources[subscription_key].keyvaults.level1.enable_rbac_authorization | lower }}
+{% endif %}
     tags = {
       caf_tfstate     = "level1"
       caf_environment = "{{ bootstrap.caf_environment }}"
@@ -70,12 +108,47 @@ keyvaults = {
 {% endif %}
     }
 
+{% set value = resources[tfstate].resources[subscription_key].keyvaults.level1 %}
+{% if value.network is defined %}
+    network = {
+{% if value['network'].default_action is defined %}
+      default_action = "{{ value['network'].default_action }}"
+{% endif %}
+{% if value['network'].bypass is defined %}
+      bypass = "{{ value['network'].bypass }}"
+{% endif %}
+{% if value['network'].ip_rules is defined %}
+      ip_rules = {{ value['network'].ip_rules | replace('None','[]') | replace('\'','\"') }}
+{% endif %}
+{% if value['network'].subnets is defined %}
+      subnets = {
+{% for s_key, s_value in value['network'].subnets.items() %}
+        {{ s_key }} = {
+{% if s_value.remote_subnet_id is defined %}
+          remote_subnet_id = "{{ s_value.remote_subnet_id  }}"
+{% else %}
+{% if s_value.lz_key is defined %}
+          lz_key     = "{{ s_value.lz_key }}"
+{% endif %}
+          vnet_key   = "{{ s_value.vnet_key }}"
+          subnet_key = "{{ s_value.subnet_key }}"
+{% endif %}
+        }
+{% endfor %}
+      }
+{% endif %}
+    }
+{% endif %}
+
   }
 
   level2 = {
-    name               = "{{ resources[tfstate].resources[subscription_key].keyvaults.level2.name }}"
-    resource_group_key = "{{ resources[tfstate].resources[subscription_key].keyvaults.level2.resource_group_key }}"
-    sku_name           = "{{ resources[tfstate].resources[subscription_key].keyvaults.level1.sku_name | default('standard') }}"
+    name                      = "{{ resources[tfstate].resources[subscription_key].keyvaults.level2.name }}"
+    resource_group_key        = "{{ resources[tfstate].resources[subscription_key].keyvaults.level2.resource_group_key }}"
+    sku_name                  = "{{ resources[tfstate].resources[subscription_key].keyvaults.level1.sku_name | default('standard') }}"
+{% if resources[tfstate].resources[subscription_key].keyvaults.level2.enable_rbac_authorization is defined %}
+    enable_rbac_authorization = {{ resources[tfstate].resources[subscription_key].keyvaults.level2.enable_rbac_authorization | lower }}
+{% endif %}
     tags = {
       caf_tfstate     = "level2"
       caf_environment = "{{ bootstrap.caf_environment }}"
@@ -105,6 +178,38 @@ keyvaults = {
       }
 {% endif %}
     }
+
+{% set value = resources[tfstate].resources[subscription_key].keyvaults.level2 %}
+{% if value.network is defined %}
+    network = {
+{% if value['network'].default_action is defined %}
+      default_action = "{{ value['network'].default_action }}"
+{% endif %}
+{% if value['network'].bypass is defined %}
+      bypass = "{{ value['network'].bypass }}"
+{% endif %}
+{% if value['network'].ip_rules is defined %}
+      ip_rules = {{ value['network'].ip_rules | replace('None','[]') | replace('\'','\"') }}
+{% endif %}
+{% if value['network'].subnets is defined %}
+      subnets = {
+{% for s_key, s_value in value['network'].subnets.items() %}
+        {{ s_key }} = {
+{% if s_value.remote_subnet_id is defined %}
+          remote_subnet_id = "{{ s_value.remote_subnet_id  }}"
+{% else %}
+{% if s_value.lz_key is defined %}
+          lz_key     = "{{ s_value.lz_key }}"
+{% endif %}
+          vnet_key   = "{{ s_value.vnet_key }}"
+          subnet_key = "{{ s_value.subnet_key }}"
+{% endif %}
+        }
+{% endfor %}
+      }
+{% endif %}
+    }
+{% endif %}
 
   }
 }

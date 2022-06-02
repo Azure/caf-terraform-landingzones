@@ -14,10 +14,19 @@ subscriptions:
     # Do not rename the tfstate_key_name
     tfstate_key_name: subscriptions
 
+  deployments:
+    landingzone:
+      global_settings_key:
+        platform:
+          launchpad:
+      remote_tfstates:
+        platform:
+          launchpad:
+
   resources:
     subscriptions:
       subscriptions:
-{% for key, value in topology.subscriptions.items() %}
+{% for key, value in topology.platform_subscriptions.items() %}
         {{key}}:
 {% for l_key, l_value in value.items() %}
 {% if l_key == 'create_alias' %}
