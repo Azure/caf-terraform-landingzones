@@ -12,7 +12,7 @@ ansible-playbook /tf/caf/landingzones/templates/ansible/walk-through-single.yaml
   -e platform_configuration_folder=/tf/caf/configuration \
   -e platform_definition_folder=/tf/caf/platform/definition \
   -e platform_template_folder=/tf/caf/platform/template \
-  -e caf_landingzone_branch='2204.1.int' \
+  -e caf_landingzone_branch="$(git rev-parse --abbrev-ref HEAD)" \
   --extra-vars "@/tf/caf/landingzones/templates/platform/template_topology.yaml" \
   -e $(echo ${params} | xargs)
 
