@@ -28,12 +28,6 @@ variable "tfstate_key" {
 variable "tfstate_resource_group_name" {
   default = null
 }
-variable "tfstate_organization" {
-  default = null
-}
-variable "tfstate_hostname" {
-  default = null
-}
 variable "workspace" {
   default = null
 }
@@ -44,14 +38,27 @@ variable "sas_token" {
 
 variable "landingzone" {
   default = {
-    backend_type        = "azurerm"
-    global_settings_key = "launchpad"
-    level               = "level1"
-    key                 = "caf_examples"
-    tfstates = {
-      launchpad = {
-        level   = "lower"
-        tfstate = "caf_launchpad.tfstate"
+    azurerm = {
+      backend_type        = "azurerm"
+      global_settings_key = "launchpad"
+      level               = "level1"
+      key                 = "caf_examples"
+      tfstates = {
+        launchpad = {
+          level   = "lower"
+          tfstate = "caf_launchpad.tfstate"
+        }
+      }
+    }
+    remote = {
+      backend_type        = "remote"
+      global_settings_key = "launchpad"
+      level               = "level1"
+      key                 = "caf_examples"
+      tfstates = {
+        launchpad = {
+          tfstate = "caf_launchpad.tfstate"
+        }
       }
     }
   }
