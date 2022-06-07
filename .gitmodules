@@ -1,5 +1,5 @@
 [submodule "aztfmod"]
 	path = aztfmod
 	url = https://github.com/aztfmod/terraform-azurerm-caf.git
-	branch = main
+	branch = int-5.5.9
 	ignore = all
