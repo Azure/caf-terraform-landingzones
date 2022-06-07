@@ -10,7 +10,7 @@ module "solution" {
   compute                               = local.compute
   apim                                  = local.apim
   cognitive_services                    = local.cognitive_services
-  current_landingzone_key               = var.landingzone.key
+  current_landingzone_key               = try(var.landingzone.key, var.landingzone[var.backend_type].key)
   custom_role_definitions               = var.custom_role_definitions
   data_factory                          = local.data_factory
   database                              = local.database

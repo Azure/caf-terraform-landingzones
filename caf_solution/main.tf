@@ -93,7 +93,7 @@ locals {
   tfstates = merge(
     tomap(
       {
-        (var.landingzone.key) = local.backend[var.landingzone.backend_type]
+        (try(var.landingzone.key, var.landingzone[var.backend_type].key)) = local.backend[try(var.landingzone.backend_type, var.backend_type)]
       }
     )
     ,
@@ -107,13 +107,13 @@ locals {
       container_name       = var.tfstate_container_name
       resource_group_name  = var.tfstate_resource_group_name
       key                  = var.tfstate_key
-      level                = var.landingzone.level
+      level                = try(var.landingzone.level, var.landingzone[var.backend_type].level)
       tenant_id            = var.tenant_id
       subscription_id      = data.azurerm_client_config.current.subscription_id
     }
     remote = {
-      hostname     = try(var.tfstate_hostname, "app.terraform.io")
-      organization = var.tfstate_organization
+      hostname     = var.tf_cloud_hostname
+      organization = var.tf_cloud_organization
       workspaces = {
         name = var.workspace
       }
