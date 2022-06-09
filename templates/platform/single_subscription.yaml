@@ -31,7 +31,7 @@ platform_template_folder: "{{base_folder}}/platform/template"
 
 deployment_mode: {{deployment_mode}}
 
-caf_landingzone_branch: {{caf_landingzone_branch | default('2204.1.int')}}
+caf_landingzone_branch: {{caf_landingzone_branch | default('int-5.7.0')}}
 
 caf_regions:
 {% for region, location in regions.items() %}
