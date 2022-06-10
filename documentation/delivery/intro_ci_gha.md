@@ -105,7 +105,7 @@ caf_foundations:
       options: --user 0
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name:  setup context
         id: context
@@ -159,7 +159,7 @@ Once the fundamentals are set, we can now proceed to deploy the test landing zon
       options: --user 0
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name:  setup context
         id: context
