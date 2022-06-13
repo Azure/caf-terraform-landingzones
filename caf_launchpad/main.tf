@@ -4,7 +4,7 @@ terraform {
     // azuread version driven by the caf module
     random = {
       source  = "hashicorp/random"
-      version = "~> 3.1.0"
+      version = "~> 3.3.0"
     }
     external = {
       source  = "hashicorp/external"
