@@ -51,6 +51,7 @@ jobs:
           az account set -s  ${{ env.ARM_SUBSCRIPTION_ID }}
 
           echo "local user: $(whoami)"
+          git config --global --add safe.directory ${GITHUB_WORKSPACE}
 
       - name: launchpad
         run: |
@@ -103,6 +104,8 @@ jobs:
           az login --service-principal -u '${{ env.ARM_CLIENT_ID }}' -p '${{ env.ARM_CLIENT_SECRET }}' --tenant '${{ env.ARM_TENANT_ID }}'
           az account set -s  ${{ env.ARM_SUBSCRIPTION_ID }}
 
+          git config --global --add safe.directory ${GITHUB_WORKSPACE}
+
       - name: deploy example
         run: |
           /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/caf_solution/ -a apply \
@@ -147,6 +150,8 @@ jobs:
           az account set -s  ${{ env.ARM_SUBSCRIPTION_ID }}
 
           echo "local user: $(whoami)"
+
+          git config --global --add safe.directory ${GITHUB_WORKSPACE}
 
       - name: launchpad-200-upgrade
         run: |
@@ -197,6 +202,8 @@ jobs:
           az login --service-principal -u '${{ env.ARM_CLIENT_ID }}' -p '${{ env.ARM_CLIENT_SECRET }}' --tenant '${{ env.ARM_TENANT_ID }}'
           az account set -s  ${{ env.ARM_SUBSCRIPTION_ID }}
 
+          git config --global --add safe.directory ${GITHUB_WORKSPACE}
+
       - name: deploy example
         run: |
           /tf/rover/rover.sh -lz ${GITHUB_WORKSPACE}/caf_solution/ -a apply \
@@ -240,6 +247,8 @@ jobs:
           az account set -s  ${{ env.ARM_SUBSCRIPTION_ID }}
 
           echo "local user: $(whoami)"
+
+          git config --global --add safe.directory ${GITHUB_WORKSPACE}
 
       - name: foundations
         run: |
