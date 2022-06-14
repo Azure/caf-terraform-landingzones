@@ -44,6 +44,10 @@ variable "recovery_vaults" {
   default = {}
 }
 
+variable "packer_build" {
+  default = {}
+}
+
 variable "shared_image_galleries" {
   default = {}
 }
