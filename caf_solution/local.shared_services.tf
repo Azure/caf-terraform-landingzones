@@ -11,6 +11,7 @@ locals {
       monitoring                     = var.monitoring
       packer_managed_identity        = var.packer_managed_identity
       packer_service_principal       = var.packer_service_principal
+      packer_build                   = var.packer_build
       recovery_vaults                = var.recovery_vaults
       shared_image_galleries         = var.shared_image_galleries
     }
