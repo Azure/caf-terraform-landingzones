@@ -1,8 +1,8 @@
 # For full description on enterprise_scale module usage, please refer to https://github.com/Azure/terraform-azurerm-caf-enterprise-scale
 
 module "enterprise_scale" {
-  source  = "Azure/caf-enterprise-scale/azurerm"
-  version = "1.1.3"
+  source = "git::https://github.com/Azure/terraform-azurerm-caf-enterprise-scale.git?ref=release/v1.2.0"
+  #version = "1.1.3"
 
   # source = "/tf/caf/alz"
 
