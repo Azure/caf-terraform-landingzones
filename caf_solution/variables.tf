@@ -68,6 +68,10 @@ variable "global_settings" {
   default = {}
 }
 
+variable "global_settings_override" {
+  default = {}
+}
+
 variable "rover_version" {
   default = "caf_standalone"
 }
