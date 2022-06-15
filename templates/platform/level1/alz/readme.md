@@ -20,6 +20,7 @@ rover \
   -lz {{ landingzones_folder }}/caf_solution/add-ons/caf_eslz \
   -var-folder {{ destination_path }} \
   -tfstate_subscription_id {{ resources.caf_launchpad.subscription_id }} \
+  -target_subscription {{ resources.caf_launchpad.subscription_id }} \
   -tfstate {{ tfstate_object.tfstate }} \
   -env {{ resources.caf_environment }} \
   -level {{ tfstate_object.level }} \

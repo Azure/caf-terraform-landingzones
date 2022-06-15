@@ -24,7 +24,7 @@ subscriptions:
           launchpad:
 
   resources:
-    subscriptions:
+    launchpad:
       subscriptions:
 {% for key, value in topology.platform_subscriptions.items() %}
         {{key}}:
