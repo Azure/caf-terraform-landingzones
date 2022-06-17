@@ -43,14 +43,16 @@ jobs:
       options: --user 0
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Login azure
         run: |
           az login --service-principal -u '${{ env.ARM_CLIENT_ID }}' -p '${{ env.ARM_CLIENT_SECRET }}' --tenant '${{ env.ARM_TENANT_ID }}'
           az account set -s  ${{ env.ARM_SUBSCRIPTION_ID }}
 
-          echo "local user: $(whoami)"
+      - name: Github Actions permissions workaround
+        run: |
+          git config --global --add safe.directory ${GITHUB_WORKSPACE}
 
       - name: launchpad
         run: |
@@ -96,12 +98,16 @@ jobs:
       options: --user 0
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Login azure
         run: |
           az login --service-principal -u '${{ env.ARM_CLIENT_ID }}' -p '${{ env.ARM_CLIENT_SECRET }}' --tenant '${{ env.ARM_TENANT_ID }}'
           az account set -s  ${{ env.ARM_SUBSCRIPTION_ID }}
+
+      - name: Github Actions permissions workaround
+        run: |
+          git config --global --add safe.directory ${GITHUB_WORKSPACE}
 
       - name: deploy example
         run: |
@@ -139,7 +145,7 @@ jobs:
       options: --user 0
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Login azure
         run: |
@@ -147,6 +153,10 @@ jobs:
           az account set -s  ${{ env.ARM_SUBSCRIPTION_ID }}
 
           echo "local user: $(whoami)"
+
+      - name: Github Actions permissions workaround
+        run: |
+          git config --global --add safe.directory ${GITHUB_WORKSPACE}
 
       - name: launchpad-200-upgrade
         run: |
@@ -190,12 +200,16 @@ jobs:
       options: --user 0
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Login azure
         run: |
           az login --service-principal -u '${{ env.ARM_CLIENT_ID }}' -p '${{ env.ARM_CLIENT_SECRET }}' --tenant '${{ env.ARM_TENANT_ID }}'
           az account set -s  ${{ env.ARM_SUBSCRIPTION_ID }}
+
+      - name: Github Actions permissions workaround
+        run: |
+          git config --global --add safe.directory ${GITHUB_WORKSPACE}
 
       - name: deploy example
         run: |
@@ -232,7 +246,7 @@ jobs:
       options: --user 0
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Login azure
         run: |
@@ -240,6 +254,10 @@ jobs:
           az account set -s  ${{ env.ARM_SUBSCRIPTION_ID }}
 
           echo "local user: $(whoami)"
+
+      - name: Github Actions permissions workaround
+        run: |
+          git config --global --add safe.directory ${GITHUB_WORKSPACE}
 
       - name: foundations
         run: |

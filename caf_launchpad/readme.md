@@ -29,7 +29,8 @@ rover -lz /tf/caf/caf_launchpad \
     -launchpad \
     -var-folder /tf/caf/caf_launchpad/scenario/100 \
     -parallelism=30 \
-    -a apply
+    -env popol \
+    -a plan
 
 # Advanced scenario - Requires Azure AD privileges
 rover -lz /tf/caf/caf_launchpad \
