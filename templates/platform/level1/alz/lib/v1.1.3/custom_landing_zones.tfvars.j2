@@ -36,10 +36,10 @@ custom_landing_zones = {
 {% else %}
       parameters       = {}
 {% endif %}
-{% if level.archetype_resources.access_control is defined %}
+{% if level.archetype_config.access_control is defined %}
       access_control = {
 {% if resources.azure_landing_zones.identity.azuread_identity_mode != "logged_in_user" %}
-{% for level_ac_key, level_ac in level.archetype_resources.access_control.items() %}
+{% for level_ac_key, level_ac in level.archetype_config.access_control.items() %}
         "{{level_ac_key}}" = {
 {% for level_role_key, level_role in level_ac.items()  %}
           "{{ level_role_key }}" = {
