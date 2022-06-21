@@ -8,7 +8,9 @@
     verbosity: 2
 
 - debug:
-    msg: "{{destination_path}}"
+    msg: 
+      - "{{destination_path}}"
+      - "alz-overrite"
 
 - name: "{{ level }}-{{ tfstate }} |  Clean-up base directory"
   shell: |
