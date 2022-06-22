@@ -253,3 +253,11 @@ variable "container_groups" {
 variable "network_profiles" {
   default = {}
 }
+
+variable "virtual_hub_connections" {
+  default = {}
+}
+
+variable "custom_variables" {
+  default = {}
+}
