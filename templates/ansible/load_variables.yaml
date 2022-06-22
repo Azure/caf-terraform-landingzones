@@ -1,0 +1,132 @@
+# Load variables from tfstates
+
+- set_fact:
+    secure_firewalls_resources: {}
+    virtual_hubs_resources: {}
+
+# Initial load
+- name: load variables
+  set_fact:
+    "{{item.path | basename | regex_replace('.yaml$', '')}}_resource__to_merge": "{{ lookup('template', item.path )}}"
+  with_items: "{{yaml_files_to_process.files}}"
+  when: deployment_mode == 'platform'
+
+- name: load variables
+  set_fact:
+    merged_resources: "{{ merged_resources | default({}) | combine( lookup('template', item.path ) | from_yaml )}}"
+  with_items: "{{yaml_files_to_process.files}}"
+  when: deployment_mode == 'platform'
+
+- set_fact:
+    resources:  "{{ merged_resources }}"
+
+# Azure AD Groups
+- name: tfstate - azuread_groups from launchpad to variable
+  include_tasks: "get_tfstate_content.yaml"
+  register: launchpad_tfstate_exists
+  vars:
+    env: ''
+    tfstate_key: launchpad
+    resource_type: azuread_groups
+    caf_level: level0
+    exported_variable_name: launchpad_azuread_groups
+
+# Keyvaults having credentials
+- name: tfstate - keyvaults from launchpad_credentials to variable
+  include_tasks: "get_tfstate_content.yaml"
+  register: credentials_tfstate_exists
+  vars:
+    env: ''
+    tfstate_key: launchpad_credentials
+    resource_type: keyvaults
+    caf_level: level0
+    exported_variable_name: keyvaults
+
+# Platform subscriptions
+- name: tfstate - platform_subscriptions from subscriptions to variable
+  include_tasks: "get_tfstate_content.yaml"
+  when:
+    - resources.subscription_deployment_mode == 'multiple_subscriptions'
+  vars:
+    env: ''
+    tfstate_key: platform_subscriptions
+    resource_type: subscriptions
+    caf_level: level1
+    exported_variable_name: platform_subscriptions
+
+# Private DNS zones
+- name: tfstate - private dns zones to variable
+  include_tasks: "get_tfstate_content.yaml"
+  vars:
+    resource_type: private_dns
+    tfstate_key: private_dns
+    caf_level: level2
+    exported_variable_name: private_dns
+  loop_control: 
+    loop_var: env
+  loop: "{{ deployments.scale_out_domains }}"
+
+# Virtual hub prod
+- name: tfstate - virtual hub prod to variable
+  include_tasks: "get_tfstate_content.yaml"
+  vars:
+    resource_type: virtual_hubs
+    tfstate_key: virtual_hubs
+    caf_level: level2
+    exported_variable_name: virtual_hubs_resources
+  loop_control: 
+    loop_var: env
+  loop: "{{ deployments.scale_out_domains }}"
+
+# Secure firewalls prod
+- name: tfstate - secure firewall prod to variable
+  include_tasks: "get_tfstate_content.yaml"
+  vars:
+    resource_type: azurerm_firewalls
+    tfstate_key: secure_firewalls
+    caf_level: level2
+    exported_variable_name: secure_firewalls_resources
+  loop_control: 
+    loop_var: env
+  loop: "{{ deployments.scale_out_domains }}"
+
+
+# azurerm_firewall_policies
+- name: tfstate - azurerm_firewalls from private_dns_firewalls to variable
+  include_tasks: "get_tfstate_content.yaml"
+  vars:
+    resource_type: azurerm_firewalls
+    tfstate_key: private_dns_firewalls
+    caf_level: level2
+    exported_variable_name: private_dns_firewalls
+  loop_control: 
+    loop_var: env
+  loop: "{{ deployments.scale_out_domains }}"
+
+# Platform asvm storage accounts
+- name: tfstate - level2_storage_account from launchpad to variable
+  include_tasks: "get_tfstate_content.yaml"
+  vars:
+    env: ''
+    caf_level: level0
+    tfstate_key: launchpad
+    resource_type: storage_accounts
+    resource_key: level2
+    exported_variable_name: level2_storage_account
+    
+
+# Reloading with the variables from tfstates
+- name: load variables
+  set_fact:
+    "{{item.path | basename | regex_replace('.yaml$', '')}}_resource__to_merge": "{{ lookup('template', item.path )}}"
+  with_items: "{{yaml_files_to_process.files}}"
+  when: deployment_mode == 'platform'
+
+- name: Combine variables into resources
+  set_fact:
+    merged_resources: "{{ merged_resources | default({}) | combine( lookup('template', item.path ) | from_yaml )}}"
+  with_items: "{{yaml_files_to_process.files}}"
+  when: deployment_mode == 'platform'
+
+- set_fact:
+    resources:  "{{ merged_resources }}"

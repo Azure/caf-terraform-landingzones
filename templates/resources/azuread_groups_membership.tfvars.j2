@@ -3,6 +3,11 @@ azuread_groups_membership = {
   {{ key }} = {
 {% for l1_key , l1_value in value.items() %}
     {{l1_key}} = {
+{% if l1_key == "object_ids" %}
+{% for l2_key, l2_value in l1_value.items() %}
+        {{l2_key}} = "{{l2_value}}"
+{% endfor %}
+{% else %}
 {% for l2_key, l2_value in l1_value.items() %}
       {{l2_key}} = {
 {% if l2_value.group_lz_key is defined %}
@@ -14,6 +19,7 @@ azuread_groups_membership = {
         keys   = {{ l2_value['keys'] | replace('None','[]') | replace('\'','\"') }}
       }
 {% endfor %}
+{% endif %}
     }
 {% endfor %}
   }
