@@ -42,5 +42,11 @@ locals {
     aks_clusters = {
       for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].aks_clusters, {}))
     }
+
+    keyvaults = {
+      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].keyvaults, {}))
+    }
   }
+
+  keyvault_name = try(var.csi_keyvault_provider.keyvault_name, local.remote.keyvaults[try(var.csi_keyvault_provider.lz_key, var.landingzone.global_settings_key)][var.csi_keyvault_provider.keyvault_key].name)
 }

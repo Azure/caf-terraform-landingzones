@@ -1,26 +1,27 @@
-keyvaults = {
+{% set resource_type = 'keyvaults' %}
+{{resource_type}} = {
 {% for key, value in resources[tfstate_resource].resources[subscription_key].keyvaults.items() %}
   "{{ key | string }}" = {
     name                       = "{{ value.name }}"
     resource_group_key         = "{{ value.resource_group_key }}"
     sku_name                   = "{{ value.sku_name | default('standard')}}"
+{% if value.enabled_for_deployment is defined %}
+    enabled_for_deployment = {{ value.enabled_for_deployment | string | lower }}
+{% endif %}
+{% if value.enabled_for_disk_encryption is defined %}
+    enabled_for_disk_encryption = {{ value.enabled_for_disk_encryption | string | lower }}
+{% endif %}
+{% if value.enabled_for_template_deployment is defined %}
+    enabled_for_template_deployment = {{ value.enabled_for_template_deployment | string | lower }}
+{% endif %}
 {% if value.purge_protection_enabled is defined %}
-    purge_protection_enabled   = {{ value.purge_protection_enabled | bool | lower }}
+    purge_protection_enabled = {{ value.purge_protection_enabled | string | lower }}
 {% endif %}
 {% if value.enable_rbac_authorization is defined %}
-    enable_rbac_authorization  = {{ value.enable_rbac_authorization | bool | lower }}
+    enable_rbac_authorization = {{ value.enable_rbac_authorization | string | lower }}
 {% endif %}
 {% if value.soft_delete_retention_days is defined %}
     soft_delete_retention_days = {{ value.soft_delete_retention_days }}
-{% endif %}
-{% if value.enabled_for_deployment is defined %}
-    enabled_for_deployment = "{{ value.enabled_for_deployment | string | lower }}"
-{% endif %}
-{% if value.enabled_for_disk_encryption is defined %}
-    enabled_for_disk_encryption = "{{ value.enabled_for_disk_encryption | string | lower }}"
-{% endif %}
-{% if value.enabled_for_template_deployment is defined %}
-    enabled_for_template_deployment = "{{ value.enabled_for_template_deployment | string | lower }}"
 {% endif %}
 {% if value.tags is defined %}
       tags   = {
@@ -29,6 +30,7 @@ keyvaults = {
 {% endfor %}
       }
 {% endif %}
+{% include 'network_acls.j2' %}
 {% if value.creation_policies is defined %}
     creation_policies = {
 {% if resources.platform_identity is defined %}

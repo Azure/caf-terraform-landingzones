@@ -1,10 +1,5 @@
 module "solution" {
-  source  = "aztfmod/caf/azurerm"
-  version = "5.5.5"
-
-  # during dev cycles for the module, you can pick dev branches from GitHub, or from a local fork
-  # source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=main"
-  # source = "../../aztfmod"
+  source = "../aztfmod"
 
   providers = {
     azurerm.vhub = azurerm.vhub
@@ -15,7 +10,7 @@ module "solution" {
   compute                               = local.compute
   apim                                  = local.apim
   cognitive_services                    = local.cognitive_services
-  current_landingzone_key               = var.landingzone.key
+  current_landingzone_key               = try(var.landingzone.key, var.landingzone[var.backend_type].key)
   custom_role_definitions               = var.custom_role_definitions
   data_factory                          = local.data_factory
   database                              = local.database

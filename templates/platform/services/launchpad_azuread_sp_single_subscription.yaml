@@ -22,6 +22,8 @@ launchpad:
   resources:
     launchpad:
       resource_groups:
+        gitops:
+          name: caf-gitops-agents
         level0:
           name: caf-level0
         level1:
@@ -211,19 +213,64 @@ launchpad:
                     - subscription_creation_landingzones
                     - caf_platform_contributors
 
+          keyvaults:
+            level0:
+              Key Vault Secrets Officer:
+                azuread_groups:
+                  keys:
+                    - level0
+                    - caf_platform_maintainers
+              Key Vault Secrets User:
+                azuread_groups:
+                  keys:
+                    - identity
+                    - caf_platform_maintainers
+            level1:
+              Key Vault Secrets Officer:
+                azuread_groups:
+                  keys:
+                    - level0
+                    - caf_platform_maintainers
+              Key Vault Secrets User:
+                azuread_groups:
+                  keys:
+                    - identity
+                    - management
+                    - alz
+                    - subscription_creation_platform
+                    - caf_platform_contributors
+            level2:
+              Key Vault Secrets Officer:
+                azuread_groups:
+                  keys:
+                    - level0
+                    - caf_platform_maintainers
+              Key Vault Secrets User:
+                azuread_groups:
+                  keys:
+                    - identity
+                    - management
+                    - alz
+                    - connectivity
+                    - subscription_creation_platform
+                    - caf_platform_contributors
+
       keyvaults:
         level0:
           name: l0
           sku_name: premium
           resource_group_key: level0
+          enable_rbac_authorization: true
         level1:
           name: l1
           sku_name: premium
           resource_group_key: level1
+          enable_rbac_authorization: true
         level2:
           name: l2
           sku_name: premium
           resource_group_key: level2
+          enable_rbac_authorization: true
 
       keyvault_access_policies:
         level0:
@@ -354,15 +401,6 @@ launchpad:
                 id: 18a4783c-866b-4cc7-a460-3d5e5662c884
                 type: Role
         identity:
-          active_directory_graph:
-            resource_app_id: 00000002-0000-0000-c000-000000000000
-            resource_access:
-              Application_ReadWrite_OwnedBy:
-                id: 824c81eb-e3f8-4ee6-8f6d-de7f50d565b7
-                type: Role
-              Directory_ReadWrite_All:
-                id: 78c8a3c8-a07e-4b9e-af1b-b5ccab50a175
-                type: Role
           microsoft_graph:
             resource_app_id: 00000003-0000-0000-c000-000000000000
             resource_access:
@@ -450,70 +488,125 @@ launchpad:
           name: caf-platform-maintainers
           description: High privileged group to run all CAF deployments from vscode. Can be used to bootstrap or troubleshoot deployments.
           prevent_duplicate_name: true
-          owners:
-            - {{topology.ea_owner_object_id}}
         caf_platform_contributors:
           name: caf-platform-contributors
           description: Can only execute terraform plans for level1 and level2. They can test platform improvements and propose PR.
           prevent_duplicate_name: true
-          owners:
-            - {{topology.ea_owner_object_id}}
         level0:
           name: caf-level0
           prevent_duplicate_name: true
-          owners:
-            - {{topology.ea_owner_object_id}}
           members:
             azuread_service_principal_keys:
               - level0
         alz:
           name: caf-alz
           prevent_duplicate_name: true
-          owners:
-            - {{topology.ea_owner_object_id}}
           members:
             azuread_service_principal_keys:
               - alz
         identity:
           name: caf-identity
           prevent_duplicate_name: true
-          owners:
-            - {{topology.ea_owner_object_id}}
           members:
             azuread_service_principal_keys:
               - identity
         management:
           name: caf-management
           prevent_duplicate_name: true
-          owners:
-            - {{topology.ea_owner_object_id}}
           members:
             azuread_service_principal_keys:
               - management
         connectivity:
           name: caf-connectivity
           prevent_duplicate_name: true
-          owners:
-            - {{topology.ea_owner_object_id}}
           members:
             azuread_service_principal_keys:
               - connectivity
         subscription_creation_platform:
           name: caf-subscription_creation_platform
           prevent_duplicate_name: true
-          owners:
-            - {{topology.ea_owner_object_id}}
           members:
             azuread_service_principal_keys:
               - subscription_creation_platform
         subscription_creation_landingzones:
           name: caf-subscription_creation_landingzones
           prevent_duplicate_name: true
-          owners:
-            - {{topology.ea_owner_object_id}}
           members:
             azuread_service_principal_keys:
               - subscription_creation_landingzones
             # object_ids:
             #   - 
 
+      container_groups:
+        level0:
+          name: rover-level0
+          region: region1
+          resource_group_key: gitops
+          ip_address_type: Private
+          os_type: Linux
+          restart_policy: OnFailure
+          network_profile:
+            key: level0
+          containers:
+            rover_level0:
+              name: rover-level0
+              image: aztfmod/rover-agent:1.1.9-2204.250521-preview-github
+              cpu: 4
+              memory: 2
+              ports:
+                ssh:
+                  port: 22
+                  protocol: TCP
+
+      network_profiles:
+        level0:
+          resource_group:
+            key: gitops
+          name: level0
+          container_network_interface:
+            name: level0
+            ip_configurations:
+              gitops:
+                name: ipconfig
+                vnet_key: vnet_region1
+                subnet_key: level0
+
+      virtual_networks:
+        vnet_region1:
+          resource_group_key: gitops
+          name: gitops-vnet
+          address_space: ["10.100.0.0/24"]
+          subnets:
+            level0:
+              name: caf-level0
+              cidr: ["10.100.0.0/27"]
+              delegation:
+                name: Microsoft.ContainerInstance/containerGroups
+                service_delegation: Microsoft.ContainerInstance/containerGroups
+                actions:
+                  - Microsoft.Network/virtualNetworks/subnets/action
+              service_endpoints:
+                - Microsoft.KeyVault
+                - Microsoft.Storage
+            level1:
+              name: caf-level1
+              cidr: ["10.100.0.32/27"]
+              delegation:
+                name: Microsoft.ContainerInstance/containerGroups
+                service_delegation: Microsoft.ContainerInstance/containerGroups
+                actions:
+                  - Microsoft.Network/virtualNetworks/subnets/action
+              service_endpoints:
+                - Microsoft.KeyVault
+                - Microsoft.Storage
+            level2:
+              name: caf-level2
+              cidr: ["10.100.0.64/27"]
+              delegation:
+                name: Microsoft.ContainerInstance/containerGroups
+                service_delegation: Microsoft.ContainerInstance/containerGroups
+                actions:
+                  - Microsoft.Network/virtualNetworks/subnets/action
+              service_endpoints:
+                - Microsoft.KeyVault
+                - Microsoft.Storage
