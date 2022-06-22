@@ -112,3 +112,24 @@ module "vm_extension_custom_scriptextension" {
   managed_identities      = merge(tomap({ (var.landingzone.key) = module.solution.managed_identities }), try(local.remote.managed_identities, {}))
   storage_accounts        = merge(tomap({ (var.landingzone.key) = module.solution.storage_accounts }), try(local.remote.storage_accounts, {}))
 }
+
+module "vm_extension_aadlogin" {
+  # source  = "aztfmod/caf/azurerm//modules/compute/virtual_machine_extensions"
+  # version = "5.5.5"
+
+  #source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git//modules/compute/virtual_machine_extensions?ref=vmain"
+  source = "git::https://github.com/VolkerWessels/terraform-azurerm-caf.git//modules/compute/virtual_machine_extensions?ref=vw-combined"
+
+  depends_on = [module.solution]
+
+  for_each = {
+    for key, value in try(var.virtual_machines, {}) : key => value
+    if try(value.virtual_machine_extensions.AADLogin, null) != null
+  }
+
+  client_config           = module.solution.client_config
+  virtual_machine_id      = module.solution.virtual_machines[each.key].id
+  virtual_machine_os_type = module.solution.virtual_machines[each.key].os_type
+  extension               = each.value.virtual_machine_extensions.AADLogin
+  extension_name          = "AADLogin"
+}
