@@ -81,3 +81,20 @@ resource "null_resource" "backend_file_destroy" {
     on_failure = fail
   }
 }
+
+
+resource "tfe_agent_pool" "tfe_agent_pools" {
+  depends_on = [tfe_organization.tfe_org]
+  for_each   = try(var.tfe_agent_pools, {})
+
+  name         = each.value.name
+  organization = try(each.value.organization_name, tfe_organization.tfe_org[each.value.organization_key].name)
+}
+
+resource "tfe_agent_token" "tfe_agent_pool_tokens" {
+  depends_on = [tfe_agent_pool.tfe_agent_pools]
+  for_each = try(var.tfe_agent_pool_tokens, {})
+
+  agent_pool_id = try(each.value.agent_pool_id, tfe_agent_pool.tfe_agent_pools[each.value.agent_pool_key].id)
+  description   = each.value.description
+}
