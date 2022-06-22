@@ -3,6 +3,7 @@ locals {
     var.database,
     {
       app_config                         = var.app_config
+      app_config_entries                 = var.app_config_entries
       azurerm_redis_caches               = var.azurerm_redis_caches
       cosmos_dbs                         = var.cosmos_dbs
       cosmosdb_sql_databases             = var.cosmosdb_sql_databases
