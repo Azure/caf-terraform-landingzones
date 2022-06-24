@@ -3,6 +3,7 @@ locals {
     var.shared_services,
     {
       automations                    = var.automations
+      automation_log_analytics_links = var.automation_log_analytics_links
       consumption_budgets            = var.consumption_budgets
       image_definitions              = var.image_definitions
       log_analytics_storage_insights = var.log_analytics_storage_insights
