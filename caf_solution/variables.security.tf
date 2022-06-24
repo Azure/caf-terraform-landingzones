@@ -65,3 +65,7 @@ variable "sentinel_dc_threat_intelligence" {
 variable "security" {
   default = {}
 }
+variable "security_center" {
+  default = {}
+}
+
