@@ -26,7 +26,7 @@ subscriptions:
   resources:
     launchpad:
       subscriptions:
-{% for key, value in topology.platform_subscriptions.items() %}
+{% for key, value in topology.initial_subscriptions.items() %}
         {{key}}:
 {% for l_key, l_value in value.items() %}
 {% if l_key == 'create_alias' %}

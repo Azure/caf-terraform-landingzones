@@ -20,7 +20,6 @@
     msg: 
     - 'sub_template_folder - {{tfstate_object.sub_template_folder | default()}}'
     - 'tfstate_object      - {{tfstate_object}}'
-    # - "{{resources}}"
 
 - name: "{{deployment_mode}}/{{stage}}/{{tfstate}} - process subscription resources"
   include_tasks: "process_subscription_resources.yaml"

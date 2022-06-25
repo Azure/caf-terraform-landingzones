@@ -1,8 +1,5 @@
 # Load variables from tfstates
 
-- set_fact:
-    secure_firewalls_resources: {}
-    virtual_hubs_resources: {}
 
 # Initial load
 - name: load variables

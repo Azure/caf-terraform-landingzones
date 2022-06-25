@@ -1,0 +1,42 @@
+
+{#
+  attribute_name: name of the attribute
+  render_value: value of the attribute. Can be dict, list, str, bool
+  multiple_lines_list: When set to true display the list values on multiple lines
+
+  example:
+    {% import 'library.j2' as render %}
+    {% set value = resources[tfstate_resource].resources[subscription_key].container_groups %}
+    {{ render.hcl("container_groups", value, multiple_lines_list=multiple_lines_list) }}
+#}
+
+{% macro hcl(attribute_name, render_value,  multiple_lines_list=true) %}
+{% if (render_value | type_debug) ==  'AnsibleUnsafeText' %}
+  {{ "{} = \"{}\"".format(attribute_name, render_value) }}
+{% elif (render_value | type_debug) ==  'str' %}
+  {{ "{} = \"{}\"".format(attribute_name, render_value) }}
+{% elif (render_value | type_debug) ==  'NoneType' %}
+  {{ "{} = \"{}\"".format(attribute_name, render_value) }}
+{% elif (render_value | type_debug) ==  'int' %}
+  {{ "{} = {}".format(attribute_name, render_value) }}
+{% elif (render_value | type_debug) == 'list' and multiple_lines_list == true %}
+  {{ "{} = {}".format(attribute_name, render_value | sort | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"') ) }}
+{% elif (render_value | type_debug) == 'list' and multiple_lines_list == false %}
+  {{ "{} = {}".format(attribute_name, render_value | sort | replace('None','[]') | replace('\'','\"') ) }}
+{% elif (render_value | type_debug) == 'bool' %}
+  {{ "{} = {}".format(attribute_name, render_value | lower ) }}
+{% elif (render_value | type_debug) == 'dict' %}
+  {{attribute_name}} = {
+    {{as_hcl(render_value, multiple_lines_list)}}
+  }
+{% else %}
+  {{ "{} (type not implemented: {})".format(attribute_name, (render_value | type_debug) ) }}
+  {{ render_value }}
+{% endif %}
+{% endmacro %}
+
+{% macro as_hcl(rules, multiple_lines_list=true) %}
+{% for k, v in rules.items() | sort %}
+  {{ hcl(k, v, multiple_lines_list)}}
+{%- endfor %}
+{% endmacro %}

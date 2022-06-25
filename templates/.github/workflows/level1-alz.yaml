@@ -1,0 +1,57 @@
+#
+# Copyright (c) Microsoft Corporation
+# Licensed under the MIT License.
+#
+
+name: level1-alz
+
+on:
+  pull_request:
+    branch-ignore:
+      - bootstrap
+    paths:
+      - 'platform/configuration/level1/alz/**'
+
+permissions:
+  id-token: write
+  contents: read
+
+concurrency: 
+  group: level1-alz
+
+jobs:
+  environment:
+    name: Setup dynamic environment variables
+    runs-on: [self-hosted, platform]
+    outputs:
+      terraform_code_repository: ${{ steps.set_env.outputs.terraform_code_repository }}
+      terraform_code_ref: ${{ steps.set_env.outputs.terraform_code_ref }}
+      environment: ${{ steps.set_env.outputs.environment }}
+    steps:
+      - name: Set environment variables for re-usable workflows
+        id: set_env
+        run: |
+          echo "::set-output name=terraform_code_repository::$CAF_TERRAFORM_LZ_URL"
+          echo "::set-output name=terraform_code_ref::$CAF_TERRAFORM_LZ_REF"
+          echo "::set-output name=environment::$CAF_ENVIRONMENT"
+
+  alz:
+    needs: [environment]
+    uses: ./.github/workflows/rover.yaml
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_LAUNCHPAD_SUBSCRIPTION_ID }}
+      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_LAUNCHPAD_SUBSCRIPTION_ID }}
+    with:
+      terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
+      terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
+      environment: ${{ needs.environment.outputs.environment }}
+      caf_identity_aad_key: cred_alz
+      landingzone_code_path: ./landingzones/caf_solution/add-ons/caf_eslz
+      landingzone_configuration_path: ./platform/configuration/level1/alz/{{alz_mg_prefix}}
+      plan_path: ${GITHUB_WORKSPACE}/alz_{{alz_mg_prefix}}.tfstate.tfplan
+      tfstate: alz_{{alz_mg_prefix}}.tfstate
+      level: level1
+      terraform_action_apply: -parallelism=50
+      terraform_action: plan_apply

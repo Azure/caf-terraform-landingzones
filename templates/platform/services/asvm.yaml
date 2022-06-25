@@ -11,7 +11,6 @@ asvm:
     config_file: asvm.yaml
     identity_aad_key: cred_level0
     sub_template_folder: platform/level2/asvm
-    yaml: platform/level2/asvm/ansible.yaml
     # Do not rename the tfstate_key_name
     tfstate_key_name: asvm
 
@@ -23,10 +22,16 @@ asvm:
       remote_tfstates:
         platform:
           management:
+          virtual_hubs: prod
+          private_dns: prod
+          secure_firewalls: prod
+          identity_level2: prod
 
   resources:
     launchpad:
       resource_groups:
+        asvm_vnet:
+          name: caf-asvm-networking
         level3:
           name: caf-level3
           tags:

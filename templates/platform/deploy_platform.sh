@@ -1,5 +1,6 @@
 #! /bin/bash
 
+cd /tf/caf
 
 export ANSIBLE_DISPLAY_SKIPPED_HOSTS=False 
 
@@ -12,7 +13,7 @@ ansible-playbook /tf/caf/landingzones/templates/ansible/walk-through-single.yaml
   -e platform_configuration_folder=/tf/caf/configuration \
   -e platform_definition_folder=/tf/caf/platform/definition \
   -e platform_template_folder=/tf/caf/platform/template \
-  -e caf_landingzone_branch="$(git rev-parse --abbrev-ref HEAD)" \
+  -e caf_landingzone_branch="$(cd /tf/caf/landingzones && git rev-parse --abbrev-ref HEAD)" \
   --extra-vars "@/tf/caf/landingzones/templates/platform/template_topology.yaml" \
   -e $(echo ${params} | xargs)
 
@@ -27,7 +28,8 @@ EOF
 cd /tf/caf
 
 if [ "$(gh pr status --json id | jq .currentBranch.id)" = "null" ]; then
-  git checkout -b bootstrap
+  git fetch origin main
+  git checkout -b bootstrap --track origin/main
   git add .
   git commit -am "Update definition files."
   /usr/bin/gh pr create \

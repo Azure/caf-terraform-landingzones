@@ -9,6 +9,7 @@
         destination_base_path: '{{ platform_configuration_folder }}'
         resource_template_folder: "{{ public_templates_folder }}/resources"
         platform_service_folder: "{{ public_templates_folder }}/platform/services"
+        multiple_lines_list: "{{ multiple_lines_list | default(false) }}"
 
     - name: "load {{ template_folder | default(platform_definition_folder)}}/ignite.yaml"
       include_vars:
@@ -54,7 +55,7 @@
     - find:
         paths: "{{definition_folder | default(platform_definition_folder)}}"
         recurse: yes
-        patterns: "*.yaml"
+        patterns: ["*.yaml","*.j2"]
         file_type: file
         excludes: "*.caf.platform.yaml"
       register: yaml_files_to_process
@@ -62,6 +63,10 @@
 
     - name: Load variables from tfstates
       include_tasks: "load_variables.yaml"
+      when: deployment_mode == 'platform'
+
+    - name: Load firewall rules
+      include_tasks: "load_firewall_rules.yaml"
       when: deployment_mode == 'platform'
 
     - name: "Creates destination directory - {{destination_base_path}}"
@@ -126,11 +131,3 @@
         lz_type: "{{deployment_mode}}"
         stage: scale_out_domains
       
-
-#
-# Formatting & Linters
-#
-
-    - name: Terraform Formatting
-      shell: |
-        terraform fmt -recursive {{ destination_base_path }}

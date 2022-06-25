@@ -1,0 +1,20 @@
+packages_linux:
+  name: security packages
+  action: Allow
+  rules:
+    ubuntu:
+      name: ubuntu
+      description: Upstream addresses to get Ubuntu package updates
+      source_addresses: ["*"]
+      protocols:
+        https:
+          port: 443
+          type: Https
+        http:
+          port: 80
+          type: Http
+      destination_fqdns:
+        - archive.ubuntu.com
+        - azure.archive.ubuntu.com
+        - changelogs.ubuntu.com
+        - security.ubuntu.com
