@@ -66,7 +66,7 @@ launchpad:
                 lz_key: launchpad
                 vnet_key: vnet_region1
                 subnet_key: level0
-{% if private_endpoints %}
+{% if private_endpoints is defined %}
           private_endpoints:
             level0:
               name: stg-level0
@@ -78,7 +78,7 @@ launchpad:
                 is_manual_connection: false
                 subresource_names:
                   - blob
-{% if private_endpoints and private_dns is defined %}
+{% if private_endpoints is defined and private_dns is defined %}
               private_dns:
                 zone_group_name: default
                 ids:
@@ -122,7 +122,7 @@ launchpad:
                 lz_key: launchpad
                 vnet_key: vnet_region1
                 subnet_key: level1
-{% if private_endpoints %}
+{% if private_endpoints is defined %}
           private_endpoints:
             level1:
               name: stg-level1
@@ -134,7 +134,7 @@ launchpad:
                 is_manual_connection: false
                 subresource_names:
                   - blob
-{% if private_endpoints and private_dns is defined %}
+{% if private_endpoints is defined and private_dns is defined %}
               private_dns:
                 zone_group_name: default
                 ids:
@@ -178,7 +178,7 @@ launchpad:
                 lz_key: launchpad
                 vnet_key: vnet_region1
                 subnet_key: level2
-{% if private_endpoints %}
+{% if private_endpoints is defined %}
           private_endpoints:
             level2:
               name: stg-level2
@@ -190,7 +190,7 @@ launchpad:
                 is_manual_connection: false
                 subresource_names:
                   - blob
-{% if private_endpoints and private_dns is defined %}
+{% if private_endpoints is defined and private_dns is defined %}
               private_dns:
                 zone_group_name: default
                 ids:
@@ -223,7 +223,7 @@ launchpad:
                 lz_key: launchpad
                 vnet_key: vnet_region1
                 subnet_key: level0
-{% if private_endpoints %}
+{% if private_endpoints is defined %}
           private_endpoints:
             level0:
               name: kv-level0
@@ -235,7 +235,7 @@ launchpad:
                 is_manual_connection: false
                 subresource_names:
                   - vault
-{% if private_endpoints and private_dns is defined %}
+{% if private_endpoints is defined and private_dns is defined %}
               private_dns:
                 zone_group_name: default
                 ids:
@@ -275,7 +275,7 @@ launchpad:
                 lz_key: launchpad
                 vnet_key: vnet_region1
                 subnet_key: level1
-{% if private_endpoints %}
+{% if private_endpoints is defined %}
           private_endpoints:
             level1:
               name: kv-level1
@@ -287,7 +287,7 @@ launchpad:
                 is_manual_connection: false
                 subresource_names:
                   - vault
-{% if private_endpoints and private_dns is defined %}
+{% if private_endpoints is defined and private_dns is defined %}
               private_dns:
                 zone_group_name: default
                 ids:
@@ -327,7 +327,7 @@ launchpad:
                 lz_key: launchpad
                 vnet_key: vnet_region1
                 subnet_key: level2
-{% if private_endpoints %}
+{% if private_endpoints is defined %}
           private_endpoints:
             level2:
               name: kv-level2
@@ -339,7 +339,7 @@ launchpad:
                 is_manual_connection: false
                 subresource_names:
                   - vault
-{% if private_endpoints and private_dns is defined %}
+{% if private_endpoints is defined and private_dns is defined %}
               private_dns:
                 zone_group_name: default
                 ids:
@@ -862,7 +862,7 @@ launchpad:
               service_endpoints:
                 - Microsoft.KeyVault
                 - Microsoft.Storage
-{% if private_endpoints %}
+{% if private_endpoints is defined %}
             private_endpoints:
               name: private-endpoints
               cidr: ["10.100.0.96/27"]
