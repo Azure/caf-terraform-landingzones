@@ -32,9 +32,9 @@ jobs:
       - name: Set environment variables for re-usable workflows
         id: set_env
         run: |
-          echo "::set-output name=terraform_code_repository::$CAF_TERRAFORM_LZ_URL"
-          echo "::set-output name=terraform_code_ref::$CAF_TERRAFORM_LZ_REF"
-          echo "::set-output name=environment::$CAF_ENVIRONMENT"
+          echo "::set-output name=terraform_code_repository::${{ secrets.CAF_TERRAFORM_LZ_URL }}"
+          echo "::set-output name=terraform_code_ref::${{ secrets.CAF_TERRAFORM_LZ_REF }}"
+          echo "::set-output name=environment::${{ secrets.CAF_ENVIRONMENT }}"
 
   configuration_updates:
     name: Generate configuration tfvars files
