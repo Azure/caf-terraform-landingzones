@@ -60,7 +60,8 @@ keyvault_enable_rbac_authorization: true
 # Render the content of the tfvar list across multiple lines
 multiple_lines_list: true
 
-# PUBLIC_IP_WHITE_LIST:
+PUBLIC_IP_WHITE_LIST:
+  {{PUBLIC_IP_WHITE_LIST | to_nice_yaml}}
 
 naming_convention:
   # When set to false use the CAF provider to generate names aligned to CAF guidance
@@ -159,7 +160,7 @@ deployments:
       {{default_region_key}}:
         launchpad: launchpad_azuread_sp_single_subscription.yaml
         launchpad_credentials: launchpad_credentials_azuread_sp.yaml
-        subscriptions: subscriptions.yaml
+        platform_subscriptions: platform_subscriptions.yaml
         identity: identity.yaml
         management: management.yaml
         asvm: asvm.yaml

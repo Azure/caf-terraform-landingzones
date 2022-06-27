@@ -28,6 +28,10 @@
 - name: Get default subscription name
   shell: az account show --query name -o tsv
   register: subscription_name
+  
+- name: Get public ip address for bootstrap whitelisting
+  shell: dig @resolver1.opendns.com A myip.opendns.com +short -4
+  register: public_ip
 
 - set_fact:
     regions:  "{{ azure_regions }}"
@@ -37,6 +41,7 @@
     upn: "{{ upn_owner | default(bash_upn.stdout) }}"
     tenant_name: "{{ tenant_name | default(bash_tenant_name.stdout) }}"
     base_folder: "{{ lookup('env', 'AZURE_OBJECT_ID') if lookup('env', 'AZURE_OBJECT_ID') != '' else '/tf/caf' }}"
+    PUBLIC_IP_WHITE_LIST: "{{ [public_ip.stdout] }}"
 
 - debug:
     msg:
@@ -131,6 +136,43 @@
     src: "{{ item.path }}"
     dest: "{{destination_path}}/{{ item.path | basename }}"
   loop: "{{variable_files_to_process.files}}"
+
+# Copy github workflows
+- find:
+    paths: "{{public_templates_folder}}/.github/workflows"
+    recurse: yes
+    file_type: file
+  register: github_workflows_to_process
+
+- name: copy github workflows
+  ansible.builtin.copy:
+    src: "{{ item.path }}"
+    dest: "{{base_folder}}/{{ item.path | regex_replace(public_templates_folder, '') }}"
+  loop: "{{github_workflows_to_process.files}}"
+
+# Copy default firewall rules
+
+- name: "Creates destination directory - {{firewall_rules_path}}/nat_rule_collections"
+  file:
+    path: "{{firewall_rules_path}}/{{item}}"
+    state: directory
+  with_items:
+   - application_rule_collections
+   - network_rule_collections
+   - nat_rule_collections
+    
+    
+- find:
+    paths: "{{public_templates_folder}}/firewall_rules"
+    recurse: yes
+    file_type: file
+  register: firewall_files_to_process
+
+- name: copy firewall files
+  ansible.builtin.copy:
+    src: "{{ item.path }}"
+    dest: "{{firewall_rules_path}}/{{ item.path | regex_replace(public_templates_folder + '/firewall_rules', '') }}"
+  loop: "{{firewall_files_to_process.files}}"
 
 - name: tfstates.yaml
   ansible.builtin.template:
