@@ -24,6 +24,7 @@ locals {
       sentinel_dc_office_365              = var.sentinel_dc_office_365
       sentinel_dc_security_center         = var.sentinel_dc_security_center
       sentinel_dc_threat_intelligence     = var.sentinel_dc_threat_intelligence
+      security_center                     = var.security_center
     }
   )
 }
