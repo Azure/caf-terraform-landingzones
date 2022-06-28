@@ -115,13 +115,6 @@
     - lookup('vars', tfstate_key_name + '_tfstate_exists').rc == 0
     - lookup('vars', tfstate_key_name + '_tfstate')
 
-# - debug:
-#     msg: "gtc-{{exported_variable_name}}: {{lookup('vars', exported_variable_name[env_var])}}"
-#   when:
-#     - lookup('vars', tfstate_key_name + '_tfstate_exists').rc == 0
-#     - lookup('vars', tfstate_key_name + '_tfstate')
-#     - env_var != ''
-
 - name: "[{{resources[tfstate].relative_destination_folder}}] cleanup"
   when:
     - lookup('vars', tfstate_key_name + '_tfstate_exists') == 0

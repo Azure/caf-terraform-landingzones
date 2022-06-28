@@ -2,17 +2,19 @@
 
 
 # Initial load
-- name: load variables
-  set_fact:
-    "{{item.path | basename | regex_replace('.yaml$', '')}}_resource__to_merge": "{{ lookup('template', item.path )}}"
-  with_items: "{{yaml_files_to_process.files}}"
-  when: deployment_mode == 'platform'
 
 - name: load variables
   set_fact:
-    merged_resources: "{{ merged_resources | default({}) | combine( lookup('template', item.path ) | from_yaml )}}"
+    merged_resource__to_merge: "{{ merged_resource__to_merge | default({}) | combine( lookup('template', item.path ) | from_yaml )}}"
   with_items: "{{yaml_files_to_process.files}}"
   when: deployment_mode == 'platform'
+
+- name: Merge resources variables
+  merge_vars:
+    suffix_to_merge: _resource__to_merge
+    merged_var_name: merged_resources
+    expected_type: 'dict'
+    recursive_dict_merge: True
 
 - set_fact:
     resources:  "{{ merged_resources }}"
@@ -27,6 +29,7 @@
     resource_type: azuread_groups
     caf_level: level0
     exported_variable_name: launchpad_azuread_groups
+  when: deployment_mode == 'platform'
 
 # Keyvaults having credentials
 - name: tfstate - keyvaults from launchpad_credentials to variable
@@ -38,6 +41,19 @@
     resource_type: keyvaults
     caf_level: level0
     exported_variable_name: keyvaults
+  when: deployment_mode == 'platform'
+
+# Keyvault_scl credentials
+- name: tfstate - keyvaults from launchpad_credentials to variable
+  include_tasks: "get_tfstate_content.yaml"
+  register: credentials_tfstate_exists
+  vars:
+    env: ''
+    tfstate_key: launchpad_credentials
+    resource_type: keyvaults
+    caf_level: cred_subscription_creation_landingzones
+    exported_variable_name: keyvault_scl
+  when: deployment_mode == 'asvm'
 
 # Platform subscriptions
 - name: tfstate - platform_subscriptions from subscriptions to variable
@@ -50,6 +66,7 @@
     resource_type: subscriptions
     caf_level: level1
     exported_variable_name: platform_subscriptions
+  when: deployment_mode == 'platform'
 
 # Private DNS zones
 - name: tfstate - private dns zones to variable
@@ -110,7 +127,18 @@
     resource_type: storage_accounts
     resource_key: level2
     exported_variable_name: level2_storage_account
+  when: deployment_mode == 'platform'
     
+- name: tfstate - storage_account_level3 from launchpad to variable
+  include_tasks: "get_tfstate_content.yaml"
+  vars:
+    env: ''
+    caf_level: level0
+    tfstate_key: launchpad
+    resource_type: storage_accounts
+    resource_key: level3
+    exported_variable_name: storage_account_level3
+  when: deployment_mode == 'asvm'
 
 # Reloading with the variables from tfstates
 - name: load variables

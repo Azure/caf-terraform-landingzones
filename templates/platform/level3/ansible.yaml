@@ -82,6 +82,8 @@
 
 - debug:
     msg: "{{asvm_subscriptions_output}}"
+  when:
+    - landingzones_subscriptions.rc == 0
 
 - name: "[{{ level }}-asvm]  Get landingzone subscription ids"
   when:

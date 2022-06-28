@@ -59,11 +59,9 @@
         file_type: file
         excludes: "*.caf.platform.yaml"
       register: yaml_files_to_process
-      when: deployment_mode == 'platform'
 
-    - name: Load variables from tfstates
+    - name: Load platform variables from tfstates
       include_tasks: "load_variables.yaml"
-      when: deployment_mode == 'platform'
 
     - name: Load firewall rules
       include_tasks: "load_firewall_rules.yaml"
@@ -107,6 +105,7 @@
       vars:
         lz_type: "{{deployment_mode}}"
         stage: alz
+      when: deployment_mode == 'platform'
 
 #
 # Process the deployments folders

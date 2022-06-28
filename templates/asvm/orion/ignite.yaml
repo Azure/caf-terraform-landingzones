@@ -15,17 +15,20 @@ subscriptions:
 #
 
 deployments:
+  platform:
+    scale_out_domains:
+      - prod
+      - non_prod
   asvm:
+    mappings:
+{%for key, value in platform_domain_mapping.items() %}
+      {{key}}: {{value}}
+{% endfor %}
     root:
       region1:
         asvm_subscriptions: subscriptions.asvm.yaml
 {% for env in scale_out_domains %}
         {{landingzone_definition}}_{{env}}: subscriptions.asvm.yaml
-{% endfor %}
-
-platform_mappings:
-{%for key, value in platform_domain_mapping.items() %}
-  {{key}}: {{value}}
 {% endfor %}
 
 #
