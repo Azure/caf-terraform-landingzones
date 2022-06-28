@@ -1,6 +1,8 @@
 
 landingzone_definition: {{landingzone_definition}}
 
+caf_landingzone_branch: int.5.6.0
+
 subscriptions:
 {% for env in scale_out_domains %}
   {{landingzone_definition}}_{{env}}:
@@ -16,7 +18,7 @@ subscriptions:
 
 deployments:
   platform:
-    scale_out_domains:
+    scale_out_domain_keys:
       - prod
       - non_prod
   asvm:

@@ -130,3 +130,6 @@
         lz_type: "{{deployment_mode}}"
         stage: scale_out_domains
       
+    - name: Format and validate file
+      shell: "terraform fmt -recursive {{ platform_configuration_folder }}"
+      register: fmt

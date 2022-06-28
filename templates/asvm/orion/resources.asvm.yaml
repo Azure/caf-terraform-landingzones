@@ -1,6 +1,6 @@
 {{landingzone_definition}}_{{env}}:
   gitops:
-    caf_landingzone_branch: 2203.0
+    caf_landingzone_branch: {{caf_landingzone_branch}}
 
   relative_destination_folder: level3/{{landingzone_definition}}/{{env}}
 
@@ -399,7 +399,7 @@
                   time: "23:00"
                 retention_daily:
                   count: 7
-{% if private_endpoints %}
+{% if private_endpoints is defined %}
           private_endpoints:
             asr:
               name: vault-{{landingzone_definition}}-{{env}}
@@ -411,7 +411,7 @@
                 is_manual_connection: false
                 subresource_names:
                   - vault
-{% if private_endpoints and private_dns is defined %}
+{% if private_endpoints is defined and private_dns is defined %}
               private_dns:
                 zone_group_name: default
                 lz_key: connectivity_private_dns_{{deployments.asvm.mappings[env]}}
@@ -431,7 +431,7 @@
             ip_rules:
               {{ PUBLIC_IP_WHITE_LIST | default('None') }}
 {% endif %}
-{% if private_endpoints %}
+{% if private_endpoints is defined %}
           private_endpoints:
             level2:
               name: {{landingzone_definition}}{{env}}001
@@ -443,7 +443,7 @@
                 is_manual_connection: false
                 subresource_names:
                   - vault
-{% if private_endpoints and private_dns is defined %}
+{% if private_endpoints is defined and private_dns is defined %}
               private_dns:
                 zone_group_name: default
                 lz_key: connectivity_private_dns_{{deployments.asvm.mappings[env]}}
