@@ -601,6 +601,9 @@ launchpad:
           name: caf-platform-contributors
           description: Can only execute terraform plans for level1 and level2. They can test platform improvements and propose PR.
           prevent_duplicate_name: true
+          members:
+            object_ids:
+                - {{AZURE_OBJECT_ID}}
           owners:
             - {{AZURE_OBJECT_ID}}
         level0:
