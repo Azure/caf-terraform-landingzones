@@ -1,5 +1,6 @@
 #! /bin/bash
 
+cd /tf/caf
 
 export ANSIBLE_DISPLAY_SKIPPED_HOSTS=False 
 
@@ -12,35 +13,57 @@ ansible-playbook /tf/caf/landingzones/templates/ansible/walk-through-single.yaml
   -e platform_configuration_folder=/tf/caf/configuration \
   -e platform_definition_folder=/tf/caf/platform/definition \
   -e platform_template_folder=/tf/caf/platform/template \
-  -e caf_landingzone_branch="$(git rev-parse --abbrev-ref HEAD)" \
+  -e firewall_rules_path=/tf/caf/platform/firewall_rules \
+  -e keyvault_enable_rbac_authorization=true \
+  -e keyvault_purge_protection_enabled=false \
+  -e subscription_deployment_mode=single_reuse \
+  -e GITOPS_SERVER_URL=${GITOPS_SERVER_URL} \
+  -e RUNNER_NUMBERS=${RUNNER_NUMBERS} \
+  -e AGENT_TOKEN=${AGENT_TOKEN} \
+  -e ROVER_AGENT_DOCKER_IMAGE=${ROVER_AGENT_DOCKER_IMAGE} \
+  -e AZURE_OBJECT_ID=$(az ad signed-in-user show -o tsv --query 'id' --only-show-errors ) \
+  -e caf_landingzone_branch="$(cd /tf/caf/landingzones && git rev-parse --abbrev-ref HEAD)" \
   --extra-vars "@/tf/caf/landingzones/templates/platform/template_topology.yaml" \
   -e $(echo ${params} | xargs)
 
-# Create the initial PR for the bootstrap configuration
+if [ $? = 0 ]; then
+
+
+  ansible-playbook $(readlink -f ./landingzones/templates/ansible/ansible.yaml) \
+    --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)"
+
+  cd /tf/caf
+
+  if [ "$(gh pr status --json id | jq .currentBranch.id)" = "null" ]; then
+    git fetch origin main
+    git checkout -b bootstrap --track origin/main
+    git add .
+    pre-commit
+    git commit -am "Update definition files."
+        # Create the initial PR for the bootstrap configuration
 body=<<EOF
     Definition folder with the initial templates for:
-     - launchpad (only for azurerm backend type)
-     - credentials
-     - self-hosted agents
+    - launchpad (only for azurerm backend type)
+    - credentials
+    - self-hosted agents
 EOF
+    /usr/bin/gh pr create \
+      --assignee "@me" \
+      --title "Setup the foundation services for Azure landing zones" \
+      --body "${body}" \
+      --base main \
+      -R ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}
+  else
+    git checkout bootstrap
+    git add .
+    git commit -am "Initial definition files."
+    git add .
+    git commit -am "Initial definition files."
+  fi
 
-cd /tf/caf
+  git push
 
-if [ "$(gh pr status --json id | jq .currentBranch.id)" = "null" ]; then
-  git checkout -b bootstrap
-  git add .
-  git commit -am "Update definition files."
-  /usr/bin/gh pr create \
-    --assignee "@me" \
-    --title "Setup the foundation services for Azure landing zones" \
-    --body "${body}" \
-    -R ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}
 else
-  git checkout bootstrap
-  git add .
-  git commit -am "Initial definition files."
-  git add .
-  git commit -am "Initial definition files."
+  echo "Fix the errors and restart the rover bootstrap"
 fi
 
-git push

@@ -65,7 +65,7 @@
     - resource_key is undefined
     - env_var == ''
   set_fact:
-    "{{exported_variable_name}}": "{{ jsondata | json_query(path)}}"
+    "{{exported_variable_name}}": "{{ jsondata | default({}) | json_query(path)}}"
   vars:
     path: 'outputs.objects.value.{{tfstate_key_name}}.{{resource_type}}'
 
@@ -79,7 +79,7 @@
     "{{exported_variable_name}}": "{{ lookup('vars', exported_variable_name, default={}) | combine({item.0: item.1}, recursive=True ) }}"
   with_together:
     - ["{{env}}"]
-    - ["{{jsondata | json_query(path)}}"]
+    - ["{{jsondata | default({}) | json_query(path)}}"]
   vars:
     path: 'outputs.objects.value.{{tfstate_key_name}}.{{resource_type}}'
 
@@ -90,7 +90,7 @@
     - resource_key is defined
     - env == ''
   set_fact:
-    "{{exported_variable_name}}": "{{ jsondata | json_query(path)}}"
+    "{{exported_variable_name}}": "{{ jsondata | default({}) | json_query(path)}}"
   vars:
     path: 'outputs.objects.value.{{tfstate_key_name}}.{{resource_type}}.{{resource_key}}'
 
@@ -105,7 +105,7 @@
     "{{exported_variable_name}}": "{{ lookup('vars', exported_variable_name, default={}) | combine({item.0: item.1}, recursive=True )) }}"
   with_together:
     - ["{{env}}"]
-    - ["{{jsondata | json_query(path)}}"]
+    - ["{{jsondata | default({}) | json_query(path)}}"]
   vars:
     path: 'outputs.objects.value.{{tfstate_key_name}}.{{resource_type}}.{{resource_key}}'
 
@@ -114,13 +114,6 @@
   when:
     - lookup('vars', tfstate_key_name + '_tfstate_exists').rc == 0
     - lookup('vars', tfstate_key_name + '_tfstate')
-
-# - debug:
-#     msg: "gtc-{{exported_variable_name}}: {{lookup('vars', exported_variable_name[env_var])}}"
-#   when:
-#     - lookup('vars', tfstate_key_name + '_tfstate_exists').rc == 0
-#     - lookup('vars', tfstate_key_name + '_tfstate')
-#     - env_var != ''
 
 - name: "[{{resources[tfstate].relative_destination_folder}}] cleanup"
   when:

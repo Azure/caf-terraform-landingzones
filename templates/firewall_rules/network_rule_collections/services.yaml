@@ -1,0 +1,21 @@
+services:
+  name: services
+  action: Allow
+  rules:
+    ntp:
+      name: ntp
+      source_addresses: ["*"]
+      destination_ports:
+        - 123
+      destination_addresses: ["*"]
+      protocols:
+        - UDP
+    dns:
+      name: dns
+      source_addresses: ["*"]
+      destination_ports:
+        - 53
+      destination_addresses: ["*"]
+      protocols:
+        - UDP
+        - TCP

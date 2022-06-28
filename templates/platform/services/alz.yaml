@@ -28,7 +28,7 @@ alz_{{item}}:
           launchpad:
           identity:
           management:
-          subscriptions:
+          platform_subscriptions:
 
   # Keep the following to allow rover ignite to process the deployment.
   resources:
