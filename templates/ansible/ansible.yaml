@@ -60,6 +60,11 @@
         excludes: "*.caf.platform.yaml"
       register: yaml_files_to_process
 
+    - name: "Creates cache directory"
+      file:
+        path: "{{ job_cache_base_path }}/launchpad"
+        state: directory
+        
     - name: Load platform variables from tfstates
       include_tasks: "load_variables.yaml"
 
@@ -70,11 +75,6 @@
     - name: "Creates destination directory - {{destination_base_path}}"
       file:
         path: "{{destination_base_path}}"
-        state: directory
-
-    - name: "Creates cache directory"
-      file:
-        path: "{{ job_cache_base_path }}/launchpad"
         state: directory
 
     - debug:
