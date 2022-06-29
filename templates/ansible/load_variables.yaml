@@ -105,7 +105,7 @@
   loop: "{{ deployments.platform.scale_out_domain_keys }}"
 
 
-# azurerm_firewall_policies
+# azurerm_firewall for dns resolution
 - name: tfstate - azurerm_firewalls from private_dns_firewalls to variable
   include_tasks: "get_tfstate_content.yaml"
   vars:
@@ -116,6 +116,42 @@
   loop_control: 
     loop_var: env
   loop: "{{ deployments.platform.scale_out_domain_keys }}"
+
+# azurerm_firewall for dns resolution (vnets)
+- name: tfstate - azurerm_firewalls from private_dns_firewalls..vnets to variable
+  include_tasks: "get_tfstate_content.yaml"
+  vars:
+    resource_type: vnets
+    tfstate_key: private_dns_firewalls
+    caf_level: level2
+    exported_variable_name: private_dns_firewalls_vnets
+  loop_control: 
+    loop_var: env
+  loop: "{{ deployments.platform.scale_out_domain_keys }}"
+  when: deployment_mode == 'platform'
+
+
+# launchpad vnet
+- name: tfstate - launchpad vnets to variable
+  include_tasks: "get_tfstate_content.yaml"
+  vars:
+    env: ''
+    resource_type: vnets
+    tfstate_key: launchpad
+    caf_level: level0
+    exported_variable_name: vnet_launchpad
+  when: deployment_mode == 'platform'
+
+# asvn vnet
+- name: tfstate - asvm vnets to variable
+  include_tasks: "get_tfstate_content.yaml"
+  vars:
+    env: ''
+    resource_type: vnets
+    tfstate_key: asvm
+    caf_level: level2
+    exported_variable_name: vnet_asvm
+  when: deployment_mode == 'platform'
 
 # Platform asvm storage accounts
 - name: tfstate - level2_storage_account from launchpad to variable

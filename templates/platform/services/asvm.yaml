@@ -53,6 +53,7 @@ asvm:
             bypass: 
               - Logging
               - Metrics
+              - AzureServices
             default_action: Deny
 {% if PUBLIC_IP_WHITE_LIST is defined %}
             ip_rules:
@@ -109,6 +110,7 @@ asvm:
             bypass: 
               - Logging
               - Metrics
+              - AzureServices
             default_action: Deny
 {% if PUBLIC_IP_WHITE_LIST is defined %}
             ip_rules:
@@ -156,7 +158,8 @@ asvm:
         level3:
           name: l3
           resource_group_key: level3
-          purge_protection_enabled: false
+          purge_protection_enabled: {{ keyvault_purge_protection_enabled }}
+          enable_rbac_authorization: {{ keyvault_enable_rbac_authorization }}
           network:
             bypass: AzureServices
             default_action: Deny
@@ -206,7 +209,8 @@ asvm:
         level4:
           name: l4
           resource_group_key: level4
-          purge_protection_enabled: false
+          purge_protection_enabled: {{ keyvault_purge_protection_enabled }}
+          enable_rbac_authorization: {{ keyvault_enable_rbac_authorization }}
           network:
             bypass: AzureServices
             default_action: Deny

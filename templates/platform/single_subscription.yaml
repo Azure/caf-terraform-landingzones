@@ -53,7 +53,7 @@ resource_groups_allowed_regions:
 default_region_key: {{default_region_key}}
 
 private_endpoints: true
-enable_cmk: true
+enable_cmk: false
 keyvault_purge_protection_enabled: false
 keyvault_enable_rbac_authorization: true
 

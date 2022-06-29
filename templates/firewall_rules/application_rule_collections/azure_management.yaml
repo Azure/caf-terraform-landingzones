@@ -1,5 +1,5 @@
 azure_management:
-  name: management services
+  name: Azure management services
   action: Allow
   rules:
     # '443':

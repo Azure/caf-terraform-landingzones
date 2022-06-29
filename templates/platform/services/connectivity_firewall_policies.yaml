@@ -56,8 +56,10 @@ azurerm_firewall_policies_{{env}}:
           # 20000+ priorities for network_rule_collections
           network_rule_collections:
             services: 20000
+            caf_terraform_lz: 20001
           # 30000+ priorities for application_rule_collections
           application_rule_collections:
             azure_management: 30000
             packages_linux: 30100
             gitops_github: 30200
+            hashicorp: 30300
