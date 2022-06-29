@@ -12,6 +12,10 @@ variable "automations" {
   default = {}
 }
 
+variable "automation_log_analytics_links" {
+  default = {}
+}
+
 variable "consumption_budgets" {
   default = {}
 }
