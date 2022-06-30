@@ -78,7 +78,7 @@
     exported_variable_name: private_dns
   loop_control: 
     loop_var: env
-  loop: "{{ deployments.platform.scale_out_domain_keys }}"
+  loop: "{{ deployments.scale_out_domain_keys }}"
 
 # Virtual hub prod
 - name: tfstate - virtual hub prod to variable
@@ -90,7 +90,7 @@
     exported_variable_name: virtual_hubs_resources
   loop_control: 
     loop_var: env
-  loop: "{{ deployments.platform.scale_out_domain_keys }}"
+  loop: "{{ deployments.scale_out_domain_keys }}"
 
 # Secure firewalls prod
 - name: tfstate - secure firewall prod to variable
@@ -102,7 +102,7 @@
     exported_variable_name: secure_firewalls_resources
   loop_control: 
     loop_var: env
-  loop: "{{ deployments.platform.scale_out_domain_keys }}"
+  loop: "{{ deployments.scale_out_domain_keys }}"
 
 
 # azurerm_firewall for dns resolution
@@ -115,7 +115,7 @@
     exported_variable_name: private_dns_firewalls
   loop_control: 
     loop_var: env
-  loop: "{{ deployments.platform.scale_out_domain_keys }}"
+  loop: "{{ deployments.scale_out_domain_keys }}"
 
 # azurerm_firewall for dns resolution (vnets)
 - name: tfstate - azurerm_firewalls from private_dns_firewalls..vnets to variable
@@ -127,7 +127,7 @@
     exported_variable_name: private_dns_firewalls_vnets
   loop_control: 
     loop_var: env
-  loop: "{{ deployments.platform.scale_out_domain_keys }}"
+  loop: "{{ deployments.scale_out_domain_keys }}"
   when: deployment_mode == 'platform'
 
 

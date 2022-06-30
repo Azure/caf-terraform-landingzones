@@ -61,7 +61,7 @@ gitops_agents:
                 URL: {{GITOPS_SERVER_URL}}
               secure_environment_variables:
                 AGENT_TOKEN: {{AGENT_TOKEN}}
-{% set MAX_RUNNERS = RUNNER_NUMBERS | int %}
+{% set MAX_RUNNERS = 4 | int %}
 {% for i in range(MAX_RUNNERS - 1) %}
         agent{{i}}:
           name: rover-platform-agent{{i}}

@@ -14,7 +14,7 @@
 # 
 
 customer_name: {{customer_name}}
-caf_environment: {{caf_environment}}
+caf_environment: {{input_caf_environment}}
 default_email_address: {{default_email_address}}
 alz_mg_prefix: {{alz_mg_prefix}}
 alz_mg_name: {{alz_mg_name}}
@@ -22,7 +22,7 @@ azure_regions: {{azure_regions }}
 prefix: {{prefix}}
 
 # folder parameters
-topology_file: "{{base_folder}}/platform/definition/ignite.yaml"
+bootstrap_file: "{{base_folder}}/platform/definition/ignite.yaml"
 landingzones_folder: "{{base_folder}}/landingzones"
 public_templates_folder: "{{base_folder}}/landingzones/templates"
 platform_configuration_folder: "{{base_folder}}/platform/configuration"
@@ -91,21 +91,21 @@ azuread_identity_mode: service_principal
 enable_azuread_groups: True
 enable_azuread_applications: True
 
-enable_azure_subscription_vending_machine: {{topology.enable_azure_subscription_vending_machine | default(bootstrap.enable_azure_subscription_vending_machine)}}
+enable_azure_subscription_vending_machine: {{bootstrap.enable_azure_subscription_vending_machine | default(bootstrap.enable_azure_subscription_vending_machine)}}
 
 management_groups:
-{% for region, a_value in topology.deployments.platform.alz.items() %}
+{% for region, a_value in bootstrap.deployments.platform.alz.items() %}
   {{region}}:
 {% for key in a_value.keys() %}
     {{key}}:
-      management_group_prefix: "{{ topology.management_groups[region][key].management_group_prefix | default(alz_mg_prefix)}}"
-      management_group_name: "{{ topology.management_groups[region][key].management_group_name | default(alz_mg_name)}}"
-      deploy_core_landing_zones: {{topology.management_groups[region][key].deploy_core_landing_zones | default(True)}}
-      clean_up_destination_folder: {{topology.management_groups[region][key].clean_up_destination_folder | default(True)}}
-      update_lib_folder: {{topology.management_groups[region][key].update_lib_folder | default(True)}}
-      version_to_deploy: "{{topology.management_groups[region][key].version_to_deploy | default('v1.1.3')}}"
-{% if topology.management_groups[region][key].root_parent_id is defined %}
-      root_parent_id: "{{topology.management_groups[region][key].root_parent_id}}"
+      management_group_prefix: "{{ bootstrap.management_groups[region][key].management_group_prefix | default(alz_mg_prefix)}}"
+      management_group_name: "{{ bootstrap.management_groups[region][key].management_group_name | default(alz_mg_name)}}"
+      deploy_core_landing_zones: {{bootstrap.management_groups[region][key].deploy_core_landing_zones | default(True)}}
+      clean_up_destination_folder: {{bootstrap.management_groups[region][key].clean_up_destination_folder | default(True)}}
+      update_lib_folder: {{bootstrap.management_groups[region][key].update_lib_folder | default(True)}}
+      version_to_deploy: "{{bootstrap.management_groups[region][key].version_to_deploy | default('v1.1.3')}}"
+{% if bootstrap.management_groups[region][key].root_parent_id is defined %}
+      root_parent_id: "{{bootstrap.management_groups[region][key].root_parent_id}}"
 {% endif %}
 {% endfor %}
 {% endfor %}
@@ -122,12 +122,12 @@ billing_subscription_role_delegations:
   enable: false
   # Azure Active Directory User (UPN) that is Account Owner in the EA portal
   # if enable=false, set the upn of the user doing the manual deployment
-  azuread_user_ea_account_owner: {{topology.azuread_user_ea_account_owner | default(upn)}}
+  azuread_user_ea_account_owner: {{bootstrap.azuread_user_ea_account_owner | default(upn)}}
   # see comments above to get the object_id
   #
   # Also set this GUID to the owner of the launchpad azuread_groups
   #
-  azuread_user_ea_account_owner_object_id: {{topology.ea_owner_object_id | default(object_id)}}
+  azuread_user_ea_account_owner_object_id: {{bootstrap.ea_owner_object_id | default(object_id)}}
   # Only set the following two attributes when enable=true
   billing_account_name: <replace>
   enrollment_account_name: <replace>
@@ -151,10 +151,9 @@ initial_subscriptions:
     subscription_id: {{subscription_id.stdout}}
 
 deployments:
-  scale_out_domains:
+  scale_out_domain_keys:
     - prod
     - non_prod
-
   platform:
     root:
       {{default_region_key}}:
@@ -242,9 +241,9 @@ azure_landing_zones:
     # check the AAD property
     tenant_name: {{ azure_landing_zones.identity.tenant_name | default(tenant_name)}}
     # only service_principal supported with rover ignite at the moment
-    azuread_identity_mode: {{topology.azuread_identity_mode}}
-    enable_azuread_groups: {{topology.enable_azuread_groups}}
-    enable_azuread_applications: {{topology.enable_azuread_applications}}
+    azuread_identity_mode: {{bootstrap.azuread_identity_mode}}
+    enable_azuread_groups: {{bootstrap.enable_azuread_groups}}
+    enable_azuread_applications: {{bootstrap.enable_azuread_applications}}
     # UPNs you want to add in the caf_platform_maintainers Azure AD group
     # Can use user or guest accounts
     # Those users will have full permissions on platform.
@@ -268,7 +267,7 @@ azure_landing_zones:
       vms: default
 
   connectivity:
-    networking_topology:
+    networking_bootstrap:
       deployment_option: virtual_wan
     backup_policy:
       vms: default

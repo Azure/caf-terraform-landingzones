@@ -30,7 +30,7 @@ ansible-playbook $(readlink -f ./landingzones/templates/ansible/ansible.yaml) \
 
 Once the rover ignite command has been executed, go to your configuration folder when the platform launchpad configuration has been created.
 
-Get started with the [launchpad]({{destination_path}}/{{topologies.launchpad.relative_destination_folder}})
+Get started with the [launchpad]({{destination_path}}/{{resources.launchpad.relative_destination_folder}})
 
 
 

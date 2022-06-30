@@ -79,6 +79,7 @@
 
     - debug:
         msg: 
+        - "launchpad_tfstate_exists: {{launchpad_tfstate_exists}}"
         - "bootstrap: {{bootstrap}}"
         - "resources: {{resources}}"
 

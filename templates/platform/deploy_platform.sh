@@ -6,6 +6,8 @@ export ANSIBLE_DISPLAY_SKIPPED_HOSTS=False
 
 params=$(echo ${@} | xargs -n1 | xargs -I@ echo "-e @ " )
 
+echo ${params} | xargs
+
 ansible-playbook /tf/caf/landingzones/templates/ansible/walk-through-single.yaml \
   -e topology_file=/tf/caf/landingzones/templates/platform/single_subscription.yaml \
   -e public_templates_folder=/tf/caf/landingzones/templates \
@@ -17,20 +19,15 @@ ansible-playbook /tf/caf/landingzones/templates/ansible/walk-through-single.yaml
   -e keyvault_enable_rbac_authorization=true \
   -e keyvault_purge_protection_enabled=false \
   -e subscription_deployment_mode=single_reuse \
-  -e GITOPS_SERVER_URL=${GITOPS_SERVER_URL} \
-  -e RUNNER_NUMBERS=${RUNNER_NUMBERS} \
-  -e AGENT_TOKEN=${AGENT_TOKEN} \
-  -e ROVER_AGENT_DOCKER_IMAGE=${ROVER_AGENT_DOCKER_IMAGE} \
-  -e AZURE_OBJECT_ID=$(az ad signed-in-user show -o tsv --query 'id' --only-show-errors ) \
   -e caf_landingzone_branch="$(cd /tf/caf/landingzones && git rev-parse --abbrev-ref HEAD)" \
-  --extra-vars "@/tf/caf/landingzones/templates/platform/template_topology.yaml" \
+  --extra-vars "@/tf/caf/landingzones/templates/platform/bootstrap.yaml" \
   -e $(echo ${params} | xargs)
 
 if [ $? = 0 ]; then
 
 
-  ansible-playbook $(readlink -f ./landingzones/templates/ansible/ansible.yaml) \
-    --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)"
+  # ansible-playbook $(readlink -f ./landingzones/templates/ansible/ansible.yaml) \
+  #   --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)"
 
   cd /tf/caf
 
