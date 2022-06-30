@@ -14,6 +14,7 @@ module "solution" {
   custom_role_definitions               = var.custom_role_definitions
   data_factory                          = local.data_factory
   database                              = local.database
+  data_protection                       = local.data_protection
   diagnostic_storage_accounts           = var.diagnostic_storage_accounts
   diagnostics_definition                = var.diagnostics_definition
   diagnostics_destinations              = var.diagnostics_destinations
