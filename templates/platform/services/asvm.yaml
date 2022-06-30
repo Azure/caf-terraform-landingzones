@@ -59,10 +59,6 @@ asvm:
             ip_rules:
               {{ PUBLIC_IP_WHITE_LIST | default('None') }}
 {% endif %}
-            subnets:
-              level3:
-                vnet_key: vnet_region1
-                subnet_key: level3
           blob_properties:
             versioning_enabled: true
             last_access_time_enabled: true
@@ -116,10 +112,6 @@ asvm:
             ip_rules:
               {{ PUBLIC_IP_WHITE_LIST | default('None') }}
 {% endif %}
-            subnets:
-              level4:
-                vnet_key: vnet_region1
-                subnet_key: level4
           blob_properties:
             versioning_enabled: true
             last_access_time_enabled: true
@@ -167,10 +159,6 @@ asvm:
             ip_rules:
               {{ PUBLIC_IP_WHITE_LIST | default('None') }}
 {% endif %}
-            subnets:
-              level3:
-                vnet_key: vnet_region1
-                subnet_key: level3
 {% if private_endpoints is defined %}
           private_endpoints:
             level3:
@@ -218,10 +206,6 @@ asvm:
             ip_rules:
               {{ PUBLIC_IP_WHITE_LIST | default('None') }}
 {% endif %}
-            subnets:
-              level4:
-                vnet_key: vnet_region1
-                subnet_key: level4
 {% if private_endpoints is defined %}
           private_endpoints:
             level4:
@@ -404,7 +388,7 @@ asvm:
           keyvaults:
             level3:
               Key Vault Secrets Officer:
-{% if topology.azure_landing_zones.identity.azuread_identity_mode != 'logged_in_user' and launchpad_azuread_groups is defined %}
+{% if azure_landing_zones.identity.azuread_identity_mode != 'logged_in_user' and launchpad_azuread_groups is defined %}
                 object_ids:
                   keys:
                     - {{launchpad_azuread_groups.caf_platform_maintainers.id}}           # caf_platform_maintainers
@@ -414,9 +398,15 @@ asvm:
                   keys:
                     - user
 {% endif %}
+{% if azure_landing_zones.identity.azuread_identity_mode != 'logged_in_user' and launchpad_azuread_groups is defined %}
+              Key Vault Secrets User:
+                object_ids:
+                  keys:
+                    - {{launchpad_azuread_groups.subscription_creation_landingzones.id}}
+{% endif %}
             level4:
               Key Vault Secrets Officer:
-{% if topology.azure_landing_zones.identity.azuread_identity_mode != 'logged_in_user' and launchpad_azuread_groups is defined %}
+{% if azure_landing_zones.identity.azuread_identity_mode != 'logged_in_user' and launchpad_azuread_groups is defined %}
                 object_ids:
                   keys:
                     - {{launchpad_azuread_groups.caf_platform_maintainers.id}}           # caf_platform_maintainers
@@ -425,4 +415,10 @@ asvm:
                 logged_in:
                   keys:
                     - user
+{% endif %}
+{% if azure_landing_zones.identity.azuread_identity_mode != 'logged_in_user' and launchpad_azuread_groups is defined %}
+              Key Vault Secrets User:
+                object_ids:
+                  keys:
+                    - {{launchpad_azuread_groups.subscription_creation_landingzones.id}}
 {% endif %}

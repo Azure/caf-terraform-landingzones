@@ -32,7 +32,10 @@ identity_level2_{{env}}:
       azuread_groups_membership:
         caf_{{env}}_landingzones_dns_contributors:
           object_ids:
-            level0: {{launchpad_azuread_groups.level0.id}} 
             caf_platform_maintainers: {{launchpad_azuread_groups.caf_platform_maintainers.id}} 
+            connectivity: {{ launchpad_azuread_groups.connectivity.id}}
+            identity: {{ launchpad_azuread_groups.identity.id}}
+            level0: {{launchpad_azuread_groups.level0.id}}
+            management: {{ launchpad_azuread_groups.management.id}}
             subscription_creation_landingzones: {{launchpad_azuread_groups.subscription_creation_landingzones.id}}
 {% endif %}

@@ -1,0 +1,3 @@
+{% import 'library.j2' as render %}
+{% set value = resources[tfstate_resource].resources[subscription_key].disk_encryption_sets %}
+{{ render.hcl("disk_encryption_sets", value, multiple_lines_list=multiple_lines_list) }}

@@ -30,17 +30,11 @@ azure_firewall_management:
       source_addresses: 
         {{ private_dns_firewalls_vnets[env | default('prod')].vnet.address_space | to_nice_yaml }}
       destination_fqdns:
-        - webres*.msazure.ctmail.com
-      protocols:
-        https:
-          port: 80
-          type: Http
-    service_bus:
-      name: threat protection updates
-      source_addresses: 
-        {{ private_dns_firewalls_vnets[env | default('prod')].vnet.address_space | to_nice_yaml }}
-      destination_fqdns:
-        - webres*.msazure.ctmail.com
+        - webres1.msazure.ctmail.com
+        - webres2.msazure.ctmail.com
+        - webres3.msazure.ctmail.com
+        - webres4.msazure.ctmail.com
+        - webres5.msazure.ctmail.com
       protocols:
         https:
           port: 80
