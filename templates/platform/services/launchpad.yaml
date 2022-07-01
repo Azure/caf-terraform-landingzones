@@ -26,13 +26,13 @@ launchpad:
     launchpad:
       resource_groups:
         gitops:
-          name: caf-gitops-agents
+          name: gitops-agents
         level0:
-          name: caf-level0
+          name: level0
         level1:
-          name: caf-level1
+          name: level1
         level2:
-          name: caf-level2
+          name: level2
 
       storage_accounts:
         level0:

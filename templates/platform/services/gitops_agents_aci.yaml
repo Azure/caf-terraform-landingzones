@@ -47,7 +47,7 @@ gitops_agents:
           containers:
             rover_level0:
               name: rover-level0
-              image: aztfmod/rover-agent:{{ ROVER_AGENT_DOCKER_IMAGE | default('aztfmod/rover-agent:1.2.1-2206.1703-github') }}
+              image: gitops_default_rover_image
               cpu: 4
               memory: 2
               ports:
@@ -82,7 +82,7 @@ gitops_agents:
           containers:
             rover_agent{{i}}:
               name: rover-agent{{i}}
-              image: aztfmod/rover-agent:{{ ROVER_AGENT_DOCKER_IMAGE | default('aztfmod/rover-agent:1.2.1-2206.1703-github') }}
+              image: gitops_default_rover_image
               cpu: 4
               memory: 2
               ports:

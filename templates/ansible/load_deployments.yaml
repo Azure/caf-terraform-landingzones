@@ -8,25 +8,25 @@
 - name: "Process 1 deployment file {{stage}}/{{region}}"
   set_fact:
     "{{stage}}_{{region}}_{{item}}_deployment__to_merge": "{{ lookup('template', '{{ platform_service_folder + \"/\" + bootstrap.deployments[deployment_mode][stage][region][item]}}') | from_yaml }}"
-  loop: "{{bootstrap.deployments[deployment_mode][stage][region].keys()}}"
+  loop: "{{topology.deployments[deployment_mode][stage][region].keys()}}"
   when: 
     - stage == 'root' or stage == 'alz'
     - resources is not defined
 
 - name: "Copy file {{stage}} from {{platform_service_folder}}"
   ansible.builtin.template:
-    src: "{{platform_service_folder}}/{{bootstrap.deployments[deployment_mode][stage][region][item]}}"
+    src: "{{platform_service_folder}}/{{topology.deployments[deployment_mode][stage][region][item]}}"
     dest: "{{destination_path}}/{{resources[item].tfstate.config_file}}"  
-  loop: "{{bootstrap.deployments[deployment_mode][stage][region].keys()}}"
+  loop: "{{topology.deployments[deployment_mode][stage][region].keys()}}"
   when: 
     - stage == 'root'
     - resources is defined
 
 - name: "Copy file {{stage}} from {{platform_service_folder}}"
   ansible.builtin.template:
-    src: "{{platform_service_folder}}/{{bootstrap.deployments[deployment_mode][stage][region][item]}}"
+    src: "{{platform_service_folder}}/{{topology.deployments[deployment_mode][stage][region][item]}}"
     dest: "{{destination_path}}/{{resources[stage + '_' + item].tfstate.config_file}}"  
-  loop: "{{bootstrap.deployments[deployment_mode][stage][region].keys()}}"
+  loop: "{{topology.deployments[deployment_mode][stage][region].keys()}}"
   when: 
     - stage == 'alz'
     - resources is defined
@@ -34,7 +34,7 @@
 
 - name: "Process 2 deployment file {{stage}}"
   include_tasks: "load_deployments_alz.yaml"
-  loop: "{{bootstrap.deployments[deployment_mode][stage][region].keys()}}"
+  loop: "{{topology.deployments[deployment_mode][stage][region].keys()}}"
   loop_control:
     loop_var: service
   when: 
@@ -43,7 +43,7 @@
 
 - name: "Process 2 deployment file {{stage}}"
   include_tasks: "load_deployments_env.yaml"
-  loop: "{{bootstrap.deployments[deployment_mode][stage][region].keys()}}"
+  loop: "{{topology.deployments[deployment_mode][stage][region].keys()}}"
   loop_control:
     loop_var: service
   when: 

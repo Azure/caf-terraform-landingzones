@@ -6,10 +6,7 @@ export ANSIBLE_DISPLAY_SKIPPED_HOSTS=False
 
 params=$(echo ${@} | xargs -n1 | xargs -I@ echo "-e @ " )
 
-echo ${params} | xargs
-
-ansible-playbook /tf/caf/landingzones/templates/ansible/walk-through-single.yaml \
-  -e topology_file=/tf/caf/landingzones/templates/platform/single_subscription.yaml \
+ansible-playbook /tf/caf/landingzones/templates/ansible/walk-through-bootstrap.yaml \
   -e public_templates_folder=/tf/caf/landingzones/templates \
   -e landingzones_folder=/tf/caf/landingzones \
   -e platform_configuration_folder=/tf/caf/configuration \
@@ -18,16 +15,11 @@ ansible-playbook /tf/caf/landingzones/templates/ansible/walk-through-single.yaml
   -e firewall_rules_path=/tf/caf/platform/firewall_rules \
   -e keyvault_enable_rbac_authorization=true \
   -e keyvault_purge_protection_enabled=false \
-  -e subscription_deployment_mode=single_reuse \
   -e caf_landingzone_branch="$(cd /tf/caf/landingzones && git rev-parse --abbrev-ref HEAD)" \
   --extra-vars "@/tf/caf/landingzones/templates/platform/bootstrap.yaml" \
   -e $(echo ${params} | xargs)
 
 if [ $? = 0 ]; then
-
-
-  # ansible-playbook $(readlink -f ./landingzones/templates/ansible/ansible.yaml) \
-  #   --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)"
 
   cd /tf/caf
 

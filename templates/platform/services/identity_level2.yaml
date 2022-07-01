@@ -27,7 +27,7 @@ identity_level2_{{env}}:
     identity:
       azuread_groups:
         caf_{{env}}_landingzones_dns_contributors:
-          name: caf ac {{env}} landingzones dns contributors
+          name: caf {{env}} landingzones dns contributors
 {% if topology.azure_landing_zones.identity.azuread_identity_mode != 'logged_in_user' and launchpad_azuread_groups is defined %}
       azuread_groups_membership:
         caf_{{env}}_landingzones_dns_contributors:

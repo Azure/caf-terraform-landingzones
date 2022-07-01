@@ -22,6 +22,7 @@ azure_regions: {{azure_regions }}
 prefix: {{prefix}}
 
 # folder parameters
+{% raw %}
 bootstrap_file: "{{base_folder}}/platform/definition/ignite.yaml"
 landingzones_folder: "{{base_folder}}/landingzones"
 public_templates_folder: "{{base_folder}}/landingzones/templates"
@@ -29,10 +30,19 @@ platform_configuration_folder: "{{base_folder}}/platform/configuration"
 platform_definition_folder: "{{base_folder}}/platform/definition"
 platform_template_folder: "{{base_folder}}/platform/template"
 firewall_rules_path: "{{base_folder}}/platform/firewall_rules"
+{% endraw %}
 
 deployment_mode: {{deployment_mode}}
 
+terraform_code_repository: https://github.com/Azure/caf-terraform-landingzones.git
 caf_landingzone_branch: {{caf_landingzone_branch | default('int.5.6.0')}}
+default_rover_image: aztfmod/rover-preview:1.2.3-2206.301920
+# Default image for self-hosted agents
+{% if gitops_pipelines == 'github' %}
+gitops_default_rover_image: aztfmod/rover-agent:1.1.9-2206.301920-preview-github
+{% elif gitops_pipelines == 'tfcloud' %}
+gitops_default_rover_image: aztfmod/rover-agent:1.1.9-2206.301920-preview-tfc
+{% endif %}
 
 caf_regions:
 {% for region, location in regions.items() %}
@@ -52,9 +62,11 @@ resource_groups_allowed_regions:
 
 default_region_key: {{default_region_key}}
 
+# Enable the private dns zones deployment and configure vnets to us the secure firewall for private dns resolutions
 private_endpoints: true
-enable_cmk: false
+# Must be set to true for production deployments
 keyvault_purge_protection_enabled: false
+# Configure the launchpad keyvaults to use azure ad authentication when possible.
 keyvault_enable_rbac_authorization: true
 
 # Render the content of the tfvar list across multiple lines
@@ -93,23 +105,6 @@ enable_azuread_applications: True
 
 enable_azure_subscription_vending_machine: {{bootstrap.enable_azure_subscription_vending_machine | default(bootstrap.enable_azure_subscription_vending_machine)}}
 
-management_groups:
-{% for region, a_value in bootstrap.deployments.platform.alz.items() %}
-  {{region}}:
-{% for key in a_value.keys() %}
-    {{key}}:
-      management_group_prefix: "{{ bootstrap.management_groups[region][key].management_group_prefix | default(alz_mg_prefix)}}"
-      management_group_name: "{{ bootstrap.management_groups[region][key].management_group_name | default(alz_mg_name)}}"
-      deploy_core_landing_zones: {{bootstrap.management_groups[region][key].deploy_core_landing_zones | default(True)}}
-      clean_up_destination_folder: {{bootstrap.management_groups[region][key].clean_up_destination_folder | default(True)}}
-      update_lib_folder: {{bootstrap.management_groups[region][key].update_lib_folder | default(True)}}
-      version_to_deploy: "{{bootstrap.management_groups[region][key].version_to_deploy | default('v1.1.3')}}"
-{% if bootstrap.management_groups[region][key].root_parent_id is defined %}
-      root_parent_id: "{{bootstrap.management_groups[region][key].root_parent_id}}"
-{% endif %}
-{% endfor %}
-{% endfor %}
-
 subscription_deployment_mode: {{subscription_deployment_mode | default('single_reuse')}}
 
 billing_subscription_role_delegations:
@@ -134,21 +129,25 @@ billing_subscription_role_delegations:
 
 initial_subscriptions:
   launchpad:  # Do not rename the key
-    name: {{subscription_name.stdout}}
+    name: management
     create_alias: false 
-    subscription_id: {{subscription_id.stdout}}
+    subscription_id: {{sub_management | default(subscription_id.stdout)}}
   identity:  # Do not rename the key
-    name: {{subscription_name.stdout}}
+    name: identity
     create_alias: false 
-    subscription_id: {{subscription_id.stdout}}
+    subscription_id: {{sub_identity | default(subscription_id.stdout)}}
   connectivity:  # Do not rename the key
-    name: {{subscription_name.stdout}}
+    name: connectivity
     create_alias: false 
-    subscription_id: {{subscription_id.stdout}}
+    subscription_id: {{sub_connectivity | default(subscription_id.stdout)}}
   management:  # Do not rename the key
-    name: {{subscription_name.stdout}}
+    name: management
     create_alias: false 
-    subscription_id: {{subscription_id.stdout}}
+    subscription_id: {{sub_management | default(subscription_id.stdout)}}
+  security:  # Do not rename the key
+    name: security
+    create_alias: false 
+    subscription_id: {{sub_security | default(subscription_id.stdout)}}
 
 deployments:
   scale_out_domain_keys:
@@ -157,8 +156,8 @@ deployments:
   platform:
     root:
       {{default_region_key}}:
-        launchpad: launchpad_azuread_sp_single_subscription.yaml
-        launchpad_credentials: launchpad_credentials_azuread_sp.yaml
+        launchpad: launchpad.yaml
+        launchpad_credentials: launchpad_credentials.yaml
         platform_subscriptions: platform_subscriptions.yaml
         identity: identity.yaml
         management: management.yaml
@@ -193,6 +192,9 @@ deployments:
         private_dns:
           prod: connectivity_private_dns.yaml
           non_prod: connectivity_private_dns.yaml
+        security_level2:
+          prod: security_level2.yaml
+          non_prod: security_level2.yaml
 
 
 notifications:
@@ -280,3 +282,30 @@ configuration_folders:
     cleanup_destination: true
 
 
+management_groups:
+{% for region, a_value in bootstrap.deployments.platform.alz.items() %}
+  {{region}}:
+{% for key in a_value.keys() %}
+    {{alz_mg_prefix}}:
+      management_group_prefix: "{{ bootstrap.management_groups[region].es.management_group_prefix | default(alz_mg_prefix)}}"
+      management_group_name: "{{ bootstrap.management_groups[region].es.management_group_name | default(alz_mg_name)}}"
+      deploy_core_landing_zones: {{bootstrap.management_groups[region].es.deploy_core_landing_zones | default(True)}}
+      clean_up_destination_folder: {{bootstrap.management_groups[region].es.clean_up_destination_folder | default(True)}}
+      update_lib_folder: {{bootstrap.management_groups[region].es.update_lib_folder | default(True)}}
+      version_to_deploy: "{{bootstrap.management_groups[region].es.version_to_deploy | default('v1.1.3')}}"
+{% if bootstrap.management_groups[region].es.root_parent_id is defined %}
+      root_parent_id: "{{bootstrap.management_groups[region][key].root_parent_id}}"
+{% endif %}
+      tfstate:
+        lz_key_name: alz_{{alz_mg_prefix}}
+        tfstate: alz_{{alz_mg_prefix}}.tfstate
+        level: level1
+        identity_aad_key: cred_alz
+        config_file: alz_{{alz_mg_prefix}}.yaml
+        template_lib_folder: platform/level1/alz
+        sub_template_folder: platform/level1/alz
+        yaml: platform/level1/alz/ansible.yaml
+        # Do not rename the item_key_name
+        tfstate_key_name: alz_{{alz_mg_prefix}}
+{% endfor %}
+{% endfor %}

@@ -53,6 +53,7 @@
 
 - set_fact:
     topology: "{{ lookup('template', '{{ topology_file }}') | from_yaml }}"
+    topology_deployment__to_merge: "{{ lookup('template', '{{ topology_file }}') | from_yaml }}"
     destination_path: "{{definition_folder | default(platform_definition_folder)}}"
     resource_template_folder: "{{ public_templates_folder }}/resources"
     platform_service_folder: "{{ public_templates_folder }}/platform/services"
@@ -78,7 +79,7 @@
 - debug:
     msg: 
       - "variables: {{variables}}"
-      - "{{topology}}"
+      - "topology: {{topology}}"
 
 - include_tasks: "load_regions.yaml"
   loop: "{{topology.deployments[deployment_mode].keys()}}"
@@ -96,10 +97,14 @@
   set_fact:
     resources:  "{{ merged_topologies }}"
 
+# - debug:
+#     msg: "{{resources}}"
+
 # Need topologies to render the following templates
 - name: "load tfstates"
   set_fact:
     "tfstates_deployment__to_merge": "{{ lookup('template', '{{platform_service_folder}}/tfstates.yaml') | from_yaml }}"
+
 
 - name: Merge deployment files into topologies variable
   merge_vars:
@@ -111,8 +116,8 @@
 - set_fact:
     resources:  "{{ merged_topologies }}"
 
-- debug:
-    msg: "resources: {{resources}}"
+# - debug:
+#     msg: "resources1: {{resources}}"
 
 #
 # Generate target folder structure and files
@@ -139,20 +144,20 @@
 
 # Copy github workflows
 - find:
-    paths: "{{public_templates_folder}}/.github/workflows"
+    paths: "{{public_templates_folder}}/pipelines/.github/workflows"
     recurse: yes
     file_type: file
   register: github_workflows_to_process
 
 - name: copy github workflows
-  ansible.builtin.copy:
+  ansible.builtin.template:
     src: "{{ item.path }}"
-    dest: "{{base_folder}}/{{ item.path | regex_replace(public_templates_folder, '') }}"
+    dest: "{{base_folder}}/{{ item.path | regex_replace(public_templates_folder + '/pipelines', '') }}"
   loop: "{{github_workflows_to_process.files}}"
 
 # Copy default firewall rules
 
-- name: "Creates destination directory - {{firewall_rules_path}}/nat_rule_collections"
+- name: "Creates destination directory - {{firewall_rules_path}}"
   file:
     path: "{{firewall_rules_path}}/{{item}}"
     state: directory
@@ -181,7 +186,7 @@
     
 - name: ignite.yaml
   ansible.builtin.template:
-    src: "{{public_templates_folder}}/platform/single_subscription.yaml"
+    src: "{{public_templates_folder}}/platform/caf_platform_prod_nonprod.yaml"
     dest: "{{destination_path}}/ignite.yaml"
         
 - name: readme.md
