@@ -22,7 +22,8 @@ Once you are ready to ingite, just run:
 rover login -t {{ azure_landing_zones.identity.tenant_name | default(tenant_name)}} -s {{subscription_id.stdout}}
 
 ansible-playbook $(readlink -f ./landingzones/templates/ansible/ansible.yaml) \
-  --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)"
+  --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)" \
+  -e base_folder=$(pwd)
 
 ```
 
@@ -52,7 +53,7 @@ git checkout {{caf_landingzone_branch}}
 For your reference, if you need to re-generate the YAML definition files later, you can run the following command: 
 
 ```bash
-ansible-playbook $(readlink -f ./landingzones/templates/ansible/walk-through-single.yaml) \
+ansible-playbook $(readlink -f ./landingzones/templates/ansible/walk-through-bootstrap.yaml) \
   --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)"
 
 ```

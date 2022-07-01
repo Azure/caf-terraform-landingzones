@@ -24,3 +24,18 @@ archetype_definitions:
     archetype_id: landingzone_online_web
     parent_management_group_id: online
     subscription_ids:
+  security:
+    display_name: Security
+    archetype_id: platform_security
+    parent_management_group_id: platform
+    # subscription_ids:
+    subscriptions:
+      security: platform_subscriptions
+    archetype_config:
+      access_control:
+        Owner:
+          azuread_groups:
+            lz_key: launchpad
+            attribute_key: id
+            resource_keys:
+              - security

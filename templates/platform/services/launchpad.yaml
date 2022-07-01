@@ -438,33 +438,37 @@ launchpad:
 
       azuread_applications:
         level0:
-          application_name: sp-caf-level0
+          application_name: level0
           owners:
-            - {{AZURE_OBJECT_ID}}
+            - {{object_id}}
         identity:
-          application_name: sp-caf-identity
+          application_name: identity
           owners:
-            - {{AZURE_OBJECT_ID}}
+            - {{object_id}}
         management:
-          application_name: sp-caf-management
+          application_name: management
           owners:
-            - {{AZURE_OBJECT_ID}}
+            - {{object_id}}
         alz:
-          application_name: sp-caf-alz
+          application_name: alz
           owners:
-            - {{AZURE_OBJECT_ID}}
+            - {{object_id}}
         connectivity:
-          application_name: sp-caf-connectivity
+          application_name: connectivity
           owners:
-            - {{AZURE_OBJECT_ID}}
+            - {{object_id}}
+        security:
+          application_name: security
+          owners:
+            - {{object_id}}
         subscription_creation_platform:
-          application_name: sp-caf-subscription_creation_platform
+          application_name: subscription_creation_platform
           owners:
-            - {{AZURE_OBJECT_ID}}
+            - {{object_id}}
         subscription_creation_landingzones:
-          application_name: sp-caf-subscription_creation_landingzones
+          application_name: subscription_creation_landingzones
           owners:
-            - {{AZURE_OBJECT_ID}}
+            - {{object_id}}
 
       azuread_service_principals:
         # Manage the deployment of the level0
@@ -487,6 +491,10 @@ launchpad:
         identity:
           azuread_application:
             key: identity
+        # Manage the deployment of the security services
+        security:
+          azuread_application:
+            key: security
         # Has delegation to create platform subscriptions
         subscription_creation_platform:
           azuread_application:
@@ -598,17 +606,21 @@ launchpad:
           name: caf-platform-maintainers
           description: High privileged group to run all CAF deployments from vscode. Can be used to bootstrap or troubleshoot deployments.
           prevent_duplicate_name: true
+          members:
+            object_ids:
+                - {{bootstrap_sp_object_id}}
           owners:
-            - {{AZURE_OBJECT_ID}}
+            - {{object_id}}
         caf_platform_contributors:
           name: caf-platform-contributors
           description: Can only execute terraform plans for level1 and level2. They can test platform improvements and propose PR.
           prevent_duplicate_name: true
           members:
             object_ids:
-                - {{AZURE_OBJECT_ID}}
+                - {{object_id}}
+                - {{bootstrap_sp_object_id}}
           owners:
-            - {{AZURE_OBJECT_ID}}
+            - {{object_id}}
         level0:
           name: caf-level0
           prevent_duplicate_name: true
@@ -616,7 +628,7 @@ launchpad:
             azuread_service_principal_keys:
               - level0
           owners:
-            - {{AZURE_OBJECT_ID}}
+            - {{object_id}}
         alz:
           name: caf-alz
           prevent_duplicate_name: true
@@ -624,7 +636,7 @@ launchpad:
             azuread_service_principal_keys:
               - alz
           owners:
-            - {{AZURE_OBJECT_ID}}
+            - {{object_id}}
         identity:
           name: caf-identity
           prevent_duplicate_name: true
@@ -632,7 +644,7 @@ launchpad:
             azuread_service_principal_keys:
               - identity
           owners:
-            - {{AZURE_OBJECT_ID}}
+            - {{object_id}}
         management:
           name: caf-management
           prevent_duplicate_name: true
@@ -640,7 +652,7 @@ launchpad:
             azuread_service_principal_keys:
               - management
           owners:
-            - {{AZURE_OBJECT_ID}}
+            - {{object_id}}
         connectivity:
           name: caf-connectivity
           prevent_duplicate_name: true
@@ -648,7 +660,15 @@ launchpad:
             azuread_service_principal_keys:
               - connectivity
           owners:
-            - {{AZURE_OBJECT_ID}}
+            - {{object_id}}
+        security:
+          name: caf-security
+          prevent_duplicate_name: true
+          members:
+            azuread_service_principal_keys:
+              - security
+          owners:
+            - {{object_id}}
         subscription_creation_platform:
           name: caf-subscription_creation_platform
           prevent_duplicate_name: true
@@ -656,7 +676,7 @@ launchpad:
             azuread_service_principal_keys:
               - subscription_creation_platform
           owners:
-            - {{AZURE_OBJECT_ID}}
+            - {{object_id}}
         subscription_creation_landingzones:
           name: caf-subscription_creation_landingzones
           prevent_duplicate_name: true
@@ -666,7 +686,7 @@ launchpad:
             # object_ids:
             #   - 
           owners:
-            - {{AZURE_OBJECT_ID}}
+            - {{object_id}}
 
 
       role_mapping:
@@ -692,6 +712,7 @@ launchpad:
                     - connectivity  # only when deploying in single subscription
                     - identity      # only when deploying in single subscription
                     - management    # only when deploying in single subscription
+                    - security    # only when deploying in single subscription
                     - subscription_creation_landingzones # # only when deploying in single subscription
 {% endif %}
               Reader:
@@ -725,6 +746,7 @@ launchpad:
                     - identity
                     - management
                     - alz
+                    - security
                     - subscription_creation_platform
                     - caf_platform_contributors
             level2:
@@ -734,6 +756,7 @@ launchpad:
                     - identity
                     - management
                     - connectivity
+                    - security
                     - subscription_creation_platform
                     - caf_platform_contributors
 
@@ -750,6 +773,7 @@ launchpad:
                   keys:
                     - management
                     - alz
+                    - security
                     - subscription_creation_platform
                     - caf_platform_contributors
             level1:
@@ -760,11 +784,11 @@ launchpad:
                     - identity
                     - management
                     - alz
+                    - security
                     - subscription_creation_platform
               Storage Blob Data Reader:
                 azuread_groups:
                   keys:
-                    - connectivity
                     - caf_platform_contributors
                     - level0
             level2:
@@ -774,6 +798,7 @@ launchpad:
                     - identity
                     - connectivity
                     - management
+                    - security
                     - caf_platform_maintainers
                     - level0
               Storage Blob Data Reader:
@@ -806,6 +831,7 @@ launchpad:
                     - identity
                     - management
                     - alz
+                    - security
                     - subscription_creation_platform
                     - caf_platform_contributors
             level2:
@@ -820,6 +846,7 @@ launchpad:
                     - identity
                     - management
                     - alz
+                    - security
                     - connectivity
                     - subscription_creation_platform
                     - caf_platform_contributors
@@ -828,7 +855,7 @@ launchpad:
       virtual_networks:
         vnet_region1:
           resource_group_key: gitops
-          name: gitops-vnet
+          name: gitops
           address_space: ["10.100.0.0/24"]
 {% if secure_firewalls_resources is defined %}
           dns_servers:
@@ -836,7 +863,7 @@ launchpad:
 {% endif %}
           subnets:
             level0:
-              name: caf-level0
+              name: level0
               cidr: ["10.100.0.0/27"]
               delegation:
                 name: Microsoft.ContainerInstance/containerGroups
@@ -847,7 +874,7 @@ launchpad:
                 - Microsoft.KeyVault
                 - Microsoft.Storage
             level1:
-              name: caf-level1
+              name: level1
               cidr: ["10.100.0.32/27"]
               delegation:
                 name: Microsoft.ContainerInstance/containerGroups
@@ -858,7 +885,7 @@ launchpad:
                 - Microsoft.KeyVault
                 - Microsoft.Storage
             level2:
-              name: caf-level2
+              name: level2
               cidr: ["10.100.0.64/27"]
               delegation:
                 name: Microsoft.ContainerInstance/containerGroups

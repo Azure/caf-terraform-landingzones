@@ -6,6 +6,9 @@ export ANSIBLE_DISPLAY_SKIPPED_HOSTS=False
 
 params=$(echo ${@} | xargs -n1 | xargs -I@ echo "-e @ " )
 
+echo ${params} | xargs
+echo "sub_management: ${sub_management}"
+
 ansible-playbook /tf/caf/landingzones/templates/ansible/walk-through-bootstrap.yaml \
   -e public_templates_folder=/tf/caf/landingzones/templates \
   -e landingzones_folder=/tf/caf/landingzones \
@@ -19,6 +22,49 @@ ansible-playbook /tf/caf/landingzones/templates/ansible/walk-through-bootstrap.y
   --extra-vars "@/tf/caf/landingzones/templates/platform/bootstrap.yaml" \
   -e $(echo ${params} | xargs)
 
+ansible-playbook $(readlink -f ./landingzones/templates/ansible/ansible.yaml) \
+  --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)" \
+  -e base_folder=$(pwd)
+
+/tf/rover/rover.sh \
+  -lz /tf/caf/landingzones/caf_launchpad \
+  -var-folder /tf/caf/platform/configuration/level0/launchpad \
+  -tfstate_subscription_id ${sub_management} \
+  -target_subscription ${sub_management} \
+  -tfstate caf_launchpad.tfstate \
+  -launchpad \
+  -env ${TF_VAR_environment} \
+  -level level0 \
+  -a apply
+
+# Need to logout and login to get the new group memberships
+tenant_id=$(az account show --query tenantId -o tsv)
+az account clear
+
+/tf/rover/rover.sh login -t ${tenant_id} -s ${sub_management}
+
+/tf/rover/rover.sh \
+  -lz /tf/caf/landingzones/caf_solution \
+  -var-folder /tf/caf/platform/configuration/level0/credentials \
+  -tfstate_subscription_id ${sub_management} \
+  -target_subscription ${sub_management} \
+  -tfstate launchpad_credentials.tfstate \
+  -launchpad \
+  -env caf1268 \
+  -level level0 \
+  -a apply
+  
+/tf/rover/rover.sh \
+  -lz /tf/caf/landingzones/caf_solution \
+  -var-folder /tf/caf/platform/configuration/level0/gitops_agents \
+  -tfstate_subscription_id ${sub_management} \
+  -target_subscription ${sub_management} \
+  -tfstate gitops_agents.tfstate \
+  -launchpad \
+  -env caf1268 \
+  -level level0 \
+  -a apply
+
 if [ $? = 0 ]; then
 
   cd /tf/caf
@@ -29,6 +75,7 @@ if [ $? = 0 ]; then
     git add .
     pre-commit
     git commit -am "Update definition files."
+    git push
         # Create the initial PR for the bootstrap configuration
 body=<<EOF
     Definition folder with the initial templates for:
@@ -48,9 +95,9 @@ EOF
     git commit -am "Initial definition files."
     git add .
     git commit -am "Initial definition files."
+    git push
   fi
 
-  git push
 
 else
   echo "Fix the errors and restart the rover bootstrap"

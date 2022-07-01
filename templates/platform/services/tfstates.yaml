@@ -13,7 +13,7 @@ tfstates:
 {% for a_key, a_value in resources.deployments[deployment_mode].alz.items() %}
 {% for key, value in a_value.items() %}
     {{resources.management_groups[a_key][key].tfstate.tfstate_key_name}}:
-{% for l_key, l_value in resources.management_groups[a_key][key].items() %}
+{% for l_key, l_value in resources.management_groups[a_key][key].tfstate.items() %}
       {{l_key}}: {{l_value}}
 {% endfor %}
 

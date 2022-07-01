@@ -26,6 +26,7 @@ prefix: {{prefix}}
 bootstrap_file: "{{base_folder}}/platform/definition/ignite.yaml"
 landingzones_folder: "{{base_folder}}/landingzones"
 public_templates_folder: "{{base_folder}}/landingzones/templates"
+private_templates_folder: "{{base_folder}}/platform/templates"
 platform_configuration_folder: "{{base_folder}}/platform/configuration"
 platform_definition_folder: "{{base_folder}}/platform/definition"
 platform_template_folder: "{{base_folder}}/platform/template"
@@ -305,6 +306,7 @@ management_groups:
         template_lib_folder: platform/level1/alz
         sub_template_folder: platform/level1/alz
         yaml: platform/level1/alz/ansible.yaml
+        alz_version: v1.1.3
         # Do not rename the item_key_name
         tfstate_key_name: alz_{{alz_mg_prefix}}
 {% endfor %}
