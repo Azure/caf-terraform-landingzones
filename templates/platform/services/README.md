@@ -58,9 +58,9 @@ ansible-playbook $(readlink -f ./landingzones/templates/ansible/walk-through-ci.
   --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)" \
   -e base_folder=$(pwd) \
   -e topology_file={{topology_file}} \
-  -e GITHUB_SERVER_URL={{GITHUB_SERVER_URL}} \
-  -e GITHUB_REPOSITORY={{GITHUB_REPOSITORY}} \
-  -e GITOPS_SERVER_URL={{GITHUB_SERVER_URL}}/{{GITHUB_REPOSITORY}} \
+  -e GITHUB_SERVER_URL={{lookup('env', 'GITHUB_SERVER_URL')}} \
+  -e GITHUB_REPOSITORY={{lookup('env', 'GITHUB_REPOSITORY')}} \
+  -e GITOPS_SERVER_URL={{lookup('env', 'GITHUB_SERVER_URL')}}/{{lookup('env', 'GITHUB_REPOSITORY')}} \
   -e RUNNER_NUMBERS={{ RUNNER_NUMBERS }} \
   -e AGENT_TOKEN={{ AGENT_TOKEN }} \
   -e gitops_agent={{gitops_agent}} \

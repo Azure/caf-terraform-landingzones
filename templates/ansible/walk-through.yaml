@@ -61,18 +61,16 @@
     files_matching: "ignite.yaml"
 
 - set_fact:
+    caf_environment: "{{ TF_VAR_environment }}"
+  when: TF_VAR_environment is defined
+  
+- set_fact:
     topology: "{{ lookup('template', '{{ topology_file }}') | from_yaml }}"
     topology_deployment__to_merge: "{{ lookup('template', '{{ topology_file }}') | from_yaml }}"
     destination_path: "{{definition_folder | default(platform_definition_folder)}}"
     resource_template_folder: "{{ public_templates_folder }}/resources"
     platform_service_folder: "{{ public_templates_folder }}/platform/services"
     public_templates_variables_folder: "{{ public_templates_folder }}/variables"
-
-
-- set_fact:
-    caf_environment: "{{ TF_VAR_environment }}"
-  when: TF_VAR_environment is defined
-
 
 - name: "Creates directory - {{destination_path}}"
   file:

@@ -43,13 +43,12 @@ jobs:
 
   launchpad:
     uses: ./.github/workflows/rover.yaml
-    needs: [environment, configuration_updates]
+    needs: [environment]
     concurrency: 
       group: launchpad
     secrets:
 
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-      AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_LAUNCHPAD_SUBSCRIPTION_ID }}
       AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_LAUNCHPAD_SUBSCRIPTION_ID }}
@@ -68,13 +67,12 @@ jobs:
 
   credentials:
     uses: ./.github/workflows/rover.yaml
-    needs: [environment]
+    needs: [environment, launchpad]
     concurrency: 
       group: credentials
     secrets:
 
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-      AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_LAUNCHPAD_SUBSCRIPTION_ID }}
       AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_LAUNCHPAD_SUBSCRIPTION_ID }}
@@ -91,7 +89,7 @@ jobs:
 
   generate_definition_files:
     uses: ./.github/workflows/generate-definition-files.yaml
-    needs: [environment]
+    needs: [environment, credentials]
     concurrency: 
       group: credentials
     secrets:

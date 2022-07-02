@@ -117,6 +117,8 @@ jobs:
       - name: Generate PR for 
         run: |
           git config --global --add safe.directory $(pwd)
+          git config user.name "GitHub Actions Bot"
+          git config user.email "github-actions@github.com"
 
           git checkout -b end2end
           git add .
@@ -124,9 +126,6 @@ jobs:
           git commit -am "Update definition files."
 
           git remote -v
-          
-          git config user.name "GitHub Actions Bot"
-          git config user.email "github-actions@github.com"
 
           echo ${GITHUB_HEAD_REF}
           

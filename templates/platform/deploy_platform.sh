@@ -15,12 +15,13 @@ ansible-playbook /tf/caf/landingzones/templates/ansible/walk-through-bootstrap.y
   -e platform_configuration_folder=/tf/caf/configuration \
   -e platform_definition_folder=/tf/caf/platform/definition \
   -e platform_template_folder=/tf/caf/platform/template \
+  -e template_folder=/tf/caf/landingzones/templates/platform \
   -e firewall_rules_path=/tf/caf/platform/firewall_rules \
   -e keyvault_enable_rbac_authorization=true \
   -e keyvault_purge_protection_enabled=false \
   -e private_endpoints=true \
   -e caf_landingzone_branch="$(cd /tf/caf/landingzones && git rev-parse --abbrev-ref HEAD)" \
-  --extra-vars "@/tf/caf/landingzones/templates/platform/bootstrap.yaml" \
+  --extra-vars "@/tf/caf/landingzones/templates/platform/ignite.yaml" \
   -e $(echo ${params} | xargs)
 
 # Generate initial configuration
@@ -44,15 +45,24 @@ tenant_id=$(az account show --query tenantId -o tsv)
 az account clear
 
 /tf/rover/rover.sh login -t ${tenant_id} -s ${sub_management}
-  
+
+/tf/rover/rover.sh \
+  -lz /tf/caf/landingzones/caf_solution \
+  -var-folder /tf/caf/platform/configuration/level0/credentials \
+  -tfstate_subscription_id ${sub_management} \
+  -target_subscription ${sub_management} \
+  -tfstate launchpad_credentials.tfstate \
+  -env ${TF_VAR_environment} \
+  -level level0 \
+  -a apply
+
 /tf/rover/rover.sh \
   -lz /tf/caf/landingzones/caf_solution \
   -var-folder /tf/caf/platform/configuration/level0/gitops_agents \
   -tfstate_subscription_id ${sub_management} \
   -target_subscription ${sub_management} \
   -tfstate gitops_agents.tfstate \
-  -launchpad \
-  -env caf1268 \
+  -env ${TF_VAR_environment} \
   -level level0 \
   -a apply
 
