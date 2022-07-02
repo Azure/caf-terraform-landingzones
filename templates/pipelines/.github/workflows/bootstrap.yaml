@@ -18,9 +18,9 @@ concurrency:
   group: ${{ github.ref }}
 {% endraw %}
 env:
-  LZ_REPO: 'https://github.com/Azure/caf-terraform-landingzones.git'
-  LZ_BRANCH: 'int-5.6.0'
-  CAF_ENVIRONMENT: caf1268
+  LZ_REPO: '{{resources.terraform_code_repository}}'
+  LZ_BRANCH: '{{resources.caf_landingzone_branch}}'
+  CAF_ENVIRONMENT: {{resources.caf_environment}}
 
 jobs:
 {% raw %}
@@ -41,53 +41,53 @@ jobs:
           echo "::set-output name=environment::$CAF_ENVIRONMENT"
 
 
-#   launchpad:
-#     uses: ./.github/workflows/rover-hosted.yaml
-#     needs: [environment, configuration_updates]
-#     concurrency: 
-#       group: launchpad
-#     secrets:
-# 
-#       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-#       AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-#       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-#       AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_LAUNCHPAD_SUBSCRIPTION_ID }}
-#       AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_LAUNCHPAD_SUBSCRIPTION_ID }}
-#     with:
-#       terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
-#       terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
-#       environment: ${{ needs.environment.outputs.environment }}
-#       caf_identity_aad_key: cred_level0
-#       landingzone_code_path: ./landingzones/caf_launchpad
-#       landingzone_configuration_path: ./platform/configuration/level0/launchpad
-#       plan_path: ${GITHUB_WORKSPACE}/caf_launchpad.tfstate.tfplan
-#       launchpad: true
-#       tfstate: caf_launchpad.tfstate
-#       level: level0
-#       terraform_action: plan_apply
-# 
-  # credentials:
-  #   uses: ./.github/workflows/rover-sp.yaml
-  #   needs: [environment]
-  #   concurrency: 
-  #     group: credentials
-  #   secrets:
+  launchpad:
+    uses: ./.github/workflows/rover.yaml
+    needs: [environment, configuration_updates]
+    concurrency: 
+      group: launchpad
+    secrets:
 
-  #     AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-  #     AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-  #     AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-  #     AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_LAUNCHPAD_SUBSCRIPTION_ID }}
-  #     AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_LAUNCHPAD_SUBSCRIPTION_ID }}
-  #   with:
-  #     terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
-  #     terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
-  #     environment: ${{ needs.environment.outputs.environment }}
-  #     landingzone_code_path: ./landingzones/caf_solution
-  #     landingzone_configuration_path: ./platform/configuration/level0/credentials
-  #     plan_path: ${GITHUB_WORKSPACE}/launchpad_credentials.tfstate.tfplan
-  #     tfstate: launchpad_credentials.tfstate
-  #     level: level0
-  #     terraform_action: plan_apply
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_LAUNCHPAD_SUBSCRIPTION_ID }}
+      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_LAUNCHPAD_SUBSCRIPTION_ID }}
+    with:
+      terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
+      terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
+      environment: ${{ needs.environment.outputs.environment }}
+      caf_identity_aad_key: cred_level0
+      landingzone_code_path: ./landingzones/caf_launchpad
+      landingzone_configuration_path: ./platform/configuration/level0/launchpad
+      plan_path: ${GITHUB_WORKSPACE}/caf_launchpad.tfstate.tfplan
+      launchpad: true
+      tfstate: caf_launchpad.tfstate
+      level: level0
+      terraform_action: plan_apply
+
+  credentials:
+    uses: ./.github/workflows/rover.yaml
+    needs: [environment]
+    concurrency: 
+      group: credentials
+    secrets:
+
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_LAUNCHPAD_SUBSCRIPTION_ID }}
+      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_LAUNCHPAD_SUBSCRIPTION_ID }}
+    with:
+      terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
+      terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
+      environment: ${{ needs.environment.outputs.environment }}
+      landingzone_code_path: ./landingzones/caf_solution
+      landingzone_configuration_path: ./platform/configuration/level0/credentials
+      plan_path: ${GITHUB_WORKSPACE}/launchpad_credentials.tfstate.tfplan
+      tfstate: launchpad_credentials.tfstate
+      level: level0
+      terraform_action: plan_apply
 
   generate_definition_files:
     uses: ./.github/workflows/generate-definition-files.yaml

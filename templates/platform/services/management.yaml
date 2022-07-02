@@ -45,7 +45,9 @@ management:
               - Metrics
             default_action: Deny
             ip_rules:
-              {{ PUBLIC_IP_WHITE_LIST | default('None') }}
+{% for ip in PUBLIC_IP_WHITE_LIST %}
+              - {{ ip }}
+{% endfor %}
             subnets:
               level0:
                 lz_key: launchpad

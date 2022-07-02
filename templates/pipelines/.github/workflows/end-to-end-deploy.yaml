@@ -9,8 +9,6 @@ on:
   pull_request:
     branches:
       - end2end
-    paths:
-      - 'platform/definition/**'
 
 permissions:
   id-token: write

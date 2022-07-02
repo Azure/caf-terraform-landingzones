@@ -57,7 +57,9 @@ asvm:
             default_action: Deny
 {% if PUBLIC_IP_WHITE_LIST is defined %}
             ip_rules:
-              {{ PUBLIC_IP_WHITE_LIST | default('None') }}
+{% for ip in PUBLIC_IP_WHITE_LIST %}
+              - {{ ip }}
+{% endfor %}
 {% endif %}
           blob_properties:
             versioning_enabled: true
@@ -110,7 +112,9 @@ asvm:
             default_action: Deny
 {% if PUBLIC_IP_WHITE_LIST is defined %}
             ip_rules:
-              {{ PUBLIC_IP_WHITE_LIST | default('None') }}
+{% for ip in PUBLIC_IP_WHITE_LIST %}
+              - {{ ip }}
+{% endfor %}
 {% endif %}
           blob_properties:
             versioning_enabled: true
@@ -157,7 +161,9 @@ asvm:
             default_action: Deny
 {% if PUBLIC_IP_WHITE_LIST is defined %}
             ip_rules:
-              {{ PUBLIC_IP_WHITE_LIST | default('None') }}
+{% for ip in PUBLIC_IP_WHITE_LIST %}
+              - {{ ip }}
+{% endfor %}
 {% endif %}
 {% if private_endpoints is defined %}
           private_endpoints:
@@ -204,7 +210,9 @@ asvm:
             default_action: Deny
 {% if PUBLIC_IP_WHITE_LIST is defined %}
             ip_rules:
-              {{ PUBLIC_IP_WHITE_LIST | default('None') }}
+{% for ip in PUBLIC_IP_WHITE_LIST %}
+              - {{ ip }}
+{% endfor %}
 {% endif %}
 {% if private_endpoints is defined %}
           private_endpoints:

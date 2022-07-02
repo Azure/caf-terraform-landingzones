@@ -74,7 +74,9 @@ keyvault_enable_rbac_authorization: true
 multiple_lines_list: true
 
 PUBLIC_IP_WHITE_LIST:
-  {{PUBLIC_IP_WHITE_LIST | to_nice_yaml}}
+{% for ip in PUBLIC_IP_WHITE_LIST | default([]) %}
+  - {{ ip }}
+{% endfor %}
 
 naming_convention:
   # When set to false use the CAF provider to generate names aligned to CAF guidance
