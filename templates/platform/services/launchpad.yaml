@@ -89,7 +89,7 @@ launchpad:
           tags:
             ## Those tags must never be changed after being set as they are used by the rover to locate the launchpad and the tfstates.
             # Only adjust the environment value at creation time
-            caf_environment: {{ input_caf_environment }}
+            caf_environment: {{ caf_environment }}
             caf_launchpad: launchpad
             caf_tfstate: level0
         level1:
@@ -146,7 +146,7 @@ launchpad:
           tags:
             ## Those tags must never be changed after being set as they are used by the rover to locate the launchpad and the tfstates.
             # Only adjust the environment value at creation time
-            caf_environment: {{ input_caf_environment }}
+            caf_environment: {{ caf_environment }}
             caf_launchpad: launchpad
             caf_tfstate: level1
         level2:
@@ -203,7 +203,7 @@ launchpad:
           tags:
             ## Those tags must never be changed after being set as they are used by the rover to locate the launchpad and the tfstates.
             # Only adjust the environment value at creation time
-            caf_environment: {{ input_caf_environment }}
+            caf_environment: {{ caf_environment }}
             caf_launchpad: launchpad
             caf_tfstate: level2
 
@@ -259,7 +259,7 @@ launchpad:
 {% endif %}
           tags:
             caf_tfstate: level0
-            caf_environment: {{ input_caf_environment }}
+            caf_environment: {{ caf_environment }}
         level1:
           name: l1
           sku_name: premium
@@ -311,7 +311,7 @@ launchpad:
 {% endif %}
           tags:
             caf_tfstate: level1
-            caf_environment: {{ input_caf_environment }}
+            caf_environment: {{ caf_environment }}
         level2:
           name: l2
           sku_name: premium
@@ -363,7 +363,7 @@ launchpad:
 {% endif %}
           tags:
             caf_tfstate: level2
-            caf_environment: {{ input_caf_environment }}
+            caf_environment: {{ caf_environment }}
 
 
 {% if keyvault_enable_rbac_authorization == false %}

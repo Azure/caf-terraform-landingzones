@@ -92,7 +92,7 @@ asvm:
           tags:
             ## Those tags must never be changed after being set as they are used by the rover to locate the launchpad and the tfstates.
             # Only adjust the environment value at creation time
-            caf_environment: {{ input_caf_environment }}
+            caf_environment: {{ caf_environment }}
             caf_launchpad: launchpad
             caf_tfstate: level3
         level4:
@@ -142,7 +142,7 @@ asvm:
           tags:
             ## Those tags must never be changed after being set as they are used by the rover to locate the launchpad and the tfstates.
             # Only adjust the environment value at creation time
-            caf_environment: {{ input_caf_environment }}
+            caf_environment: {{ caf_environment }}
             caf_launchpad: launchpad
             caf_tfstate: level4
 
@@ -193,7 +193,7 @@ asvm:
 {% endif %}
           tags:
             caf_tfstate: level3
-            caf_environment: {{ input_caf_environment }}
+            caf_environment: {{ caf_environment }}
         level4:
           name: l4
           resource_group_key: level4
@@ -240,7 +240,7 @@ asvm:
 {% endif %}
           tags:
             caf_tfstate: level4
-            caf_environment: {{ input_caf_environment }}
+            caf_environment: {{ caf_environment }}
 
       virtual_networks:
         vnet_region1:

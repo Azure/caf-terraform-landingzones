@@ -52,7 +52,7 @@ jobs:
       contents: write
       
     needs: [environment]
-    uses: ./.github/workflows/generate-config.yaml
+    uses: ./.github/workflows/generate-configuration-files.yaml
     secrets:
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}

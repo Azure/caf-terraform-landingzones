@@ -42,7 +42,8 @@ env:
   TF_REGISTRY_DISCOVERY_RETRY: 5
   TF_REGISTRY_CLIENT_TIMEOUT: 15
   ROVER_RUNNER: true
-  
+
+{% raw %}
 jobs:
   rover:
     name: Generate configuration files
@@ -65,27 +66,27 @@ jobs:
 
       - name: Create configuration files
         run: |
-          az account set -s ${{ secrets.AZURE_LAUNCHPAD_SUBSCRIPTION_ID }}
-
           rm -rf ./landingzones
           git clone -b ${{ inputs.terraform_code_ref }} --single-branch ${{ inputs.terraform_code_repository }} ./landingzones
           
           cred_vault_name=$(az keyvault list --query "[?(tags.caf_identity_aad_key=='cred_level0' && tags.caf_environment=='${{ inputs.environment }}')].{name:name}[0]" -o tsv)
-          sp_keyvault_url="https://${cred_vault_name}.vault.azure.net/"
-          
-          # Test permissions
-          az keyvault secret show --id ${sp_keyvault_url}/secrets/sp-client-id --query 'value' -o tsv  --only-show-errors | read CLIENT_ID
+          if [ "${cred_vault_name}" != ''  ]; then
+            sp_keyvault_url="https://${cred_vault_name}.vault.azure.net/"
+            
+            # Test permissions
+            az keyvault secret show --id ${sp_keyvault_url}/secrets/sp-client-id --query 'value' -o tsv  --only-show-errors | read CLIENT_ID
 
-          if [ ! -z "${tenant}" ]; then
-              export ARM_TENANT_ID=${tenant}
-          else
-              export ARM_TENANT_ID=$(az keyvault secret show --id ${sp_keyvault_url}/secrets/sp-tenant-id --query 'value' -o tsv --only-show-errors)
+            if [ ! -z "${tenant}" ]; then
+                export ARM_TENANT_ID=${tenant}
+            else
+                export ARM_TENANT_ID=$(az keyvault secret show --id ${sp_keyvault_url}/secrets/sp-tenant-id --query 'value' -o tsv --only-show-errors)
+            fi
+
+            export ARM_CLIENT_ID=$(az keyvault secret show --id ${sp_keyvault_url}/secrets/sp-client-id --query 'value' -o tsv --only-show-errors)
+            export ARM_CLIENT_SECRET=$(az keyvault secret show --id ${sp_keyvault_url}/secrets/sp-client-secret --query 'value' -o tsv --only-show-errors)
+
+            az login --service-principal -u ${ARM_CLIENT_ID} -p ${ARM_CLIENT_SECRET} -t ${ARM_TENANT_ID}  --only-show-errors 1> /dev/null
           fi
-
-          export ARM_CLIENT_ID=$(az keyvault secret show --id ${sp_keyvault_url}/secrets/sp-client-id --query 'value' -o tsv --only-show-errors)
-          export ARM_CLIENT_SECRET=$(az keyvault secret show --id ${sp_keyvault_url}/secrets/sp-client-secret --query 'value' -o tsv --only-show-errors)
-
-          az login --service-principal -u ${ARM_CLIENT_ID} -p ${ARM_CLIENT_SECRET} -t ${ARM_TENANT_ID}  --only-show-errors 1> /dev/null
 
           ansible-playbook $(readlink -f ./landingzones/templates/ansible/ansible.yaml) \
             --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)" \
@@ -95,6 +96,10 @@ jobs:
             -e GITHUB_SERVER_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY} \
             -e base_folder=$(pwd)
 
+
+      - name: Update pull Request
+        run: |
+          git config --global --add safe.directory $(pwd)
           git remote -v
           
           git config user.name "GitHub Actions Bot"
@@ -110,3 +115,4 @@ jobs:
             git commit -m "Update configuration files"
             git push
           fi
+{% endraw %}

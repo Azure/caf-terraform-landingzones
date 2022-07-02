@@ -49,7 +49,16 @@
       - "{{ object_id }}"
       - "{{ upn }}"
       - "{{ base_folder }}"
-      - "{{ input_caf_environment }}"
+      - "{{ input_caf_environment if input_caf_environment is defined else TF_VAR_environment }}"
+
+
+- name: "load {{ template_folder | default(platform_definition_folder)}}/ignite.yaml"
+  include_vars:
+    name: bootstrap
+    dir: "{{ template_folder | default(platform_definition_folder)}}"
+    depth: 1
+    ignore_unknown_extensions: true
+    files_matching: "ignite.yaml"
 
 - set_fact:
     topology: "{{ lookup('template', '{{ topology_file }}') | from_yaml }}"
@@ -58,6 +67,12 @@
     resource_template_folder: "{{ public_templates_folder }}/resources"
     platform_service_folder: "{{ public_templates_folder }}/platform/services"
     public_templates_variables_folder: "{{ public_templates_folder }}/variables"
+
+
+- set_fact:
+    caf_environment: "{{ TF_VAR_environment }}"
+  when: TF_VAR_environment is defined
+
 
 - name: "Creates directory - {{destination_path}}"
   file:
@@ -170,7 +185,6 @@
     paths: "{{public_templates_folder}}/firewall_rules"
     recurse: yes
     file_type: file
-    force: no
   register: firewall_files_to_process
 
 - name: copy firewall files
@@ -209,15 +223,8 @@
     src: "{{public_templates_folder}}/platform/caf_platform_prod_nonprod.yaml"
     dest: "{{destination_path}}/ignite.yaml"
         
-- name: readme.md
+- name: "{{platform_service_folder}}/README.md"
   ansible.builtin.template:
     src: "{{platform_service_folder}}/README.md"
     dest: "{{destination_path}}/GETTING-STARTED.md"
-    
-
-- debug:
-    msg:
-    - "You have now initialized the definition of the platform"
-    - "You can review and adjust the yaml files."
-    - "configuration folder: - {{destination_path}}"
-    - "readme: {{destination_path}}/GETTING-STARTED.md"
+  

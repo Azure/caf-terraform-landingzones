@@ -13,28 +13,25 @@ on:
 permissions:
   id-token: write
   contents: read
-
-concurrency: 
 {% raw %}
+concurrency: 
   group: ${{ github.ref }}
 {% endraw %}
-  
 env:
-  LZ_REPO: '{{resources.terraform_code_repository}}'
-  LZ_BRANCH: '{{resources.caf_landingzone_branch}}'
-  CAF_ENVIRONMENT: {{resources.caf_environment}}
+  LZ_REPO: 'https://github.com/Azure/caf-terraform-landingzones.git'
+  LZ_BRANCH: 'int-5.6.0'
+  CAF_ENVIRONMENT: caf1268
 
 jobs:
-
+{% raw %}
   environment:
     name: Setup dynamic environment variables
     runs-on: ubuntu-latest
     outputs:
-{% raw %}
+
       terraform_code_repository: ${{ steps.set_env.outputs.terraform_code_repository }}
       terraform_code_ref: ${{ steps.set_env.outputs.terraform_code_ref }}
       environment: ${{ steps.set_env.outputs.environment }}
-{% endraw %}
     steps:
       - name: Set environment variables for re-usable workflows
         id: set_env
@@ -44,96 +41,76 @@ jobs:
           echo "::set-output name=environment::$CAF_ENVIRONMENT"
 
 
-  configuration_updates:
-    name: Generate configuration tfvars files
-    runs-on: [self-hosted, platform]
+#   launchpad:
+#     uses: ./.github/workflows/rover-hosted.yaml
+#     needs: [environment, configuration_updates]
+#     concurrency: 
+#       group: launchpad
+#     secrets:
+# 
+#       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+#       AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+#       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+#       AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_LAUNCHPAD_SUBSCRIPTION_ID }}
+#       AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_LAUNCHPAD_SUBSCRIPTION_ID }}
+#     with:
+#       terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
+#       terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
+#       environment: ${{ needs.environment.outputs.environment }}
+#       caf_identity_aad_key: cred_level0
+#       landingzone_code_path: ./landingzones/caf_launchpad
+#       landingzone_configuration_path: ./platform/configuration/level0/launchpad
+#       plan_path: ${GITHUB_WORKSPACE}/caf_launchpad.tfstate.tfplan
+#       launchpad: true
+#       tfstate: caf_launchpad.tfstate
+#       level: level0
+#       terraform_action: plan_apply
+# 
+  # credentials:
+  #   uses: ./.github/workflows/rover-sp.yaml
+  #   needs: [environment]
+  #   concurrency: 
+  #     group: credentials
+  #   secrets:
 
-    permissions:
-      id-token: write
-      contents: write
-      
-    needs: [environment]
-    uses: ./.github/workflows/generate-config.yaml
-    secrets:
-      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-      AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_LAUNCHPAD_SUBSCRIPTION_ID }}
-      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_LAUNCHPAD_SUBSCRIPTION_ID }}
-      RUNNER_REGISTRATION_TOKEN: ${{ secrets.RUNNER_REGISTRATION_TOKEN }}
-      RUNNER_NUMBERS: ${{ secrets.RUNNER_NUMBERS }}
-      AZURE_OBJECT_ID: ${{ secrets.AZURE_OBJECT_ID }}
-    with:
-      terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
-      terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
-      environment: ${{ needs.environment.outputs.environment }}
+  #     AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+  #     AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+  #     AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+  #     AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_LAUNCHPAD_SUBSCRIPTION_ID }}
+  #     AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_LAUNCHPAD_SUBSCRIPTION_ID }}
+  #   with:
+  #     terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
+  #     terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
+  #     environment: ${{ needs.environment.outputs.environment }}
+  #     landingzone_code_path: ./landingzones/caf_solution
+  #     landingzone_configuration_path: ./platform/configuration/level0/credentials
+  #     plan_path: ${GITHUB_WORKSPACE}/launchpad_credentials.tfstate.tfplan
+  #     tfstate: launchpad_credentials.tfstate
+  #     level: level0
+  #     terraform_action: plan_apply
 
+  - generate_definition_files:
+      uses: ./.github/workflows/generate-definition-files.yaml
+      needs: [environment]
+      concurrency: 
+        group: credentials
+      secrets:
 
-  launchpad:
-    uses: ./.github/workflows/rover.yaml
-    needs: [environment, configuration_updates]
-    concurrency: 
-      group: level0-launchpad
-    secrets:
-      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-      AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_LAUNCHPAD_SUBSCRIPTION_ID }}
-      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_LAUNCHPAD_SUBSCRIPTION_ID }}
-    with:
-      terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
-      terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
-      environment: ${{ needs.environment.outputs.environment }}
-      caf_identity_aad_key: cred_level0
-      landingzone_code_path: ./landingzones/caf_launchpad
-      landingzone_configuration_path: ./platform/configuration/level0/launchpad
-      plan_path: ${GITHUB_WORKSPACE}/caf_launchpad.tfstate.tfplan
-      tfstate: caf_launchpad.tfstate
-      level: level0
-      terraform_action: plan_apply
+        AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+        AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+        AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+        AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_LAUNCHPAD_SUBSCRIPTION_ID }}
+        AZURE_MANAGEMENT_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+        AZURE_CONNECTIVITY_SUBSCRIPTION_ID: ${{ secrets.AZURE_CONNECTIVITY_SUBSCRIPTION_ID }}
+        AZURE_IDENTITY_SUBSCRIPTION_ID: ${{ secrets.AZURE_IDENTITY_SUBSCRIPTION_ID }}
+        AZURE_SECURITY_SUBSCRIPTION_ID: ${{ secrets.AZURE_SECURITY_SUBSCRIPTION_ID }}
+        AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_TARGET_SUBSCRIPTION_ID }}
+        RUNNER_REGISTRATION_TOKEN: ${{ secrets.RUNNER_REGISTRATION_TOKEN }}
+        AZURE_OBJECT_ID: ${{ secrets.AZURE_OBJECT_ID }}
+        ROVER_AGENT_DOCKER_IMAGE: ${{ secrets.ROVER_AGENT_DOCKER_IMAGE }}
+      with:
+        terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
+        terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
+        environment: ${{ needs.environment.outputs.environment }}
 
-  credentials:
-    uses: ./.github/workflows/rover.yaml
-    needs: [environment, launchpad]
-    concurrency: 
-      group: level0-credentials
-    secrets:
-      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-      AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_LAUNCHPAD_SUBSCRIPTION_ID }}
-      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_LAUNCHPAD_SUBSCRIPTION_ID }}
-    with:
-      terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
-      terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
-      environment: ${{ needs.environment.outputs.environment }}
-      caf_identity_aad_key: cred_identity
-      landingzone_code_path: ./landingzones/caf_solution
-      landingzone_configuration_path: ./platform/configuration/level0/credentials
-      plan_path: ${GITHUB_WORKSPACE}/launchpad_credentials.tfstate.tfplan
-      tfstate: launchpad_credentials.tfstate
-      level: level0
-      terraform_action: plan_apply
-
-
-
-  trigger_end2end:
-    name: Create pull request for end2end 
-    runs-on: ubuntu-latest
-    needs: [credentials]
-
-    steps:
-      - name: Create configuration files
-        run: |
-          git checkout -b end2end --track origin/bootstrap
-          git add .
-          pre-commit
-          git commit -am "Update definition files."
-              # Create the initial PR for the bootstrap configuration
-          body="Trigger end2end deployment."
-
-          /usr/bin/gh pr create \
-            --assignee "@me" \
-            --title "Complete the deployment of the platform services." \
-            --body "${body}" \
-            --base bootstrap \
-            -R (echo "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}" || echo "git config --get remote.origin.url" | sed -e 's#^https://github.com/##; s#^git@github.com:##; s#.git$##')
-        
-          git push
+{% endraw %}

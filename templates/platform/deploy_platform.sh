@@ -1,5 +1,5 @@
 #! /bin/bash
-
+set -e
 cd /tf/caf
 
 export ANSIBLE_DISPLAY_SKIPPED_HOSTS=False 
@@ -22,6 +22,7 @@ ansible-playbook /tf/caf/landingzones/templates/ansible/walk-through-bootstrap.y
   --extra-vars "@/tf/caf/landingzones/templates/platform/bootstrap.yaml" \
   -e $(echo ${params} | xargs)
 
+# Generate initial configuration
 ansible-playbook $(readlink -f ./landingzones/templates/ansible/ansible.yaml) \
   --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)" \
   -e base_folder=$(pwd)

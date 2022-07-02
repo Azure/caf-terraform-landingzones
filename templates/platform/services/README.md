@@ -53,7 +53,26 @@ git checkout {{caf_landingzone_branch}}
 For your reference, if you need to re-generate the YAML definition files later, you can run the following command: 
 
 ```bash
-ansible-playbook $(readlink -f ./landingzones/templates/ansible/walk-through-bootstrap.yaml) \
-  --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)"
+
+ansible-playbook $(readlink -f ./landingzones/templates/ansible/walk-through-ci.yaml) \
+  --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)" \
+  -e base_folder=$(pwd) \
+  -e topology_file={{topology_file}} \
+  -e GITHUB_SERVER_URL={{GITHUB_SERVER_URL}} \
+  -e GITHUB_REPOSITORY={{GITHUB_REPOSITORY}} \
+  -e GITOPS_SERVER_URL={{GITHUB_SERVER_URL}}/{{GITHUB_REPOSITORY}} \
+  -e RUNNER_NUMBERS={{ RUNNER_NUMBERS }} \
+  -e AGENT_TOKEN={{ AGENT_TOKEN }} \
+  -e gitops_agent={{gitops_agent}} \
+  -e ROVER_AGENT_DOCKER_IMAGE={{ROVER_AGENT_DOCKER_IMAGE}} \
+  -e subscription_deployment_mode={{subscription_deployment_mode}} \
+  -e sub_management={{sub_management}} \
+  -e sub_connectivity={{sub_connectivity}} \
+  -e sub_identity={{sub_identity}} \
+  -e sub_security={{sub_security}} \
+  -e gitops_pipelines={{gitops_pipelines}} \
+  -e TF_VAR_environment={{caf_environment}} \
+  -e bootstrap_sp_object_id={{bootstrap_sp_object_id}} \
+  -e template_folder="$(pwd)/platform/definition"
 
 ```
