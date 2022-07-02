@@ -24,3 +24,9 @@ security_level2_{{env}}:
           management:
 
   resources:
+    security:
+      resource_groups:
+        des_keys:
+          name: disk-encryption-keys-{{env}}
+        ssh_keys:
+          name: ssh-keys-{{env}}
