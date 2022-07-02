@@ -137,43 +137,43 @@
   
 
 # Copy github workflows
-- find:
-    paths: "{{public_templates_folder}}/pipelines/.github/workflows"
-    recurse: yes
-    file_type: file
-  register: github_workflows_to_process
+    - find:
+        paths: "{{public_templates_folder}}/pipelines/.github/workflows"
+        recurse: yes
+        file_type: file
+      register: github_workflows_to_process
 
-- name: copy github workflows
-  ansible.builtin.template:
-    src: "{{ item.path }}"
-    dest: "{{base_folder}}/{{ item.path | regex_replace(public_templates_folder + '/pipelines', '') }}"
-  loop: "{{github_workflows_to_process.files}}"
+    - name: copy github workflows
+      ansible.builtin.template:
+        src: "{{ item.path }}"
+        dest: "{{base_folder}}/{{ item.path | regex_replace(public_templates_folder + '/pipelines', '') }}"
+      loop: "{{github_workflows_to_process.files}}"
 
 # Copy default firewall rules
 
-- name: "Creates destination directory - {{firewall_rules_path}}"
-  file:
-    path: "{{firewall_rules_path}}/{{item}}"
-    state: directory
-  with_items:
-   - application_rule_collections
-   - network_rule_collections
-   - nat_rule_collections
-    
-- find:
-    paths: "{{public_templates_folder}}/firewall_rules"
-    recurse: yes
-    file_type: file
-  register: firewall_files_to_process
+    - name: "Creates destination directory - {{firewall_rules_path}}"
+      file:
+        path: "{{firewall_rules_path}}/{{item}}"
+        state: directory
+      with_items:
+      - application_rule_collections
+      - network_rule_collections
+      - nat_rule_collections
+        
+    - find:
+        paths: "{{public_templates_folder}}/firewall_rules"
+        recurse: yes
+        file_type: file
+      register: firewall_files_to_process
 
-- name: copy firewall files
-  ansible.builtin.copy:
-    src: "{{ item.path }}"
-    dest: "{{firewall_rules_path}}/{{ item.path | regex_replace(public_templates_folder + '/firewall_rules', '') }}"
-    force: no
-  loop: "{{firewall_files_to_process.files}}"
+    - name: copy firewall files
+      ansible.builtin.copy:
+        src: "{{ item.path }}"
+        dest: "{{firewall_rules_path}}/{{ item.path | regex_replace(public_templates_folder + '/firewall_rules', '') }}"
+        force: no
+      loop: "{{firewall_files_to_process.files}}"
 
 
-- name: Format and validate file
-  shell: "terraform fmt -recursive {{ platform_configuration_folder }}"
-  register: fmt
+    - name: Format and validate file
+      shell: "terraform fmt -recursive {{ platform_configuration_folder }}"
+      register: fmt
