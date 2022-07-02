@@ -42,17 +42,6 @@ tenant_id=$(az account show --query tenantId -o tsv)
 az account clear
 
 /tf/rover/rover.sh login -t ${tenant_id} -s ${sub_management}
-
-/tf/rover/rover.sh \
-  -lz /tf/caf/landingzones/caf_solution \
-  -var-folder /tf/caf/platform/configuration/level0/credentials \
-  -tfstate_subscription_id ${sub_management} \
-  -target_subscription ${sub_management} \
-  -tfstate launchpad_credentials.tfstate \
-  -launchpad \
-  -env caf1268 \
-  -level level0 \
-  -a apply
   
 /tf/rover/rover.sh \
   -lz /tf/caf/landingzones/caf_solution \
