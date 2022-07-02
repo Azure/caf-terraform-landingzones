@@ -1,8 +1,8 @@
 hashicorp:
   name: Hashicorp
   action: Allow
-{% if vnet_launchpad is defined and vnet_asvm is defined %}
   rules:
+{% if vnet_launchpad is defined and vnet_asvm is defined %}
     terraform:
       name: terraform
       source_addresses:

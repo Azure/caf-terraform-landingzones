@@ -1,8 +1,8 @@
 azure_firewall_management:
   name: Azure Firewall management
   action: Allow
-{% if private_dns_firewalls is defined %}
   rules:
+{% if private_dns_firewalls is defined %}
     # https://docs.microsoft.com/en-us/azure/api-management/virtual-network-reference?tabs=stv2#metrics-and-health-monitoring-1
     metrics_and_health:
       name: metric and health
