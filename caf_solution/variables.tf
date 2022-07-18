@@ -245,6 +245,6 @@ variable "propagate_launchpad_identities" {
 variable "random_strings" {
   default = {}
 }
-variable "resource_provider_registration" {
+/* variable "resource_provider_registration" {
   default = {}
-}
+} */
