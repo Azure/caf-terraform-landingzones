@@ -75,7 +75,7 @@ launchpad:
               name: stg-level0
               resource_group_key: level0
               vnet_key: vnet_region1
-              subnet_key: private_endpoints
+              subnet_key: level0
               private_service_connection:
                 name: stg-level0-link
                 is_manual_connection: false
@@ -134,7 +134,7 @@ launchpad:
               name: stg-level1
               resource_group_key: level1
               vnet_key: vnet_region1
-              subnet_key: private_endpoints
+              subnet_key: level1
               private_service_connection:
                 name: stg-level1-link
                 is_manual_connection: false
@@ -193,7 +193,7 @@ launchpad:
               name: stg-level2
               resource_group_key: level2
               vnet_key: vnet_region1
-              subnet_key: private_endpoints
+              subnet_key: level2
               private_service_connection:
                 name: stg-level2-link
                 is_manual_connection: false
@@ -240,7 +240,7 @@ launchpad:
               name: kv-level0
               resource_group_key: level0
               vnet_key: vnet_region1
-              subnet_key: private_endpoints
+              subnet_key: level0
               private_service_connection:
                 name: kv-level0-link
                 is_manual_connection: false
@@ -294,7 +294,7 @@ launchpad:
               name: kv-level1
               resource_group_key: level1
               vnet_key: vnet_region1
-              subnet_key: private_endpoints
+              subnet_key: level1
               private_service_connection:
                 name: kv-level1-link
                 is_manual_connection: false
@@ -348,7 +348,7 @@ launchpad:
               name: kv-level2
               resource_group_key: level2
               vnet_key: vnet_region1
-              subnet_key: private_endpoints
+              subnet_key: level2
               private_service_connection:
                 name: kv-level2-link
                 is_manual_connection: false
@@ -885,32 +885,34 @@ launchpad:
               service_endpoints:
                 - Microsoft.KeyVault
                 - Microsoft.Storage
+{% if private_endpoints is defined %}
+              enforce_private_link_endpoint_network_policies: true
+{% endif %}
             level1:
               name: level1
               cidr: ["10.100.0.32/27"]
-              delegation:
-                name: Microsoft.ContainerInstance/containerGroups
-                service_delegation: Microsoft.ContainerInstance/containerGroups
-                actions:
-                  - Microsoft.Network/virtualNetworks/subnets/action
-              service_endpoints:
-                - Microsoft.KeyVault
-                - Microsoft.Storage
-            level2:
-              name: level2
-              cidr: ["10.100.0.64/27"]
-              delegation:
-                name: Microsoft.ContainerInstance/containerGroups
-                service_delegation: Microsoft.ContainerInstance/containerGroups
-                actions:
-                  - Microsoft.Network/virtualNetworks/subnets/action
               service_endpoints:
                 - Microsoft.KeyVault
                 - Microsoft.Storage
 {% if private_endpoints is defined %}
-            private_endpoints:
-              name: private-endpoints
+              enforce_private_link_endpoint_network_policies: true
+{% endif %}
+            level2:
+              name: level2
+              cidr: ["10.100.0.64/27"]
+              service_endpoints:
+                - Microsoft.KeyVault
+                - Microsoft.Storage
+{% if private_endpoints is defined %}
+              enforce_private_link_endpoint_network_policies: true
+{% endif %}
+            credentials:
+              name: credentials
               cidr: ["10.100.0.96/27"]
+              service_endpoints:
+                - Microsoft.KeyVault
+                - Microsoft.Storage
+{% if private_endpoints is defined %}
               enforce_private_link_endpoint_network_policies: true
 {% endif %}
 

@@ -48,20 +48,20 @@ az account clear
 
 /tf/rover/rover.sh \
   -lz /tf/caf/landingzones/caf_solution \
-  -var-folder /tf/caf/platform/configuration/level0/credentials \
+  -var-folder /tf/caf/platform/configuration/level0/gitops_agents \
   -tfstate_subscription_id ${sub_management} \
   -target_subscription ${sub_management} \
-  -tfstate launchpad_credentials.tfstate \
+  -tfstate gitops_agents.tfstate \
   -env ${TF_VAR_environment} \
   -level level0 \
   -a apply
 
 /tf/rover/rover.sh \
   -lz /tf/caf/landingzones/caf_solution \
-  -var-folder /tf/caf/platform/configuration/level0/gitops_agents \
+  -var-folder /tf/caf/platform/configuration/level0/credentials \
   -tfstate_subscription_id ${sub_management} \
   -target_subscription ${sub_management} \
-  -tfstate gitops_agents.tfstate \
+  -tfstate launchpad_credentials.tfstate \
   -env ${TF_VAR_environment} \
   -level level0 \
   -a apply
@@ -76,7 +76,7 @@ if [ $? = 0 ]; then
     git add .
     pre-commit
     git commit -am "Update definition files."
-    git push
+    git push origin HEAD
         # Create the initial PR for the bootstrap configuration
 body=<<EOF
     Definition folder with the initial templates for:
@@ -96,7 +96,7 @@ EOF
     git commit -am "Initial definition files."
     git add .
     git commit -am "Initial definition files."
-    git push
+    git push origin
   fi
 
 
