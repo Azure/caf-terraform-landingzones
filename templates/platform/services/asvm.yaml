@@ -77,7 +77,7 @@ asvm:
               name: stg-level3
               resource_group_key: level3
               vnet_key: vnet_region1
-              subnet_key: private_endpoints
+              subnet_key: level3
               private_service_connection:
                 name: stg-level3-link
                 is_manual_connection: false
@@ -129,7 +129,7 @@ asvm:
               name: stg-level4
               resource_group_key: level4
               vnet_key: vnet_region1
-              subnet_key: private_endpoints
+              subnet_key: level4
               private_service_connection:
                 name: stg-level4-link
                 is_manual_connection: false
@@ -171,7 +171,7 @@ asvm:
               name: kv-level3
               resource_group_key: level3
               vnet_key: vnet_region1
-              subnet_key: private_endpoints
+              subnet_key: level3
               private_service_connection:
                 name: kv-level3-link
                 is_manual_connection: false
@@ -220,7 +220,7 @@ asvm:
               name: kv-level4
               resource_group_key: level4
               vnet_key: vnet_region1
-              subnet_key: private_endpoints
+              subnet_key: level4
               private_service_connection:
                 name: kv-level4-link
                 is_manual_connection: false
@@ -268,30 +268,30 @@ asvm:
               name: caf-level3
               cidr: 
                 - 10.100.1.0/27
-              delegation:
-                name: Microsoft.ContainerInstance/containerGroups
-                service_delegation: Microsoft.ContainerInstance/containerGroups
-                actions:
-                  - Microsoft.Network/virtualNetworks/subnets/action
-              service_endpoints:
-                - Microsoft.KeyVault
-                - Microsoft.Storage
-            level4:
-              name: caf-level4
-              cidr: 
-                - 10.100.1.32/27
-              delegation:
-                name: Microsoft.ContainerInstance/containerGroups
-                service_delegation: Microsoft.ContainerInstance/containerGroups
-                actions:
-                  - Microsoft.Network/virtualNetworks/subnets/action
               service_endpoints:
                 - Microsoft.KeyVault
                 - Microsoft.Storage
 {% if private_endpoints is defined %}
-            private_endpoints:
-              name: private-endpoints
-              cidr: ["10.100.1.64/27"]
+              enforce_private_link_endpoint_network_policies: true
+{% endif %}
+            level4:
+              name: caf-level4
+              cidr: 
+                - 10.100.1.32/27
+              service_endpoints:
+                - Microsoft.KeyVault
+                - Microsoft.Storage
+{% if private_endpoints is defined %}
+              enforce_private_link_endpoint_network_policies: true
+{% endif %}
+            credentials:
+              name: credentials
+              cidr: 
+                - 10.100.1.64/27
+              service_endpoints:
+                - Microsoft.KeyVault
+                - Microsoft.Storage
+{% if private_endpoints is defined %}
               enforce_private_link_endpoint_network_policies: true
 {% endif %}
 
