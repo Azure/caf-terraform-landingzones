@@ -106,7 +106,7 @@ jobs:
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+          subscription-id: ${{ secrets.AZURE_LAUNCHPAD_SUBSCRIPTION_ID }}
 
       - name: Checkout Configuration
         uses: actions/checkout@v3
