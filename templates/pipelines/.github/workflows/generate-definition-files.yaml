@@ -99,19 +99,20 @@ jobs:
           fi
 
           ansible-playbook $(readlink -f ./landingzones/templates/ansible/walk-through-bootstrap.yaml) \
-            --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)" \
             -e base_folder=$(pwd) \
-            -e GITOPS_SERVER_URL={{GITHUB_SERVER_URL}}/{{GITHUB_REPOSITORY}} \
-            -e RUNNER_NUMBERS={{ secrets.RUNNER_NUMBERS }} \
-            -e AGENT_TOKEN={{ secrets.RUNNER_REGISTRATION_TOKEN }} \
+            -e GITHUB_SERVER_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY} \
+            -e RUNNER_NUMBERS=${{ secrets.RUNNER_NUMBERS }} \
+            -e AGENT_TOKEN=${{ secrets.RUNNER_REGISTRATION_TOKEN }} \
             -e ROVER_AGENT_DOCKER_IMAGE=${{secrets.ROVER_AGENT_DOCKER_IMAGE}} \
+            -e AZURE_OBJECT_ID=${{ secrets.AZURE_OBJECT_ID }} \
             -e sub_management=${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID}} \
             -e sub_connectivity=${{ secrets.AZURE_CONNECTIVITY_SUBSCRIPTION_ID }} \
             -e sub_identity=${{ secrets.AZURE_IDENTITY_SUBSCRIPTION_ID }} \
             -e sub_security=${{secrets.AZURE_SECURITY_SUBSCRIPTION_ID}} \
             -e TF_VAR_environment=${{ inputs.environment }} \
             -e bootstrap_sp_object_id=${{secrets.AZURE_OBJECT_ID}} \
-            -e template_folder="$(pwd)/platform/definition"
+            -e template_folder="$(pwd)/platform/definition" \
+            --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)"
 
 
       - name: Generate PR for 
@@ -135,7 +136,7 @@ jobs:
           else
             git add --all .
             git commit -m "Update configuration files"
-            git push
+            git push origin HEAD
           fi
 
           /usr/bin/gh pr create \

@@ -168,7 +168,7 @@ jobs:
       terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
       terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
       environment: ${{ needs.environment.outputs.environment }}
-      caf_identity_aad_key: cred_management
+      caf_identity_aad_key: cred_security
       landingzone_code_path: ./landingzones/caf_solution
       landingzone_configuration_path: ./platform/configuration/level1/security
       plan_path: ${GITHUB_WORKSPACE}/security.tfstate.tfplan

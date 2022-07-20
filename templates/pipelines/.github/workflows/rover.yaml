@@ -141,7 +141,7 @@ jobs:
           action_apply=("-a apply ${{inputs.terraform_action_apply }} ")
           landingzone_code_path=("-lz $(readlink -f ${{inputs.landingzone_code_path}}) ")
           landingzone_configuration_path=("-var-folder $(readlink -f ${{inputs.landingzone_configuration_path}}) ")
-          tfstate_subscription_id=("-tfstate_subscription_id ${{secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID}} ")
+          tfstate_subscription_id=("-tfstate_subscription_id ${{secrets.AZURE_LAUNCHPAD_SUBSCRIPTION_ID}} ")
           target_subscription=("-target_subscription ${{secrets.AZURE_TARGET_SUBSCRIPTION_ID}} ")
           tfstate=("-tfstate ${{inputs.tfstate}} ")
           environment=("-env ${{inputs.environment}} ")

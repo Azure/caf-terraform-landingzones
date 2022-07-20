@@ -313,3 +313,10 @@ management_groups:
         tfstate_key_name: alz_{{alz_mg_prefix}}
 {% endfor %}
 {% endfor %}
+
+
+
+# Original input values - 
+bootstrap_sp_object_id: {{bootstrap_sp_object_id}}
+bootstrap_playbook: {{ bootstrap_playbook }}
+gitops_pipelines: {{gitops_pipelines}}

@@ -11,6 +11,7 @@ echo "sub_management: ${sub_management}"
 
 ansible-playbook /tf/caf/landingzones/templates/ansible/walk-through-bootstrap.yaml \
   -e public_templates_folder=/tf/caf/landingzones/templates \
+  -e bootstrap_playbook=${topology_file:='/tf/caf/landingzones/templates/platform/caf_platform_prod_nonprod.yaml'} \
   -e landingzones_folder=/tf/caf/landingzones \
   -e platform_configuration_folder=/tf/caf/configuration \
   -e platform_definition_folder=/tf/caf/platform/definition \
@@ -77,6 +78,7 @@ if [ $? = 0 ]; then
     pre-commit
     git commit -am "Update definition files."
     git push origin HEAD
+    git push -u origin bootstrap
         # Create the initial PR for the bootstrap configuration
 body=<<EOF
     Definition folder with the initial templates for:

@@ -80,6 +80,7 @@ jobs:
       terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
       terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
       environment: ${{ needs.environment.outputs.environment }}
+      caf_identity_aad_key: cred_identity
       landingzone_code_path: ./landingzones/caf_solution
       landingzone_configuration_path: ./platform/configuration/level0/credentials
       plan_path: ${GITHUB_WORKSPACE}/launchpad_credentials.tfstate.tfplan
@@ -92,8 +93,10 @@ jobs:
     needs: [environment, credentials]
     concurrency: 
       group: credentials
+    permissions:
+      id-token: write
+      contents: write
     secrets:
-
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}

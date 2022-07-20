@@ -65,10 +65,10 @@ launchpad:
 {% endfor %}
 {% endif %}
             subnets:
-              level0:
+              gitops:
                 lz_key: launchpad
                 vnet_key: vnet_region1
-                subnet_key: level0
+                subnet_key: gitops
 {% if private_endpoints is defined %}
           private_endpoints:
             level0:
@@ -124,10 +124,10 @@ launchpad:
 {% endfor %}
 {% endif %}
             subnets:
-              level1:
+              gitops:
                 lz_key: launchpad
                 vnet_key: vnet_region1
-                subnet_key: level1
+                subnet_key: gitops
 {% if private_endpoints is defined %}
           private_endpoints:
             level1:
@@ -183,10 +183,10 @@ launchpad:
 {% endfor %}
 {% endif %}
             subnets:
-              level2:
+              gitops:
                 lz_key: launchpad
                 vnet_key: vnet_region1
-                subnet_key: level2
+                subnet_key: gitops
 {% if private_endpoints is defined %}
           private_endpoints:
             level2:
@@ -230,10 +230,10 @@ launchpad:
 {% endfor %}
 {% endif %}
             subnets:
-              level0:
+              gitops:
                 lz_key: launchpad
                 vnet_key: vnet_region1
-                subnet_key: level0
+                subnet_key: gitops
 {% if private_endpoints is defined %}
           private_endpoints:
             level0:
@@ -284,10 +284,10 @@ launchpad:
 {% endfor %}
 {% endif %}
             subnets:
-              level1:
+              gitops:
                 lz_key: launchpad
                 vnet_key: vnet_region1
-                subnet_key: level1
+                subnet_key: gitops
 {% if private_endpoints is defined %}
           private_endpoints:
             level1:
@@ -338,10 +338,10 @@ launchpad:
 {% endfor %}
 {% endif %}
             subnets:
-              level2:
+              gitops:
                 lz_key: launchpad
                 vnet_key: vnet_region1
-                subnet_key: level2
+                subnet_key: gitops
 {% if private_endpoints is defined %}
           private_endpoints:
             level2:
