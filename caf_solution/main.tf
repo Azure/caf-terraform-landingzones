@@ -31,8 +31,8 @@ provider "azuread" {
 }
 
 provider "azurerm" {
-  partner_id = "ca4078f8-9bc4-471b-ab5b-3af6b86a42c8"
-  # skip_provider_registration = true
+  partner_id                 = "ca4078f8-9bc4-471b-ab5b-3af6b86a42c8"
+  skip_provider_registration = false
   # partner identifier for CAF Terraform landing zones.
   features {
     api_management {
