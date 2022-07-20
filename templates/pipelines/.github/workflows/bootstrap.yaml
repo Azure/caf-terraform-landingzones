@@ -9,6 +9,9 @@ on:
   push:
     branches:
       - bootstrap
+  pull_request:
+    branches:
+      - bootstrap
 
 permissions:
   id-token: write
@@ -41,56 +44,57 @@ jobs:
           echo "::set-output name=environment::$CAF_ENVIRONMENT"
 
 
-  launchpad:
-    uses: ./.github/workflows/rover.yaml
-    needs: [environment]
-    concurrency: 
-      group: launchpad
-    secrets:
+  # launchpad:
+  #   uses: ./.github/workflows/rover.yaml
+  #   needs: [environment]
+  #   concurrency: 
+  #     group: launchpad
+  #   secrets:
 
-      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-      AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
-      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
-    with:
-      terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
-      terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
-      environment: ${{ needs.environment.outputs.environment }}
-      caf_identity_aad_key: cred_level0
-      landingzone_code_path: ./landingzones/caf_launchpad
-      landingzone_configuration_path: ./platform/configuration/level0/launchpad
-      plan_path: ${GITHUB_WORKSPACE}/caf_launchpad.tfstate.tfplan
-      launchpad: true
-      tfstate: caf_launchpad.tfstate
-      level: level0
-      terraform_action: plan_apply
+  #     AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+  #     AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+  #     AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+  #     AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+  #   with:
+  #     terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
+  #     terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
+  #     environment: ${{ needs.environment.outputs.environment }}
+  #     caf_identity_aad_key: cred_level0
+  #     landingzone_code_path: ./landingzones/caf_launchpad
+  #     landingzone_configuration_path: ./platform/configuration/level0/launchpad
+  #     plan_path: ${GITHUB_WORKSPACE}/caf_launchpad.tfstate.tfplan
+  #     launchpad: true
+  #     tfstate: caf_launchpad.tfstate
+  #     level: level0
+  #     terraform_action: plan_apply
 
-  credentials:
-    uses: ./.github/workflows/rover.yaml
-    needs: [environment, launchpad]
-    concurrency: 
-      group: credentials
-    secrets:
+  # credentials:
+  #   uses: ./.github/workflows/rover.yaml
+  #   needs: [environment, launchpad]
+  #   concurrency: 
+  #     group: credentials
+  #   secrets:
 
-      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-      AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
-      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
-    with:
-      terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
-      terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
-      environment: ${{ needs.environment.outputs.environment }}
-      caf_identity_aad_key: cred_identity
-      landingzone_code_path: ./landingzones/caf_solution
-      landingzone_configuration_path: ./platform/configuration/level0/credentials
-      plan_path: ${GITHUB_WORKSPACE}/launchpad_credentials.tfstate.tfplan
-      tfstate: launchpad_credentials.tfstate
-      level: level0
-      terraform_action: plan_apply
+  #     AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+  #     AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+  #     AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+  #     AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+  #   with:
+  #     terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
+  #     terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
+  #     environment: ${{ needs.environment.outputs.environment }}
+  #     caf_identity_aad_key: cred_identity
+  #     landingzone_code_path: ./landingzones/caf_solution
+  #     landingzone_configuration_path: ./platform/configuration/level0/credentials
+  #     plan_path: ${GITHUB_WORKSPACE}/launchpad_credentials.tfstate.tfplan
+  #     tfstate: launchpad_credentials.tfstate
+  #     level: level0
+  #     terraform_action: plan_apply
 
   generate_definition_files:
     uses: ./.github/workflows/generate-definition-files.yaml
-    needs: [environment, credentials]
+    # needs: [environment, credentials]
+    needs: [environment]
     concurrency: 
       group: credentials
     permissions:
@@ -113,5 +117,32 @@ jobs:
       terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
       terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
       environment: ${{ needs.environment.outputs.environment }}
+
+
+  generate_configuration_files:
+    name: Generate configuration tfvars files
+    needs: [environment, generate_definition_files]
+
+    permissions:
+      id-token: write
+      contents: write
+      
+    uses: ./.github/workflows/generate-configuration-files.yaml
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+      RUNNER_REGISTRATION_TOKEN: ${{ secrets.RUNNER_REGISTRATION_TOKEN }}
+      RUNNER_NUMBERS: ${{ secrets.RUNNER_NUMBERS }}
+      AZURE_OBJECT_ID: ${{ secrets.AZURE_OBJECT_ID }}
+    with:
+      terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
+      terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
+      environment: ${{ needs.environment.outputs.environment }}
+      generate_pr: true
+      branch_name: end2end
+      target_branch: origin/bootstrap
+      commit_description: Generation of configuration files for level1 and level2.
 
 {% endraw %}

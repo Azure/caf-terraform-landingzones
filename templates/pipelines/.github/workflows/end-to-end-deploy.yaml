@@ -18,7 +18,6 @@ permissions:
 concurrency: 
   group: ${{ github.ref }}
 {% endraw %}
-
 env:
   LZ_REPO: '{{resources.terraform_code_repository}}'
   LZ_BRANCH: '{{resources.caf_landingzone_branch}}'

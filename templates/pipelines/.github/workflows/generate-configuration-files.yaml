@@ -20,6 +20,24 @@ on:
         description: Name of the CAF environment
         required: true
         type: string
+      generate_pr:
+        description: Generate a pull request. Need to set the branch_name (default=end2end).
+        required: false
+        default: false
+        type: boolean
+      branch_name:
+        description: Name of the branch
+        required: false
+        default: end2end
+        type: string
+      commit_description:
+        description: Description of the commit attached to the PR.
+        required: false
+        type: string
+      target_branch:
+        description: Base branch name to create the PR to.
+        required: false
+        type: string
     secrets:
       AZURE_CLIENT_ID:
         required: true
@@ -98,6 +116,7 @@ jobs:
 
 
       - name: Update pull Request
+        if: inputs.generate_pr == 'false'
         run: |
           git config --global --add safe.directory $(pwd)
           git remote -v
@@ -115,4 +134,28 @@ jobs:
             git commit -m "Update configuration files"
             git push
           fi
+
+
+      - name: Create PR
+        if: inputs.generate_pr == 'true'
+        run: |
+          git config --global --add safe.directory $(pwd)
+          git config user.name "GitHub Actions Bot"
+          git config user.email "github-actions@github.com"
+
+          git checkout -b ${{inputs.branch_name}}
+          git add .
+          pre-commit
+          git commit -am "${{inputs.commit_description}}"
+          git push origin HEAD
+
+          git remote -v
+
+          /usr/bin/gh pr create \
+            --assignee "@me" \
+            --title "Complete the deployment of the platform services." \
+            --body "${body}" \
+            --base ${{inputs.target_branch}} \
+            -R (echo "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}" || echo "git config --get remote.origin.url" | sed -e 's#^https://github.com/##; s#^git@github.com:##; s#.git$##')
+
 {% endraw %}
