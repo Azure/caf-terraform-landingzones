@@ -121,6 +121,10 @@ jobs:
           then
               echo "Nothing to commit"
           else
+            git config --global --add safe.directory $(pwd)
+            git config user.name "GitHub Actions Bot"
+            git config user.email "github-actions@github.com"
+            
             git add --all .
             git commit -m "Update configuration files"
             git push
