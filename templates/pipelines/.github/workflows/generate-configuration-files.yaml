@@ -146,7 +146,7 @@ jobs:
           git config user.name "CAF Rover Actions Bot"
           git config user.email "caf-rover-actions@github.com"
 
-          git checkout -b ${{inputs.branch_name}}
+          git checkout -b ${{inputs.branch_name}} --track origin/${{inputs.branch_name}}
           git pull
           git add .
           pre-commit
