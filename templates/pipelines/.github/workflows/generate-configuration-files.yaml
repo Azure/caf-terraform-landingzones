@@ -162,8 +162,7 @@ jobs:
           fi
 
           git checkout -b ${{inputs.target_branch}}
-          git branch --set-upstream-to origin/${{inputs.target_branch}}
-          git push
+          git push -u origin HEAD
           
           /usr/bin/gh pr create \
             --assignee "@me" \
