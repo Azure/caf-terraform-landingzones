@@ -39,6 +39,8 @@ on:
         required: false
         type: string
     secrets:
+      BOOTSTRAP_TOKEN:
+        required: false
       AZURE_CLIENT_ID:
         required: true
       AZURE_TENANT_ID:
@@ -74,13 +76,14 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ secrets.BOOTSTRAP_TOKEN || github.token }}
 
       - name: 'Azure Login'
         uses: azure/login@v1
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_LAUNCHPAD_SUBSCRIPTION_ID }}
+          subscription-id: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
 
       - name: Create configuration files
         run: |
@@ -116,7 +119,7 @@ jobs:
 
 
       - name: Update pull Request
-        if: ${{ inputs.generate_pr == false }}
+        if: inputs.generate_pr == false
         run: |
           git config --global --add safe.directory $(pwd)
           git config user.name "CAF Rover Actions Bot"
@@ -136,6 +139,7 @@ jobs:
 
 
       - name: Create PR
+        if: inputs.generate_pr == true
         run: |
           git config --global --add safe.directory $(pwd)
           git config user.name "CAF Rover Actions Bot"
