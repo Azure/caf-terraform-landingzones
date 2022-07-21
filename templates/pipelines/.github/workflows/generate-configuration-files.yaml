@@ -155,6 +155,6 @@ jobs:
             --title "Complete the deployment of the platform services." \
             --body "${body}" \
             --base ${{inputs.target_branch}} \
-            -R (echo "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}" || echo "git config --get remote.origin.url" | sed -e 's#^https://github.com/##; s#^git@github.com:##; s#.git$##')
+            -R "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}"
 
 {% endraw %}
