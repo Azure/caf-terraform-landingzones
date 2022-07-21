@@ -147,6 +147,7 @@ jobs:
           git config user.email "caf-rover-actions@github.com"
 
           git checkout -b ${{inputs.branch_name}}
+          git pull
           git add .
           pre-commit
           git commit -am "${{inputs.commit_description}}"
