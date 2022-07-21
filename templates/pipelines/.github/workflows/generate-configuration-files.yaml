@@ -133,7 +133,8 @@ jobs:
           then
               echo "Nothing to commit"
           else
-            git add --all .pre-commit
+            git add --all .
+            pre-commit
             git commit -am "${{inputs.commit_description}}"
             git push origin HEAD
           fi
@@ -152,7 +153,8 @@ jobs:
           then
               echo "Nothing to commit"
           else
-            git add --all .pre-commit
+            git add --all .
+            pre-commit
             git commit -am "${{inputs.commit_description}}"
             git push origin HEAD
           fi
