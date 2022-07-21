@@ -117,8 +117,10 @@ jobs:
             -e base_folder=$(pwd)
 
 
-      - name: Update pull Request
+      - name: Update configuration repository
         if: inputs.generate_pr == false
+        env:
+          GH_TOKEN: ${{ secrets.BOOTSTRAP_TOKEN }}
         run: |
           git config --global --add safe.directory $(pwd)
           git config user.name "CAF Rover Actions Bot"
@@ -131,9 +133,9 @@ jobs:
           then
               echo "Nothing to commit"
           else
-            git add --all .
-            git commit -m "Update configuration files"
-            git push
+            git add --all .pre-commit
+            git commit -am "${{inputs.commit_description}}"
+            git push origin HEAD
           fi
 
 
@@ -146,15 +148,18 @@ jobs:
           git config user.name "CAF Rover Actions Bot"
           git config user.email "caf-rover-actions@github.com"
 
+          if [ -z "$(git status --porcelain)" ];
+          then
+              echo "Nothing to commit"
+          else
+            git add --all .pre-commit
+            git commit -am "${{inputs.commit_description}}"
+            git push origin HEAD
+          fi
+
           git checkout -b ${{inputs.target_branch}}
           git push --set-upstream origin ${{inputs.target_branch}}
-          git add .
-          pre-commit
-          git commit -am "${{inputs.commit_description}}"
-          git push origin HEAD
-
-          git remote -v
-
+          
           /usr/bin/gh pr create \
             --assignee "@me" \
             --title "Complete the deployment of the platform services." \
