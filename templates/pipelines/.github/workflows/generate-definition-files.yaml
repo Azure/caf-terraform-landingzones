@@ -27,8 +27,6 @@ on:
         required: true
       AZURE_TENANT_ID:
         required: true
-      AZURE_LAUNCHPAD_SUBSCRIPTION_ID:
-        required: true
       AZURE_MANAGEMENT_SUBSCRIPTION_ID:
         required: false
       AZURE_CONNECTIVITY_SUBSCRIPTION_ID:
