@@ -147,6 +147,7 @@ jobs:
           git config user.email "caf-rover-actions@github.com"
 
           git checkout -b ${{inputs.target_branch}}
+          git push --set-upstream origin ${{inputs.target_branch}}
           git add .
           pre-commit
           git commit -am "${{inputs.commit_description}}"
