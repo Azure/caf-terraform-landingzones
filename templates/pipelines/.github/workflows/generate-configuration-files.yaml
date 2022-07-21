@@ -149,6 +149,8 @@ jobs:
           git config user.name "CAF Rover Actions Bot"
           git config user.email "caf-rover-actions@github.com"
 
+          echo ${GITHUB_HEAD_REF}
+
           if [ -z "$(git status --porcelain)" ];
           then
               echo "Nothing to commit"
