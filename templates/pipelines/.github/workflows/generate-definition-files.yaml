@@ -21,6 +21,8 @@ on:
         required: true
         type: string
     secrets:
+      BOOTSTRAP_TOKEN:
+        required: false
       AZURE_CLIENT_ID:
         required: true
       AZURE_TENANT_ID:
@@ -66,13 +68,14 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ secrets.BOOTSTRAP_TOKEN || github.token }}
 
       - name: 'Azure Login'
         uses: azure/login@v1
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_LAUNCHPAD_SUBSCRIPTION_ID }}
+          subscription-id: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
 
       - name: Create defnition files
         run: |
@@ -122,8 +125,8 @@ jobs:
               echo "Nothing to commit"
           else
             git config --global --add safe.directory $(pwd)
-            git config user.name "GitHub Actions Bot"
-            git config user.email "github-actions@github.com"
+            git config user.name "CAF Rover Actions Bot"
+            git config user.email "caf-rover-actions@github.com"
             
             git add --all .
             git commit -m "Update configuration files"

@@ -119,10 +119,9 @@ jobs:
         if: inputs.generate_pr == 'false'
         run: |
           git config --global --add safe.directory $(pwd)
+          git config user.name "CAF Rover Actions Bot"
+          git config user.email "caf-rover-actions@github.com"
           git remote -v
-          
-          git config user.name "GitHub Actions Bot"
-          git config user.email "github-actions@github.com"
 
           echo ${GITHUB_HEAD_REF}
           
@@ -140,8 +139,8 @@ jobs:
         if: inputs.generate_pr == 'true'
         run: |
           git config --global --add safe.directory $(pwd)
-          git config user.name "GitHub Actions Bot"
-          git config user.email "github-actions@github.com"
+          git config user.name "CAF Rover Actions Bot"
+          git config user.email "caf-rover-actions@github.com"
 
           git checkout -b ${{inputs.branch_name}}
           git add .

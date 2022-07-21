@@ -73,12 +73,13 @@ if [ $? = 0 ]; then
 
   if [ "$(gh pr status --json id | jq .currentBranch.id)" = "null" ]; then
     git fetch origin main
-    git checkout -b bootstrap --track origin/main
+    git checkout -b setup --track origin/main
     git add .
     pre-commit
     git commit -am "Update definition files."
     git push origin HEAD
-    git push -u origin bootstrap
+    git push -u origin setup
+    git checkout -b bootstrap --track origin/main
         # Create the initial PR for the bootstrap configuration
 body=<<EOF
     Definition folder with the initial templates for:
@@ -90,7 +91,8 @@ EOF
       --assignee "@me" \
       --title "Setup the foundation services for Azure landing zones" \
       --body "${body}" \
-      --base main \
+      --base bootstrap \
+      --head origin/setup \
       -R ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}
   else
     git checkout bootstrap
@@ -100,7 +102,6 @@ EOF
     git commit -am "Initial definition files."
     git push origin
   fi
-
 
 else
   echo "Fix the errors and restart the rover bootstrap"
