@@ -160,8 +160,8 @@ jobs:
           fi
 
           git checkout -b ${{inputs.target_branch}}
-          git push --set-upstream origin ${{inputs.target_branch}}
-          git pull
+          git pull origin ${{inputs.target_branch}}
+          git push -u origin ${{inputs.target_branch}}
           
           /usr/bin/gh pr create \
             --assignee "@me" \
