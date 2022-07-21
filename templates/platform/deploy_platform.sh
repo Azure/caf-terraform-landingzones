@@ -75,7 +75,7 @@ if [ $? = 0 ]; then
     git fetch origin main 
     git checkout -b bootstrap --track origin/main
     git push origin HEAD
-    git checkout -b setup --track origin/main
+    git checkout -b setup
     git add .
     pre-commit
     git commit -am "Update definition files."
