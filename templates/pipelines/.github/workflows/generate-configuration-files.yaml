@@ -45,7 +45,7 @@ on:
         required: true
       AZURE_TENANT_ID:
         required: true
-      AZURE_LAUNCHPAD_SUBSCRIPTION_ID:
+      AZURE_MANAGEMENT_SUBSCRIPTION_ID:
         required: true
       AZURE_TARGET_SUBSCRIPTION_ID:
         required: true
