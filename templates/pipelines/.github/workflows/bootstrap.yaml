@@ -143,7 +143,7 @@ jobs:
       environment: ${{ needs.environment.outputs.environment }}
       generate_pr: true
       branch_name: end2end
-      target_branch: origin/bootstrap
+      target_branch: bootstrap
       commit_description: Generation of configuration files for level1 and level2.
 
 {% endraw %}

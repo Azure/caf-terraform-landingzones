@@ -146,8 +146,8 @@ jobs:
           git config user.name "CAF Rover Actions Bot"
           git config user.email "caf-rover-actions@github.com"
 
-          git checkout -b ${{inputs.branch_name}} --track origin/${{inputs.branch_name}}
-          git pull
+          git checkout -b ${{inputs.branch_name}}
+          git branch --set-upstream ${{inputs.branch_name}} origin/${{inputs.branch_name}}
           git add .
           pre-commit
           git commit -am "${{inputs.commit_description}}"
@@ -160,6 +160,7 @@ jobs:
             --title "Complete the deployment of the platform services." \
             --body "${body}" \
             --base ${{inputs.target_branch}} \
+            --head ${{inputs.branch_name}} \
             -R "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}"
 
 {% endraw %}

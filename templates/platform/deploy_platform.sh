@@ -72,15 +72,14 @@ if [ $? = 0 ]; then
   cd /tf/caf
 
   if [ "$(gh pr status --json id | jq .currentBranch.id)" = "null" ]; then
-    git fetch origin main
+    git fetch origin main 
+    git checkout -b bootstrap --track origin/main
+    git push origin HEAD
     git checkout -b setup --track origin/main
     git add .
     pre-commit
     git commit -am "Update definition files."
     git push origin HEAD
-    git push -u origin setup
-    git checkout -b bootstrap --track origin/main
-        # Create the initial PR for the bootstrap configuration
 body=<<EOF
     Definition folder with the initial templates for:
     - launchpad (only for azurerm backend type)
@@ -92,7 +91,7 @@ EOF
       --title "Setup the foundation services for Azure landing zones" \
       --body "${body}" \
       --base bootstrap \
-      --head origin/setup \
+      --head setup \
       -R ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}
   else
     git checkout bootstrap
