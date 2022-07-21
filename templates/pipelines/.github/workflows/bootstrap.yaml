@@ -142,8 +142,8 @@ jobs:
       terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
       environment: ${{ needs.environment.outputs.environment }}
       generate_pr: true
-      branch_name: end2end
-      target_branch: bootstrap
+      branch_name: bootstrap
+      target_branch: end2end
       commit_description: Generation of configuration files for level1 and level2.
 
 {% endraw %}
