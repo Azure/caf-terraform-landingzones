@@ -147,6 +147,7 @@
       ansible.builtin.template:
         src: "{{ item.path }}"
         dest: "{{base_folder}}/{{ item.path | regex_replace(public_templates_folder + '/pipelines', '') }}"
+        force: no
       loop: "{{github_workflows_to_process.files}}"
 
 # Copy default firewall rules

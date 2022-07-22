@@ -9,6 +9,8 @@ on:
   pull_request:
     branches:
       - end2end
+    paths:
+      - 'platform/configuration/**'
 
 permissions:
   id-token: write
@@ -40,7 +42,7 @@ jobs:
           echo "::set-output name=terraform_code_ref::$LZ_BRANCH"
           echo "::set-output name=environment::$CAF_ENVIRONMENT"
 
-  configuration_updates:
+  # configuration_updates:
     # name: Generate configuration tfvars files
     # runs-on: [self-hosted, platform]
 
