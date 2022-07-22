@@ -6,9 +6,15 @@
 name: end-to-end
 
 on:
-  pull_request:
+  pull_request_review:
+    types: [submitted]
     branches:
       - end2end
+    paths:
+      - 'platform/configuration/**'
+  push:
+    branches:
+      - bootstrap
     paths:
       - 'platform/configuration/**'
 
@@ -213,19 +219,21 @@ jobs:
     with:
       terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
       environment: ${{ needs.environment.outputs.environment }}
-      terraform_code_ref: 'int-5.7.0'
+      terraform_code_ref: 'int-5.6.0'
       caf_identity_aad_key: cred_alz
       landingzone_code_path: ./landingzones/caf_solution/add-ons/caf_eslz
+{% endraw %}
       landingzone_configuration_path: ./platform/configuration/level1/alz/{{alz_mg_prefix}}
       plan_path: ${GITHUB_WORKSPACE}/alz_{{alz_mg_prefix}}.tfstate.tfplan
       tfstate: alz_{{alz_mg_prefix}}.tfstate
+{% raw %}
       level: level1
       terraform_action_apply: -parallelism=50
       terraform_action: plan_apply
 
   identity_level2_prod:
     uses: ./.github/workflows/rover.yaml
-    needs: [environment, identity_level1]
+    needs: [environment, identity_level1, alz]
     concurrency: 
       group: level2-identity_level2_prod
     secrets:
@@ -247,7 +255,7 @@ jobs:
 
   identity_level2_non_prod:
     uses: ./.github/workflows/rover.yaml
-    needs: [environment, identity_level1]
+    needs: [environment, identity_level1, alz]
     concurrency: 
       group: level2-identity_level2_non_prod
     secrets:
@@ -291,7 +299,7 @@ jobs:
 
   connectivity_virtual_wans_prod:
     uses: ./.github/workflows/rover.yaml
-    needs: [environment, management]
+    needs: [environment, management, alz]
     concurrency: 
       group: level2-connectivity_virtual_wans_prod
     secrets:

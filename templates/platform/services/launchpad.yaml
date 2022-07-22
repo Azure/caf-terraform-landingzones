@@ -452,35 +452,35 @@ launchpad:
         level0:
           application_name: level0
           owners:
-            - {{object_id}}
+            - {{bootstrap_sp_object_id}}
         identity:
           application_name: identity
           owners:
-            - {{object_id}}
+            - {{bootstrap_sp_object_id}}
         management:
           application_name: management
           owners:
-            - {{object_id}}
+            - {{bootstrap_sp_object_id}}
         alz:
           application_name: alz
           owners:
-            - {{object_id}}
+            - {{bootstrap_sp_object_id}}
         connectivity:
           application_name: connectivity
           owners:
-            - {{object_id}}
+            - {{bootstrap_sp_object_id}}
         security:
           application_name: security
           owners:
-            - {{object_id}}
+            - {{bootstrap_sp_object_id}}
         subscription_creation_platform:
           application_name: subscription_creation_platform
           owners:
-            - {{object_id}}
+            - {{bootstrap_sp_object_id}}
         subscription_creation_landingzones:
           application_name: subscription_creation_landingzones
           owners:
-            - {{object_id}}
+            - {{bootstrap_sp_object_id}}
 
       azuread_service_principals:
         # Manage the deployment of the level0
@@ -622,17 +622,16 @@ launchpad:
             object_ids:
                 - {{bootstrap_sp_object_id}}
           owners:
-            - {{object_id}}
+            - {{bootstrap_sp_object_id}}
         caf_platform_contributors:
           name: platform-contributors
           description: Can only execute terraform plans for level1 and level2. They can test platform improvements and propose PR.
           prevent_duplicate_name: true
           members:
             object_ids:
-                - {{object_id}}
                 - {{bootstrap_sp_object_id}}
           owners:
-            - {{object_id}}
+            - {{bootstrap_sp_object_id}}
         level0:
           name: level0
           prevent_duplicate_name: true
@@ -640,7 +639,7 @@ launchpad:
             azuread_service_principal_keys:
               - level0
           owners:
-            - {{object_id}}
+            - {{bootstrap_sp_object_id}}
         alz:
           name: alz
           prevent_duplicate_name: true
@@ -648,7 +647,7 @@ launchpad:
             azuread_service_principal_keys:
               - alz
           owners:
-            - {{object_id}}
+            - {{bootstrap_sp_object_id}}
         identity:
           name: caf-identity
           prevent_duplicate_name: true
@@ -656,7 +655,7 @@ launchpad:
             azuread_service_principal_keys:
               - identity
           owners:
-            - {{object_id}}
+            - {{bootstrap_sp_object_id}}
         management:
           name: management
           prevent_duplicate_name: true
@@ -664,7 +663,7 @@ launchpad:
             azuread_service_principal_keys:
               - management
           owners:
-            - {{object_id}}
+            - {{bootstrap_sp_object_id}}
         connectivity:
           name: connectivity
           prevent_duplicate_name: true
@@ -672,7 +671,7 @@ launchpad:
             azuread_service_principal_keys:
               - connectivity
           owners:
-            - {{object_id}}
+            - {{bootstrap_sp_object_id}}
         security:
           name: security
           prevent_duplicate_name: true
@@ -680,7 +679,7 @@ launchpad:
             azuread_service_principal_keys:
               - security
           owners:
-            - {{object_id}}
+            - {{bootstrap_sp_object_id}}
         subscription_creation_platform:
           name: subscription_creation_platform
           prevent_duplicate_name: true
@@ -688,7 +687,7 @@ launchpad:
             azuread_service_principal_keys:
               - subscription_creation_platform
           owners:
-            - {{object_id}}
+            - {{bootstrap_sp_object_id}}
         subscription_creation_landingzones:
           name: subscription_creation_landingzones
           prevent_duplicate_name: true
@@ -698,7 +697,7 @@ launchpad:
             # object_ids:
             #   - 
           owners:
-            - {{object_id}}
+            - {{bootstrap_sp_object_id}}
 
 
       role_mapping:
@@ -727,6 +726,12 @@ launchpad:
                     - security    # only when deploying in single subscription
                     - subscription_creation_landingzones # # only when deploying in single subscription
 {% endif %}
+              Contributor:
+                azuread_groups:
+                  keys:
+                    - identity      # only during bootstrap
+                    - management    # only during bootstrap
+                    - security      # only during bootstrap
               Reader:
                 azuread_groups:
                   keys:

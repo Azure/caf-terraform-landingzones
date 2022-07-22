@@ -76,6 +76,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ secrets.BOOTSTRAP_TOKEN || github.token }}
 
       - name: 'Azure Login'
         uses: azure/login@v1
