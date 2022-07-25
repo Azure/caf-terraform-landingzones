@@ -79,10 +79,10 @@
               "mode": "Incremental",
               "parameters": {
                 "flowAnalyticsEnabled": {
-                    "value": "[bool(parameters('flowAnalyticsEnabled'))]"
+                    "value": "[parameters('flowAnalyticsEnabled')]"
                   },
                 "interval": {
-                  "value": "[int(parameters('interval'))]"
+                  "value": "[parameters('interval')]"
                 },
                 "location": {
                   "value": "[field('location')]"
@@ -91,7 +91,7 @@
                   "value": "[field('id')]"
                 },
                 "retention": {
-                  "value": "[int(parameters('retention'))]"
+                  "value": "[parameters('retention')]"
                 },
                 "storageAccountResourceId": {
                   "value": "[parameters('storageAccountResourceId')]"
