@@ -329,6 +329,14 @@ archetype_definitions:
             attribute_key: id
             resource_keys:
               - management
+        Reader:
+          azuread_groups:
+            lz_key: launchpad
+            attribute_key: id
+            resource_keys:
+              - connectivity
+              - identity
+              - security
   identity:
     archetype_id: platform_identity
     policy_assignments:
