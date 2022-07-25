@@ -21,28 +21,28 @@
         "defaultValue": "DeployIfNotExists"
       },
       "flowAnalyticsEnabled": {
-        "type": "String",
+        "type": "Boolean",
         "metadata": {
           "displayName": "Enable Traffic Analytics",
           "description": "Enable Traffic Analytics"
         },
-        "defaultValue": "true"
+        "defaultValue": true
       },
       "interval": {
-        "type": "String",
+        "type": "Integer",
         "metadata": {
           "displayName": "Traffic Analytics processing interval mins (10/60)",
           "description": "Traffic Analytics processing interval mins (10/60)"
         },
-        "defaultValue": "60"
+        "defaultValue": 60
       },
       "retention": {
-        "type": "String",
+        "type": "Integer",
         "metadata": {
           "displayName": "Retention days in storage account. If you want to retain data forever and do not want to apply any retention policy, set retention (days) to 0.",
           "description": "Retention days in storage account. If you want to retain data forever and do not want to apply any retention policy, set retention (days) to 0."
         },
-        "defaultValue": "2"
+        "defaultValue": 2
       },
       "logAnalytics": {
         "type": "String",

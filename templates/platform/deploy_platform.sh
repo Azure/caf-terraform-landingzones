@@ -105,16 +105,13 @@ function pr {
   cd /tf/caf
 
   if [ "$(gh pr status --json id | jq .currentBranch.id)" = "null" ]; then
-    git fetch origin main 
-    git checkout -b bootstrap --track origin/main
-    git branch --set-upstream-to origin/bootstrap bootstrap
-    git push
+    git checkout -b bootstrap
+    git push --set-upstream origin bootstrap
     git checkout -b setup
-    git branch --set-upstream-to origin/setup setup
     git add .
     pre-commit
     git commit -am "Update definition files."
-    git push
+    git push --set-upstream origin setup
 body=<<EOF
     Definition folder with the initial templates for:
     - launchpad (only for azurerm backend type)

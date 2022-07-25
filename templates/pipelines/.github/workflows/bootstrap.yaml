@@ -8,8 +8,6 @@ name: bootstrap
 on:
   pull_request_review:
     types: [submitted]
-    branches:
-      - bootstrap
 
 permissions:
   id-token: write

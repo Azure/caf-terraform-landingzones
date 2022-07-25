@@ -48,30 +48,6 @@ jobs:
           echo "::set-output name=terraform_code_ref::$LZ_BRANCH"
           echo "::set-output name=environment::$CAF_ENVIRONMENT"
 
-  # configuration_updates:
-    # name: Generate configuration tfvars files
-    # runs-on: [self-hosted, platform]
-
-    # permissions:
-    #   id-token: write
-    #   contents: write
-      
-    # needs: [environment]
-    # uses: ./.github/workflows/generate-configuration-files.yaml
-    # secrets:
-    #   AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-    #   AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-    #   AZURE_MANAGEMENT_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
-    #   AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
-    #   RUNNER_REGISTRATION_TOKEN: ${{ secrets.RUNNER_REGISTRATION_TOKEN }}
-    #   RUNNER_NUMBERS: ${{ secrets.RUNNER_NUMBERS }}
-    #   AZURE_OBJECT_ID: ${{ secrets.AZURE_OBJECT_ID }}
-    # with:
-    #   terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
-    #   terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
-    #   environment: ${{ needs.environment.outputs.environment }}
-
-
   launchpad:
     uses: ./.github/workflows/rover.yaml
     needs: [environment]
@@ -208,7 +184,7 @@ jobs:
 
   alz:
     uses: ./.github/workflows/rover.yaml
-    needs: [environment, launchpad, identity_level1, management, platform_subscriptions]
+    needs: [environment, launchpad, identity_level1, management, security, platform_subscriptions]
     concurrency: 
       group: level1-alz
     secrets:
@@ -231,9 +207,58 @@ jobs:
       terraform_action_apply: -parallelism=50
       terraform_action: plan_apply
 
+  generate_definition_files:
+    uses: ./.github/workflows/generate-definition-files.yaml
+    needs: [environment, alz]
+    concurrency: 
+      group: credentials
+    permissions:
+      id-token: write
+      contents: write
+    secrets:
+      BOOTSTRAP_TOKEN: ${{ secrets.BOOTSTRAP_TOKEN }}
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_MANAGEMENT_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+      AZURE_CONNECTIVITY_SUBSCRIPTION_ID: ${{ secrets.AZURE_CONNECTIVITY_SUBSCRIPTION_ID }}
+      AZURE_IDENTITY_SUBSCRIPTION_ID: ${{ secrets.AZURE_IDENTITY_SUBSCRIPTION_ID }}
+      AZURE_SECURITY_SUBSCRIPTION_ID: ${{ secrets.AZURE_SECURITY_SUBSCRIPTION_ID }}
+      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_TARGET_SUBSCRIPTION_ID }}
+      RUNNER_REGISTRATION_TOKEN: ${{ secrets.RUNNER_REGISTRATION_TOKEN }}
+      RUNNER_NUMBERS: ${{ secrets.RUNNER_NUMBERS }}
+      AZURE_OBJECT_ID: ${{ secrets.AZURE_OBJECT_ID }}
+      ROVER_AGENT_DOCKER_IMAGE: ${{ secrets.ROVER_AGENT_DOCKER_IMAGE }}
+    with:
+      terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
+      terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
+      environment: ${{ needs.environment.outputs.environment }}
+
+  configuration_updates:
+    name: Generate configuration tfvars files
+    runs-on: [self-hosted, platform]
+
+    permissions:
+      id-token: write
+      contents: write
+      
+    needs: [environment, generate_definition_files]
+    uses: ./.github/workflows/generate-configuration-files.yaml
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_MANAGEMENT_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+      RUNNER_REGISTRATION_TOKEN: ${{ secrets.RUNNER_REGISTRATION_TOKEN }}
+      RUNNER_NUMBERS: ${{ secrets.RUNNER_NUMBERS }}
+      AZURE_OBJECT_ID: ${{ secrets.AZURE_OBJECT_ID }}
+    with:
+      terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
+      terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
+      environment: ${{ needs.environment.outputs.environment }}
+
   identity_level2_prod:
     uses: ./.github/workflows/rover.yaml
-    needs: [environment, identity_level1, alz]
+    needs: [environment, configuration_updates]
     concurrency: 
       group: level2-identity_level2_prod
     secrets:
@@ -255,7 +280,7 @@ jobs:
 
   identity_level2_non_prod:
     uses: ./.github/workflows/rover.yaml
-    needs: [environment, identity_level1, alz]
+    needs: [environment, configuration_updates]
     concurrency: 
       group: level2-identity_level2_non_prod
     secrets:
@@ -299,7 +324,7 @@ jobs:
 
   connectivity_virtual_wans_prod:
     uses: ./.github/workflows/rover.yaml
-    needs: [environment, management, alz]
+    needs: [environment, configuration_updates]
     concurrency: 
       group: level2-connectivity_virtual_wans_prod
     secrets:
@@ -451,5 +476,55 @@ jobs:
       terraform_action_apply: -parallelism=50
       level: level2
       terraform_action: plan_apply
+
+  # Now we have firewalls, private DNS zone, let's update definitions and configurations one more time.
+  generate_definition_files:
+    uses: ./.github/workflows/generate-definition-files.yaml
+    needs: [environment, alz]
+    concurrency: 
+      group: credentials
+    permissions:
+      id-token: write
+      contents: write
+    secrets:
+      BOOTSTRAP_TOKEN: ${{ secrets.BOOTSTRAP_TOKEN }}
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_MANAGEMENT_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+      AZURE_CONNECTIVITY_SUBSCRIPTION_ID: ${{ secrets.AZURE_CONNECTIVITY_SUBSCRIPTION_ID }}
+      AZURE_IDENTITY_SUBSCRIPTION_ID: ${{ secrets.AZURE_IDENTITY_SUBSCRIPTION_ID }}
+      AZURE_SECURITY_SUBSCRIPTION_ID: ${{ secrets.AZURE_SECURITY_SUBSCRIPTION_ID }}
+      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_TARGET_SUBSCRIPTION_ID }}
+      RUNNER_REGISTRATION_TOKEN: ${{ secrets.RUNNER_REGISTRATION_TOKEN }}
+      RUNNER_NUMBERS: ${{ secrets.RUNNER_NUMBERS }}
+      AZURE_OBJECT_ID: ${{ secrets.AZURE_OBJECT_ID }}
+      ROVER_AGENT_DOCKER_IMAGE: ${{ secrets.ROVER_AGENT_DOCKER_IMAGE }}
+    with:
+      terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
+      terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
+      environment: ${{ needs.environment.outputs.environment }}
+
+  configuration_updates:
+    name: Generate configuration tfvars files
+    runs-on: [self-hosted, platform]
+
+    permissions:
+      id-token: write
+      contents: write
+      
+    needs: [environment, generate_definition_files]
+    uses: ./.github/workflows/generate-configuration-files.yaml
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_MANAGEMENT_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+      RUNNER_REGISTRATION_TOKEN: ${{ secrets.RUNNER_REGISTRATION_TOKEN }}
+      RUNNER_NUMBERS: ${{ secrets.RUNNER_NUMBERS }}
+      AZURE_OBJECT_ID: ${{ secrets.AZURE_OBJECT_ID }}
+    with:
+      terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
+      terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
+      environment: ${{ needs.environment.outputs.environment }}
 
 {% endraw %}

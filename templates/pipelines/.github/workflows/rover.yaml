@@ -187,6 +187,8 @@ jobs:
           fi
 
           if [ "$(cat outputfile | grep -o 'No changes')" != 'No changes' ]; then
+            apply=true
+            echo "condition 0"
             if [ "$(cat outputfile | grep -o '0 to destroy')" != '0 to destroy' ]; then
               echo "condition 1"
               apply=true
