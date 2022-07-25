@@ -10,13 +10,13 @@ on:
     types: [submitted]
     branches:
       - end2end
-    paths:
-      - 'platform/configuration/**'
+    paths-ignore:
+      - 'platform/definition/**'
   push:
     branches:
-      - bootstrap
-    paths:
-      - 'platform/configuration/**'
+      - end2end
+    paths-ignore:
+      - 'platform/definition/**'
 
 permissions:
   id-token: write
@@ -51,7 +51,6 @@ jobs:
   launchpad:
     uses: ./.github/workflows/rover.yaml
     needs: [environment]
-    # needs: [environment, configuration_updates]
     concurrency: 
       group: level0-launchpad
     secrets:
