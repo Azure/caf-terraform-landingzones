@@ -235,12 +235,9 @@ jobs:
 
   configuration_updates:
     name: Generate configuration tfvars files
-    runs-on: [self-hosted, platform]
-
     permissions:
       id-token: write
       contents: write
-      
     needs: [environment, generate_definition_files]
     uses: ./.github/workflows/generate-configuration-files.yaml
     secrets:
@@ -478,9 +475,9 @@ jobs:
       terraform_action: plan_apply
 
   # Now we have firewalls, private DNS zone, let's update definitions and configurations one more time.
-  generate_definition_files:
+  generate_definition_files_2:
     uses: ./.github/workflows/generate-definition-files.yaml
-    needs: [environment, alz]
+    needs: [environment, connectivity_private_dns_prod]
     concurrency: 
       group: credentials
     permissions:
@@ -504,15 +501,12 @@ jobs:
       terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
       environment: ${{ needs.environment.outputs.environment }}
 
-  configuration_updates:
+  generate_configuration_files_2:
     name: Generate configuration tfvars files
-    runs-on: [self-hosted, platform]
-
     permissions:
       id-token: write
       contents: write
-      
-    needs: [environment, generate_definition_files]
+    needs: [environment, generate_definition_files_2]
     uses: ./.github/workflows/generate-configuration-files.yaml
     secrets:
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
