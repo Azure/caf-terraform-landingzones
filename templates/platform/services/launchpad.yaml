@@ -762,6 +762,7 @@ launchpad:
                   keys:
                     - identity
                     - management
+                    - connectivity
                     - alz
                     - security
                     - subscription_creation_platform
@@ -808,6 +809,7 @@ launchpad:
                   keys:
                     - caf_platform_contributors
                     - level0
+                    - connectivity
             level2:
               Storage Blob Data Contributor:
                 azuread_groups:

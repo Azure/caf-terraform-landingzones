@@ -252,6 +252,7 @@ jobs:
       terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
       terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
       environment: ${{ needs.environment.outputs.environment }}
+      commit_description: Updating level1 and level2 configuration files following ALZ deployment.
 
   identity_level2_prod:
     uses: ./.github/workflows/rover.yaml
@@ -520,5 +521,6 @@ jobs:
       terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
       terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
       environment: ${{ needs.environment.outputs.environment }}
+      commit_description: Updating all config files to update dependencies with securehub.
 
 {% endraw %}
