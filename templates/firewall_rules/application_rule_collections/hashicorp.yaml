@@ -1,12 +1,13 @@
-{% if vnet_launchpad is defined %}
 hashicorp:
   name: Hashicorp
   action: Allow
   rules:
     terraform:
       name: terraform
+{% if vnet_launchpad is defined %}
       source_addresses:
         {{ vnet_launchpad.vnet_region1.address_space | to_nice_yaml }}
+{% endif %}
       destination_fqdns:
         - checkpoint-api.hashicorp.com
         - registry.terraform.io
@@ -17,12 +18,13 @@ hashicorp:
           type: Https
     azuread:
       name: azuread provider
+{% if vnet_launchpad is defined %}
       source_addresses:
         {{ vnet_launchpad.vnet_region1.address_space | to_nice_yaml }}
+{% endif %}
       destination_fqdns:
         - graph.windows.net
       protocols:
         https:
           port: 443
           type: Https
-{% endif %}
