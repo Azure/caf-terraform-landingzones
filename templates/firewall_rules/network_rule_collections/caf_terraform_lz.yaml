@@ -4,13 +4,13 @@ caf_terraform_lz:
   rules:
     gitops_bootstrap_to_asvm:
       name: gitops bootstrap to asvm
-{% if vnet_launchpad is defined and vnet_asvm is defined %}
+{% if vnet_launchpad is defined %}
       source_addresses:
         {{ vnet_launchpad.vnet_region1.address_space | to_nice_yaml }}
 {% endif %}
       destination_ports:
         - 443
-{% if vnet_launchpad is defined and vnet_asvm is defined %}
+{% if vnet_asvm is defined %}
       destination_addresses:
         {{ vnet_asvm.vnet_region1.address_space | to_nice_yaml }}
 {% endif %}

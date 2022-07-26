@@ -24,7 +24,7 @@ services:
       protocols:
         - UDP
         - TCP
-{% if secure_firewalls_resources is defined %}
+{% if private_dns_firewalls_vnets is defined %}
     service_bus:
       name: service bus
       source_addresses:
