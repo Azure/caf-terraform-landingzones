@@ -154,6 +154,7 @@
   ansible.builtin.copy:
     src: "{{ item.path }}"
     dest: "{{destination_path}}/{{ item.path | basename }}"
+    force: no
   loop: "{{variable_files_to_process.files}}"
 
 # Copy github workflows
@@ -167,6 +168,7 @@
   ansible.builtin.template:
     src: "{{ item.path }}"
     dest: "{{base_folder}}/{{ item.path | regex_replace(public_templates_folder + '/pipelines', '') }}"
+    force: no
   loop: "{{github_workflows_to_process.files}}"
 
 # Copy default firewall rules
@@ -190,6 +192,7 @@
   ansible.builtin.copy:
     src: "{{ item.path }}"
     dest: "{{firewall_rules_path}}/{{ item.path | regex_replace(public_templates_folder + '/firewall_rules', '') }}"
+    force: no
   loop: "{{firewall_files_to_process.files}}"
 
 # Copy platform templates
@@ -209,6 +212,7 @@
   ansible.builtin.copy:
     src: "{{ item.path }}"
     dest: "{{topology.private_templates_folder}}/{{ item.path | regex_replace(platform_service_folder, '') }}"
+    force: no
   loop: "{{platform_service_template_files_to_process.files}}"
 
 
@@ -216,6 +220,7 @@
   ansible.builtin.template:
     src: "{{platform_service_folder}}/tfstates.yaml"
     dest: "{{destination_path}}/tfstates.yaml"
+    force: no
     
 - name: ignite.yaml
   ansible.builtin.template:
