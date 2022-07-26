@@ -48,9 +48,6 @@
   when:
     - lookup('vars', tfstate_key_name + '_tfstate_exists').rc == 0
 
-# - debug:
-#     msg: "{{lookup('vars', tfstate_key_name + '_tfstate')}}"
-
 - name: "Get {{tfstate_key_name}} json data"
   when:
     - lookup('vars', tfstate_key_name + '_tfstate_exists').rc == 0
@@ -108,6 +105,13 @@
     - ["{{jsondata | default({}) | json_query(path)}}"]
   vars:
     path: 'outputs.objects.value.{{tfstate_key_name}}.{{resource_type}}.{{resource_key}}'
+
+- debug:
+    msg: "{{lookup('ansible.builtin.varnames', '^{{exported_variable_name}}')}}"
+    
+- debug:
+    msg: "{{lookup('vars', exported_variable_name)}}"
+  when: lookup('ansible.builtin.varnames', '^' + exported_variable_name)
 
 - name: "[{{resources[tfstate].relative_destination_folder}}] cleanup"
   when:
