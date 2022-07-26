@@ -5,8 +5,10 @@ azure_firewall_management:
     # https://docs.microsoft.com/en-us/azure/api-management/virtual-network-reference?tabs=stv2#metrics-and-health-monitoring-1
     metrics_and_health:
       name: metric and health
+{% if private_dns_firewalls is defined %}
       source_addresses: 
         {{ private_dns_firewalls_vnets[env | default('prod')].vnet.address_space | to_nice_yaml }}
+{% endif %}
       destination_fqdns:
         - gcs.prod.monitoring.core.windows.net
         - global.prod.microsoftmetrics.com
@@ -26,11 +28,9 @@ azure_firewall_management:
           type: Https
     threat_protection:
       name: threat protection updates
-      source_addresses: 
 {% if private_dns_firewalls is defined %}
+      source_addresses: 
         {{ private_dns_firewalls_vnets[env | default('prod')].vnet.address_space | to_nice_yaml }}
-{% else %}
-        - "*"
 {% endif %}
       destination_fqdns:
         - webres1.msazure.ctmail.com
