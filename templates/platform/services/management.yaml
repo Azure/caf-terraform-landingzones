@@ -35,7 +35,7 @@ management:
         nsgflogs:
           name: nsglogs
           resource_group_key: management
-          account_kind: BlobStorage
+          account_kind: StorageV2
           account_tier: Standard
           shared_access_key_enabled: false
           account_replication_type: LRS
