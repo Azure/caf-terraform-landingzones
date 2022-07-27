@@ -234,7 +234,7 @@
 - name: copy README to template
   ansible.builtin.copy:
     src: "{{platform_service_folder}}/README.md"
-    dest: "{{topology.private_templates_folder}}/README.md }}"
+    dest: "{{topology.private_templates_folder}}/README.md"
     force: no
 
 - name: tfstates.yaml
