@@ -8,6 +8,8 @@ azure_firewall_management:
 {% if private_dns_firewalls is defined %}
       source_addresses: 
         {{ private_dns_firewalls_vnets[env | default('prod')].vnet.address_space | to_nice_yaml }}
+{% else %}
+        {{ variables.variables_cidr.platform.private_dns_firewalls.region1[env | default('prod')].address_prefixes }}
 {% endif %}
       destination_fqdns:
         - gcs.prod.monitoring.core.windows.net
@@ -31,6 +33,8 @@ azure_firewall_management:
 {% if private_dns_firewalls is defined %}
       source_addresses:
         {{ private_dns_firewalls_vnets[env | default('prod')].vnet.address_space | to_nice_yaml }}
+{% else %}
+        {{ variables.variables_cidr.platform.private_dns_firewalls.region1[env | default('prod')].address_prefixes }}
 {% endif %}
       destination_fqdns:
         - webres1.msazure.ctmail.com
