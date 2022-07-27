@@ -1,6 +1,6 @@
 {{landingzone_definition}}_{{env}}:
   gitops:
-    caf_landingzone_branch: 2203.0
+    caf_landingzone_branch: 2203.2
 
   relative_destination_folder: level3/{{landingzone_definition}}/{{env}}
 

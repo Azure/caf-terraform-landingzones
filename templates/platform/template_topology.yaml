@@ -17,7 +17,7 @@ bootstrap:
 
   subscription_deployment_mode: single_reuse
 
-  caf_landingzone_branch: 2203.0
+  caf_landingzone_branch: 2203.2
 
   deployments:
     platform:
