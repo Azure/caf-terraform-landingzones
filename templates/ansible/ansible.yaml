@@ -25,10 +25,14 @@
     - name: "load _variables files"
       include_vars:
         name: variables
-        dir: "{{ template_folder | default(platform_service_folder)}}"
+        dir: "{{ platform_definition_folder | default(platform_service_folder)}}"
         depth: 1
         ignore_unknown_extensions: true
         files_matching: "_variables"
+
+    - debug:
+        msg: 
+          - "variables: {{variables}}"
 
     - name: "Load variable for {{deployment_mode}} config from {{definition_folder}}"
       include_vars:
