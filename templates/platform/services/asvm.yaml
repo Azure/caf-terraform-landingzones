@@ -83,7 +83,7 @@ asvm:
                 is_manual_connection: false
                 subresource_names:
                   - blob
-{% if private_endpoints is defined and private_dns is defined %}
+{% if private_endpoints is defined and private_dns[env|default('prod')] != "" %}
               private_dns:
                 zone_group_name: default
                 lz_key: connectivity_private_dns_prod
@@ -135,7 +135,7 @@ asvm:
                 is_manual_connection: false
                 subresource_names:
                   - blob
-{% if private_endpoints is defined and private_dns is defined %}
+{% if private_endpoints is defined and private_dns[env|default('prod')] != "" %}
               private_dns:
                 zone_group_name: default
                 lz_key: connectivity_private_dns_prod
@@ -177,7 +177,7 @@ asvm:
                 is_manual_connection: false
                 subresource_names:
                   - vault
-{% if private_endpoints is defined and private_dns is defined %}
+{% if private_endpoints is defined and private_dns[env|default('prod')] != "" %}
               private_dns:
                 zone_group_name: default
                 lz_key: connectivity_private_dns_prod
@@ -226,7 +226,7 @@ asvm:
                 is_manual_connection: false
                 subresource_names:
                   - vault
-{% if private_endpoints is defined and private_dns is defined %}
+{% if private_endpoints is defined and private_dns[env|default('prod')] != "" %}
               private_dns:
                 zone_group_name: default
                 lz_key: connectivity_private_dns_prod
@@ -256,7 +256,7 @@ asvm:
           resource_group_key: asvm_vnet
           address_space: 
             - 10.100.1.0/24
-{% if secure_firewalls_resources is defined %}
+{% if secure_firewalls_resources[env | default('prod')] != "" %}
           dns_servers_keys:
             secure_firewall_prod:
               lz_key: connectivity_secure_firewalls_prod

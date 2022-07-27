@@ -1,7 +1,7 @@
 variables_cidr:
   platform:
   #
-  # launchpad landingzone
+  # launchpad services
   #
     launchpad:
       region1:
@@ -38,7 +38,23 @@ variables_cidr:
               - 10.102.10.192/26
 
   #
-  # connectivity landingzone
+  # asvm services
+  #
+    asvm:
+      region1:
+        prod:
+          address_prefixes:
+            - 10.100.1.0/24
+          subnets:
+            level3:
+                - 10.100.1.0/27
+            level4:
+                - 10.100.1.32/27
+            credentials:
+                - 10.100.1.64/27
+                
+  #
+  # connectivity services
   #
     virtual_hubs:
       region1:
@@ -54,7 +70,7 @@ variables_cidr:
 
 
   #
-  # private_dns_firewalls landingzone
+  # private_dns_firewalls services
   #
     private_dns_firewalls:
       region1:

@@ -81,7 +81,7 @@ launchpad:
                 is_manual_connection: false
                 subresource_names:
                   - blob
-{% if private_endpoints is defined and private_dns is defined %}
+{% if private_endpoints is defined and private_dns[env|default('prod')] != '' %}
               private_dns:
                 zone_group_name: default
                 ids:
@@ -140,7 +140,7 @@ launchpad:
                 is_manual_connection: false
                 subresource_names:
                   - blob
-{% if private_endpoints is defined and private_dns is defined %}
+{% if private_endpoints is defined and private_dns[env|default('prod')] != '' %}
               private_dns:
                 zone_group_name: default
                 ids:
@@ -199,7 +199,7 @@ launchpad:
                 is_manual_connection: false
                 subresource_names:
                   - blob
-{% if private_endpoints is defined and private_dns is defined %}
+{% if private_endpoints is defined and private_dns[env|default('prod')] != '' %}
               private_dns:
                 zone_group_name: default
                 ids:
@@ -246,7 +246,7 @@ launchpad:
                 is_manual_connection: false
                 subresource_names:
                   - vault
-{% if private_endpoints is defined and private_dns is defined %}
+{% if private_endpoints is defined and private_dns[env|default('prod')] != "" %}
               private_dns:
                 zone_group_name: default
                 ids:
@@ -300,7 +300,7 @@ launchpad:
                 is_manual_connection: false
                 subresource_names:
                   - vault
-{% if private_endpoints is defined and private_dns is defined %}
+{% if private_endpoints is defined and private_dns[env|default('prod')] != "" %}
               private_dns:
                 zone_group_name: default
                 ids:
@@ -354,7 +354,7 @@ launchpad:
                 is_manual_connection: false
                 subresource_names:
                   - vault
-{% if private_endpoints is defined and private_dns is defined %}
+{% if private_endpoints is defined and private_dns[env|default('prod')] != "" %}
               private_dns:
                 zone_group_name: default
                 ids:
@@ -876,7 +876,7 @@ launchpad:
           resource_group_key: gitops
           name: gitops
           address_space: ["10.100.0.0/24"]
-{% if secure_firewalls_resources is defined %}
+{% if secure_firewalls_resources[env | default('prod')] != "" %}
           dns_servers:
             - {{ secure_firewalls_resources[env | default('prod')].fw_secure_prod.virtual_hub[0].private_ip_address }}
 {% endif %}

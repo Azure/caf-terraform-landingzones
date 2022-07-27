@@ -39,7 +39,7 @@ gitops_agents:
           restart_policy: Never
           network_profile:
             key: gitops
-{% if secure_firewalls_resources is defined %}
+{% if secure_firewalls_resources[env|default('prod')] != "" %}
           dns_config:
             nameservers:
               - {{ secure_firewalls_resources[env | default('prod')].fw_secure_prod.virtual_hub[0].private_ip_address }}
@@ -74,7 +74,7 @@ gitops_agents:
           restart_policy: Never
           network_profile:
             key: gitops
-{% if secure_firewalls_resources is defined %}
+{% if secure_firewalls_resources[env|default('prod')] != "" %}
           dns_config:
             nameservers:
               - {{ secure_firewalls_resources[env | default('prod')].fw_secure_prod.virtual_hub[0].private_ip_address }}
