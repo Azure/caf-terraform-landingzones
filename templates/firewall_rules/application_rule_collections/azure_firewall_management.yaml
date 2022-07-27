@@ -5,8 +5,8 @@ azure_firewall_management:
     # https://docs.microsoft.com/en-us/azure/api-management/virtual-network-reference?tabs=stv2#metrics-and-health-monitoring-1
     metrics_and_health:
       name: metric and health
+      source_addresses:
 {% if private_dns_firewalls is defined %}
-      source_addresses: 
         {{ private_dns_firewalls_vnets[env | default('prod')].vnet.address_space | to_nice_yaml }}
 {% else %}
         {{ variables.variables_cidr.platform.private_dns_firewalls.region1[env | default('prod')].address_prefixes | to_nice_yaml }}
@@ -30,8 +30,8 @@ azure_firewall_management:
           type: Https
     threat_protection:
       name: threat protection updates
-{% if private_dns_firewalls is defined %}
       source_addresses:
+{% if private_dns_firewalls is defined %}
         {{ private_dns_firewalls_vnets[env | default('prod')].vnet.address_space | to_nice_yaml }}
 {% else %}
         {{ variables.variables_cidr.platform.private_dns_firewalls.region1[env | default('prod')].address_prefixes | to_nice_yaml }}
