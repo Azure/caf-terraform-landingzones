@@ -3,7 +3,7 @@
 #
 
 - name: Get deployment user object_id (make sure you are logged-in to the launchpad Azure subscription first.)
-  shell: az ad signed-in-user show --query objectId -o tsv
+  shell: az ad signed-in-user show --query id -o tsv
   register: bash_object_id
   when: lookup('env', 'AZURE_OBJECT_ID') == ''
 
