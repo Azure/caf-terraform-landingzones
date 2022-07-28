@@ -18,6 +18,9 @@ bootstrap:
   # subscription_deployment_mode: single_reuse
 
   deployments:
+    scale_out_domain_keys:
+      - prod
+      - non_prod
     platform:
       root:
         region1:

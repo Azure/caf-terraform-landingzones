@@ -1,13 +1,30 @@
 # Load variables from tfstates
 
+- set_fact:
+    env: 'prod'
+    region: 'region1'
 
-# Initial load
+- debug:
+    msg: 
+      - "scale_out_domain_keys: {{scale_out_domain_keys}}"
+      - "alz_mg_prefix: {{alz_mg_prefix}}"
+      - "deployment_mode: {{deployment_mode}}"
+      - "rover_bootstrap: {{rover_bootstrap}}"
 
 - name: load variables
   set_fact:
     merged_resource__to_merge: "{{ merged_resource__to_merge | default({}) | combine( lookup('template', item.path ) | from_yaml )}}"
   with_items: "{{yaml_files_to_process.files}}"
   when: deployment_mode == 'platform'
+
+- name: load variables (for bootstrap from topology file)
+  include_tasks: "load_variables_sod.yaml"
+  loop: "{{topology.deployments[deployment_mode].scale_out_domains[topology.default_region_key].keys()}}"
+  loop_control:
+    loop_var: service
+  when: 
+    - deployment_mode == 'platform'
+    - rover_bootstrap
 
 - name: Merge resources variables
   merge_vars:
@@ -29,7 +46,9 @@
     resource_type: azuread_groups
     caf_level: level0
     exported_variable_name: launchpad_azuread_groups
-  when: deployment_mode == 'platform'
+  when: 
+    - deployment_mode == 'platform'
+    - rover_bootstrap == false
 
 # Keyvaults having credentials
 - name: tfstate - keyvaults from launchpad_credentials to variable
@@ -41,7 +60,9 @@
     resource_type: keyvaults
     caf_level: level0
     exported_variable_name: keyvaults
-  when: deployment_mode == 'platform'
+  when: 
+    - deployment_mode == 'platform'
+    - rover_bootstrap == false
 
 # Keyvault_scl credentials
 - name: tfstate - keyvaults from launchpad_credentials to variable
@@ -58,15 +79,16 @@
 # Platform subscriptions
 - name: tfstate - platform_subscriptions from subscriptions to variable
   include_tasks: "get_tfstate_content.yaml"
-  when:
-    - resources.subscription_deployment_mode == 'multiple_subscriptions'
   vars:
     env: ''
     tfstate_key: platform_subscriptions
     resource_type: subscriptions
     caf_level: level1
     exported_variable_name: platform_subscriptions
-  when: deployment_mode == 'platform'
+  when: 
+    - subscription_deployment_mode == 'multiple_subscriptions'
+    - deployment_mode == 'platform'
+    - rover_bootstrap == false
 
 # Private DNS zones
 - name: tfstate - private dns zones to variable
@@ -78,7 +100,10 @@
     exported_variable_name: private_dns
   loop_control: 
     loop_var: env
-  loop: "{{ deployments.scale_out_domain_keys }}"
+  loop: "{{scale_out_domain_keys}}"
+  when: 
+    - deployment_mode == 'platform'
+    - rover_bootstrap == false
 
 # Virtual hub prod
 - name: tfstate - virtual hub prod to variable
@@ -90,7 +115,10 @@
     exported_variable_name: virtual_hubs_resources
   loop_control: 
     loop_var: env
-  loop: "{{ deployments.scale_out_domain_keys }}"
+  loop: "{{scale_out_domain_keys}}"
+  when: 
+    - deployment_mode == 'platform'
+    - rover_bootstrap == false
 
 # Secure firewalls prod
 - name: tfstate - secure firewall prod to variable
@@ -102,7 +130,10 @@
     exported_variable_name: secure_firewalls_resources
   loop_control: 
     loop_var: env
-  loop: "{{ deployments.scale_out_domain_keys }}"
+  loop: "{{scale_out_domain_keys}}"
+  when: 
+    - deployment_mode == 'platform'
+    - rover_bootstrap == false
 
 
 # azurerm_firewall for dns resolution
@@ -115,7 +146,10 @@
     exported_variable_name: private_dns_firewalls
   loop_control: 
     loop_var: env
-  loop: "{{ deployments.scale_out_domain_keys }}"
+  loop: "{{scale_out_domain_keys}}"
+  when: 
+    - deployment_mode == 'platform'
+    - rover_bootstrap == false
 
 # azurerm_firewall for dns resolution (vnets)
 - name: tfstate - azurerm_firewalls from private_dns_firewalls..vnets to variable
@@ -127,8 +161,10 @@
     exported_variable_name: private_dns_firewalls_vnets
   loop_control: 
     loop_var: env
-  loop: "{{ deployments.scale_out_domain_keys }}"
-  when: deployment_mode == 'platform'
+  loop: "{{scale_out_domain_keys}}"
+  when: 
+    - deployment_mode == 'platform'
+    - rover_bootstrap == false
 
 
 # launchpad vnet
@@ -140,7 +176,9 @@
     tfstate_key: launchpad
     caf_level: level0
     exported_variable_name: vnet_launchpad
-  when: deployment_mode == 'platform'
+  when: 
+    - deployment_mode == 'platform'
+    - rover_bootstrap == false
 
 # asvn vnet
 - name: tfstate - asvm vnets to variable
@@ -151,7 +189,9 @@
     tfstate_key: asvm
     caf_level: level2
     exported_variable_name: vnet_asvm
-  when: deployment_mode == 'platform'
+  when: 
+    - deployment_mode == 'platform'
+    - rover_bootstrap == false
 
 # Platform asvm storage accounts
 - name: tfstate - level2_storage_account from launchpad to variable
@@ -163,7 +203,9 @@
     resource_type: storage_accounts
     resource_key: level2
     exported_variable_name: level2_storage_account
-  when: deployment_mode == 'platform'
+  when: 
+    - deployment_mode == 'platform'
+    - rover_bootstrap == false
     
 - name: tfstate - storage_account_level3 from launchpad to variable
   include_tasks: "get_tfstate_content.yaml"
@@ -181,13 +223,17 @@
   set_fact:
     "{{item.path | basename | regex_replace('.yaml$', '')}}_resource__to_merge": "{{ lookup('template', item.path )}}"
   with_items: "{{yaml_files_to_process.files}}"
-  when: deployment_mode == 'platform'
+  when: 
+    - deployment_mode == 'platform'
+    - rover_bootstrap == false
 
 - name: Combine variables into resources
   set_fact:
     merged_resources: "{{ merged_resources | default({}) | combine( lookup('template', item.path ) | from_yaml )}}"
   with_items: "{{yaml_files_to_process.files}}"
-  when: deployment_mode == 'platform'
+  when: 
+    - deployment_mode == 'platform'
+    - rover_bootstrap == false
 
 - set_fact:
     resources:  "{{ merged_resources }}"

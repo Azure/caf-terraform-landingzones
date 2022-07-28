@@ -21,17 +21,17 @@
     - name: input_caf_environment
       prompt: Set the CAF Environment value
       private: no
-      default: "{{TF_VAR_environment}}"
+      default: "{{TF_VAR_environment | default('contoso')}}"
 
     - name: prefix
       prompt: Set the prefix to add to all resource.
       private: no
-      default: caf
+      default: "{{TF_VAR_environment | default('caf')}}"
 
     - name: alz_mg_prefix
       prompt: Management group prefix (value must be between 2 to 10 characters long and can only contain alphanumeric characters and hyphens). 
       private: no
-      default: es
+      default: "{{TF_VAR_environment | default('es')}}"
 
     - name: alz_mg_name
       prompt: Management group name

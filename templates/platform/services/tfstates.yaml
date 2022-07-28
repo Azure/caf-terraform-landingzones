@@ -1,3 +1,4 @@
+{% if resources is defined %}
 tfstates:
   {{deployment_mode}}:
 {% for a_key, value in resources.deployments[deployment_mode].root.items() %}
@@ -33,3 +34,4 @@ tfstates:
 
 {% endfor %}
 {% endfor %}
+{% endif %}

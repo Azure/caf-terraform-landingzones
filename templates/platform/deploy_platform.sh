@@ -13,6 +13,7 @@ function bootstrap {
   ansible-playbook /tf/caf/landingzones/templates/ansible/walk-through-bootstrap.yaml \
     -e public_templates_folder=/tf/caf/landingzones/templates \
     -e bootstrap_playbook=${topology_file:='/tf/caf/landingzones/templates/platform/caf_platform_prod_nonprod.yaml'} \
+    -e topology_file=${topology_file:='/tf/caf/landingzones/templates/platform/caf_platform_prod_nonprod.yaml'} \
     -e landingzones_folder=/tf/caf/landingzones \
     -e platform_configuration_folder=/tf/caf/configuration \
     -e platform_definition_folder=/tf/caf/platform/definition \
@@ -22,6 +23,7 @@ function bootstrap {
     -e keyvault_enable_rbac_authorization=true \
     -e keyvault_purge_protection_enabled=false \
     -e private_endpoints=true \
+    -e rover_bootstrap=true \
     -e caf_landingzone_branch="$(cd /tf/caf/landingzones && git rev-parse --abbrev-ref HEAD)" \
     --extra-vars "@/tf/caf/landingzones/templates/platform/ignite.yaml" \
     -e $(echo ${params} | xargs)
@@ -153,7 +155,6 @@ while [ $# -gt 0 ]; do
 
 done
 
-echo $params
 echo ${params} | xargs
 echo "sub_management: ${sub_management}"
 

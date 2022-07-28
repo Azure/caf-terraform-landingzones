@@ -17,9 +17,9 @@ concurrency:
   group: ${{ github.ref }}
 {% endraw %}
 env:
-  LZ_REPO: '{{resources.terraform_code_repository}}'
-  LZ_BRANCH: '{{resources.caf_landingzone_branch}}'
-  CAF_ENVIRONMENT: {{resources.caf_environment}}
+  LZ_REPO: '{{resources.terraform_code_repository | default(topology.terraform_code_repository)}}'
+  LZ_BRANCH: '{{resources.caf_landingzone_branch | default(topology.caf_landingzone_branch)}}'
+  CAF_ENVIRONMENT: {{resources.caf_environment | default(caf_environment)}}
 
 jobs:
 {% raw %}

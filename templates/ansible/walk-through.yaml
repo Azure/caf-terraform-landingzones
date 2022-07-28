@@ -42,6 +42,7 @@
     tenant_name: "{{ azure_landing_zones.identity.tenant_name | default(bash_tenant_name.stdout) }}"
     base_folder: "{{ base_folder | default('/tf/caf') }}"
     PUBLIC_IP_WHITE_LIST: "{{ [public_ip.stdout] }}"
+    rover_bootstrap: "{{rover_bootstrap if rover_bootstrap is defined else false}}"
 
 - debug:
     msg:
@@ -70,10 +71,17 @@
     topology_deployment__to_merge: "{{ lookup('template', '{{ topology_file }}') | from_yaml }}"
     destination_path: "{{definition_folder | default(platform_definition_folder)}}"
     resource_template_folder: "{{ public_templates_folder }}/resources"
-    platform_service_folder: "{{ private_templates_folder if private_templates_folder is defined else public_templates_folder + '/platform/services' }}"
+    platform_service_folder: "{{ private_templates_folder if (private_templates_folder is defined and rover_boostrap == false) else public_templates_folder + '/platform/services' }}"
     public_templates_variables_folder: "{{ public_templates_folder }}/variables"
-    variables_folder: "{{platform_definition_folder if private_templates_folder is defined else public_templates_folder + '/variables'}}"
+    variables_folder: "{{platform_definition_folder if (private_templates_folder is defined and rover_bootstrap == false) else public_templates_folder + '/variables'}}"
     job_cache_base_path: "/home/vscode/.terraform.cache"
+    scale_out_domain_keys: "{{deployments.scale_out_domain_keys | default(bootstrap.deployments.scale_out_domain_keys)}}"
+
+- debug:
+    msg:
+      - "platform_service_folder: {{platform_service_folder}}"
+      - "variables_folder: {{variables_folder}}"
+      - "rover_bootstrap: {{rover_bootstrap}}"
 
 - name: "Creates directory - {{destination_path}}"
   file:
@@ -91,8 +99,9 @@
     ignore_unknown_extensions: true
     files_matching: "_variables"
 
-- find:
-    paths: "{{definition_folder | default(platform_definition_folder)}}"
+- name: "Getting source templates from {{platform_service_folder}}"
+  find:
+    paths: "{{platform_service_folder}}"
     recurse: yes
     patterns: ["*.yaml","*.j2"]
     file_type: file
@@ -104,7 +113,9 @@
 
 - name: Load firewall rules
   include_tasks: "load_firewall_rules.yaml"
-  when: deployment_mode == 'platform'
+  when: 
+    - deployment_mode == 'platform'
+    - rover_bootstrap == false
 
 - debug:
     msg: 
@@ -148,6 +159,7 @@
 
 - debug:
     msg: "resources1: {{resources}}"
+  when: resources is defined
 
 #
 # Generate target folder structure and files

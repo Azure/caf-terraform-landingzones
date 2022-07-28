@@ -10,6 +10,8 @@
         resource_template_folder: "{{ public_templates_folder }}/resources"
         platform_service_folder: "{{ private_templates_folder if private_templates_folder is defined else public_templates_folder + '/platform/services' }}"
         multiple_lines_list: "{{ multiple_lines_list | default(false) }}"
+        scale_out_domain_keys: "{{deployments.scale_out_domain_keys}}"
+        rover_bootstrap: false
 
     - debug:
         msg: "platform_service_folder is: {{platform_service_folder}}"

@@ -1,3 +1,4 @@
+{% set service = 'private_dns_firewalls' %}
 private_dns_firewalls_{{env}}:
   gitops:
     caf_landingzone_branch: {{topology.caf_landingzone_branch}}
