@@ -287,11 +287,11 @@ management_groups:
   {{region}}:
 {% for key in a_value.keys() %}
     {{alz_mg_prefix}}:
-      management_group_prefix: "{{ bootstrap.management_groups[region].es.management_group_prefix | default(alz_mg_prefix)}}"
-      management_group_name: "{{ bootstrap.management_groups[region].es.management_group_name | default(alz_mg_name)}}"
-      deploy_core_landing_zones: {{bootstrap.management_groups[region].es.deploy_core_landing_zones | default(True)}}
-      clean_up_destination_folder: {{bootstrap.management_groups[region].es.clean_up_destination_folder | default(True)}}
-      update_lib_folder: {{bootstrap.management_groups[region].es.update_lib_folder | default(True)}}
+      management_group_prefix: "{{ alz_mg_prefix | default(bootstrap.management_groups[region].es.management_group_prefix)}}"
+      management_group_name: "{{ alz_mg_name | default(bootstrap.management_groups[region].es.management_group_name)}}"
+      deploy_core_landing_zones: {{bootstrap.management_groups[region].es.deploy_core_landing_zones | default(true)}}
+      clean_up_destination_folder: {{bootstrap.management_groups[region].es.clean_up_destination_folder | default(true)}}
+      update_lib_folder: {{bootstrap.management_groups[region].es.update_lib_folder | default(true)}}
       version_to_deploy: "{{bootstrap.management_groups[region].es.version_to_deploy | default('v1.1.3')}}"
 {% if bootstrap.management_groups[region].es.root_parent_id is defined %}
       root_parent_id: "{{bootstrap.management_groups[region][key].root_parent_id}}"

@@ -1,8 +1,8 @@
 custom_landing_zones = {
 {% for key, level in mg_custom.archetype_definitions.items() %}
-  {{ bootstrap.management_groups[region][tfstate].management_group_prefix }}-{{ key }} = {
+  {{ alz_mg_prefix }}-{{ key }} = {
     display_name               = "{{ level.display_name }}"
-    parent_management_group_id = "{{ bootstrap.management_groups[region][tfstate].management_group_prefix }}-{{ level.parent_management_group_id }}"
+    parent_management_group_id = "{{ alz_mg_prefix }}-{{ level.parent_management_group_id }}"
     archetype_config = {
       archetype_id     = "{{ level.archetype_id }}"
 {% if level.policy_assignments is defined %}
