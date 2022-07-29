@@ -125,8 +125,7 @@ EOF
       --title "Setup the foundation services for Azure landing zones" \
       --body "${body}" \
       --base bootstrap \
-      --head setup \
-      -R ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}
+      --head setup
   else
     git checkout bootstrap
     git add .

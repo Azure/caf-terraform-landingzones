@@ -6,17 +6,11 @@
 name: end-to-end
 
 on:
-  pull_request_review:
-    types: [submitted]
+  pull_request:
+    types:
+      - closed
     branches:
       - end2end
-    paths-ignore:
-      - 'platform/definition/**'
-  push:
-    branches:
-      - end2end
-    paths-ignore:
-      - 'platform/definition/**'
 
 permissions:
   id-token: write
