@@ -52,6 +52,7 @@
       - "{{ upn }}"
       - "{{ base_folder }}"
       - "{{ input_caf_environment if input_caf_environment is defined else TF_VAR_environment }}"
+      - "private_templates_folder: {{private_templates_folder is defined}}"
 
 
 - name: "load {{ template_folder | default(platform_definition_folder)}}/ignite.yaml"
@@ -61,6 +62,7 @@
     depth: 1
     ignore_unknown_extensions: true
     files_matching: "ignite.yaml"
+  when: rover_bootstrap == 'true'
 
 - set_fact:
     caf_environment: "{{ TF_VAR_environment }}"
@@ -71,9 +73,9 @@
     topology_deployment__to_merge: "{{ lookup('template', '{{ topology_file }}') | from_yaml }}"
     destination_path: "{{definition_folder | default(platform_definition_folder)}}"
     resource_template_folder: "{{ public_templates_folder }}/resources"
-    platform_service_folder: "{{ private_templates_folder if (private_templates_folder is defined and rover_boostrap == false) else public_templates_folder + '/platform/services' }}"
+    platform_service_folder: "{{ private_templates_folder if (private_templates_folder is defined and rover_bootstrap == 'false') else public_templates_folder + '/platform/services' }}"
     public_templates_variables_folder: "{{ public_templates_folder }}/variables"
-    variables_folder: "{{platform_definition_folder if (private_templates_folder is defined and rover_bootstrap == false) else public_templates_folder + '/variables'}}"
+    variables_folder: "{{platform_definition_folder if (private_templates_folder is defined and rover_bootstrap == 'false') else public_templates_folder + '/variables'}}"
     job_cache_base_path: "/home/vscode/.terraform.cache"
     scale_out_domain_keys: "{{deployments.scale_out_domain_keys | default(bootstrap.deployments.scale_out_domain_keys)}}"
 
@@ -81,7 +83,6 @@
     msg:
       - "platform_service_folder: {{platform_service_folder}}"
       - "variables_folder: {{variables_folder}}"
-      - "rover_bootstrap: {{rover_bootstrap}}"
 
 - name: "Creates directory - {{destination_path}}"
   file:
@@ -108,6 +109,16 @@
     excludes: "*.caf.platform.yaml"
   register: yaml_files_to_process
   
+- debug:
+    msg: 
+      - "variables: {{variables}}"
+      - "topology: {{topology}}"
+      - "item: {{item is defined}}"
+      - "region: {{region is defined}}"
+      - "bootstrap: {{bootstrap is defined}}"
+      - "alz_mg_prefix: {{alz_mg_prefix is defined}}"
+      - "management_groups: {{management_groups}}"
+
 - name: Load platform variables from tfstates
   include_tasks: "load_variables.yaml"
 
@@ -115,47 +126,12 @@
   include_tasks: "load_firewall_rules.yaml"
   when: 
     - deployment_mode == 'platform'
-    - rover_bootstrap == false
-
-- debug:
-    msg: 
-      - "variables: {{variables}}"
-      - "topology: {{topology}}"
+    - rover_bootstrap == 'false'
 
 - include_tasks: "load_regions.yaml"
   loop: "{{topology.deployments[deployment_mode].keys()}}"
   loop_control:
     loop_var: stage
-
-# - name: Merge deployment files into topologies variable
-#   merge_vars:
-#     suffix_to_merge: _deployment__to_merge
-#     merged_var_name: merged_topologies
-#     expected_type: 'dict'
-#     recursive_dict_merge: True
-
-# - name: "Topologies merged"
-#   set_fact:
-#     resources:  "{{ merged_topologies }}"
-
-# - debug:
-#     msg: "{{resources}}"
-
-# # Need topologies to render the following templates
-# - name: "load tfstates"
-#   set_fact:
-#     "tfstates_deployment__to_merge": "{{ lookup('template', '{{platform_service_folder}}/tfstates.yaml') | from_yaml }}"
-
-
-# - name: Merge deployment files into topologies variable
-#   merge_vars:
-#     suffix_to_merge: _deployment__to_merge
-#     merged_var_name: merged_topologies
-#     expected_type: 'dict'
-#     recursive_dict_merge: True
-
-# - set_fact:
-#     resources:  "{{ merged_topologies }}"
 
 - debug:
     msg: "resources1: {{resources}}"
@@ -248,17 +224,12 @@
     src: "{{platform_service_folder}}/README.md"
     dest: "{{topology.private_templates_folder}}/README.md"
     force: no
-
-- name: tfstates.yaml
-  ansible.builtin.template:
-    src: "{{platform_service_folder}}/tfstates.yaml"
-    dest: "{{destination_path}}/tfstates.yaml"
-    force: no
     
 - name: ignite.yaml
   ansible.builtin.template:
     src: "{{public_templates_folder}}/platform/caf_platform_prod_nonprod.yaml"
     dest: "{{destination_path}}/ignite.yaml"
+  when: rover_bootstrap == 'true'
         
 - name: "{{platform_service_folder}}/README.md"
   ansible.builtin.template:

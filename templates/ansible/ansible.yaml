@@ -11,6 +11,7 @@
         platform_service_folder: "{{ private_templates_folder if private_templates_folder is defined else public_templates_folder + '/platform/services' }}"
         multiple_lines_list: "{{ multiple_lines_list | default(false) }}"
         scale_out_domain_keys: "{{deployments.scale_out_domain_keys}}"
+        topology: "{{ lookup('template', '{{ bootstrap_file }}') | from_yaml }}"
         rover_bootstrap: false
 
     - debug:

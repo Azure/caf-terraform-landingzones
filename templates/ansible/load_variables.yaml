@@ -17,6 +17,18 @@
   with_items: "{{yaml_files_to_process.files}}"
   when: deployment_mode == 'platform'
 
+
+# Need topologies to render the following templates
+- name: "load tfstates from {{template_folder | default(platform_definition_folder)}}"
+  set_fact:
+    "tfstates_resource__to_merge": "{{ lookup('template', '{{template_folder | default(platform_definition_folder)}}/tfstates.yaml') | from_yaml }}"
+  when: rover_bootstrap == false or rover_bootstrap == 'false'
+
+- name: "load topology into resources"
+  set_fact:
+    "topology_resource__to_merge": "{{ topology }}"
+  when: rover_bootstrap == false or rover_bootstrap == 'false'
+
 - name: load variables (for bootstrap from topology file)
   include_tasks: "load_variables_sod.yaml"
   loop: "{{topology.deployments[deployment_mode].scale_out_domains[topology.default_region_key].keys()}}"
@@ -24,7 +36,7 @@
     loop_var: service
   when: 
     - deployment_mode == 'platform'
-    - rover_bootstrap
+    - rover_bootstrap == 'true'
 
 - name: Merge resources variables
   merge_vars:
@@ -35,6 +47,9 @@
 
 - set_fact:
     resources:  "{{ merged_resources }}"
+
+# - debug:
+#     msg: "resources: {{resources}}"
 
 # Azure AD Groups
 - name: tfstate - azuread_groups from launchpad to variable
@@ -48,7 +63,7 @@
     exported_variable_name: launchpad_azuread_groups
   when: 
     - deployment_mode == 'platform'
-    - rover_bootstrap == false
+    - rover_bootstrap == false or rover_bootstrap == 'false'
 
 # Keyvaults having credentials
 - name: tfstate - keyvaults from launchpad_credentials to variable
@@ -62,7 +77,7 @@
     exported_variable_name: keyvaults
   when: 
     - deployment_mode == 'platform'
-    - rover_bootstrap == false
+    - rover_bootstrap == false or rover_bootstrap == 'false'
 
 # Keyvault_scl credentials
 - name: tfstate - keyvaults from launchpad_credentials to variable
@@ -88,7 +103,7 @@
   when: 
     - subscription_deployment_mode == 'multiple_subscriptions'
     - deployment_mode == 'platform'
-    - rover_bootstrap == false
+    - rover_bootstrap == false or rover_bootstrap == 'false'
 
 # Private DNS zones
 - name: tfstate - private dns zones to variable
@@ -103,7 +118,7 @@
   loop: "{{scale_out_domain_keys}}"
   when: 
     - deployment_mode == 'platform'
-    - rover_bootstrap == false
+    - rover_bootstrap == false or rover_bootstrap == 'false'
 
 # Virtual hub prod
 - name: tfstate - virtual hub prod to variable
@@ -118,7 +133,7 @@
   loop: "{{scale_out_domain_keys}}"
   when: 
     - deployment_mode == 'platform'
-    - rover_bootstrap == false
+    - rover_bootstrap == false or rover_bootstrap == 'false'
 
 # Secure firewalls prod
 - name: tfstate - secure firewall prod to variable
@@ -133,7 +148,7 @@
   loop: "{{scale_out_domain_keys}}"
   when: 
     - deployment_mode == 'platform'
-    - rover_bootstrap == false
+    - rover_bootstrap == false or rover_bootstrap == 'false'
 
 
 # azurerm_firewall for dns resolution
@@ -149,7 +164,7 @@
   loop: "{{scale_out_domain_keys}}"
   when: 
     - deployment_mode == 'platform'
-    - rover_bootstrap == false
+    - rover_bootstrap == false or rover_bootstrap == 'false'
 
 # azurerm_firewall for dns resolution (vnets)
 - name: tfstate - azurerm_firewalls from private_dns_firewalls..vnets to variable
@@ -164,7 +179,7 @@
   loop: "{{scale_out_domain_keys}}"
   when: 
     - deployment_mode == 'platform'
-    - rover_bootstrap == false
+    - rover_bootstrap == false or rover_bootstrap == 'false'
 
 
 # launchpad vnet
@@ -178,7 +193,7 @@
     exported_variable_name: vnet_launchpad
   when: 
     - deployment_mode == 'platform'
-    - rover_bootstrap == false
+    - rover_bootstrap == false or rover_bootstrap == 'false'
 
 # asvn vnet
 - name: tfstate - asvm vnets to variable
@@ -191,7 +206,7 @@
     exported_variable_name: vnet_asvm
   when: 
     - deployment_mode == 'platform'
-    - rover_bootstrap == false
+    - rover_bootstrap == false or rover_bootstrap == 'false'
 
 # Platform asvm storage accounts
 - name: tfstate - level2_storage_account from launchpad to variable
@@ -205,7 +220,7 @@
     exported_variable_name: level2_storage_account
   when: 
     - deployment_mode == 'platform'
-    - rover_bootstrap == false
+    - rover_bootstrap == false or rover_bootstrap == 'false'
     
 - name: tfstate - storage_account_level3 from launchpad to variable
   include_tasks: "get_tfstate_content.yaml"
@@ -219,21 +234,21 @@
   when: deployment_mode == 'asvm'
 
 # Reloading with the variables from tfstates
-- name: load variables
+- name: load variables from {{platform_service_folder}}
   set_fact:
     "{{item.path | basename | regex_replace('.yaml$', '')}}_resource__to_merge": "{{ lookup('template', item.path )}}"
   with_items: "{{yaml_files_to_process.files}}"
   when: 
     - deployment_mode == 'platform'
-    - rover_bootstrap == false
+    - rover_bootstrap == false or rover_bootstrap == 'false'
 
-- name: Combine variables into resources
+- name: Update variables into resources
   set_fact:
     merged_resources: "{{ merged_resources | default({}) | combine( lookup('template', item.path ) | from_yaml )}}"
   with_items: "{{yaml_files_to_process.files}}"
   when: 
     - deployment_mode == 'platform'
-    - rover_bootstrap == false
+    - rover_bootstrap == false or rover_bootstrap == 'false'
 
 - set_fact:
     resources:  "{{ merged_resources }}"

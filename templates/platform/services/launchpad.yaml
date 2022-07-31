@@ -218,8 +218,8 @@ launchpad:
           name: l0
           sku_name: premium
           resource_group_key: level0
-          purge_protection_enabled: {{ keyvault_purge_protection_enabled }}
-          enable_rbac_authorization: {{ keyvault_enable_rbac_authorization }}
+          purge_protection_enabled: {{ keyvault_purge_protection_enabled | lower }}
+          enable_rbac_authorization: {{ keyvault_enable_rbac_authorization | lower }}
           network:
             bypass: AzureServices
             default_action: Deny
@@ -272,8 +272,8 @@ launchpad:
           name: l1
           sku_name: premium
           resource_group_key: level1
-          purge_protection_enabled: {{ keyvault_purge_protection_enabled }}
-          enable_rbac_authorization: {{ keyvault_enable_rbac_authorization }}
+          purge_protection_enabled: {{ keyvault_purge_protection_enabled | lower }}
+          enable_rbac_authorization: {{ keyvault_enable_rbac_authorization | lower }}
           network:
             bypass: AzureServices
             default_action: Deny
@@ -326,8 +326,8 @@ launchpad:
           name: l2
           sku_name: premium
           resource_group_key: level2
-          purge_protection_enabled: {{ keyvault_purge_protection_enabled }}
-          enable_rbac_authorization: {{ keyvault_enable_rbac_authorization }}
+          purge_protection_enabled: {{ keyvault_purge_protection_enabled | lower }}
+          enable_rbac_authorization: {{ keyvault_enable_rbac_authorization | lower }}
           network:
             bypass: AzureServices
             default_action: Deny

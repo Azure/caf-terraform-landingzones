@@ -57,9 +57,7 @@ For your reference, if you need to re-generate the YAML definition files later, 
 ansible-playbook $(readlink -f ./landingzones/templates/ansible/walk-through-ci.yaml) \
   -e base_folder=$(pwd) \
   -e topology_file=$(readlink -f ./platform/definition/ignite.yaml) \
-  -e GITHUB_SERVER_URL={{lookup('env', 'GITHUB_SERVER_URL')}} \
-  -e GITHUB_REPOSITORY={{lookup('env', 'GITHUB_REPOSITORY')}} \
-  -e GITOPS_SERVER_URL={{lookup('env', 'GITHUB_SERVER_URL')}}/{{lookup('env', 'GITHUB_REPOSITORY')}} \
+  -e GITOPS_SERVER_URL={{GITOPS_SERVER_URL}} \
   -e RUNNER_NUMBERS={{ RUNNER_NUMBERS }} \
   -e AGENT_TOKEN={{ AGENT_TOKEN }} \
   -e gitops_agent={{gitops_agent}} \
@@ -70,6 +68,7 @@ ansible-playbook $(readlink -f ./landingzones/templates/ansible/walk-through-ci.
   -e sub_identity={{sub_identity}} \
   -e sub_security={{sub_security}} \
   -e TF_VAR_environment={{caf_environment}} \
+  -e rover_bootstrap=false \
   -e AZURE_OBJECT_ID={{bootstrap_sp_object_id}} \
   -e template_folder="$(pwd)/platform/definition" \
   --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)"

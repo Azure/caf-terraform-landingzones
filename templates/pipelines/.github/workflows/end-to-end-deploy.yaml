@@ -11,6 +11,9 @@ on:
       - closed
     branches:
       - end2end
+  push:
+    branches:
+      - end2end
 
 permissions:
   id-token: write
@@ -189,7 +192,7 @@ jobs:
       terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
       environment: ${{ needs.environment.outputs.environment }}
 {% endraw %}
-      terraform_code_ref: '{{bootstrap.management_groups[region].es.version_to_deploy | default('v1.1.3')}}'
+      terraform_code_ref: '{{ variables.variables_azure_landing_zones.private_lib[ management_groups.region1[alz_mg_prefix].version_to_deploy | default(bootstrap.management_groups[region].es.version_to_deploy)].caf_landingzone_branch}}'
       caf_identity_aad_key: cred_alz
       landingzone_code_path: ./landingzones/caf_solution/add-ons/caf_eslz
       landingzone_configuration_path: ./platform/configuration/level1/alz/{{alz_mg_prefix}}

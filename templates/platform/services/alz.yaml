@@ -1,9 +1,16 @@
-{%if rover_bootstrap %}
+{% if (item is defined) == True  %}
 {% set item = alz_mg_prefix %}
+{% endif %}
+{% if region is undefined %}
+{% set region = 'region1' %}
 {% endif %}
 alz_{{item}}:
   gitops:
-    caf_landingzone_branch: {{ topology.caf_landingzone_branch | default(variables.variables_azure_landing_zones.private_lib[bootstrap.management_groups.region1.es.version_to_deploy].caf_landingzone_branch) }}
+{% if bootstrap is defined %}
+    caf_landingzone_branch: {{ variables.variables_azure_landing_zones.private_lib[bootstrap.management_groups.region1.es.version_to_deploy].caf_landingzone_branch }}
+{% else %}
+    caf_landingzone_branch: {{ variables.variables_azure_landing_zones.private_lib[management_groups[region][item].version_to_deploy].caf_landingzone_branch }}
+{% endif %}
 
   relative_destination_folder: level1/alz/{{item}}
 
@@ -16,7 +23,11 @@ alz_{{item}}:
     config_file: alz_{{item}}.yaml
     template_lib_folder: platform/level1/alz
     sub_template_folder: platform/level1/alz
-    alz_version: {{topology.management_groups[region][item].version_to_deploy | default(bootstrap.management_groups.region1.es.version_to_deploy) }}
+{% if bootstrap is defined %}
+    alz_version: {{ bootstrap.management_groups.region1.es.version_to_deploy }}
+{% else %}
+    alz_version: {{ management_groups[region][item].version_to_deploy }}
+{% endif %}
     yaml: platform/level1/alz/ansible.yaml
     # Do not rename the item_key_name
     tfstate_key_name: alz_{{item}}
