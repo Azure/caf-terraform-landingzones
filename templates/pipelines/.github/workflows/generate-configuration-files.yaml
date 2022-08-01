@@ -135,10 +135,10 @@ jobs:
           then
               echo "Nothing to commit"
           else
-            git pull
             git add --all .
             pre-commit
             git commit -am "${{inputs.commit_description}}"
+            git pull
             git push origin HEAD
           fi
 

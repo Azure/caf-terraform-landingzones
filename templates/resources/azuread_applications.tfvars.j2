@@ -2,8 +2,8 @@ azuread_applications = {
 {% for key, app in resources[tfstate_resource].resources[subscription_key].azuread_applications.items() %}
   {{ key }} = {
     application_name = "{{ app.application_name }}"
-{% if ad_group.owners is defined %}
-    owners = {{ ad_group.owners| string | replace('None','[]') | replace('\'','\"')  }}
+{% if app.owners is defined %}
+    owners = {{ app.owners| string | replace('None','[]') | replace('\'','\"')  }}
 {% endif %}
   }
 {% endfor %}
