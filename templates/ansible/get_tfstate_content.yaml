@@ -14,8 +14,8 @@
   register: storage_account
   shell: |
     az storage account list \
-      --subscription {{ resources.caf_launchpad.subscription_id }} \
-      --query "[?tags.caf_tfstate=='{{ caf_level | default('level0') }}' && tags.caf_environment=='{{ resources.caf_environment }}'].{name:name}[0]" -o json | jq -r .name
+      --subscription {{ resources.caf_launchpad.subscription_id | default(caf_launchpad.subscription_id) }} \
+      --query "[?tags.caf_tfstate=='{{ caf_level | default('level0') }}' && tags.caf_environment=='{{ resources.caf_environment | default(caf_environment) }}'].{name:name}[0]" -o json | jq -r .name
 
 - set_fact:
     "{{tfstate_key_name}}_storage_account": "{{ lookup('vars', 'storage_account') }}"
@@ -110,7 +110,7 @@
     msg: "{{lookup('ansible.builtin.varnames', '^{{exported_variable_name}}')}}"
     
 - debug:
-    msg: "{{lookup('vars', exported_variable_name)}}"
+    msg: "{{exported_variable_name}}: {{lookup('vars', exported_variable_name)}}"
   when: lookup('ansible.builtin.varnames', '^' + exported_variable_name)
 
 - name: "[{{resources[tfstate].relative_destination_folder}}] cleanup"

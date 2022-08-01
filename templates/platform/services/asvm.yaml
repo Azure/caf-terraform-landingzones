@@ -331,6 +331,7 @@ asvm:
                   keys:
                     - {{launchpad_azuread_groups.caf_platform_maintainers.id}}           # caf_platform_maintainers
                     - {{launchpad_azuread_groups.subscription_creation_landingzones.id}} # subscription_creation_landingzones
+                    - {{launchpad_azuread_groups.level0.id}} # level0
                 azuread_groups:
                   keys:
                     - caf_ac_landingzone_maintainers_non_prod
@@ -347,6 +348,7 @@ asvm:
                   keys:
                     - {{launchpad_azuread_groups.caf_platform_maintainers.id}}           # caf_platform_maintainers
                     - {{launchpad_azuread_groups.subscription_creation_landingzones.id}} # subscription_creation_landingzones
+                    - {{launchpad_azuread_groups.level0.id}} # level0
                 azuread_groups:
                   keys:
                     - caf_ac_landingzone_maintainers_non_prod
@@ -364,6 +366,7 @@ asvm:
                   keys:
                     - {{launchpad_azuread_groups.caf_platform_maintainers.id}}           # caf_platform_maintainers
                     - {{launchpad_azuread_groups.subscription_creation_landingzones.id}} # subscription_creation_landingzones
+                    - {{launchpad_azuread_groups.level0.id}} # level0
 {% else %}
                 logged_in:
                   keys:
@@ -382,6 +385,7 @@ asvm:
                   keys:
                     - {{launchpad_azuread_groups.caf_platform_maintainers.id}}           # caf_platform_maintainers
                     - {{launchpad_azuread_groups.subscription_creation_landingzones.id}} # subscription_creation_landingzones
+                    - {{launchpad_azuread_groups.level0.id}} # level0
 {% else %}
                 logged_in:
                   keys:

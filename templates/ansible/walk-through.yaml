@@ -69,6 +69,7 @@
   when: TF_VAR_environment is defined
   
 - set_fact:
+    bootstrap: "{{ lookup('template', '{{ topology_file }}') | from_yaml }}"
     topology: "{{ lookup('template', '{{ topology_file }}') | from_yaml }}"
     topology_deployment__to_merge: "{{ lookup('template', '{{ topology_file }}') | from_yaml }}"
     destination_path: "{{definition_folder | default(platform_definition_folder)}}"
@@ -117,6 +118,24 @@
       - "region: {{region is defined}}"
       - "bootstrap: {{bootstrap is defined}}"
       - "alz_mg_prefix: {{alz_mg_prefix is defined}}"
+
+- include_tasks: "load_regions.yaml"
+  loop: "{{topology.deployments[deployment_mode].keys()}}"
+  loop_control:
+    loop_var: stage
+  when: rover_bootstrap == 'false'
+
+- name: Merge resources variables
+  merge_vars:
+    suffix_to_merge: _deployment__to_merge
+    merged_var_name: merged_resources
+    expected_type: 'dict'
+    recursive_dict_merge: True
+  when: rover_bootstrap == 'false'
+
+- set_fact:
+    resources:  "{{ merged_resources }}"
+  when: rover_bootstrap == 'false'
 
 - name: Load platform variables from tfstates
   include_tasks: "load_variables.yaml"
@@ -204,6 +223,7 @@
     recurse: no
     patterns: "*.yaml"
     file_type: file
+    excludes: "tfstates.yaml"
   register: platform_service_template_files_to_process
 
 - name: "Creates destination directory - {{topology.private_templates_folder}}"

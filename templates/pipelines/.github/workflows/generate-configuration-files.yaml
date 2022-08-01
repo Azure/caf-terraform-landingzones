@@ -115,6 +115,7 @@ jobs:
             -e RUNNER_NUMBERS=${{ secrets.RUNNER_NUMBERS }} \
             -e AZURE_OBJECT_ID=${{ secrets.AZURE_OBJECT_ID }} \
             -e GITHUB_SERVER_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY} \
+            -e rover_bootstrap=false \
             -e base_folder=$(pwd)
 
 

@@ -10,6 +10,7 @@
       - "alz_mg_prefix: {{alz_mg_prefix}}"
       - "deployment_mode: {{deployment_mode}}"
       - "rover_bootstrap: {{rover_bootstrap}}"
+      - "resources is defined: {{resources is defined}}"
 
 - name: load variables
   set_fact:
@@ -22,11 +23,6 @@
 - name: "load tfstates from {{template_folder | default(platform_definition_folder)}}"
   set_fact:
     "tfstates_resource__to_merge": "{{ lookup('template', '{{template_folder | default(platform_definition_folder)}}/tfstates.yaml') | from_yaml }}"
-  when: rover_bootstrap == false or rover_bootstrap == 'false'
-
-- name: "load topology into resources"
-  set_fact:
-    "topology_resource__to_merge": "{{ topology }}"
   when: rover_bootstrap == false or rover_bootstrap == 'false'
 
 - name: load variables (for bootstrap from topology file)

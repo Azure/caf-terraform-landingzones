@@ -26,7 +26,7 @@ virtual_wans_{{env}}:
     connectivity:
       virtual_wans:
         global_wan:
-          name: vwan
+          name: {{env}}
           resource_group_key: global_wan
           region_key: region1
 

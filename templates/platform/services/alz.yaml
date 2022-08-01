@@ -6,7 +6,7 @@
 {% endif %}
 alz_{{item}}:
   gitops:
-{% if bootstrap is defined %}
+{% if rover_bootstrap == 'true' %}
     caf_landingzone_branch: {{ variables.variables_azure_landing_zones.private_lib[bootstrap.management_groups.region1.es.version_to_deploy].caf_landingzone_branch }}
 {% else %}
     caf_landingzone_branch: {{ variables.variables_azure_landing_zones.private_lib[management_groups[region][item].version_to_deploy].caf_landingzone_branch }}
@@ -23,7 +23,7 @@ alz_{{item}}:
     config_file: alz_{{item}}.yaml
     template_lib_folder: platform/level1/alz
     sub_template_folder: platform/level1/alz
-{% if bootstrap is defined %}
+{% if rover_bootstrap == 'true' %}
     alz_version: {{ bootstrap.management_groups.region1.es.version_to_deploy }}
 {% else %}
     alz_version: {{ management_groups[region][item].version_to_deploy }}

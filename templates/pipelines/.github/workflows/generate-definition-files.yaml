@@ -115,6 +115,7 @@ jobs:
             -e sub_security=${{secrets.AZURE_SECURITY_SUBSCRIPTION_ID}} \
             -e TF_VAR_environment=${{ inputs.environment }} \
             -e template_folder="$(pwd)/platform/definition" \
+            -e rover_bootstrap=false \
             --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)"
 
 
