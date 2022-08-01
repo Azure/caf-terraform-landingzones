@@ -42,7 +42,7 @@
     tenant_name: "{{ azure_landing_zones.identity.tenant_name | default(bash_tenant_name.stdout) }}"
     base_folder: "{{ base_folder | default('/tf/caf') }}"
     PUBLIC_IP_WHITE_LIST: "{{ [public_ip.stdout] }}"
-    rover_bootstrap: "{{rover_bootstrap if rover_bootstrap is defined else false}}"
+    rover_bootstrap: "{{rover_bootstrap if rover_bootstrap is defined else 'false'}}"
 
 - debug:
     msg:
@@ -117,7 +117,6 @@
       - "region: {{region is defined}}"
       - "bootstrap: {{bootstrap is defined}}"
       - "alz_mg_prefix: {{alz_mg_prefix is defined}}"
-      - "management_groups: {{management_groups}}"
 
 - name: Load platform variables from tfstates
   include_tasks: "load_variables.yaml"
@@ -229,6 +228,13 @@
   ansible.builtin.template:
     src: "{{public_templates_folder}}/platform/caf_platform_prod_nonprod.yaml"
     dest: "{{destination_path}}/ignite.yaml"
+  when: rover_bootstrap == 'true'
+
+- name: tfstates.yaml
+  ansible.builtin.template:
+    src: "{{platform_service_folder}}/tfstates.yaml"
+    dest: "{{destination_path}}/tfstates.yaml"
+    force: no
   when: rover_bootstrap == 'true'
         
 - name: "{{platform_service_folder}}/README.md"
