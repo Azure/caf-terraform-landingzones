@@ -17,7 +17,7 @@ launchpad:
 
   deployments:
     landingzone:
-{% if platform_subscriptions is defined and virtual_hubs_resources %}
+{% if platform_subscriptions is defined and virtual_hubs_resources is defined %}
     custom_variables:
       virtual_hub_subscription_id: {{ platform_subscriptions.connectivity.subscription_id }}
 {% endif %}
