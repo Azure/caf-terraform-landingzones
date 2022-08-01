@@ -68,9 +68,6 @@ asvm:
               days: 7
             delete_retention_policy:
               days: 7
-          containers:
-            tfstate:
-              name: tfstate
 {% if private_endpoints is defined %}
           private_endpoints:
             level3:
@@ -150,12 +147,18 @@ asvm:
             caf_launchpad: launchpad
             caf_tfstate: level4
 
+      storage_containers:
+        level3_tfstate:
+          name: tfstate
+          storage_account:
+            key: level3
+
       keyvaults:
         level3:
           name: l3
           resource_group_key: level3
-          purge_protection_enabled: {{ keyvault_purge_protection_enabled | lower }}
-          enable_rbac_authorization: {{ keyvault_enable_rbac_authorization | lower }}
+          purge_protection_enabled: {{ keyvault_purge_protection_enabled }}
+          enable_rbac_authorization: {{ keyvault_enable_rbac_authorization }}
           network:
             bypass: AzureServices
             default_action: Deny
@@ -203,8 +206,8 @@ asvm:
         level4:
           name: l4
           resource_group_key: level4
-          purge_protection_enabled: {{ keyvault_purge_protection_enabled | lower }}
-          enable_rbac_authorization: {{ keyvault_enable_rbac_authorization | lower }}
+          purge_protection_enabled: {{ keyvault_purge_protection_enabled }}
+          enable_rbac_authorization: {{ keyvault_enable_rbac_authorization }}
           network:
             bypass: AzureServices
             default_action: Deny
