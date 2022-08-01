@@ -107,11 +107,11 @@
     path: 'outputs.objects.value.{{tfstate_key_name}}.{{resource_type}}.{{resource_key}}'
 
 - debug:
-    msg: "{{lookup('ansible.builtin.varnames', '^{{exported_variable_name}}')}}"
+    msg: "{{lookup('ansible.builtin.varnames', '^{{exported_variable_name}}$')}}"
     
 - debug:
     msg: "{{exported_variable_name}}: {{lookup('vars', exported_variable_name)}}"
-  when: lookup('ansible.builtin.varnames', '^' + exported_variable_name)
+  when: lookup('ansible.builtin.varnames', '^' + exported_variable_name + '$')
 
 - name: "[{{resources[tfstate].relative_destination_folder}}] cleanup"
   when:
