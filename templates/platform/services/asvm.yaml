@@ -31,13 +31,13 @@ asvm:
     launchpad:
       resource_groups:
         asvm_vnet:
-          name: caf-asvm-networking
+          name: asvm-networking
         level3:
-          name: caf-level3
+          name: level3
           tags:
             level: level3
         level4:
-          name: caf-level4
+          name: level4
           tags:
             level: level4
 
