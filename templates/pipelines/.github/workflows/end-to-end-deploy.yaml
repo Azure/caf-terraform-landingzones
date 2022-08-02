@@ -22,6 +22,7 @@ permissions:
 {% raw %}
 concurrency: 
   group: ${{ github.ref }}
+  cancel-in-progress: true
 {% endraw %}
 env:
   LZ_REPO: '{{resources.terraform_code_repository | default(topology.terraform_code_repository)}}'
@@ -45,9 +46,30 @@ jobs:
           echo "::set-output name=terraform_code_ref::$LZ_BRANCH"
           echo "::set-output name=environment::$CAF_ENVIRONMENT"
 
+  configuration_updates:
+    name: Generate configuration tfvars files
+    permissions:
+      id-token: write
+      contents: write
+    needs: [environment]
+    uses: ./.github/workflows/generate-configuration-files.yaml
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_MANAGEMENT_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+      RUNNER_REGISTRATION_TOKEN: ${{ secrets.RUNNER_REGISTRATION_TOKEN }}
+      RUNNER_NUMBERS: ${{ secrets.RUNNER_NUMBERS }}
+      AZURE_OBJECT_ID: ${{ secrets.AZURE_OBJECT_ID }}
+    with:
+      terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
+      terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
+      environment: ${{ needs.environment.outputs.environment }}
+      commit_description: Updating level1 and level2 configuration files following ALZ deployment.
+
   launchpad:
     uses: ./.github/workflows/rover.yaml
-    needs: [environment]
+    needs: [environment, configuration_updates]
     concurrency: 
       group: level0-launchpad
     secrets:
@@ -229,30 +251,9 @@ jobs:
       terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
       environment: ${{ needs.environment.outputs.environment }}
 
-  configuration_updates:
-    name: Generate configuration tfvars files
-    permissions:
-      id-token: write
-      contents: write
-    needs: [environment, generate_definition_files]
-    uses: ./.github/workflows/generate-configuration-files.yaml
-    secrets:
-      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-      AZURE_MANAGEMENT_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
-      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
-      RUNNER_REGISTRATION_TOKEN: ${{ secrets.RUNNER_REGISTRATION_TOKEN }}
-      RUNNER_NUMBERS: ${{ secrets.RUNNER_NUMBERS }}
-      AZURE_OBJECT_ID: ${{ secrets.AZURE_OBJECT_ID }}
-    with:
-      terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
-      terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
-      environment: ${{ needs.environment.outputs.environment }}
-      commit_description: Updating level1 and level2 configuration files following ALZ deployment.
-
   identity_level2_prod:
     uses: ./.github/workflows/rover.yaml
-    needs: [environment, configuration_updates]
+    needs: [environment, generate_definition_files]
     concurrency: 
       group: level2-identity_level2_prod
     secrets:
@@ -274,7 +275,7 @@ jobs:
 
   identity_level2_non_prod:
     uses: ./.github/workflows/rover.yaml
-    needs: [environment, configuration_updates]
+    needs: [environment, generate_definition_files]
     concurrency: 
       group: level2-identity_level2_non_prod
     secrets:
@@ -318,7 +319,7 @@ jobs:
 
   connectivity_virtual_wans_prod:
     uses: ./.github/workflows/rover.yaml
-    needs: [environment, configuration_updates]
+    needs: [environment, generate_definition_files]
     concurrency: 
       group: level2-connectivity_virtual_wans_prod
     secrets:
@@ -497,26 +498,5 @@ jobs:
       terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
       terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
       environment: ${{ needs.environment.outputs.environment }}
-
-  generate_configuration_files_2:
-    name: Generate configuration tfvars files
-    permissions:
-      id-token: write
-      contents: write
-    needs: [environment, generate_definition_files_2]
-    uses: ./.github/workflows/generate-configuration-files.yaml
-    secrets:
-      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-      AZURE_MANAGEMENT_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
-      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
-      RUNNER_REGISTRATION_TOKEN: ${{ secrets.RUNNER_REGISTRATION_TOKEN }}
-      RUNNER_NUMBERS: ${{ secrets.RUNNER_NUMBERS }}
-      AZURE_OBJECT_ID: ${{ secrets.AZURE_OBJECT_ID }}
-    with:
-      terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
-      terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
-      environment: ${{ needs.environment.outputs.environment }}
-      commit_description: Updating all config files to update dependencies with securehub.
-
+      
 {% endraw %}

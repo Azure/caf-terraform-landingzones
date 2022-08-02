@@ -318,11 +318,11 @@ asvm:
 
 
       azuread_groups:
-        caf_ac_landingzone_maintainers_non_prod:
-          name: caf_ac_landingzone_maintainers_non_prod
+        caf_landingzone_maintainers_non_prod:
+          name: caf_landingzone_maintainers_non_prod
 
-        caf_ac_landingzone_maintainers_prod:
-          name: caf_ac_landingzone_maintainers_prod
+        caf_landingzone_maintainers_prod:
+          name: caf_landingzone_maintainers_prod
 
       role_mapping:
         built_in_role_mapping:
