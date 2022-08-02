@@ -93,8 +93,214 @@ resource "tfe_agent_pool" "tfe_agent_pools" {
 
 resource "tfe_agent_token" "tfe_agent_pool_tokens" {
   depends_on = [tfe_agent_pool.tfe_agent_pools]
-  for_each = try(var.tfe_agent_pool_tokens, {})
+  for_each   = try(var.tfe_agent_pool_tokens, {})
 
   agent_pool_id = try(each.value.agent_pool_id, tfe_agent_pool.tfe_agent_pools[each.value.agent_pool_key].id)
   description   = each.value.description
+}
+
+# keyvault to store the tfe agent pools, data source?
+
+
+resource "tfe_variable_set" "tfe_varsets" {
+  depends_on = [tfe_workspace.tfe_wks]
+  for_each   = try(var.tfe_variable_sets, {})
+
+  name         = each.value.name
+  description  = try(each.value.description, null)
+  organization = try(each.value.organization.name, tfe_organization.tfe_org[each.value.organization.key].name)
+}
+
+# resource "tfe_workspace_variable_set" "tfe_wks_varsets" { # > v 0.33.0
+#   for_each = try(var.tfe_workspace_variable_sets, {})
+
+#   workspace_id    = tfe_workspace.tfe_wks[each.value.workspace.key].id
+#   variable_set_id = tfe_variable_set.tfe_varsets[each.value.variable_set.key].id
+
+# }
+
+resource "tfe_notification_configuration" "tfe_notifications" {
+  for_each = try(var.tfe_notifications, {})
+
+  name             = each.value.name
+  enabled          = each.value.enabled
+  destination_type = each.value.destination_type
+  email_user_ids   = try(each.value.email_user_ids, null)
+  email_addresses  = try(each.value.email_addresses, null)
+  triggers         = try(each.value.triggers, null)
+  url              = try(each.value.url, null)
+  workspace_id     = try(each.value.workspace_id, tfe_workspace.tfe_wks[each.value.workspace.key].id)
+
+}
+
+resource "tfe_oauth_client" "tfe_oauth_clients" {
+  for_each = try(var.tfe_oauth_clients, {})
+
+  name             = each.value.name
+  organization     = try(each.value.organization.name, tfe_organization.tfe_org[each.value.organization.key].name)
+  api_url          = each.value.api_url
+  http_url         = each.value.http_url
+  oauth_token      = try(each.value.oauth_token, null)
+  private_key      = try(each.value.private_key, null)
+  key              = try(each.value.key, null)
+  secret           = try(each.value.secret, null)
+  rsa_public_key   = try(each.value.rsa_public_key, null)
+  service_provider = each.value.service_provider
+}
+
+resource "tfe_organization_membership" "tfe_org_memberships" {
+  depends_on = [tfe_organization.tfe_org]
+
+  for_each = try(var.tfe_organization_memberships, {})
+
+  organization = try(each.value.organization.name, tfe_organization.tfe_org[each.value.organization.key].name)
+  email        = each.value.email
+}
+
+resource "tfe_organization_module_sharing" "tfe_organization_module_sharings" {
+  for_each = try(var.tfe_organization_module_sharings, {})
+
+  organization     = try(each.value.organization.name, tfe_organization.tfe_org[each.value.organization.key].name)
+  module_consumers = each.value.module_consumers
+}
+
+resource "tfe_organization_token" "tfe_org_tokens" {
+  for_each = try(var.tfe_organization_tokens, {})
+
+  organization = try(each.value.organization.name, tfe_organization.tfe_org[each.value.organization.key].name)
+}
+
+# TODO: output and store token in azure keyvault
+
+locals {
+  policy_set_sentinel_policy_ids = flatten([
+    for key, value in try(var.tfe_policy_sets, []) : [
+      for policy_key in try(value.policy.keys, []) : [
+        tfe_sentinel_policy.tfe_sentinel_policies[policy_key].id
+      ]
+    ]
+  ])
+  policy_set_workspace_ids = flatten([
+    for key, value in try(var.tfe_policy_sets, []) : [
+      for workspace_key in try(value.workspace.keys, []) : [
+        tfe_workspace.tfe_wks[workspace_key].id
+      ]
+    ]
+  ])
+}
+
+resource "tfe_policy_set" "tfe_policy_sets" {
+  depends_on = [tfe_workspace.tfe_wks, tfe_sentinel_policy.tfe_sentinel_policies]
+  for_each   = try(var.tfe_policy_sets, {})
+
+  name          = each.value.name
+  description   = try(each.value.description, null)
+  global        = try(each.value.global, null)
+  organization  = try(each.value.organization.name, tfe_organization.tfe_org[each.value.organization.key].name)
+  policy_ids    = try(each.value.policy.ids, local.policy_set_sentinel_policy_ids, null)
+  workspace_ids = try(each.value.workspace.ids, local.policy_set_workspace_ids, null)
+
+  dynamic "vcs_repo" {
+    for_each = try(each.value.vcs_repo, null) != null ? [1] : []
+
+    content {
+      identifier         = each.value.vcs_repo.identifier
+      branch             = try(each.value.vcs_repo.branch, null)
+      ingress_submodules = try(each.value.vcs_repo.ingress_submodules, null)
+      oauth_token_id     = try(each.value.vcs_repo.oauth_token_id, tfe_oauth_client.tfe_oauth_clients[each.value.vcs_repo.oauth_token_key].id)
+    }
+  }
+
+}
+
+resource "tfe_sentinel_policy" "tfe_sentinel_policies" {
+  depends_on = [tfe_organization.tfe_org]
+
+  for_each = try(var.tfe_sentinel_policies, {})
+
+  name         = each.value.name
+  description  = try(each.value.description, null)
+  organization = try(each.value.organization.name, tfe_organization.tfe_org[each.value.organization.key].name)
+  policy       = each.value.policy
+  enforce_mode = each.value.enforce_mode
+}
+
+resource "tfe_policy_set_parameter" "tfe_policy_set_parameters" {
+  for_each = try(var.tfe_policy_set_parameters, {})
+
+  key           = each.value.key
+  value         = each.value.value
+  policy_set_id = try(each.value.policy_set.id, tfe_policy_set.tfe_policy_sets[each.value.policy_set.key].id)
+}
+
+resource "tfe_ssh_key" "tfe_ssh_keys" {
+  for_each = try(var.tfe_ssh_keys, {})
+
+  name         = each.value.name
+  organization = try(each.value.organization.name, tfe_organization.tfe_org[each.value.organization.key].name)
+  key          = try(each.value.ssh_private_key, null) #TODO: add support for keyvault
+}
+
+resource "tfe_team" "tfe_teams" {
+  for_each = try(var.tfe_teams, {})
+
+  name         = each.value.name
+  organization = try(each.value.organization.name, tfe_organization.tfe_org[each.value.organization.key].name)
+
+  dynamic "organization_access" {
+    for_each = try(each.value.organization_access, null) != null ? [1] : []
+
+    content {
+      manage_policies         = try(organization_access.value.manage_policies, null)
+      manage_policy_overrides = try(organization_access.value.manage_policy_overrides, null)
+      manage_workspaces       = try(organization_access.value.manage_workspaces, null)
+      manage_vcs_settings     = try(organization_access.value.manage_vcs_settings, null)
+      manage_providers        = try(organization_access.value.manage_providers, null)
+      manage_modules          = try(organization_access.value.manage_modules, null)
+      manage_run_tasks        = try(organization_access.value.manage_run_tasks, null)
+    }
+  }
+
+}
+
+resource "tfe_team_access" "tfe_team_accesses" {
+  for_each = try(var.tfe_team_accesses, {})
+
+  access       = try(each.value.access, null)
+  team_id      = try(each.value.team.id, tfe_team.tfe_teams[each.value.team.key].id)
+  workspace_id = try(each.value.workspace.id, tfe_workspace.tfe_wks[each.value.workspace.key].id)
+
+  dynamic "permissions" {
+    for_each = try(each.value.permissions, null) != null ? [1] : []
+
+    content {
+      runs              = each.value.permissions.runs
+      variables         = each.value.permissions.variables
+      state_versions    = each.value.permissions.state_versions
+      sentinel_mocks    = each.value.permissions.sentinel_mocks
+      workspace_locking = each.value.permissions.workspace_locking
+      run_tasks         = each.value.permissions.run_tasks
+    }
+  }
+}
+
+resource "tfe_team_organization_member" "tfe_team_organization_members" {
+  for_each = try(var.tfe_team_organization_members, {})
+
+  team_id      = try(each.value.team.id, tfe_team.tfe_teams[each.value.team.key].id)
+  organization_membership_id = try(each.value.organization_membership.id, tfe_organization_membership.tfe_org_memberships[each.value.organization_membership.key].id)
+  
+}
+
+resource "tfe_team_members" "tfe_team_members" {
+  for_each = try(var.tfe_team_members, {})
+
+  team_id      = try(each.value.team.id, tfe_team.tfe_teams[each.value.team.key].id)
+  usernames    = each.value.usernames
+}
+
+resource "tfe_team_token" "tfe_team_tokens" {
+  for_each     = try(var.tfe_team_tokens, {})
+  
+  team_id      = try(each.value.team.id, tfe_team.tfe_teams[each.value.team.key].id)
 }

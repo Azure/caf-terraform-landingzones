@@ -76,6 +76,10 @@ variable "tfe_variables" {
   default = {}
 }
 
+variable "tfe_variable_sets" {
+  default = {}
+}
+
 variable "tfe_servers" {
   default = {}
 }
@@ -85,5 +89,63 @@ variable "tfe_agent_pools" {
 }
 
 variable "tfe_agent_pool_tokens" {
+  default = {}
+}
+
+variable "tfe_workspace_variable_sets" {
+  default = {}
+}
+
+variable "tfe_notifications" {
+  default = {}
+}
+
+variable "tfe_oauth_clients" {
+  default = {}
+}
+
+variable "tfe_organization_memberships" {
+  default = {}
+}
+
+variable "tfe_organization_module_sharings" {
+  default = {}
+}
+
+variable "tfe_organization_tokens" {
+  default = {}
+}
+
+variable "tfe_policy_sets" {
+  default = {}
+}
+
+variable "tfe_sentinel_policies" {
+  default = {}
+}
+
+variable "tfe_policy_set_parameters" {
+  default = {}
+}
+
+variable "tfe_ssh_keys" {
+  default = {}
+}
+
+variable "tfe_teams" {
+  default = {}
+}
+
+variable "tfe_team_accesses" {
+  default = {}
+}
+
+variable "tfe_team_organization_members" {
+  default = {}
+}
+variable "tfe_team_members" {
+  default = {}
+}
+variable "tfe_team_tokens" {
   default = {}
 }
