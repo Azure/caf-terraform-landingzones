@@ -86,6 +86,14 @@ resource "random_string" "prefix" {
   number  = false
 }
 
+resource "random_string" "suffix" {
+  count   = var.suffix == null ? 1 : 0
+  length  = 4
+  special = false
+  upper   = false
+  number  = false
+}
+
 locals {
   landingzone_tag = {
     "landingzone" = var.landingzone.key
@@ -101,6 +109,9 @@ locals {
     prefix             = var.prefix
     prefixes           = var.prefix == "" ? null : [try(random_string.prefix.0.result, var.prefix)]
     prefix_with_hyphen = var.prefix == "" ? null : format("%s", try(random_string.prefix.0.result, var.prefix))
+    suffix             = var.suffix
+    suffixes           = var.suffix == "" ? null : [try(random_string.suffix.0.result, var.suffix)]
+    suffix_with_hyphen = var.suffix == "" ? null : format("%s", try(random_string.suffix.0.result, var.suffix))
     random_length      = var.random_length
     regions            = var.regions
     tags               = var.tags
