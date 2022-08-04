@@ -83,7 +83,7 @@ resource "random_string" "prefix" {
   length  = 4
   special = false
   upper   = false
-  number  = false
+  numeric = false
 }
 
 resource "random_string" "suffix" {
@@ -91,7 +91,7 @@ resource "random_string" "suffix" {
   length  = 4
   special = false
   upper   = false
-  number  = false
+  numeric = false
 }
 
 locals {
