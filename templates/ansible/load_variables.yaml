@@ -97,7 +97,7 @@
     caf_level: level1
     exported_variable_name: platform_subscriptions
   when: 
-    - subscription_deployment_mode == 'multiple_subscriptions'
+    - subscription_deployment_mode == 'multi_subscriptions'
     - deployment_mode == 'platform'
     - rover_bootstrap == false or rover_bootstrap == 'false'
 
