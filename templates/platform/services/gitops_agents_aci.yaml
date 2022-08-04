@@ -54,13 +54,13 @@ gitops_agents:
                 ssh:
                   port: 22
                   protocol: TCP
+              secure_variables_from_command:
+                AGENT_TOKEN: "gh api --method POST -H 'Accept: application/vnd.github.v3+json' /repos/{{ GITOPS_SERVER_URL | regex_replace('^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/?\n]+)/', '') }}/actions/runners/registration-token | jq -r ' {value: .token}'"
               environment_variables:
                 AGENT_NAME: rover_level0
                 LABELS: platform,master
                 ROVER_RUNNER: true
-                URL: {{GITOPS_SERVER_URL}}
-              secure_environment_variables:
-                AGENT_TOKEN: {{AGENT_TOKEN}}
+                URL: {{GITOPS_SERVER_URL }}
 {% set MAX_RUNNERS = RUNNER_NUMBERS | int %}
 {% for i in range(MAX_RUNNERS - 1) %}
         agent{{i}}:
@@ -89,13 +89,14 @@ gitops_agents:
                 ssh:
                   port: 22
                   protocol: TCP
+
+              secure_variables_from_command:
+                AGENT_TOKEN: "gh api --method POST -H 'Accept: application/vnd.github.v3+json' /repos/{{ GITOPS_SERVER_URL | regex_replace('^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/?\n]+)/', '') }}/actions/runners/registration-token | jq -r ' {value: .token}'"
               environment_variables:
                 AGENT_NAME: agent{{i}}
                 LABELS: platform
                 ROVER_RUNNER: true
                 URL: {{GITOPS_SERVER_URL}}
-              secure_environment_variables:
-                AGENT_TOKEN: {{AGENT_TOKEN}}
 {% endfor %}
 
       network_profiles:
