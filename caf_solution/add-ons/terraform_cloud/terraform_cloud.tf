@@ -91,15 +91,35 @@ resource "tfe_agent_pool" "tfe_agent_pools" {
   organization = try(each.value.organization_name, tfe_organization.tfe_org[each.value.organization_key].name)
 }
 
-resource "tfe_agent_token" "tfe_agent_pool_tokens" {
+resource "tfe_agent_token" "tfe_agent_tokens" {
   depends_on = [tfe_agent_pool.tfe_agent_pools]
-  for_each   = try(var.tfe_agent_pool_tokens, {})
+  for_each   = try(var.tfe_agent_tokens, {})
 
-  agent_pool_id = try(each.value.agent_pool_id, tfe_agent_pool.tfe_agent_pools[each.value.agent_pool_key].id)
+  agent_pool_id = try(each.value.agent_pool.id, tfe_agent_pool.tfe_agent_pools[each.value.agent_pool.key].id)
   description   = each.value.description
 }
 
-#TODO: keyvault to store the tfe agent pools, data source?
+# Store the generated password into kv
+resource "azurerm_key_vault_secret" "tfe_agent_tokens" {
+  for_each   = try(var.tfe_agent_tokens, {})
+  # for_each = {
+  #   for key, value in try(var.tfe_agent_tokens, {}) : key => value
+  #   if try(value.keyvault, null) != null
+  # }
+
+  name  = can(each.value.keyvault.secret_name) ? each.value.keyvault.secret_name : replace(format("%s-%s-agent-token", tfe_agent_pool.tfe_agent_pools[each.value.agent_pool.key].name, each.key), "_", "-")
+  value = tfe_agent_token.tfe_agent_tokens[each.key].token
+  key_vault_id = coalesce(
+    try(local.combined.keyvaults[each.value.keyvault.lz_key][each.value.keyvault.key].id, null),
+    try(local.combined.keyvaults[var.landingzone.key][each.value.keyvault.key].id, null),
+  )
+
+  # lifecycle { # do not enable as the generated token should always replace any manual change
+  #   ignore_changes = [
+  #     value
+  #   ]
+  # }
+}
 
 
 resource "tfe_variable_set" "tfe_varsets" {
@@ -133,6 +153,102 @@ resource "tfe_notification_configuration" "tfe_notifications" {
 
 }
 
+# kv secret for oauth_clients
+data "external" "oauth_client_oauth_token" {
+  depends_on = [
+    module.caf
+  ]
+  for_each = {
+    for key, value in try(var.tfe_oauth_clients, {}) : key => value
+    if try(value.keyvault.kv_secret_oauth_token, null) != null
+  }
+
+  program = [
+    "bash", "-c",
+    format(
+      "az keyvault secret show --name '%s' --vault-name '%s' --query '{value: value }' -o json",
+      each.value.keyvault.kv_secret_oauth_token,
+      try(local.combined.keyvaults[try(each.value.keyvault.lz_key, var.landingzone.key)][each.value.keyvault.key].name, null)
+    )
+  ]
+}
+
+data "external" "oauth_client_private_key" {
+  depends_on = [
+    module.caf
+  ]
+  for_each = {
+    for key, value in try(var.tfe_oauth_clients, {}) : key => value
+    if try(value.keyvault.kv_secret_private_key, null) != null
+  }
+
+  program = [
+    "bash", "-c",
+    format(
+      "az keyvault secret show --name '%s' --vault-name '%s' --query '{value: value }' -o json",
+      each.value.keyvault.kv_secret_private_key,
+      try(local.combined.keyvaults[try(each.value.keyvault.lz_key, var.landingzone.key)][each.value.keyvault.key].name, null)
+    )
+  ]
+}
+
+data "external" "oauth_client_client_key" {
+  depends_on = [
+    module.caf
+  ]
+  for_each = {
+    for key, value in try(var.tfe_oauth_clients, {}) : key => value
+    if try(value.keyvault.kv_secret_client_key, null) != null
+  }
+
+  program = [
+    "bash", "-c",
+    format(
+      "az keyvault secret show --name '%s' --vault-name '%s' --query '{value: value }' -o json",
+      each.value.keyvault.kv_secret_client_key,
+      try(local.combined.keyvaults[try(each.value.keyvault.lz_key, var.landingzone.key)][each.value.keyvault.key].name, null)
+    )
+  ]
+}
+
+data "external" "oauth_client_client_secret" {
+  depends_on = [
+    module.caf
+  ]
+  for_each = {
+    for key, value in try(var.tfe_oauth_clients, {}) : key => value
+    if try(value.keyvault.kv_secret_client_secret, null) != null
+  }
+
+  program = [
+    "bash", "-c",
+    format(
+      "az keyvault secret show --name '%s' --vault-name '%s' --query '{value: value }' -o json",
+      each.value.keyvault.kv_secret_client_secret,
+      try(local.combined.keyvaults[try(each.value.keyvault.lz_key, var.landingzone.key)][each.value.keyvault.key].name, null)
+    )
+  ]
+}
+
+data "external" "oauth_client_rsa_public_key" {
+  depends_on = [
+    module.caf
+  ]
+  for_each = {
+    for key, value in try(var.tfe_oauth_clients, {}) : key => value
+    if try(value.keyvault.kv_secret_rsa_public_key, null) != null
+  }
+
+  program = [
+    "bash", "-c",
+    format(
+      "az keyvault secret show --name '%s' --vault-name '%s' --query '{value: value }' -o json",
+      each.value.keyvault.kv_secret_rsa_public_key,
+      try(local.combined.keyvaults[try(each.value.keyvault.lz_key, var.landingzone.key)][each.value.keyvault.key].name, null)
+    )
+  ]
+}
+
 resource "tfe_oauth_client" "tfe_oauth_clients" {
   for_each = try(var.tfe_oauth_clients, {})
 
@@ -140,11 +256,11 @@ resource "tfe_oauth_client" "tfe_oauth_clients" {
   organization     = try(each.value.organization.name, tfe_organization.tfe_org[each.value.organization.key].name)
   api_url          = each.value.api_url
   http_url         = each.value.http_url
-  oauth_token      = try(each.value.oauth_token, null)
-  private_key      = try(each.value.private_key, null)
-  key              = try(each.value.key, null)
-  secret           = try(each.value.secret, null)
-  rsa_public_key   = try(each.value.rsa_public_key, null)
+  oauth_token      = try(each.value.oauth_token, data.external.oauth_client_oauth_token[each.key].result.value, null)
+  private_key      = try(each.value.private_key, data.external.oauth_client_private_key[each.key].result.value, null)
+  key              = try(each.value.client_key, data.external.oauth_client_client_key[each.key].result.value, null)
+  secret           = try(each.value.client_secret, data.external.oauth_client_client_secret[each.key].result.value, null)
+  rsa_public_key   = try(each.value.rsa_public_key, data.external.oauth_client_rsa_public_key[each.key].result.value, null)
   service_provider = each.value.service_provider
 }
 
@@ -168,9 +284,32 @@ resource "tfe_organization_token" "tfe_org_tokens" {
   for_each = try(var.tfe_organization_tokens, {})
 
   organization = try(each.value.organization.name, tfe_organization.tfe_org[each.value.organization.key].name)
+  force_regenerate = try(each.value.force_regenerate, null)
 }
 
-# TODO: output and store token in azure keyvault
+# Store the generated password into kv
+resource "azurerm_key_vault_secret" "tfe_org_tokens" {
+  for_each = try(var.tfe_organization_tokens, {})
+  # for_each = {
+  #   for key, value in try(var.tfe_organization_tokens, {}) : key => value
+  #   if try(value.keyvault, null) != null
+  # }
+
+  name  = can(each.value.keyvault.secret_name) ? each.value.keyvault.secret_name : replace(format("%s-org-token", tfe_organization.tfe_org[each.value.organization.key].name), "_","-")
+  value = tfe_organization_token.tfe_org_tokens[each.key].token
+  key_vault_id = coalesce(
+    try(local.combined.keyvaults[each.value.keyvault.lz_key][each.value.keyvault.key].id, null),
+    try(local.combined.keyvaults[var.landingzone.key][each.value.keyvault.key].id, null),
+  )
+
+  # lifecycle { # do not enable as token resource can set force_regenerate
+  #   ignore_changes = [
+  #     value
+  #   ]
+  # }
+}
+
+
 
 locals {
   policy_set_sentinel_policy_ids = flatten([
@@ -233,12 +372,29 @@ resource "tfe_policy_set_parameter" "tfe_policy_set_parameters" {
   policy_set_id = try(each.value.policy_set.id, tfe_policy_set.tfe_policy_sets[each.value.policy_set.key].id)
 }
 
+# GET ssh private key from kv
+data "external" "ssh_private_key" {
+  for_each = {
+    for key, value in try(var.tfe_ssh_keys, {}) : key => value
+    if try(value.keyvault, null) != null
+  }
+
+  program = [
+    "bash", "-c",
+    format(
+      "az keyvault secret show --name '%s' --vault-name '%s' --query '{value: value }' -o json",
+      each.value.keyvault.secret_key,
+      try(local.combined.keyvaults[try(each.value.keyvault.lz_key, var.landingzone.key)][each.value.keyvault.key].name, null)
+    )
+  ]
+}
+
 resource "tfe_ssh_key" "tfe_ssh_keys" {
   for_each = try(var.tfe_ssh_keys, {})
 
   name         = each.value.name
   organization = try(each.value.organization.name, tfe_organization.tfe_org[each.value.organization.key].name)
-  key          = try(each.value.ssh_private_key, null) #TODO: add support for keyvault
+  key          = try(each.value.ssh_private_key, data.external.ssh_private_key[each.key].result.value)
 }
 
 resource "tfe_team" "tfe_teams" {
@@ -303,4 +459,27 @@ resource "tfe_team_token" "tfe_team_tokens" {
   for_each     = try(var.tfe_team_tokens, {})
   
   team_id      = try(each.value.team.id, tfe_team.tfe_teams[each.value.team.key].id)
+  force_regenerate = try(each.value.force_regenerate, null)
+}
+
+# Store the generated password into kv
+resource "azurerm_key_vault_secret" "tfe_team_tokens" {
+  for_each     = try(var.tfe_team_tokens, {})
+  # for_each = {
+  #   for key, value in try(var.tfe_team_tokens, {}) : key => value
+  #   if try(value.keyvault, null) != null
+  # }
+
+  name  = can(each.value.keyvault.secret_name) ? each.value.keyvault.secret_name : replace(format("%s-team-token", tfe_team.tfe_teams[each.value.team.key].name), "_", "-")
+  value = tfe_team_token.tfe_team_tokens[each.key].token
+  key_vault_id = coalesce(
+    try(local.combined.keyvaults[each.value.keyvault.lz_key][each.value.keyvault.key].id, null),
+    try(local.combined.keyvaults[var.landingzone.key][each.value.keyvault.key].id, null),
+  )
+
+  # lifecycle { # do not enable as token resource can set force_regenerate
+  #   ignore_changes = [
+  #     value
+  #   ]
+  # }
 }

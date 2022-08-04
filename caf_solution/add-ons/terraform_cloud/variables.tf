@@ -65,9 +65,6 @@ variable "tags" {
 variable "managed_identities" {
   default = {}
 }
-variable "role_mapping" {
-  default = {}
-}
 variable "keyvaults" {
   default = {}
 }
@@ -83,16 +80,10 @@ variable "keyvault_access_policies" {
 variable "diagnostic_storage_accounts" {
   default = {}
 }
-variable "role_mapping" {
-  default = {}
-}
 variable "secrets_from_keys" {
   default = {}
 }
 variable "custom_role_definitions" {
-  default = {}
-}
-variable "azuread_apps" {
   default = {}
 }
 variable "resource_groups" {
@@ -100,6 +91,9 @@ variable "resource_groups" {
 }
 
 # Azure AD
+variable "azuread" {
+  default = {}
+}
 variable "azuread_api_permissions" {
   default = {}
 }
@@ -133,6 +127,12 @@ variable "azuread_service_principals" {
 variable "azuread_users" {
   default = {}
 }
+variable "role_mapping" {
+  default = {}
+}
+variable "azruead_apps" {
+  default = {}
+}
 
 variable "tfe_organizations" {
   default = {}
@@ -152,7 +152,7 @@ variable "tfe_servers" {
 variable "tfe_agent_pools" {
   default = {}
 }
-variable "tfe_agent_pool_tokens" {
+variable "tfe_agent_tokens" {
   default = {}
 }
 variable "tfe_workspace_variable_sets" {
