@@ -99,7 +99,7 @@ resource "tfe_agent_token" "tfe_agent_pool_tokens" {
   description   = each.value.description
 }
 
-# keyvault to store the tfe agent pools, data source?
+#TODO: keyvault to store the tfe agent pools, data source?
 
 
 resource "tfe_variable_set" "tfe_varsets" {
