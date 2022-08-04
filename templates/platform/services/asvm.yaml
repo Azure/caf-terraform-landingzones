@@ -337,8 +337,8 @@ asvm:
                     - {{launchpad_azuread_groups.level0.id}} # level0
                 azuread_groups:
                   keys:
-                    - caf_ac_landingzone_maintainers_non_prod
-                    - caf_ac_landingzone_maintainers_prod
+                    - caf_landingzone_maintainers_non_prod
+                    - caf_landingzone_maintainers_prod
 {% else %}
                 logged_in:
                   keys:
@@ -354,8 +354,8 @@ asvm:
                     - {{launchpad_azuread_groups.level0.id}} # level0
                 azuread_groups:
                   keys:
-                    - caf_ac_landingzone_maintainers_non_prod
-                    - caf_ac_landingzone_maintainers_prod
+                    - caf_landingzone_maintainers_non_prod
+                    - caf_landingzone_maintainers_prod
 {% else %}
                 logged_in:
                   keys:
