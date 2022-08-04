@@ -37,9 +37,9 @@ azurerm_firewall_policies_{{env}}:
           resource_group:
             key: firewall_policies
           threat_intelligence_mode: "Alert"
-{% if private_dns_firewalls is defined and private_dns_firewalls[env  |  default('prod')] is defined %}
           dns:
             proxy_enabled: true
+{% if private_dns_firewalls is defined and private_dns_firewalls[env  |  default('prod')] is defined %}
             servers:
 {% set resource_index = 'fw_' + env + '_dns' |  default('fw_prod_dns') %}
               - {{ private_dns_firewalls[env | default('prod')][resource_index].ip_configuration[0].private_ip_address }}

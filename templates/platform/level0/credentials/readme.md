@@ -7,7 +7,7 @@
 rover login -t {{ resources.azure_landing_zones.identity.tenant_name }}
 
 rover \
-{% if resources.azure_landing_zones.identity.azuread_identity_mode != "logged_in_user" and keyvaults is defined %}
+{% if resources.azure_landing_zones.identity.azuread_identity_mode != "logged_in_user" and keyvaults is defined and keyvaults[tfstate_object.identity_aad_key] is defined %}
   --impersonate-sp-from-keyvault-url {{ keyvaults[tfstate_object.identity_aad_key].vault_uri }} \
 {% endif %}
   -lz {{ landingzones_folder }}/caf_solution \
@@ -30,7 +30,7 @@ If the plan is not successfull you need to come back to the yaml ignite.yaml, fi
 # On success plan, execute
 
 rover \
-{% if resources.azure_landing_zones.identity.azuread_identity_mode != "logged_in_user" and keyvaults is defined %}
+{% if resources.azure_landing_zones.identity.azuread_identity_mode != "logged_in_user" and keyvaults is defined and keyvaults[tfstate_object.identity_aad_key] is defined %}
   --impersonate-sp-from-keyvault-url {{ keyvaults[tfstate_object.identity_aad_key].vault_uri }} \
 {% endif %}
   -lz {{ landingzones_folder }}/caf_solution \

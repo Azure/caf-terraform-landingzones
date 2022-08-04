@@ -129,6 +129,7 @@ jobs:
             
             git add --all .
             git commit -m "Update configuration files"
+            git pull
             git push
           fi
 

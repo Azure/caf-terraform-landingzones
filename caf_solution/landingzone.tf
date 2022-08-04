@@ -1,5 +1,5 @@
 module "solution" {
-  source = "../aztfmod"
+  source = "../../aztfmod"
 
   providers = {
     azurerm.vhub = azurerm.vhub
