@@ -124,14 +124,14 @@ jobs:
         if: inputs.terraform_action == 'plan_apply'
         shell: bash
         run: |
-          echo "Retreiving keyvault for credentials"
-          # Get the keyvault with the credentials
+          echo "Retrieving credentials in Key Vault"
+          # Get the key vault with the credentials
           cred_vault_name=$(az keyvault list --query "[?(tags.caf_identity_aad_key=='${{inputs.caf_identity_aad_key}}' && tags.caf_environment=='${{inputs.environment}}')].{name:name}[0]" -o tsv)
           if [ -z "${cred_vault_name}" ]; then
-            echo "Cannot retreive the credentials. Make sure the RBAC are set properly."
-            echo "Bootstraping the environment."
+            echo "Cannot retrieve the credentials. Make sure the RBAC are set properly."
+            echo "Bootstrapping the environment."
           else
-            impresonate=("--impersonate-sp-from-keyvault-url https://${cred_vault_name}.vault.azure.net/ ")
+            impersonate=("--impersonate-sp-from-keyvault-url https://${cred_vault_name}.vault.azure.net/ ")
           fi
 
           set +e
@@ -156,8 +156,8 @@ jobs:
             plan_path=("-p ${{inputs.plan_path}} ")
           fi
 
-          command_plan="${rover[@]}${impresonate[@]}${landingzone_code_path[@]}${landingzone_configuration_path[@]}${tfstate_subscription_id[@]}${target_subscription[@]}${tfstate[@]}${environment[@]}${level[@]}${launchpad[@]}${plan_path[@]}${output[@]}${action_plan[@]}${{inputs.terraform_action_plan}}"
-          command_apply="${rover[@]}${impresonate[@]}${landingzone_code_path[@]}${landingzone_configuration_path[@]}${tfstate_subscription_id[@]}${target_subscription[@]}${tfstate[@]}${environment[@]}${level[@]}${launchpad[@]}"
+          command_plan="${rover[@]}${impersonate[@]}${landingzone_code_path[@]}${landingzone_configuration_path[@]}${tfstate_subscription_id[@]}${target_subscription[@]}${tfstate[@]}${environment[@]}${level[@]}${launchpad[@]}${plan_path[@]}${output[@]}${action_plan[@]}${{inputs.terraform_action_plan}}"
+          command_apply="${rover[@]}${impersonate[@]}${landingzone_code_path[@]}${landingzone_configuration_path[@]}${tfstate_subscription_id[@]}${target_subscription[@]}${tfstate[@]}${environment[@]}${level[@]}${launchpad[@]}"
           
           echo "::set-output name=rover-command-plan::$(echo ${command_plan})"
           echo "::set-output name=rover-command-apply::$(echo ${command_apply})"
