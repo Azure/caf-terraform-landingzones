@@ -101,6 +101,9 @@ jobs:
     
     steps:
       
+      - name: Github event
+        run: cat $GITHUB_EVENT_PATH | jq
+      
       - name: 'Azure Login'
         uses: azure/login@v1
         with:
@@ -112,7 +115,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          ref: ${{ github.event.pull_request.head.ref }}
+          ref: ${{ github.event.workflow_run.head_sha }}
 
       - name: checkout base terraform landingzone code
         shell: bash

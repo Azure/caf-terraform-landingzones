@@ -6,14 +6,10 @@
 name: end-to-end
 
 on:
-  pull_request:
+  workflow_run:
+    workflows: [end-to-end-generate]
     types:
-      - closed
-    branches:
-      - end2end
-  push:
-    branches:
-      - end2end
+      - completed
 
 permissions:
   id-token: write

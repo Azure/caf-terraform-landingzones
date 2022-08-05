@@ -71,11 +71,14 @@ jobs:
     
     steps:
       
+      - name: Github event
+        run: cat $GITHUB_EVENT_PATH | jq
+      
       - name: Checkout Configuration
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          ref: ${{ github.event.pull_request.head.ref }}
+          ref: ${{ github.event.workflow_run.head_sha }}
           token: ${{ secrets.BOOTSTRAP_TOKEN || github.token }}
 
       - name: 'Azure Login'

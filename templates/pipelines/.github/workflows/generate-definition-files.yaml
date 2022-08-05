@@ -59,13 +59,19 @@ jobs:
     name: Generate configuration files
     runs-on: [self-hosted, platform]
     
+    outputs:
+      action: ${{ steps.definition.outputs.config_to_process }}
+    
     steps:
+
+      - name: Github event
+        run: cat $GITHUB_EVENT_PATH | jq
       
       - name: Checkout Configuration
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          ref: ${{ github.event.pull_request.head.ref }}
+          ref: ${{ github.event.workflow_run.head_sha }}
           token: ${{ secrets.BOOTSTRAP_TOKEN || github.token }}
 
       - name: 'Azure Login'
@@ -122,6 +128,7 @@ jobs:
           if [ -z "$(git status --porcelain)" ];
           then
               echo "Nothing to commit"
+              echo "::set-output name=config_to_process::'no'"
           else
             git config --global --add safe.directory $(pwd)
             git config user.name "CAF Rover Actions Bot"
@@ -131,6 +138,7 @@ jobs:
             git commit -m "Update configuration files"
             git pull
             git push
+            echo "::set-output name=config_to_process::'yes'"
           fi
 
 {% endraw %}

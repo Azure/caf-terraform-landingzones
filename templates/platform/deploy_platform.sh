@@ -107,6 +107,12 @@ function check_environment_variable() {
 function pr {
   cd /tf/caf
 
+  if [ "${gitops_agent}" == "github" ]; then
+    git add ./.github/**
+    git commit -m "Adding Github workflows"
+    git push
+  fi
+
   if [ "$(gh pr status --json id | jq .currentBranch.id)" = "null" ]; then
     git checkout -b bootstrap
     git push --set-upstream origin bootstrap
@@ -149,6 +155,9 @@ while [ $# -gt 0 ]; do
     $2
     exit
   else
+    # make all the parameters available in this script
+    IFS='=' read -r left right <<< $1
+    declare $left="$right"
     params+="-e $1 "
   fi
   shift
@@ -157,6 +166,8 @@ done
 
 echo ${params} | xargs
 echo "sub_management: ${sub_management}"
+echo "gitops_agent: ${gitops_agent}"
+echo "subscription_deployment_mode: ${subscription_deployment_mode}"
 
 bootstrap
 launchpad
