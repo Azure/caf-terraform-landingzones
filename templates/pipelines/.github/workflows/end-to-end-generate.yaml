@@ -6,6 +6,10 @@
 name: end-to-end-generate
 
 on:
+  pull_request:
+    branches:
+      - bootstrap
+      - end2end
   workflow_run:
     workflows: [end-to-end]
     types:
@@ -74,7 +78,7 @@ jobs:
       environment: ${{ needs.environment.outputs.environment }}
 
   configuration_updates:
-    if: always() and needs.generate_definition_files.outputs.action == 'yes'
+    if: always()
     uses: ./.github/workflows/generate-configuration-files.yaml
     name: Generate configuration tfvars files
     permissions:
@@ -95,9 +99,9 @@ jobs:
       terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
       terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
       environment: ${{ needs.environment.outputs.environment }}
-      generate_pr: true
-      branch_name: bootstrap
-      target_branch: end2end
-      commit_description: Generation of configuration files for level1 and level2.
+      # generate_pr: true
+      # branch_name: bootstrap
+      # target_branch: end2end
+      # commit_description: Generation of configuration files for level1 and level2.
       
 {% endraw %}

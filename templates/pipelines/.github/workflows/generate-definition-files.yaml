@@ -82,6 +82,7 @@ jobs:
           subscription-id: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
 
       - name: Create defnition files
+        id: definition
         run: |
           rm -rf ./landingzones
           git clone -b ${{ inputs.terraform_code_ref }} --single-branch ${{ inputs.terraform_code_repository }} ./landingzones

@@ -86,7 +86,7 @@ private_dns_firewalls_{{env}}:
 
       virtual_hub_connections:
         vnet_to_hub:
-          name: vnet-connectivity-{{env}}-fw-plinks-TO-vhub-{{env}}
+          name: vnet-connectivity-{{env}}-fw-plinks
           virtual_hub:
             lz_key: connectivity_virtual_hubs_{{env}}
             key: {{env}}

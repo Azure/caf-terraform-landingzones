@@ -932,7 +932,7 @@ launchpad:
 {% if virtual_hubs_resources is defined %}
       virtual_hub_connections:
         vnet_to_hub:
-          name: vnet-launchpad-prod-TO-vhub-prod
+          name: vnet-launchpad-prod
           virtual_hub:
             id: {{ virtual_hubs_resources[env | default('prod')].prod.id }}
           vnet:

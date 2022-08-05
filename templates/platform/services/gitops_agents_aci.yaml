@@ -28,7 +28,7 @@ gitops_agents:
     launchpad:
 
       container_groups:
-        level0:
+        master:
           name: rover-platform
           region: region1
           resource_group:
@@ -45,8 +45,8 @@ gitops_agents:
               - {{ secure_firewalls_resources[env | default('prod')].fw_secure_prod.virtual_hub[0].private_ip_address }}
 {% endif %}
           containers:
-            rover_level0:
-              name: rover-level0
+            rover_master:
+              name: rover-master
               image: {{topology.gitops_default_rover_image}}
               cpu: 4
               memory: 2
@@ -55,14 +55,14 @@ gitops_agents:
                   port: 22
                   protocol: TCP
               secure_variables_from_command:
-                AGENT_TOKEN: "gh api --method POST -H 'Accept: application/vnd.github.v3+json' /repos/{{ GITOPS_SERVER_URL | regex_replace('^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/?\n]+)/', '') }}/actions/runners/registration-token | jq -r ' {value: .token}'"
+                AGENT_TOKEN: "{{AGENT_TOKEN}}"
               environment_variables:
                 AGENT_NAME: rover_level0
-                LABELS: platform,master
+                LABELS: master
                 ROVER_RUNNER: true
                 URL: {{GITOPS_SERVER_URL }}
 {% set MAX_RUNNERS = RUNNER_NUMBERS | int %}
-{% for i in range(MAX_RUNNERS - 1) %}
+{% for i in range(MAX_RUNNERS) %}
         agent{{i}}:
           name: rover-platform-agent{{i}}
           region: region1
