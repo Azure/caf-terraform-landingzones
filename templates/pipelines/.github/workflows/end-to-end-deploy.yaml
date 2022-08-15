@@ -421,9 +421,9 @@ jobs:
       terraform_action: plan_apply
 
   bootstrap_gitops_agents:
-    if: steps.asvm.outcome == 'failure'
+    if: steps.asvm.conclusion == 'failure' && steps.connectivity_private_dns_prod.conclusion == 'success'
     uses: ./.github/workflows/rover_master.yaml
-    needs: [environment, virtual_hubs_route_tables_prod, asvm]
+    needs: [environment, virtual_hubs_route_tables_prod, connectivity_private_dns_prod, asvm]
     concurrency: 
       group: level2-bootstrap_gitops_agents
     secrets:

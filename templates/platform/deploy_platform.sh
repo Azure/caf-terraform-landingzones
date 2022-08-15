@@ -109,6 +109,7 @@ function pr {
 
   if [ "${gitops_agent}" == "github" ]; then
     git add ./.github/**
+    git add ./getting-started/**
     git commit -m "Adding Github workflows"
     git push
   fi
@@ -135,8 +136,6 @@ EOF
       --head setup
   else
     git checkout bootstrap
-    git add .
-    git commit -am "Initial definition files."
     git add .
     git commit -am "Initial definition files."
     git push origin
