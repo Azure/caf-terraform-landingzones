@@ -9,6 +9,8 @@ cd /tf/caf
 # other options are gitops_agents credentials pr
 
 function bootstrap {
+  pwd
+  caf_landingzone_branch=$(cat .gitmodules | grep  "branch = " | awk '{gsub("\t|branch = ","",$0); print;}')
 
   ansible-playbook /tf/caf/landingzones/templates/ansible/walk-through-bootstrap.yaml \
     -e public_templates_folder=/tf/caf/landingzones/templates \
@@ -24,7 +26,7 @@ function bootstrap {
     -e keyvault_purge_protection_enabled=false \
     -e private_endpoints=true \
     -e rover_bootstrap=true \
-    -e caf_landingzone_branch="$(cd /tf/caf/landingzones && git rev-parse --abbrev-ref HEAD)" \
+    -e caf_landingzone_branch=${caf_landingzone_branch} \
     --extra-vars "@/tf/caf/landingzones/templates/platform/ignite.yaml" \
     -e $(echo ${params} | xargs)
 
@@ -113,6 +115,9 @@ function pr {
     git commit -m "Adding Github workflows"
     git push
   fi
+
+  git config user.name "CAF Rover Actions Bot"
+  git config user.email "caf-rover-actions@github.com"
 
   if [ "$(gh pr status --json id | jq .currentBranch.id)" = "null" ]; then
     git checkout -b bootstrap
