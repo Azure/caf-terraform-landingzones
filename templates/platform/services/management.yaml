@@ -30,6 +30,8 @@ management:
           name: management
         alerts:
           name: alerts
+        vnet:
+          name: networking
 
       storage_accounts:
         nsgflogs:
@@ -49,11 +51,25 @@ management:
 {% for ip in PUBLIC_IP_WHITE_LIST %}
               - {{ ip }}
 {% endfor %}
-            subnets:
-              level0:
-                lz_key: launchpad
-                vnet_key: vnet_region1
-                subnet_key: level0
+{% if private_endpoints is defined %}
+          private_endpoints:
+            nsgflogs:
+              name: stg-nsgflogs
+              resource_group_key: vnet
+              vnet_key: vnet_region1
+              subnet_key: private_endpoints
+              private_service_connection:
+                name: stg-nsgflogs
+                is_manual_connection: false
+                subresource_names:
+                  - blob
+{% if private_endpoints is defined and private_dns is defined and private_dns[env|default('prod')] != '' %}
+              private_dns:
+                zone_group_name: default
+                ids:
+                  - {{ private_dns[env|default('prod')]["privatelink.blob.core.windows.net"].id }}
+{% endif %}
+{% endif %}
 
       diagnostic_log_analytics:
         # if you change this key you also need to change it in the alz deployment
@@ -118,9 +134,14 @@ management:
             use_common_alert_schema: false
 
       automation_accounts:
-        account1:
-          name: automationAccount1
+        platform:
+          name: platform
           resource_group_key: management
+      
+      automation_log_analytics_links:
+        workspace_key: region1
+        automation_account_key: platform
+        resource_group_key: management
 
       recovery_vaults:
         asr:
@@ -129,3 +150,66 @@ management:
           soft_delete_enabled: true
           backup_policies:
             {{topology.backup_policies | to_nice_yaml(width=80, indent=2) | indent(12)}}
+{% if private_endpoints is defined %}
+          private_endpoints:
+            asr:
+              name: management
+              resource_group_key: vnet
+              vnet_key: vnet_region1
+              subnet_key: private_endpoints
+              private_service_connection:
+                name: asr-management
+                is_manual_connection: false
+                subresource_names:
+                  - vault
+{% if private_endpoints is defined and private_dns is defined and private_dns[env|default('prod')] != '' %}
+              private_dns:
+                zone_group_name: default
+                ids:
+                  - {{ private_dns[env|default('prod')]["privatelink.{{caf_regions[default_region_key]}}.siterecovery.windowsazure.com"].id }}
+{% endif %}
+{% endif %}
+
+
+      virtual_networks:
+        vnet_region1:
+          resource_group_key: vnet
+          name: management
+          address_space: ["10.101.64.0/21"]
+{% if secure_firewalls_resources is defined and secure_firewalls_resources[env | default('prod')] != "" %}
+          dns_servers:
+            - {{ secure_firewalls_resources[env | default('prod')].fw_secure_prod.virtual_hub[0].private_ip_address }}
+{% endif %}
+          subnets:
+            private_endpoints:
+              name: private-endpoints
+              cidr: ["10.101.64.0/27"]
+{% if private_endpoints is defined %}
+              enforce_private_link_endpoint_network_policies: true
+{% endif %}
+            gitops_platform:
+              name: gitops-platform-lz
+              cidr: ["10.101.65.0/24"]
+
+            gitops_application:
+              name: gitops-application-lz
+              cidr: ["10.101.66.0/24"]
+
+{% if virtual_hubs_resources is defined %}
+      virtual_hub_connections:
+        vnet_to_hub:
+          name: vnet-management-{{env | default('prod')}}
+          virtual_hub:
+            id: {{ virtual_hubs_resources[env | default('prod')].prod.id }}
+          vnet:
+            vnet_key: vnet_region1
+          # to route internet traffic through firewall in secure hub, set internet_security_enabled to true
+          internet_security_enabled: true
+          routing:
+            firewall_manager:
+              virtual_hub_route_table_key: defaultRouteTable
+              propagated_route_table:
+                labels: ["none"] # To route vnet to vnet traffic through firewall manager (private traffic)
+                ids: # Route internet traffic through firewall manager (private traffic)
+                  - {{ virtual_hubs_resources[env | default('prod')].prod.id }}/hubRouteTables/noneRouteTable
+{% endif %}
