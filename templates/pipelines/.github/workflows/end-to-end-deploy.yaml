@@ -288,6 +288,7 @@ jobs:
       terraform_action: plan_apply
 
   asvm:
+    id: asvm
     uses: ./.github/workflows/rover.yaml
     needs: [environment, management, connectivity_virtual_hubs_prod]
     concurrency: 
@@ -398,6 +399,7 @@ jobs:
       terraform_action: plan_apply
 
   connectivity_private_dns_prod:
+    id: connectivity_private_dns_prod
     uses: ./.github/workflows/rover.yaml
     needs: [environment, connectivity_private_dns_firewalls_prod, identity_level2_prod]
     concurrency: 
