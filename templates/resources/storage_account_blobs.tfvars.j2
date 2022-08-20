@@ -1,0 +1,43 @@
+storage_account_blobs = {
+{% for key, value in resources[tfstate_resource].resources[subscription_key].storage_account_blobs.items() %}
+  {{ key }} = {
+    name                      = "{{ value.name }}"
+    storage_account_key       = "{{ value.storage_account_key }}"
+    storage_container_name    = "{{ value.storage_container_name }}"
+{% if value.type is defined %}
+    type = "{{ value.type }}"
+{% endif %}
+{% if value.size is defined %}
+    size = {{ value.size }}
+{% endif %}
+{% if value.access_tier is defined %}
+    access_tier = "{{ value.access_tier }}"
+{% endif %}
+{% if value.content_type is defined %}
+    content_type = "{{ value.content_type }}"
+{% endif %}
+{% if value.content_md5 is defined %}
+    content_md5  = "{{ value.content_md5 }}"
+{% endif %}
+{% if value.source is defined %}
+    source            = "{{ value.source }}"
+{% endif %}
+{% if value.source_content is defined %}
+    source_content    = "{{ value.source_content }}"
+{% endif %}
+{% if value.source_uri is defined %}
+    source_uri  = "{{ value.source_uri }}"
+{% endif %}
+{% if value.parallelism is defined %}
+    parallelism         = {{ value.parallelism }}
+{% endif %}
+{% if value.metadata is defined %}
+    metadata   = {
+{% for meta_key, meta_value in value.metadata.items() %}
+      {{ meta_key }} = "{{ meta_value }}"
+{% endfor %}
+    }
+{% endif %}
+  }
+{% endfor %}
+}

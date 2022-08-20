@@ -28,6 +28,15 @@ variable "tfstate_key" {
 variable "tfstate_resource_group_name" {
   default = null
 }
+variable "tfstate_organization" {
+  default = null
+}
+variable "tfstate_hostname" {
+  default = null
+}
+variable "workspace" {
+  default = null
+}
 variable "sas_token" {
   description = "SAS Token to access the remote state in another Azure AD tenant."
   default     = null
@@ -51,13 +60,6 @@ variable "landingzone" {
 variable "global_settings" {
   default = {}
 }
-
-variable "provider_azurerm_features_keyvault" {
-  default = {
-    purge_soft_delete_on_destroy = false
-  }
-}
-
 
 variable "rover_version" {
   default = "caf_standalone"

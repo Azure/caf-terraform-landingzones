@@ -7,6 +7,21 @@ variable "availability_sets" {
 variable "azure_container_registries" {
   default = {}
 }
+variable "batch_accounts" {
+  default = {}
+}
+variable "batch_applications" {
+  default = {}
+}
+variable "batch_certificates" {
+  default = {}
+}
+variable "batch_jobs" {
+  default = {}
+}
+variable "batch_pools" {
+  default = {}
+}
 variable "bastion_hosts" {
   default = {}
 }
@@ -58,5 +73,8 @@ variable "wvd_host_pools" {
   default = {}
 }
 variable "wvd_workspaces" {
+  default = {}
+}
+variable "runbooks" {
   default = {}
 }

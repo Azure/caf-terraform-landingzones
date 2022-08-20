@@ -5,6 +5,11 @@ locals {
       aks_clusters                        = var.aks_clusters
       availability_sets                   = var.availability_sets
       azure_container_registries          = var.azure_container_registries
+      batch_accounts                      = var.batch_accounts
+      batch_applications                  = var.batch_applications
+      batch_certificates                  = var.batch_certificates
+      batch_jobs                          = var.batch_jobs
+      batch_pools                         = var.batch_pools
       bastion_hosts                       = var.bastion_hosts
       container_groups                    = var.container_groups
       dedicated_host_groups               = var.dedicated_host_groups
@@ -20,6 +25,7 @@ locals {
       wvd_applications                    = var.wvd_applications
       wvd_host_pools                      = var.wvd_host_pools
       wvd_workspaces                      = var.wvd_workspaces
+      runbooks                            = var.runbooks
     }
   )
 }

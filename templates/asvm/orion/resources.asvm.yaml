@@ -15,7 +15,7 @@
         platform:
           virtual_hubs: {{platform_mappings[env]}}
           virtual_hubs_route_tables: {{platform_mappings[env]}}
-          secure_firewalls: {{platform_mappings[env]}}
+          private_dns_firewalls: {{platform_mappings[env]}}
           identity_level2: {{platform_mappings[env]}}
           asvm:
 
@@ -45,8 +45,8 @@
           dns_servers_keys:
             fw_secure_{{platform_mappings[env]}}:
               resource_type: azurerm_firewall
-              lz_key: connectivity_secure_firewalls_{{platform_mappings[env]}}
-              key: fw_secure_{{platform_mappings[env]}}
+              lz_key: connectivity_private_dns_firewalls_{{platform_mappings[env]}}
+              key: fw_prod_dns_{{platform_mappings[env]}}
           address_space:
             - 10.101.8.0/23
           subnets:

@@ -1,0 +1,114 @@
+load_balancers = {
+{% for key, lbs in resources[tfstate_resource].resources[subscription_key].load_balancers.items() %}
+  {{ key }} = {
+    name                      = "{{ lbs.name }}"
+    resource_group_key        = "{{ lbs.resource_group_key }}"
+    sku                       = "{{ lbs.sku }}"
+{% if lbs.backend_address_pool_name is defined %}
+    backend_address_pool_name               = "{{ lbs.backend_address_pool_name }}"
+{% endif %}
+{% if lbs.frontend_ip_configurations is defined %}
+    frontend_ip_configurations = {
+{% for frontend_key, config in lbs.frontend_ip_configurations.items() %}
+      {{ frontend_key }} = {
+        name    = "{{config.name}}"
+{% if config.private_ip_address is defined %}
+        private_ip_address = "{{config.private_ip_address}}"
+{% endif %}
+{% if config.private_ip_address_allocation is defined %}
+        private_ip_address_allocation = "{{config.private_ip_address_allocation}}"
+{% endif %}
+{% if config.private_ip_address_version is defined %}
+        private_ip_address_version = "{{config.private_ip_address_version}}"
+{% endif %}
+{% if config.public_ip_address_key is defined %}
+        public_ip_address_key = "{{config.public_ip_address_key}}"
+{% endif %}
+{% if config.public_ip_prefix_id is defined %}
+        public_ip_prefix_id  = "{{config.public_ip_prefix_id}}"
+{% endif %}
+{% if config.vnet_key is defined %}
+        vnet_key    = "{{config.vnet_key}}"
+{% endif %}
+{% if config.subnet_key is defined %}
+        subnet_key    = "{{config.subnet_key}}"
+{% endif %}
+{% if config.lz_key is defined %}
+        lz_key     = "{{ config.lz_key }}"
+{% endif %}
+{% if config.zones is defined %}
+        zones     = {{ config.zones  | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"')}}
+{% endif %}
+      }
+{% endfor %}
+    }
+{% endif %}
+{% if value.tags is defined %}
+    tags   = {
+{% for tag_key, tag_value in value.tags.items() %}
+      {{ tag_key }} = "{{ tag_value }}"
+{% endfor %}
+    }
+{% endif %}
+{% if lbs.backend_address_pool_addresses is defined %}
+    backend_address_pool_addresses = {
+{% for backend_key, beconfig in lbs.backend_address_pool_addresses.items() %}
+      {{ backend_key }} = {
+        backend_address_pool_address_name   = "{{beconfig.backend_address_pool_address_name}}"
+        ip_address = "{{beconfig.ip_address}}"
+      }
+{% endfor %}
+    }
+{% endif %}
+{% if lbs.probes is defined %}
+    probes = {
+{% for probe_key, probe_config in lbs.probes.items() %}
+      {{ probe_key }} = {
+        resource_group_key   = "{{probe_config.resource_group_key}}"
+        load_balancer_key = "{{probe_config.load_balancer_key}}"
+        probe_name = "{{probe_config.probe_name}}"
+        port = "{{probe_config.port}}"
+      }
+{% endfor %}
+    }
+{% endif %}
+{% if lbs.lb_rules is defined %}
+    lb_rules = {
+{% for lb_rule_key, lb_rule_config in lbs.lb_rules.items() %}
+      {{ lb_rule_key }} = {
+        resource_group_key   = "{{lb_rule_config.resource_group_key}}"
+        load_balancer_key = "{{lb_rule_config.load_balancer_key}}"
+        lb_rule_name = "{{lb_rule_config.lb_rule_name}}"
+        protocol = "{{lb_rule_config.protocol}}"
+        probe_id_key = "{{lb_rule_config.probe_id_key}}"
+        frontend_port = "{{lb_rule_config.frontend_port}}"
+        backend_port = "{{lb_rule_config.backend_port}}"
+        frontend_ip_configuration_name = "{{lb_rule_config.frontend_ip_configuration_name}}"
+      }
+{% endfor %}
+    }
+{% endif %}
+{% if lbs.outbound_rules is defined %}
+    outbound_rules = {
+{% for ob_rule_key, ob_rule_config in lbs.outbound_rules.items() %}
+      {{ ob_rule_key }} = {
+        resource_group_key   = "{{ob_rule_config.resource_group_key}}"
+        backend_address_pool_key = "{{ob_rule_config.backend_address_pool_key}}"
+        name = "{{ob_rule_config.name}}"
+        protocol = "{{ob_rule_config.protocol}}"
+{% if ob_rule_config.frontend_ip_configuration is defined %}
+    frontend_ip_configuration = {
+{% for fe_ip_config_key, fe_ip_config in ob_rule_config.frontend_ip_configuration.items() %}
+      {{ fe_ip_config_key }} = {
+        name = "{{fe_ip_config.name}}"
+      }
+{% endfor %}
+    }
+{% endif %}
+      }
+{% endfor %}
+    }
+{% endif %}
+  }
+{% endfor %}
+}
