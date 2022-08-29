@@ -35,6 +35,7 @@ module "launchpad" {
     azuread_api_permissions             = var.azuread_api_permissions
     azuread_applications                = var.azuread_applications
     azuread_apps                        = var.azuread_apps
+    azuread_conditional_access          = var.azuread_conditional_access
     azuread_credential_policies         = var.azuread_credential_policies
     azuread_groups                      = var.azuread_groups
     azuread_groups_membership           = var.azuread_groups_membership
