@@ -63,6 +63,10 @@ variable "prefix" {
   default = null
 }
 
+variable "suffix" {
+  default = null
+}
+
 variable "use_slug" {
   default = true
 }

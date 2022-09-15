@@ -32,7 +32,7 @@ provider "azurerm" {
   partner_id = "ca4078f8-9bc4-471b-ab5b-3af6b86a42c8"
   features {
     api_management {
-      purge_soft_delete_on_destroy         = var.provider_azurerm_features_api_management.purge_soft_delete_on_destroy
+      purge_soft_delete_on_destroy = var.provider_azurerm_features_api_management.purge_soft_delete_on_destroy
       # recover_soft_deleted_api_managements = var.provider_azurerm_features_api_management.recover_soft_deleted_api_managements
     }
     # application_insights {
@@ -83,7 +83,15 @@ resource "random_string" "prefix" {
   length  = 4
   special = false
   upper   = false
-  number  = false
+  numeric = false
+}
+
+resource "random_string" "suffix" {
+  count   = var.suffix == null ? 1 : 0
+  length  = 4
+  special = false
+  upper   = false
+  numeric = false
 }
 
 locals {
@@ -101,6 +109,9 @@ locals {
     prefix             = var.prefix
     prefixes           = var.prefix == "" ? null : [try(random_string.prefix.0.result, var.prefix)]
     prefix_with_hyphen = var.prefix == "" ? null : format("%s", try(random_string.prefix.0.result, var.prefix))
+    suffix             = var.suffix
+    suffixes           = var.suffix == "" ? null : [try(random_string.suffix.0.result, var.suffix)]
+    suffix_with_hyphen = var.suffix == "" ? null : format("%s", try(random_string.suffix.0.result, var.suffix))
     random_length      = var.random_length
     regions            = var.regions
     tags               = var.tags
