@@ -155,7 +155,7 @@ initial_subscriptions:
 deployments:
   scale_out_domain_keys:
     - prod
-    - non_prod
+    # - non_prod
   platform:
     root:
       {{default_region_key}}:
@@ -214,7 +214,7 @@ backup_policies:
       name: vm-default-policy
       # Default to UTC
       # possible values - https://jackstromberg.com/2017/01/list-of-time-zones-consumed-by-azure/
-      timezone: SE Asia Standard Time
+      timezone: W. Europe Standard Time
       backup:
         frequency: Daily
         time: "23:00"

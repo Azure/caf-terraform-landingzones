@@ -1,5 +1,5 @@
 
-### Generate launchpad credentials
+### Deploy GitOps Agents
 
 ```bash
 # For manual bootstrap:
@@ -14,11 +14,11 @@ rover \
   -var-folder {{ destination_path }} \
   -tfstate_subscription_id {{ resources.caf_launchpad.subscription_id }} \
   -target_subscription {{ resources.caf_launchpad.subscription_id }} \
-  -tfstate {{ resources.tfstates.platform.launchpad_credentials.tfstate }} \
+  -tfstate {{ resources.tfstates.platform.gitops_agents.tfstate }} \
   -launchpad \
   -env {{ resources.caf_environment }} \
   -level {{ level }} \
-  -p ${TF_DATA_DIR}/{{ resources.tfstates.platform.launchpad_credentials.tfstate }}.tfplan \
+  -p ${TF_DATA_DIR}/{{ resources.tfstates.platform.gitops_agents.tfstate }}.tfplan \
   -a plan
 
 ```
@@ -37,11 +37,11 @@ rover \
   -var-folder {{ destination_path }} \
   -tfstate_subscription_id {{ resources.caf_launchpad.subscription_id }} \
   -target_subscription {{ resources.caf_launchpad.subscription_id }} \
-  -tfstate {{ resources.tfstates.platform.launchpad_credentials.tfstate }} \
+  -tfstate {{ resources.tfstates.platform.gitops_agents.tfstate }} \
   -launchpad \
   -env {{ resources.caf_environment }} \
   -level {{ level }} \
-  -p ${TF_DATA_DIR}/{{ resources.tfstates.platform.launchpad_credentials.tfstate }}.tfplan \
+  -p ${TF_DATA_DIR}/{{ resources.tfstates.platform.gitops_agents.tfstate }}.tfplan \
   -a apply
 
 ```

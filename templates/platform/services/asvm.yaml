@@ -54,7 +54,7 @@ asvm:
               - Logging
               - Metrics
               - AzureServices
-            default_action: Deny
+            default_action: Allow
 {% if PUBLIC_IP_WHITE_LIST is defined %}
             ip_rules:
 {% for ip in PUBLIC_IP_WHITE_LIST %}
@@ -109,7 +109,7 @@ asvm:
               - Logging
               - Metrics
               - AzureServices
-            default_action: Deny
+            default_action: Allow
 {% if PUBLIC_IP_WHITE_LIST is defined %}
             ip_rules:
 {% for ip in PUBLIC_IP_WHITE_LIST %}
@@ -158,7 +158,7 @@ asvm:
           enable_rbac_authorization: {{ keyvault_enable_rbac_authorization }}
           network:
             bypass: AzureServices
-            default_action: Deny
+            default_action: Allow
 {% if PUBLIC_IP_WHITE_LIST is defined %}
             ip_rules:
 {% for ip in PUBLIC_IP_WHITE_LIST %}
@@ -207,7 +207,7 @@ asvm:
           enable_rbac_authorization: {{ keyvault_enable_rbac_authorization }}
           network:
             bypass: AzureServices
-            default_action: Deny
+            default_action: Allow
 {% if PUBLIC_IP_WHITE_LIST is defined %}
             ip_rules:
 {% for ip in PUBLIC_IP_WHITE_LIST %}

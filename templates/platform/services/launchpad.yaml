@@ -57,7 +57,7 @@ launchpad:
               - Logging
               - Metrics
               - AzureServices
-            default_action: Deny
+            default_action: Allow
 {% if PUBLIC_IP_WHITE_LIST is defined %}
             ip_rules:
 {% for ip in PUBLIC_IP_WHITE_LIST %}
@@ -116,7 +116,7 @@ launchpad:
               - Logging
               - Metrics
               - AzureServices
-            default_action: Deny
+            default_action: Allow
 {% if PUBLIC_IP_WHITE_LIST is defined %}
             ip_rules:
 {% for ip in PUBLIC_IP_WHITE_LIST %}
@@ -175,7 +175,7 @@ launchpad:
               - Logging
               - Metrics
               - AzureServices
-            default_action: Deny
+            default_action: Allow
 {% if PUBLIC_IP_WHITE_LIST is defined %}
             ip_rules:
 {% for ip in PUBLIC_IP_WHITE_LIST %}
@@ -222,7 +222,7 @@ launchpad:
           enable_rbac_authorization: {{ keyvault_enable_rbac_authorization }}
           network:
             bypass: AzureServices
-            default_action: Deny
+            default_action: Allow
 {% if PUBLIC_IP_WHITE_LIST is defined %}
             ip_rules:
 {% for ip in PUBLIC_IP_WHITE_LIST %}
@@ -276,7 +276,7 @@ launchpad:
           enable_rbac_authorization: {{ keyvault_enable_rbac_authorization }}
           network:
             bypass: AzureServices
-            default_action: Deny
+            default_action: Allow
 {% if PUBLIC_IP_WHITE_LIST is defined %}
             ip_rules:
 {% for ip in PUBLIC_IP_WHITE_LIST %}
@@ -330,7 +330,7 @@ launchpad:
           enable_rbac_authorization: {{ keyvault_enable_rbac_authorization }}
           network:
             bypass: AzureServices
-            default_action: Deny
+            default_action: Allow
 {% if PUBLIC_IP_WHITE_LIST is defined %}
             ip_rules:
 {% for ip in PUBLIC_IP_WHITE_LIST %}
@@ -877,11 +877,6 @@ launchpad:
             level0:
               name: level0
               cidr: ["10.100.0.0/27"]
-              delegation:
-                name: Microsoft.ContainerInstance/containerGroups
-                service_delegation: Microsoft.ContainerInstance/containerGroups
-                actions:
-                  - Microsoft.Network/virtualNetworks/subnets/action
               service_endpoints:
                 - Microsoft.KeyVault
                 - Microsoft.Storage
@@ -915,6 +910,18 @@ launchpad:
 {% if private_endpoints is defined %}
               enforce_private_link_endpoint_network_policies: true
 {% endif %}
+            containergroups:
+              name: containergroups
+              cidr: ["10.100.0.128/27"]
+              delegation:
+                name: Microsoft.ContainerInstance/containerGroups
+                service_delegation: Microsoft.ContainerInstance/containerGroups
+                actions:
+                  - Microsoft.Network/virtualNetworks/subnets/action
+{% if private_endpoints is defined %}
+              enforce_private_link_endpoint_network_policies: true
+{% endif %}
+
 
 {% if virtual_hubs_resources is defined %}
       virtual_hub_connections:

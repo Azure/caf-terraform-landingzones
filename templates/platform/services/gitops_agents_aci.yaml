@@ -38,7 +38,7 @@ gitops_agents:
           os_type: Linux
           restart_policy: Never
           network_profile:
-            key: level0
+            key: containergroups
 {% if secure_firewalls_resources is defined %}
           dns_config:
             nameservers:
@@ -73,7 +73,7 @@ gitops_agents:
           os_type: Linux
           restart_policy: Never
           network_profile:
-            key: level0
+            key: containergroups
 {% if secure_firewalls_resources is defined %}
           dns_config:
             nameservers:
@@ -99,16 +99,16 @@ gitops_agents:
 {% endfor %}
 
       network_profiles:
-        level0:
+        containergroups:
           resource_group:
             lz_key: launchpad
             key: gitops
-          name: level0
+          name: containergroups
           container_network_interface:
-            name: level0
+            name: containergroups
             ip_configurations:
               gitops:
                 name: ipconfig
                 lz_key: launchpad
                 vnet_key: vnet_region1
-                subnet_key: level0
+                subnet_key: containergroups

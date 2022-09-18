@@ -43,7 +43,7 @@ management:
             bypass: 
               - Logging
               - Metrics
-            default_action: Deny
+            default_action: Allow
             ip_rules:
 {% for ip in PUBLIC_IP_WHITE_LIST %}
               - {{ ip }}
