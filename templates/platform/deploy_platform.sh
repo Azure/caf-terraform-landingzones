@@ -19,7 +19,7 @@ ansible-playbook /tf/caf/landingzones/templates/ansible/walk-through-bootstrap.y
   -e firewall_rules_path=/tf/caf/platform/firewall_rules \
   -e keyvault_enable_rbac_authorization=true \
   -e keyvault_purge_protection_enabled=false \
-  -e private_endpoints=true \
+  -e private_endpoints=false \
   -e caf_landingzone_branch="$(cd /tf/caf/landingzones && git rev-parse --abbrev-ref HEAD)" \
   --extra-vars "@/tf/caf/landingzones/templates/platform/ignite.yaml" \
   -e $(echo ${params} | xargs)
