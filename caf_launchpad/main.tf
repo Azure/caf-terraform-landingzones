@@ -99,11 +99,11 @@ locals {
     inherit_tags       = var.inherit_tags
     passthrough        = var.passthrough
     prefix             = var.prefix
-    prefixes           = var.prefixes == "" ? null : [try(random_string.prefix.0.result, var.prefixes)]
-    prefix_with_hyphen = var.prefixes == "" ? null : format("%s", try(random_string.prefix.0.result, var.prefixes))
+    prefixes           = var.prefix == "" ? null : [try(random_string.prefix.0.result, var.prefix)]
+    prefix_with_hyphen = var.prefix == "" ? null : format("%s", try(random_string.prefix.0.result, var.prefix))
     suffix             = var.suffix
-    suffixes           = var.suffixes == "" ? null : [try(random_string.prefix.0.result, var.suffixes)]
-    suffix_with_hyphen = var.suffixes == "" ? null : format("%s", try(random_string.prefix.0.result, var.suffixes))
+    suffixes           = var.suffix == "" ? null : [try(random_string.prefix.0.result, var.suffix)]
+    suffix_with_hyphen = var.suffix == "" ? null : format("%s", try(random_string.prefix.0.result, var.suffix))
     random_length      = var.random_length
     regions            = var.regions
     tags               = var.tags

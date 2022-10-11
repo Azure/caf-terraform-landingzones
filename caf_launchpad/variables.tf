@@ -63,15 +63,7 @@ variable "prefix" {
   default = null
 }
 
-variable "prefixes" {
-  default = null
-}
-
 variable "suffix" {
-  default = null
-}
-
-variable "suffixes" {
   default = null
 }
 
