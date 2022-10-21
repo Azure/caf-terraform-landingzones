@@ -75,3 +75,9 @@ variable "template_file_variables" {
   description = "If specified, provides the ability to define custom template variables used when reading in template files from the built-in and custom library_path."
   default     = {}
 }
+
+variable "named_locations" {
+  type        = map(any)
+  default     = {}
+  description = "If specified, manages a Named Location within Azure Active Directory."
+}
