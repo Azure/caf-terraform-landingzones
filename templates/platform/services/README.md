@@ -42,7 +42,7 @@ Whenever needed, or under a profesional supervision you can use the following co
 ### Clone the landingzone project (Terraform base code)
 
 ```bash
-git clone https://github.com/Azure/caf-terraform-landingzones.git {{landingzones_folder}}
+git clone https://github.com/blinqas/Azure/caf-terraform-landingzones.git {{landingzones_folder}}
 cd {{landingzones_folder}} && git fetch origin
 git checkout {{caf_landingzone_branch}}
 

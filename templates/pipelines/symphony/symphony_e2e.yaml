@@ -1,7 +1,7 @@
 environment: {{ model }}
 repositories:
   - name: landingzones
-    uri: https://github.com/Azure/caf-terraform-landingzones.git
+    uri: https://github.com/blinqas/caf-terraform-landingzones.git
     branch: {{ resources.caf_landingzone_branch }}
 
  # All paths are relative
