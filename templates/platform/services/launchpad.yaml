@@ -57,7 +57,7 @@ launchpad:
               - Logging
               - Metrics
               - AzureServices
-            default_action: Allow
+            default_action: Deny
 {% if PUBLIC_IP_WHITE_LIST is defined %}
             ip_rules:
 {% for ip in PUBLIC_IP_WHITE_LIST %}
@@ -116,7 +116,7 @@ launchpad:
               - Logging
               - Metrics
               - AzureServices
-            default_action: Allow
+            default_action: Deny
 {% if PUBLIC_IP_WHITE_LIST is defined %}
             ip_rules:
 {% for ip in PUBLIC_IP_WHITE_LIST %}
@@ -175,7 +175,7 @@ launchpad:
               - Logging
               - Metrics
               - AzureServices
-            default_action: Allow
+            default_action: Deny
 {% if PUBLIC_IP_WHITE_LIST is defined %}
             ip_rules:
 {% for ip in PUBLIC_IP_WHITE_LIST %}
@@ -222,7 +222,7 @@ launchpad:
           enable_rbac_authorization: {{ keyvault_enable_rbac_authorization }}
           network:
             bypass: AzureServices
-            default_action: Allow
+            default_action: Deny
 {% if PUBLIC_IP_WHITE_LIST is defined %}
             ip_rules:
 {% for ip in PUBLIC_IP_WHITE_LIST %}
@@ -276,7 +276,7 @@ launchpad:
           enable_rbac_authorization: {{ keyvault_enable_rbac_authorization }}
           network:
             bypass: AzureServices
-            default_action: Allow
+            default_action: Deny
 {% if PUBLIC_IP_WHITE_LIST is defined %}
             ip_rules:
 {% for ip in PUBLIC_IP_WHITE_LIST %}
@@ -330,7 +330,7 @@ launchpad:
           enable_rbac_authorization: {{ keyvault_enable_rbac_authorization }}
           network:
             bypass: AzureServices
-            default_action: Allow
+            default_action: Deny
 {% if PUBLIC_IP_WHITE_LIST is defined %}
             ip_rules:
 {% for ip in PUBLIC_IP_WHITE_LIST %}

@@ -426,7 +426,7 @@
           resource_group_key: rg
           network:
             bypass: AzureServices
-            default_action: Allow
+            default_action: Deny
 {% if PUBLIC_IP_WHITE_LIST is defined %}
             ip_rules:
               {{ PUBLIC_IP_WHITE_LIST | default('None') }}
