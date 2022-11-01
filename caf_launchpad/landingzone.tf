@@ -61,6 +61,8 @@ module "launchpad" {
     route_tables                      = try(var.networking.route_tables, var.route_tables)
     virtual_hub_connections           = try(var.networking.virtual_hub_connections, var.virtual_hub_connections)
     vnets                             = try(var.networking.vnets, var.vnets)
+    private_dns                       = try(var.networking.private_dns, var.private_dns)
+    private_endpoints                 = try(var.networking.private_endpoints, var.private_endpoints)
   }
 
   security = {

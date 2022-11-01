@@ -261,3 +261,10 @@ variable "virtual_hub_connections" {
 variable "custom_variables" {
   default = {}
 }
+
+variable "private_endpoints" {
+  default = {}
+}
+variable "private_dns" {
+  default = {}
+}

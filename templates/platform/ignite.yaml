@@ -11,7 +11,7 @@ bootstrap:
         management_group_prefix: "es"
         management_group_name: "bsdev"
         deploy_core_landing_zones: True
-        clean_up_destination_folder: True
+        clean_up_destination_folder: False
         update_lib_folder: True
         version_to_deploy: "v2.4.0"
 
