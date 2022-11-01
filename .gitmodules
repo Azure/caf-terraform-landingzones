@@ -1,0 +1,3 @@
+[submodule "azure-caf-modules"]
+	path = azure-caf-modules
+	url = https://github.com/blinqas/terraform-azurerm-caf.git

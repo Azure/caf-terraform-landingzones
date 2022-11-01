@@ -1,5 +1,5 @@
 module "solution" {
-  source = "../aztfmod"
+  source = "../azure-caf-modules"
 
   providers = {
     azurerm.vhub = azurerm.vhub
