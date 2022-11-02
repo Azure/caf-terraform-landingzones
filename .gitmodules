@@ -1,3 +1,5 @@
 [submodule "azure-caf-modules"]
 	path = azure-caf-modules
 	url = https://github.com/blinqas/terraform-azurerm-caf.git
+	branch = blinq-azurerm-v3.29.1
+	ignore = all
