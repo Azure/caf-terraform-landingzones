@@ -8,6 +8,7 @@ locals {
       log_analytics_storage_insights = var.log_analytics_storage_insights
       monitor_autoscale_settings     = var.monitor_autoscale_settings
       monitor_action_groups          = var.monitor_action_groups
+      monitor_private_link_scope     = var.monitor_private_link_scope
       monitoring                     = var.monitoring
       packer_managed_identity        = var.packer_managed_identity
       packer_service_principal       = var.packer_service_principal
