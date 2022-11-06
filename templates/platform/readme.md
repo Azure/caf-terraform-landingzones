@@ -20,3 +20,4 @@ rover -bootstrap \
 
 ```
 
+{'region1': 'westeurope', 'region2': 'norwayeast'}

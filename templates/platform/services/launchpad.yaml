@@ -34,6 +34,23 @@ launchpad:
         level2:
           name: level2
 
+      private_dns:
+        blob_core_windows_net:
+          name: blob_core_windows_net
+          resource_group_key: level0
+          vnet_links:
+            vnet_region1:
+              name: vnet-region1
+              vnet_key: vnet_region1
+              lz_key: launchpad
+        vault_azure_net:
+          name: vault_azure_net
+          resource_group_key: level0
+          vnet_links:
+            vnet_region1:
+              name: vnet-region1
+              vnet_key: vnet_region1
+
       storage_accounts:
         level0:
           name: l0
