@@ -36,7 +36,7 @@ launchpad:
 
       private_dns:
         blob_core_windows_net:
-          name: blob_core_windows_net
+          name: privatelink.blob.core.windows.net
           resource_group_key: level0
           vnet_links:
             vnet_region1:
@@ -44,7 +44,7 @@ launchpad:
               vnet_key: vnet_region1
               lz_key: launchpad
         vault_azure_net:
-          name: vault_azure_net
+          name: privatelink.vaultcore.azure.net
           resource_group_key: level0
           vnet_links:
             vnet_region1:
