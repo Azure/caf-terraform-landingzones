@@ -75,6 +75,7 @@ launchpad:
               - Metrics
               - AzureServices
             default_action: Deny
+            public_network_access_enabled: true
 {% if PUBLIC_IP_WHITE_LIST is defined %}
             ip_rules:
 {% for ip in PUBLIC_IP_WHITE_LIST %}
@@ -134,6 +135,7 @@ launchpad:
               - Metrics
               - AzureServices
             default_action: Deny
+            public_network_access_enabled: true
 {% if PUBLIC_IP_WHITE_LIST is defined %}
             ip_rules:
 {% for ip in PUBLIC_IP_WHITE_LIST %}
@@ -193,6 +195,7 @@ launchpad:
               - Metrics
               - AzureServices
             default_action: Deny
+            public_network_access_enabled: true
 {% if PUBLIC_IP_WHITE_LIST is defined %}
             ip_rules:
 {% for ip in PUBLIC_IP_WHITE_LIST %}
@@ -240,6 +243,7 @@ launchpad:
           network:
             bypass: AzureServices
             default_action: Deny
+            public_network_access_enabled: true
 {% if PUBLIC_IP_WHITE_LIST is defined %}
             ip_rules:
 {% for ip in PUBLIC_IP_WHITE_LIST %}
@@ -294,6 +298,7 @@ launchpad:
           network:
             bypass: AzureServices
             default_action: Deny
+            public_network_access_enabled: true
 {% if PUBLIC_IP_WHITE_LIST is defined %}
             ip_rules:
 {% for ip in PUBLIC_IP_WHITE_LIST %}
@@ -348,6 +353,7 @@ launchpad:
           network:
             bypass: AzureServices
             default_action: Deny
+            public_network_access_enabled: true
 {% if PUBLIC_IP_WHITE_LIST is defined %}
             ip_rules:
 {% for ip in PUBLIC_IP_WHITE_LIST %}

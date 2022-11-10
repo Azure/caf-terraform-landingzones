@@ -59,7 +59,7 @@ gitops_agents:
                 LABELS: platform,master
                 ROVER_RUNNER: true
                 URL: {{GITOPS_SERVER_URL}}
-              secure_environment_variables:
+              secure_variables_from_command:
                 AGENT_TOKEN: {{AGENT_TOKEN}}
 {% set MAX_RUNNERS = RUNNER_NUMBERS | int %}
 {% for i in range(MAX_RUNNERS - 1) %}
@@ -94,7 +94,7 @@ gitops_agents:
                 LABELS: platform
                 ROVER_RUNNER: true
                 URL: {{GITOPS_SERVER_URL}}
-              secure_environment_variables:
+              secure_variables_from_command:
                 AGENT_TOKEN: {{AGENT_TOKEN}}
 {% endfor %}
 

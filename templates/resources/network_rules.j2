@@ -1,5 +1,8 @@
 {% if value.network is defined %}
     network = {
+{% if value.network.public_network_access_enabled is defined %}
+      public_network_access_enabled = "{{ value.network.public_network_access_enabled }}"
+{% endif %}
 {% if value.network.default_action is defined %}
       default_action = "{{ value.network.default_action }}"
 {% endif %}
