@@ -35,7 +35,7 @@ launchpad:
           name: level2
 
       private_dns:
-        blob_core_windows_net:
+        privatelink.blob.core.windows.net:
           name: privatelink.blob.core.windows.net
           resource_group_key: level0
           vnet_links:
@@ -43,7 +43,7 @@ launchpad:
               name: vnet-region1
               vnet_key: vnet_region1
               lz_key: launchpad
-        vault_azure_net:
+        privatelink.vaultcore.azure.net:
           name: privatelink.vaultcore.azure.net
           resource_group_key: level0
           vnet_links:
@@ -101,9 +101,10 @@ launchpad:
                   - blob
 {% if private_endpoints is defined and private_dns is defined %}
               private_dns:
-                zone_group_name: default
-                ids:
-                  - {{ private_dns[env|default('prod')]["privatelink.blob.core.windows.net"].id }}
+                zone_group_name: gitops
+                lz_key: launchpad
+                keys: 
+                  - privatelink.blob.core.windows.net
 {% endif %}
 {% endif %}
           tags:
@@ -161,9 +162,10 @@ launchpad:
                   - blob
 {% if private_endpoints is defined and private_dns is defined %}
               private_dns:
-                zone_group_name: default
-                ids:
-                  - {{ private_dns[env|default('prod')]["privatelink.blob.core.windows.net"].id }}
+                zone_group_name: gitops
+                lz_key: launchpad
+                keys: 
+                  - privatelink.blob.core.windows.net
 {% endif %}
 {% endif %}
           tags:
@@ -221,7 +223,7 @@ launchpad:
                   - blob
 {% if private_endpoints is defined and private_dns is defined %}
               private_dns:
-                zone_group_name: default
+                zone_group_name: gitops
                 ids:
                   - {{ private_dns[env|default('prod')]["privatelink.blob.core.windows.net"].id }}
 {% endif %}
@@ -269,9 +271,10 @@ launchpad:
                   - vault
 {% if private_endpoints is defined and private_dns is defined %}
               private_dns:
-                zone_group_name: default
-                ids:
-                  - {{ private_dns[env|default('prod')]["privatelink.vaultcore.azure.net"].id }}
+                zone_group_name: gitops
+                lz_key: launchpad
+                keys: 
+                  - privatelink.blob.core.windows.net
 {% endif %}
 {% endif %}
 {% if keyvault_enable_rbac_authorization == false %}
@@ -324,7 +327,7 @@ launchpad:
                   - vault
 {% if private_endpoints is defined and private_dns is defined %}
               private_dns:
-                zone_group_name: default
+                zone_group_name: gitops
                 ids:
                   - {{ private_dns[env|default('prod')]["privatelink.vaultcore.azure.net"].id }}
 {% endif %}
@@ -379,9 +382,10 @@ launchpad:
                   - vault
 {% if private_endpoints is defined and private_dns is defined %}
               private_dns:
-                zone_group_name: default
-                ids:
-                  - {{ private_dns[env|default('prod')]["privatelink.vaultcore.azure.net"].id }}
+                zone_group_name: gitops
+                lz_key: launchpad
+                keys: 
+                  - privatelink.blob.core.windows.net
 {% endif %}
 {% endif %}
 {% if keyvault_enable_rbac_authorization == false %}

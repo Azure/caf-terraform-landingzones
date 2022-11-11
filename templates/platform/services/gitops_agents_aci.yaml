@@ -42,8 +42,6 @@ gitops_agents:
               lz_key: launchpad
               vnet_key: vnet_region1
               subnet_key: containergroups
-          #network_profile:
-            #key: containergroups
 {% if secure_firewalls_resources is defined %}
           dns_config:
             nameservers:
@@ -82,8 +80,6 @@ gitops_agents:
               lz_key: launchpad
               vnet_key: vnet_region1
               subnet_key: containergroups
-          #network_profile:
-            #key: containergroups
 {% if secure_firewalls_resources is defined %}
           dns_config:
             nameservers:
@@ -108,18 +104,3 @@ gitops_agents:
                 AGENT_TOKEN: {{ agent_token }}
 {% endfor %}
 
-      # //blinQ: Legacy configuration, we use subnet_ids now 
-      #network_profiles:
-      #  containergroups:
-      #    resource_group:
-      #      lz_key: launchpad
-      #      key: gitops
-      #    name: containergroups
-      #    container_network_interface:
-      #      name: containergroups
-      #      ip_configurations:
-      #        gitops:
-      #          name: ipconfig
-      #          lz_key: launchpad
-      #          vnet_key: vnet_region1
-      #          subnet_key: containergroups
