@@ -18,7 +18,7 @@ caf_environment: {{caf_environment}}
 default_email_address: {{default_email_address}}
 alz_mg_prefix: {{alz_mg_prefix}}
 alz_mg_name: {{alz_mg_name}}
-azure_regions: {{azure_regions }}
+azure_regions: {{azure_regions}}
 prefix: {{prefix}}
 
 # folder parameters

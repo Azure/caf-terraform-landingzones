@@ -34,6 +34,23 @@
   register: public_ip
 
 - set_fact:
+    agent_token_part1: "gh api --method POST -H 'Accept: application/vnd.github.v3+json' /repos/"
+    agent_token_part2: "/actions/runners/registration-token | jq -r ' {value: .token}'"
+
+- debug:
+    msg: 
+      - "{{ agent_token_part1 }}"
+      - "{{ agent_token_part2 }}"
+      - "{{ GITHUB_ORG_REPO }}"
+
+- set_fact:
+    agent_token: "\"{{ agent_token_part1 }}{{ GITHUB_ORG_REPO }}{{ agent_token_part2 }}\""
+
+- debug:
+    msg:
+      - "{{ agent_token }}"
+
+- set_fact:
     regions:  "{{ azure_regions }}"
     deployment_mode: "platform"
     object_id: "{{ bash_object_id.stdout | default(AZURE_OBJECT_ID) }}"
@@ -41,7 +58,7 @@
     tenant_name: "{{ tenant_name | default(bash_tenant_name.stdout) }}"
     base_folder: "{{ base_folder | default('/tf/caf') }}"
     PUBLIC_IP_WHITE_LIST: "{{ [public_ip.stdout] }}"
-
+  
 - debug:
     msg:
       - "{{ regions }}"
@@ -51,7 +68,6 @@
       - "{{ base_folder }}"
       - "{{ input_caf_environment if input_caf_environment is defined else TF_VAR_environment }}"
 
-
 - name: "load {{ template_folder | default(platform_definition_folder)}}/ignite.yaml"
   include_vars:
     name: bootstrap
@@ -59,7 +75,7 @@
     depth: 1
     ignore_unknown_extensions: true
     files_matching: "ignite.yaml"
-
+    
 - set_fact:
     caf_environment: "{{ TF_VAR_environment }}"
   when: TF_VAR_environment is defined

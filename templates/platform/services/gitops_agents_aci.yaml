@@ -37,8 +37,13 @@ gitops_agents:
           ip_address_type: Private
           os_type: Linux
           restart_policy: Never
-          network_profile:
-            key: containergroups
+          subnet_ids:
+            subnet1:
+              lz_key: launchpad
+              vnet_key: vnet_region1
+              subnet_key: containergroups
+          #network_profile:
+            #key: containergroups
 {% if secure_firewalls_resources is defined %}
           dns_config:
             nameservers:
@@ -60,7 +65,7 @@ gitops_agents:
                 ROVER_RUNNER: true
                 URL: {{GITOPS_SERVER_URL}}
               secure_variables_from_command:
-                AGENT_TOKEN: {{AGENT_TOKEN}}
+                AGENT_TOKEN: {{ agent_token }}
 {% set MAX_RUNNERS = RUNNER_NUMBERS | int %}
 {% for i in range(MAX_RUNNERS - 1) %}
         agent{{i}}:
@@ -72,8 +77,13 @@ gitops_agents:
           ip_address_type: Private
           os_type: Linux
           restart_policy: Never
-          network_profile:
-            key: containergroups
+          subnet_ids:
+            subnet1:
+              lz_key: launchpad
+              vnet_key: vnet_region1
+              subnet_key: containergroups
+          #network_profile:
+            #key: containergroups
 {% if secure_firewalls_resources is defined %}
           dns_config:
             nameservers:
@@ -95,20 +105,21 @@ gitops_agents:
                 ROVER_RUNNER: true
                 URL: {{GITOPS_SERVER_URL}}
               secure_variables_from_command:
-                AGENT_TOKEN: {{AGENT_TOKEN}}
+                AGENT_TOKEN: {{ agent_token }}
 {% endfor %}
 
-      network_profiles:
-        containergroups:
-          resource_group:
-            lz_key: launchpad
-            key: gitops
-          name: containergroups
-          container_network_interface:
-            name: containergroups
-            ip_configurations:
-              gitops:
-                name: ipconfig
-                lz_key: launchpad
-                vnet_key: vnet_region1
-                subnet_key: containergroups
+      # //blinQ: Legacy configuration, we use subnet_ids now 
+      #network_profiles:
+      #  containergroups:
+      #    resource_group:
+      #      lz_key: launchpad
+      #      key: gitops
+      #    name: containergroups
+      #    container_network_interface:
+      #      name: containergroups
+      #      ip_configurations:
+      #        gitops:
+      #          name: ipconfig
+      #          lz_key: launchpad
+      #          vnet_key: vnet_region1
+      #          subnet_key: containergroups

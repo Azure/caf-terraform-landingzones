@@ -89,12 +89,14 @@ jobs:
           fi
 
           ansible-playbook $(readlink -f ./landingzones/templates/ansible/ansible.yaml) \
-            --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)" \
-            -e AGENT_TOKEN=${{ secrets.RUNNER_REGISTRATION_TOKEN }} \
+            --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)" \            
             -e RUNNER_NUMBERS=${{ secrets.RUNNER_NUMBERS }} \
             -e AZURE_OBJECT_ID=${{ secrets.AZURE_OBJECT_ID }} \
             -e GITHUB_SERVER_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY} \
+            -e GITHUB_ORG_REPO=${GITHUB_ORG}/${GITHUB_REPOSITORY} \
             -e base_folder=$(pwd)
+
+            # -e AGENT_TOKEN=${{ secrets.RUNNER_REGISTRATION_TOKEN }} \
 
 
       - name: Update pull Request

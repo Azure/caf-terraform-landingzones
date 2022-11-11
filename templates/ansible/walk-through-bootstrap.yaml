@@ -16,7 +16,7 @@
     - name: customer_name
       prompt: Set the short version of your customer name with no spaces
       private: no
-      default: contoso
+      default: bsdev
 
     - name: input_caf_environment
       prompt: Set the CAF Environment value
@@ -36,19 +36,19 @@
     - name: alz_mg_name
       prompt: Management group name
       private: no
-      default: Contoso
+      default: BSDev
 
     - name: default_email_address
       prompt: Email address to send all notifications
       private: no
-      default: email@address.com
+      default: support@blinq.no
 
     - name: azure_regions
       prompt: Azure regions (lowercase, short version)
       private: no
       default:
-        region1: australiaeast
-        region2: australiacentral
+        region1: westeurope
+        region2: norwayeast
 
     - name: default_region_key
       prompt: Default CAF Azure region key
@@ -59,8 +59,6 @@
       prompt: "github or tfcloud. Select the gitops agent you are using to deploy the landing zones."
       private: no
       default: github
-
-
 
   tasks:
 

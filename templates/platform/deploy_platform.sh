@@ -10,6 +10,7 @@ echo ${params} | xargs
 echo "sub_management: ${sub_management}"
 
 ansible-playbook /tf/caf/landingzones/templates/ansible/walk-through-bootstrap.yaml \
+  -e GITHUB_ORG_REPO="$GITHUB_ORG/$GITHUB_REPOSITORY" \
   -e public_templates_folder=/tf/caf/landingzones/templates \
   -e landingzones_folder=/tf/caf/landingzones \
   -e platform_configuration_folder=/tf/caf/configuration \
