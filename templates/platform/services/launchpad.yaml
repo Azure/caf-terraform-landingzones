@@ -99,13 +99,13 @@ launchpad:
                 is_manual_connection: false
                 subresource_names:
                   - blob
-{% if private_endpoints is defined and private_dns is defined %}
+                  
               private_dns:
                 zone_group_name: gitops
                 lz_key: launchpad
                 keys: 
                   - privatelink.blob.core.windows.net
-{% endif %}
+
 {% endif %}
           tags:
             ## Those tags must never be changed after being set as they are used by the rover to locate the launchpad and the tfstates.
@@ -160,13 +160,13 @@ launchpad:
                 is_manual_connection: false
                 subresource_names:
                   - blob
-{% if private_endpoints is defined and private_dns is defined %}
+
               private_dns:
                 zone_group_name: gitops
                 lz_key: launchpad
                 keys: 
                   - privatelink.blob.core.windows.net
-{% endif %}
+
 {% endif %}
           tags:
             ## Those tags must never be changed after being set as they are used by the rover to locate the launchpad and the tfstates.
@@ -221,12 +221,12 @@ launchpad:
                 is_manual_connection: false
                 subresource_names:
                   - blob
-{% if private_endpoints is defined and private_dns is defined %}
+
               private_dns:
                 zone_group_name: gitops
-                ids:
-                  - {{ private_dns[env|default('prod')]["privatelink.blob.core.windows.net"].id }}
-{% endif %}
+                lz_key: launchpad
+                keys: 
+                  - privatelink.blob.core.windows.net
 {% endif %}
           tags:
             ## Those tags must never be changed after being set as they are used by the rover to locate the launchpad and the tfstates.
@@ -269,13 +269,13 @@ launchpad:
                 is_manual_connection: false
                 subresource_names:
                   - vault
-{% if private_endpoints is defined and private_dns is defined %}
+
               private_dns:
                 zone_group_name: gitops
                 lz_key: launchpad
                 keys: 
-                  - privatelink.blob.core.windows.net
-{% endif %}
+                  - privatelink.vaultcore.azure.net
+                  
 {% endif %}
 {% if keyvault_enable_rbac_authorization == false %}
           creation_policies:
@@ -325,12 +325,13 @@ launchpad:
                 is_manual_connection: false
                 subresource_names:
                   - vault
-{% if private_endpoints is defined and private_dns is defined %}
+
               private_dns:
                 zone_group_name: gitops
-                ids:
-                  - {{ private_dns[env|default('prod')]["privatelink.vaultcore.azure.net"].id }}
-{% endif %}
+                lz_key: launchpad
+                keys: 
+                  - privatelink.vaultcore.azure.net
+                  
 {% endif %}
 {% if keyvault_enable_rbac_authorization == false %}
           creation_policies:
@@ -380,13 +381,13 @@ launchpad:
                 is_manual_connection: false
                 subresource_names:
                   - vault
-{% if private_endpoints is defined and private_dns is defined %}
+
               private_dns:
                 zone_group_name: gitops
                 lz_key: launchpad
                 keys: 
-                  - privatelink.blob.core.windows.net
-{% endif %}
+                  - privatelink.vaultcore.azure.net
+                  
 {% endif %}
 {% if keyvault_enable_rbac_authorization == false %}
           creation_policies:
