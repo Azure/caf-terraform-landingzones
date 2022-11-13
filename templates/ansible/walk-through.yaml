@@ -17,7 +17,7 @@
 - name: Get az service-principle id
   shell: az account show | jq -r .id
   register: az_sp_id
-  when: az_user_type.stdout == "servicePrincipal" and az_sp_id undefined
+  when: az_user_type.stdout == "servicePrincipal" and az_sp_id is undefined
 
 - debug: 
     var: az_sp_id
