@@ -2,10 +2,24 @@
 # Get launchpad subscription details
 #
 
-- name: Get deployment user object_id (make sure you are logged-in to the launchpad Azure subscription first.)
+- name: Get user type logged in with azure
+  shell: az account show | jq -r .user.type
+  register: az_user_type
+
+- name: Get deployment user object_id when normal user (make sure you are logged-in to the launchpad Azure subscription first.)
   shell: az ad signed-in-user show --query id -o tsv
   register: bash_object_id
-  when: AZURE_OBJECT_ID is undefined
+  when: AZURE_OBJECT_ID is undefined and az_user_type == "user"
+
+- name: Get az service-principle id
+  shell: az account show | jq -r .id
+  register: az_sp_id
+  when: az_user_type == "servicePrincipal"
+
+- name: Get object id when service principal
+  shell: az ad sp show --id {{az_sp_id}} --query id --out tsv
+  register: bash_object_id
+  when: bash_object_id is undefined and az_sp_id is defined and az_user_type == "servicePrincipal"
 
 - name: Get deployment user UPN
   shell: az ad signed-in-user show --query userPrincipalName -o tsv
