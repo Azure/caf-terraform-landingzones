@@ -15,7 +15,7 @@
   when: az_user_type.stdout == "user" and AZURE_OBJECT_ID is undefined
 
 - name: Get az service-principle id
-  shell: az account show | jq -r .id
+  shell: az account show | jq -r .user.name
   register: az_sp_id
   when: az_user_type.stdout == "servicePrincipal"
 
