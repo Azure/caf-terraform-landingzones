@@ -12,12 +12,12 @@
 - name: Get deployment user object_id when normal user (make sure you are logged-in to the launchpad Azure subscription first.)
   shell: az ad signed-in-user show --query id -o tsv
   register: bash_object_id
-  # when: AZURE_OBJECT_ID is undefined and az_user_type == "user"
+  when: az_user_type.stdout == "user" and AZURE_OBJECT_ID is undefined
 
 - name: Get az service-principle id
   shell: az account show | jq -r .id
   register: az_sp_id
-  # when: az_user_type == "servicePrincipal"
+  when: az_user_type.stdout == "servicePrincipal" and az_sp_id undefined
 
 - debug: 
     var: az_sp_id
@@ -25,7 +25,7 @@
 - name: Get object id when service principal
   shell: az ad sp show --id {{az_sp_id}} --query id --out tsv
   register: bash_object_id
-  # when: bash_object_id is undefined and az_sp_id is defined and az_user_type == "servicePrincipal"
+  when: bash_object_id is undefined and az_sp_id is defined and az_user_type.stdout == "servicePrincipal"
 
 - debug:
     var: bash_object_id
