@@ -6,9 +6,8 @@
   shell: az account show | jq -r .user.type
   register: az_user_type
 
-- debug: Output az_user_type
-    msg: 
-      - "{{ az_user_type }}"
+- debug: 
+    var: az_user_type
 
 - name: Get deployment user object_id when normal user (make sure you are logged-in to the launchpad Azure subscription first.)
   shell: az ad signed-in-user show --query id -o tsv
@@ -20,18 +19,16 @@
   register: az_sp_id
   # when: az_user_type == "servicePrincipal"
 
-- debug: Output az_sp_id
-    msg: 
-      - "{{ az_sp_id }}"
+- debug: 
+    var: az_sp_id
 
 - name: Get object id when service principal
   shell: az ad sp show --id {{az_sp_id}} --query id --out tsv
   register: bash_object_id
   # when: bash_object_id is undefined and az_sp_id is defined and az_user_type == "servicePrincipal"
 
-- debug: Output bash_object_id
-    msg: 
-      - "{{ bash_object_id }}"
+- debug:
+    var: bash_object_id
 
 - name: Get deployment user UPN
   shell: az ad signed-in-user show --query userPrincipalName -o tsv
