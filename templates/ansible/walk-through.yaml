@@ -33,7 +33,7 @@
 - name: Get deployment user UPN
   shell: az ad signed-in-user show --query userPrincipalName -o tsv
   register: bash_upn
-  when: az_user_type.stdout == "user" and upn_owner is not defined # updates this when you have debug output
+  when: az_user_type.stdout == "user" and upn_owner is not defined
 
 - name: Get default user's tenant name
   shell: az rest --method get --url "https://graph.microsoft.com/v1.0/organization" --query "value[0].verifiedDomains[?isDefault].name" -o tsv
@@ -77,7 +77,7 @@
     regions:  "{{ azure_regions }}"
     deployment_mode: "platform"
     object_id: "{{ bash_object_id.stdout | default(AZURE_OBJECT_ID) }}"
-    upn: "{{ upn_owner | default(bash_upn.stdout) }}"
+    # upn: "{{ upn_owner | default(bash_upn.stdout) }}"                    # //blinQ: Need to find solution for this when we run as serviceprincipal. Not required for NCE CSP partners.
     tenant_name: "{{ tenant_name | default(bash_tenant_name.stdout) }}"
     base_folder: "{{ base_folder | default('/tf/caf') }}"
     PUBLIC_IP_WHITE_LIST: "{{ [public_ip.stdout] }}"
@@ -87,7 +87,7 @@
       - "{{ regions }}"
       - "{{ customer_name }}"
       - "{{ object_id }}"
-      - "{{ upn }}"
+      # - "{{ upn }}"
       - "{{ base_folder }}"
       - "{{ input_caf_environment if input_caf_environment is defined else TF_VAR_environment }}"
 

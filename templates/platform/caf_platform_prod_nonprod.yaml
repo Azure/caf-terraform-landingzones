@@ -122,15 +122,15 @@ billing_subscription_role_delegations:
   enable: false
   # Azure Active Directory User (UPN) that is Account Owner in the EA portal
   # if enable=false, set the upn of the user doing the manual deployment
-  azuread_user_ea_account_owner: {{bootstrap.azuread_user_ea_account_owner | default(upn)}}
+  # azuread_user_ea_account_owner: {{bootstrap.azuread_user_ea_account_owner | default(upn)}}
   # see comments above to get the object_id
   #
   # Also set this GUID to the owner of the launchpad azuread_groups
   #
-  azuread_user_ea_account_owner_object_id: {{bootstrap.ea_owner_object_id | default(object_id)}}
+  # azuread_user_ea_account_owner_object_id: {{bootstrap.ea_owner_object_id | default(object_id)}}
   # Only set the following two attributes when enable=true
-  billing_account_name: <replace>
-  enrollment_account_name: <replace>
+  # billing_account_name: <replace>
+  # enrollment_account_name: <replace>
 
 initial_subscriptions:
   launchpad:  # Do not rename the key
