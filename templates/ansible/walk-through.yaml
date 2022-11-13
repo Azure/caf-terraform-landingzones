@@ -23,7 +23,7 @@
     var: az_sp_id
 
 - name: Get deployment serviceprincipal object id when service principal (make sure you are logged-in to the launchpad Azure subscription first.)
-  shell: az ad sp show --id {{az_sp_id.stdout}} --query id --out tsv
+  shell: az ad sp show --id "{{ az_sp_id.stdout }}" --query id --out tsv
   register: bash_object_id
   when: az_user_type.stdout == "servicePrincipal" and AZURE_OBJECT_ID is undefined
 
