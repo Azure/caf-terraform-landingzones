@@ -7,7 +7,7 @@
 
 - name: "Process 1 deployment file {{stage}}/{{region}}"
   set_fact:
-    "{{stage}}_{{region}}_{{item}}_deployment__to_merge": "{{ lookup('template', {{ platform_service_folder }}/{{ bootstrap.deployments[deployment_mode][stage][region][item] }}) | from_yaml }}"
+    "{{stage}}_{{region}}_{{item}}_deployment__to_merge": "{{ lookup('template', '{{ platform_service_folder + \"/\" + bootstrap.deployments[deployment_mode][stage][region][item]}}') | from_yaml }}"
   loop: "{{topology.deployments[deployment_mode][stage][region].keys()}}"
   when: 
     - stage == 'root' or stage == 'alz'
