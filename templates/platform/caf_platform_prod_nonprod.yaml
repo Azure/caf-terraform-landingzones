@@ -43,6 +43,9 @@ default_rover_image: aztfmod/rover:1.3.4-2211.0822
 gitops_default_rover_image: aztfmod/rover-agent:1.3.4-2211.0822-github
 {% elif gitops_pipelines == 'tfcloud' %}
 gitops_default_rover_image: aztfmod/rover-agent:1.3.4-2211.0822-tfc
+{% elif gitops_pipelines != 'tfcloud' %}
+# Temp debug activity
+gitops_default_rover_image: aztfmod/rover-agent:1.3.4-2211.0822-github
 {% endif %}
 
 caf_regions:
