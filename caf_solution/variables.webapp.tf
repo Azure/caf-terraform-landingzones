@@ -27,3 +27,6 @@ variable "azurerm_application_insights" {
 variable "function_apps" {
   default = {}
 }
+variable "static_sites" {
+  default = {}
+}
