@@ -53,6 +53,28 @@ management:
                 lz_key: launchpad
                 vnet_key: vnet_region1
                 subnet_key: level0
+{% if private_endpoints is defined %}
+          private_endpoints:
+            nsgflogs:
+              name: stg-nsgflogs
+              resource_group_key: level0
+              vnet_key: vnet_region1
+              subnet_key: level0
+              private_service_connection:
+                name: stg-nsgflogs-link
+                is_manual_connection: false
+                subresource_names:
+                  - blob
+                  - table
+                  - dfs
+                  
+              private_dns:
+                zone_group_name: gitops
+                lz_key: launchpad
+                keys: 
+                  - privatelink.blob.core.windows.net
+
+{% endif %}
 
       diagnostic_log_analytics:
         # if you change this key you also need to change it in the alz deployment
