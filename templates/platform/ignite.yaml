@@ -3,7 +3,7 @@ bootstrap:
   enable_azuread_groups: True
   enable_azuread_applications: True
 
-  enable_azure_subscription_vending_machine: False
+  enable_azure_subscription_vending_machine: True
 
   management_groups:
     region1:
