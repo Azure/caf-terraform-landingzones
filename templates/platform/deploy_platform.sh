@@ -9,7 +9,7 @@ params=$(echo ${@} | xargs -n1 | xargs -I@ echo "-e @ " )
 echo ${params} | xargs
 echo "sub_management: ${sub_management}"
 
-tmp1=$(git remote -v | grep origin | tail -1 )
+tmp1=$(git remote -v | grep origin | head -1 )
 tmp2=${tmp1% *}
 tmp3=${tmp2#*//*/}
 export GITHUB_REMOTE="https://github.com/${tmp3}"

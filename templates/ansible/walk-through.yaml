@@ -12,7 +12,7 @@
 - name: Get deployment user object_id when normal user (make sure you are logged-in to the launchpad Azure subscription first.)
   shell: az ad signed-in-user show --query id -o tsv
   register: bash_object_id
-  when: az_user_type.stdout == "user" and AZURE_OBJECT_ID is undefined
+  when: az_user_type.stdout == "user" and AZURE_OBJECT_ID is not defined
 
 - name: Get az service-principle id
   shell: az account show | jq -r .user.name
@@ -25,7 +25,7 @@
 - name: Get deployment serviceprincipal object id when service principal (make sure you are logged-in to the launchpad Azure subscription first.)
   shell: az ad sp show --id "{{ az_sp_id.stdout }}" --query id --out tsv
   register: bash_object_id
-  when: az_user_type.stdout == "servicePrincipal" and AZURE_OBJECT_ID is undefined
+  when: az_user_type.stdout == "servicePrincipal" and AZURE_OBJECT_ID is not defined
 
 - debug:
     var: bash_object_id
@@ -76,7 +76,7 @@
 - set_fact:
     regions:  "{{ azure_regions }}"
     deployment_mode: "platform"
-    object_id: "{{ bash_object_id.stdout | default(AZURE_OBJECT_ID) }}"
+    object_id: "{{ bash_object_id.stdout }}"
     # upn: "{{ upn_owner | default(bash_upn.stdout) }}"                    # //blinQ: Need to find solution for this when we run as serviceprincipal. Not required for NCE CSP partners.
     tenant_name: "{{ tenant_name | default(bash_tenant_name.stdout) }}"
     base_folder: "{{ base_folder | default('/tf/caf') }}"
