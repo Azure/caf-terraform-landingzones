@@ -37,6 +37,17 @@ rover \
 
 ```
 
+```bash
+# On success, re-execute the rover ignite
+
+ansible-playbook $(readlink -f ./landingzones/templates/ansible/ansible.yaml) \
+  -e base_folder=$(pwd) \
+  -e rover_bootstrap=false \
+  -e topology_file=$(readlink -f ./platform/definition/ignite.yaml) \
+  --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)"
+
+```
+
 
 # Next steps
 
