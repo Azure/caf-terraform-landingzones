@@ -1,0 +1,61 @@
+kind: containerapp
+location: #location#
+name: #aca_name#
+resourceGroup: #resource_group#
+type: Microsoft.App/containerApps
+properties:
+  managedEnvironmentId: #aca_env_id#
+  configuration:
+    activeRevisionsMode: single
+    secrets:
+      - name: queue-conn-string
+        value: #queue_conn_string#
+      - name: gh-token
+        value: #gh_token#
+      - name: acr-password
+        value: #registry_password#
+    ingress:
+      allowInsecure: false
+      external: false
+      targetPort: 1234
+    registries:
+      - server: #registry_server#
+        username: #registry_username#
+        passwordSecretRef: acr-password
+  template:
+    revisionSuffix: 1
+    containers:
+      - image: #registry_server#/#target_image_tag#
+        name: rover-runner
+        env:
+          - name: EPHEMERAL
+            value: "true"
+          - name: GH_OWNER
+            value: #gh_owner#
+          - name: GH_REPOSITORY
+            value: #gh_repository#
+          - name: GH_TOKEN
+            secretRef: gh-token
+          - name: LABELS
+            value: platform
+          - name: URL
+            value: https://github.com/#gh_owner#/#gh_repository#
+          - name: USERNAME
+            value: vscode
+        resources:
+          cpu: 2
+          memory: 4Gi
+    scale:
+      minReplicas: 0
+      maxReplicas: 30
+      rules:
+        - name: auto-scale
+          custom:
+            type: azure-queue
+            auth:
+              - secretRef: queue-conn-string
+                triggerParameter: connection
+            metadata:
+              queueLength: 1
+              queueName: #queue_name#
+              accountName: #queue_account_name#

@@ -1,0 +1,23 @@
+# - name: file l3 {{level}}
+#   debug:
+#     msg: 
+#       - "level3: {{level3}}"
+#       - "item: {{item}}"
+#       - "index: {{index}}"
+#       - "input: {{input}}"
+#       - "{{input[level3]}}"
+#       - "{{input[level3] | type_debug}}"
+
+
+- name: Template to load {{input[level3]}})
+  set_fact:
+    yaml_files_to_process: "{{yaml_files_to_process + [input[level3]]}}"
+  when: 
+    - (input[level3] | type_debug) == "str"
+
+# - name: Template to load {{input[level3]}})
+#   debug:
+#     msg: 
+#       - "{{input[level3]}}"
+#   when: 
+#     - (input[level3]  | type_debug) == "str"

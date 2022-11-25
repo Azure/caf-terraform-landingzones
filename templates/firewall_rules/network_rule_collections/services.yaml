@@ -4,15 +4,18 @@ services:
   rules:
     ntp:
       name: ntp
-      source_addresses: ["*"]
+      source_addresses: 
+        - "*"
       destination_ports:
         - 123
-      destination_addresses: ["*"]
+      destination_addresses: 
+        - "*"
       protocols:
         - UDP
     dns:
       name: dns
-      source_addresses: ["*"]
+      source_addresses: 
+        - "*"
       destination_ports:
         - 53
       destination_addresses:
@@ -28,7 +31,7 @@ services:
     service_bus:
       name: service bus
       source_addresses:
-        {{ private_dns_firewalls_vnets[env | default('prod')].vnet.address_space | to_nice_yaml }}
+        {{ private_dns_firewalls_vnets[env | default('prod')].vnet.address_space | from_yaml }}
       destination_ports:
         - 5671
       destination_addresses:

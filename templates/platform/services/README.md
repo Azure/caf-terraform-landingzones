@@ -23,6 +23,7 @@ rover login -t {{ azure_landing_zones.identity.tenant_name | default(tenant_name
 
 ansible-playbook $(readlink -f ./landingzones/templates/ansible/ansible.yaml) \
   --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)" \
+  -e topology_file="$(readlink -f ./platform/definition/ignite.yaml)" \
   -e base_folder=$(pwd)
 
 ```
@@ -59,7 +60,6 @@ ansible-playbook $(readlink -f ./landingzones/templates/ansible/walk-through-ci.
   -e topology_file=$(readlink -f ./platform/definition/ignite.yaml) \
   -e GITOPS_SERVER_URL={{GITOPS_SERVER_URL}} \
   -e RUNNER_NUMBERS={{ RUNNER_NUMBERS }} \
-  -e AGENT_TOKEN={{ AGENT_TOKEN }} \
   -e gitops_agent={{gitops_agent}} \
   -e ROVER_AGENT_DOCKER_IMAGE={{ROVER_AGENT_DOCKER_IMAGE}} \
   -e subscription_deployment_mode={{subscription_deployment_mode}} \

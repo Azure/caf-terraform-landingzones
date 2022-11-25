@@ -6,17 +6,17 @@ caf_terraform_lz:
       name: gitops bootstrap to asvm
       source_addresses:
 {% if vnet_launchpad is defined and vnet_launchpad != "" %}
-        {{ vnet_launchpad.vnet_region1.address_space | to_nice_yaml }}
+        {{ vnet_launchpad.vnet_region1.address_space | from_yaml }}
 {% else %}
-        {{ variables.variables_cidr.platform.launchpad.region1[env | default('prod')].address_prefixes | to_nice_yaml }}
+        {{ variables.variables_cidr.platform.launchpad.region1[env | default('prod')].address_prefixes | from_yaml }}
 {% endif %}
       destination_ports:
         - 443
       destination_addresses:
 {% if vnet_asvm is defined and vnet_asvm != "" %}
-        {{ vnet_asvm.vnet_region1.address_space | to_nice_yaml }}
+        {{ vnet_asvm.vnet_region1.address_space | from_yaml }}
 {% else %}
-        {{ variables.variables_cidr.platform.asvm.region1[env | default('prod')].address_prefixes | to_nice_yaml }}
+        {{ variables.variables_cidr.platform.asvm.region1[env | default('prod')].address_prefixes | from_yaml }}
 {% endif %}
       protocols:
         - TCP

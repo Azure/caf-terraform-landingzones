@@ -106,17 +106,32 @@
     ignore_unknown_extensions: true
     files_matching: "_variables"
 
+- set_fact:
+    yaml_files_to_process: []
+
 - name: "Getting source templates from {{platform_service_folder}}"
-  find:
-    paths: "{{platform_service_folder}}"
-    recurse: yes
-    patterns: ["*.yaml","*.j2"]
-    file_type: file
-    excludes: "*.caf.platform.yaml"
-  register: yaml_files_to_process
+  include_tasks: process_template_file.yaml
+  loop: "{{topology.deployments.platform.keys()}}"
+  vars:
+    input: "{{topology.deployments.platform[item]}}"
+    level: 0
+    source: "{{topology.deployments.platform}}"
+
+- set_fact:
+    yaml_files_to_process: "{{yaml_files_to_process | list | unique}}"
+
+# - name: "Getting source templates from {{platform_service_folder}}"
+#   find:
+#     paths: "{{platform_service_folder}}"
+#     recurse: yes
+#     patterns: ["*.yaml","*.j2"]
+#     file_type: file
+#     excludes: "*.caf.platform.yaml"
+#   register: yaml_files_to_process
   
 - debug:
     msg: 
+      - "templates to load: {{yaml_files_to_process}}"
       - "variables: {{variables}}"
       - "topology: {{topology}}"
       - "item: {{item is defined}}"

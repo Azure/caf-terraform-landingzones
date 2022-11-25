@@ -76,7 +76,7 @@ asvm:
               vnet_key: vnet_region1
               subnet_key: level3
               private_service_connection:
-                name: stg-level3-link
+                name: stg-level3
                 is_manual_connection: false
                 subresource_names:
                   - blob
@@ -128,7 +128,7 @@ asvm:
               vnet_key: vnet_region1
               subnet_key: level4
               private_service_connection:
-                name: stg-level4-link
+                name: stg-level4
                 is_manual_connection: false
                 subresource_names:
                   - blob

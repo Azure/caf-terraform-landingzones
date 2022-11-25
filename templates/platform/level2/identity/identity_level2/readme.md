@@ -7,19 +7,19 @@ Deploy the identity services
 rover logout
 
 # login a with a user member of the caf-maintainers group
-rover login -t {{ resources.azure_landing_zones.identity.tenant_name }}
+rover login -t {{ azure_landing_zones.identity.tenant_name }}
 
 rover \
-{% if resources.azure_landing_zones.identity.azuread_identity_mode != "logged_in_user" and keyvaults is defined and keyvaults[tfstate_object.identity_aad_key] is defined %}
+{% if azure_landing_zones.identity.azuread_identity_mode != "logged_in_user" and keyvaults is defined and keyvaults[tfstate_object.identity_aad_key] is defined %}
   --impersonate-sp-from-keyvault-url {{ keyvaults.cred_identity.vault_uri }} \
 {% endif %}
   -lz {{ landingzones_folder }}/caf_solution \
   -var-folder {{ destination_path }} \
-  -tfstate_subscription_id {{ resources.caf_launchpad.subscription_id }} \
+  -tfstate_subscription_id {{ caf_launchpad.subscription_id }} \
   -target_subscription {{ platform_subscriptions_details.identity.subscription_id }} \
   -tfstate {{ resources.tfstates.platform.identity_level2[deployment].tfstate }} \
   -log-severity {{ resources.gitops.rover_log_error }} \
-  -env {{ resources.caf_environment }} \
+  -env {{ caf_environment }} \
   -level {{ level }} \
   -p ${TF_DATA_DIR}/{{ resources.tfstates.platform.identity_level2[deployment].tfstate }}.tfplan \
   -a plan

@@ -64,11 +64,6 @@ launchpad:
               - {{ ip }}
 {% endfor %}
 {% endif %}
-            subnets:
-              gitops:
-                lz_key: launchpad
-                vnet_key: vnet_region1
-                subnet_key: gitops
 {% if private_endpoints is defined %}
           private_endpoints:
             level0:
@@ -86,6 +81,11 @@ launchpad:
                 zone_group_name: default
                 ids:
                   - {{ private_dns[env|default('prod')]["privatelink.blob.core.windows.net"].id }}
+{% else %}
+              private_dns:
+                zone_group_name: default
+                keys: 
+                  - privatelink.blob.core.windows.net
 {% endif %}
 {% endif %}
           tags:
@@ -123,11 +123,6 @@ launchpad:
               - {{ ip }}
 {% endfor %}
 {% endif %}
-            subnets:
-              gitops:
-                lz_key: launchpad
-                vnet_key: vnet_region1
-                subnet_key: gitops
 {% if private_endpoints is defined %}
           private_endpoints:
             level1:
@@ -145,6 +140,11 @@ launchpad:
                 zone_group_name: default
                 ids:
                   - {{ private_dns[env|default('prod')]["privatelink.blob.core.windows.net"].id }}
+{% else %}
+              private_dns:
+                zone_group_name: default
+                keys: 
+                  - privatelink.blob.core.windows.net
 {% endif %}
 {% endif %}
           tags:
@@ -182,11 +182,6 @@ launchpad:
               - {{ ip }}
 {% endfor %}
 {% endif %}
-            subnets:
-              gitops:
-                lz_key: launchpad
-                vnet_key: vnet_region1
-                subnet_key: gitops
 {% if private_endpoints is defined %}
           private_endpoints:
             level2:
@@ -204,6 +199,11 @@ launchpad:
                 zone_group_name: default
                 ids:
                   - {{ private_dns[env|default('prod')]["privatelink.blob.core.windows.net"].id }}
+{% else %}
+              private_dns:
+                zone_group_name: default
+                keys: 
+                  - privatelink.blob.core.windows.net
 {% endif %}
 {% endif %}
           tags:
@@ -212,6 +212,50 @@ launchpad:
             caf_environment: {{ caf_environment }}
             caf_launchpad: launchpad
             caf_tfstate: level2
+        # Storage account to store Keda autoscaler queue
+        kedaplz:
+          name: kedaplz
+          resource_group_key: gitops
+          account_kind: StorageV2
+          account_tier: Standard
+          shared_access_key_enabled: false
+          account_replication_type: GRS
+          network:
+            bypass: 
+              - Logging
+              - Metrics
+              - AzureServices
+            default_action: Deny
+{% if PUBLIC_IP_WHITE_LIST is defined %}
+            ip_rules:
+{% for ip in PUBLIC_IP_WHITE_LIST %}
+              - {{ ip }}
+{% endfor %}
+{% endif %}
+{% if private_endpoints is defined %}
+          private_endpoints:
+            kedaplz:
+              name: stg-kedaplz
+              resource_group_key: gitops
+              vnet_key: vnet_region1
+              subnet_key: gitops
+              private_service_connection:
+                name: stg-kedaplz
+                is_manual_connection: false
+                subresource_names:
+                  - queue
+{% if private_endpoints is defined and private_dns is defined and private_dns[env|default('prod')] != '' %}
+              private_dns:
+                zone_group_name: default
+                ids:
+                  - {{ private_dns[env|default('prod')]["privatelink.queue.core.windows.net"].id }}
+{% else %}
+              private_dns:
+                zone_group_name: default
+                keys: 
+                  - privatelink.queue.core.windows.net
+{% endif %}
+{% endif %}
 
       keyvaults:
         level0:
@@ -229,11 +273,6 @@ launchpad:
               - {{ ip }}
 {% endfor %}
 {% endif %}
-            subnets:
-              gitops:
-                lz_key: launchpad
-                vnet_key: vnet_region1
-                subnet_key: gitops
 {% if private_endpoints is defined %}
           private_endpoints:
             level0:
@@ -251,6 +290,11 @@ launchpad:
                 zone_group_name: default
                 ids:
                   - {{ private_dns[env|default('prod')]["privatelink.vaultcore.azure.net"].id }}
+{% else %}
+              private_dns:
+                zone_group_name: default
+                keys: 
+                  - privatelink.vaultcore.azure.windows.net
 {% endif %}
 {% endif %}
 {% if keyvault_enable_rbac_authorization == false %}
@@ -283,11 +327,6 @@ launchpad:
               - {{ ip }}
 {% endfor %}
 {% endif %}
-            subnets:
-              gitops:
-                lz_key: launchpad
-                vnet_key: vnet_region1
-                subnet_key: gitops
 {% if private_endpoints is defined %}
           private_endpoints:
             level1:
@@ -305,6 +344,11 @@ launchpad:
                 zone_group_name: default
                 ids:
                   - {{ private_dns[env|default('prod')]["privatelink.vaultcore.azure.net"].id }}
+{% else %}
+              private_dns:
+                zone_group_name: default
+                keys: 
+                  - privatelink.vaultcore.azure.windows.net
 {% endif %}
 {% endif %}
 {% if keyvault_enable_rbac_authorization == false %}
@@ -337,11 +381,6 @@ launchpad:
               - {{ ip }}
 {% endfor %}
 {% endif %}
-            subnets:
-              gitops:
-                lz_key: launchpad
-                vnet_key: vnet_region1
-                subnet_key: gitops
 {% if private_endpoints is defined %}
           private_endpoints:
             level2:
@@ -359,6 +398,11 @@ launchpad:
                 zone_group_name: default
                 ids:
                   - {{ private_dns[env|default('prod')]["privatelink.vaultcore.azure.net"].id }}
+{% else %}
+              private_dns:
+                zone_group_name: default
+                keys: 
+                  - privatelink.vaultcore.azure.windows.net
 {% endif %}
 {% endif %}
 {% if keyvault_enable_rbac_authorization == false %}
@@ -825,6 +869,14 @@ launchpad:
                   keys:
                     - subscription_creation_landingzones
                     - caf_platform_contributors
+            kedaplz:
+              Storage Queue Data Contributor:
+                azuread_groups:
+                  keys:
+                    - level0
+                object_ids:
+                  keys:
+                    - {{bootstrap_sp_object_id}}
 
           keyvaults:
             level0:
@@ -870,12 +922,21 @@ launchpad:
                     - subscription_creation_platform
                     - caf_platform_contributors
 
+          azure_container_registries:
+            platform:
+              AcrPull:
+                managed_identities:
+                  keys:
+                    - gitops
+
 
       virtual_networks:
         vnet_region1:
           resource_group_key: gitops
           name: gitops
-          address_space: ["10.100.0.0/24"]
+          address_space:
+            - 10.101.10.0/24
+            - 10.101.8.0/23
 {% if secure_firewalls_resources is defined and secure_firewalls_resources[env | default('prod')] != "" %}
           dns_servers:
             - {{ secure_firewalls_resources[env | default('prod')].fw_secure_prod.virtual_hub[0].private_ip_address }}
@@ -883,51 +944,27 @@ launchpad:
           subnets:
             level0:
               name: level0
-              cidr: ["10.100.0.0/27"]
-              service_endpoints:
-                - Microsoft.KeyVault
-                - Microsoft.Storage
-{% if private_endpoints is defined %}
+              cidr: ["10.101.10.0/27"]
               enforce_private_link_endpoint_network_policies: true
-{% endif %}
             level1:
               name: level1
-              cidr: ["10.100.0.32/27"]
-              service_endpoints:
-                - Microsoft.KeyVault
-                - Microsoft.Storage
-{% if private_endpoints is defined %}
+              cidr: ["10.101.10.32/27"]
               enforce_private_link_endpoint_network_policies: true
-{% endif %}
             level2:
               name: level2
-              cidr: ["10.100.0.64/27"]
-              service_endpoints:
-                - Microsoft.KeyVault
-                - Microsoft.Storage
-{% if private_endpoints is defined %}
+              cidr: ["10.101.10.64/27"]
               enforce_private_link_endpoint_network_policies: true
-{% endif %}
             credentials:
               name: credentials
-              cidr: ["10.100.0.96/27"]
-              service_endpoints:
-                - Microsoft.KeyVault
-                - Microsoft.Storage
-{% if private_endpoints is defined %}
+              cidr: ["10.101.10.96/27"]
               enforce_private_link_endpoint_network_policies: true
-{% endif %}
             gitops:
               name: gitops
-              cidr: ["10.100.0.128/27"]
-              service_endpoints:
-                - Microsoft.KeyVault
-                - Microsoft.Storage
-              delegation:
-                name: Microsoft.ContainerInstance/containerGroups
-                service_delegation: Microsoft.ContainerInstance/containerGroups
-                actions:
-                  - Microsoft.Network/virtualNetworks/subnets/action
+              cidr: ["10.101.10.128/27"]
+              enforce_private_link_endpoint_network_policies: true
+            runners:
+              name: runners
+              cidr: ["10.101.8.0/23"]
 
 {% if virtual_hubs_resources is defined %}
       virtual_hub_connections:
@@ -947,3 +984,85 @@ launchpad:
                 ids: # Route internet traffic through firewall manager (private traffic)
                   - {{ virtual_hubs_resources[env | default('prod')].prod.id }}/hubRouteTables/noneRouteTable
 {% endif %}
+
+      azure_container_registries:
+        platform:
+          name: platform
+          resource_group_key: gitops
+          sku: Premium
+          public_network_access_enabled: true
+          admin_enabled: true
+          network_rule_set:
+            whitelist:
+              default_action: Deny
+{% if PUBLIC_IP_WHITE_LIST is defined %}
+              ip_rules:
+{% for ip in PUBLIC_IP_WHITE_LIST %}
+                rule_{{loop.index}}:
+                  ip_range: {{ ip }}
+{% endfor %}
+{% endif %}
+{% if private_endpoints is defined %}
+          private_endpoints:
+            platform:
+              name: acr-platform
+              resource_group_key: gitops
+              vnet_key: vnet_region1
+              subnet_key: gitops
+              private_service_connection:
+                name: acr-platform
+                is_manual_connection: false
+                subresource_names:
+                  - registry
+{% if private_endpoints is defined and private_dns is defined and private_dns[env|default('prod')] != '' %}
+              private_dns:
+                zone_group_name: default
+                ids:
+                  - {{ private_dns[env|default('prod')]["privatelink.azurecr.io"].id }}
+{% else %}
+              private_dns:
+                zone_group_name: default
+                keys: 
+                  - privatelink.azurecr.io
+{% endif %}
+{% endif %}
+
+      managed_identities:
+        gitops:
+          name: gitops-platform-landingzones
+          resource_group_key: gitops
+
+      storage_account_queues:
+        keda:
+          name: caf-terraform-platform-landgingzones
+          storage_account_key: kedaplz
+
+      private_dns:
+        privatelink.azurecr.io:
+          name: privatelink.azurecr.io
+          resource_group_key: gitops
+          vnet_links:
+            vnet_region1:
+              name: gitops-region1
+              vnet_key: vnet_region1
+        privatelink.blob.core.windows.net:
+          name: privatelink.blob.core.windows.net
+          resource_group_key: gitops
+          vnet_links:
+            vnet_region1:
+              name: gitops-region1
+              vnet_key: vnet_region1
+        privatelink.queue.core.windows.net:
+          name: privatelink.queue.core.windows.net
+          resource_group_key: gitops
+          vnet_links:
+            vnet_region1:
+              name: gitops-region1
+              vnet_key: vnet_region1
+        privatelink.vaultcore.azure.net:
+          name: privatelink.vaultcore.azure.net
+          resource_group_key: gitops
+          vnet_links:
+            vnet_region1:
+              name: gitops-region1
+              vnet_key: vnet_region1

@@ -22,7 +22,7 @@ concurrency:
 env:
   LZ_REPO: '{{resources.terraform_code_repository | default(topology.terraform_code_repository)}}'
   LZ_BRANCH: '{{resources.caf_landingzone_branch | default(topology.caf_landingzone_branch)}}'
-  CAF_ENVIRONMENT: {{resources.caf_environment | default(caf_environment)}}
+  CAF_ENVIRONMENT: {{caf_environment | default(caf_environment)}}
 
 jobs:
 {% raw %}
@@ -287,29 +287,6 @@ jobs:
       level: level2
       terraform_action: plan_apply
 
-  asvm:
-    id: asvm
-    uses: ./.github/workflows/rover.yaml
-    needs: [environment, management, connectivity_virtual_hubs_prod]
-    concurrency: 
-      group: level2-asvm_subscription_vending_machine
-    secrets:
-      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-      AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
-      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
-    with:
-      terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
-      terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
-      environment: ${{ needs.environment.outputs.environment }}
-      caf_identity_aad_key: cred_level0
-      landingzone_code_path: ./landingzones/caf_solution
-      landingzone_configuration_path: ./platform/configuration/level2/asvm
-      plan_path: ${GITHUB_WORKSPACE}/asvm_subscription_vending_machine.tfstate.tfplan
-      tfstate: asvm_subscription_vending_machine.tfstate
-      level: level2
-      terraform_action: plan_apply
-
   connectivity_firewall_policies_prod:
     uses: ./.github/workflows/rover.yaml
     needs: [environment, connectivity_virtual_wans_prod]
@@ -399,7 +376,6 @@ jobs:
       terraform_action: plan_apply
 
   connectivity_private_dns_prod:
-    id: connectivity_private_dns_prod
     uses: ./.github/workflows/rover.yaml
     needs: [environment, connectivity_private_dns_firewalls_prod, identity_level2_prod]
     concurrency: 
@@ -422,27 +398,26 @@ jobs:
       level: level2
       terraform_action: plan_apply
 
-  bootstrap_gitops_agents:
-    if: steps.asvm.conclusion == 'failure' && steps.connectivity_private_dns_prod.conclusion == 'success'
-    uses: ./.github/workflows/rover_master.yaml
-    needs: [environment, virtual_hubs_route_tables_prod, connectivity_private_dns_prod, asvm]
+  asvm:
+    uses: ./.github/workflows/rover.yaml
+    needs: [environment, connectivity_private_dns_prod, virtual_hubs_route_tables_prod]
     concurrency: 
-      group: level2-bootstrap_gitops_agents
+      group: level2-asvm_subscription_vending_machine
     secrets:
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
-      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_CONNECTIVITY_SUBSCRIPTION_ID }}
+      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
     with:
       terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
       terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
       environment: ${{ needs.environment.outputs.environment }}
       caf_identity_aad_key: cred_level0
       landingzone_code_path: ./landingzones/caf_solution
-      landingzone_configuration_path: ./platform/configuration/level0/gitops_agents
-      plan_path: ${GITHUB_WORKSPACE}/gitops_agents.tfstate.tfplan
-      tfstate: gitops_agents.tfstate
-      level: level0
+      landingzone_configuration_path: ./platform/configuration/level2/asvm
+      plan_path: ${GITHUB_WORKSPACE}/asvm_subscription_vending_machine.tfstate.tfplan
+      tfstate: asvm_subscription_vending_machine.tfstate
+      level: level2
       terraform_action: plan_apply
 
 {% endraw %}

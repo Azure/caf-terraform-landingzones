@@ -138,7 +138,7 @@ jobs:
             git add --all .
             git commit -m "Update configuration files"
             git pull
-            git push
+            git push remote ${{GITHUB_HEAD_REF}}
             echo "::set-output name=config_to_process::'yes'"
           fi
 

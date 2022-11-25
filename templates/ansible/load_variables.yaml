@@ -14,8 +14,8 @@
 
 - name: load variables
   set_fact:
-    merged_resource__to_merge: "{{ merged_resource__to_merge | default({}) | combine( lookup('template', item.path ) | from_yaml )}}"
-  with_items: "{{yaml_files_to_process.files}}"
+    merged_resource__to_merge: "{{ merged_resource__to_merge | default({}) | combine( lookup('template', platform_service_folder + '/' + item ) | from_yaml )}}"
+  with_items: "{{yaml_files_to_process}}"
   when: deployment_mode == 'platform'
 
 
@@ -232,16 +232,16 @@
 # Reloading with the variables from tfstates
 - name: load variables from {{platform_service_folder}}
   set_fact:
-    "{{item.path | basename | regex_replace('.yaml$', '')}}_resource__to_merge": "{{ lookup('template', item.path )}}"
-  with_items: "{{yaml_files_to_process.files}}"
+    "{{item | regex_replace('.yaml$', '')}}_resource__to_merge": "{{ lookup('template', platform_service_folder + '/' + item  )}}"
+  with_items: "{{yaml_files_to_process}}"
   when: 
     - deployment_mode == 'platform'
     - rover_bootstrap == false or rover_bootstrap == 'false'
 
 - name: Update variables into resources
   set_fact:
-    merged_resources: "{{ merged_resources | default({}) | combine( lookup('template', item.path ) | from_yaml )}}"
-  with_items: "{{yaml_files_to_process.files}}"
+    merged_resources: "{{ merged_resources | default({}) | combine( lookup('template', platform_service_folder + '/' + item ) | from_yaml )}}"
+  with_items: "{{yaml_files_to_process}}"
   when: 
     - deployment_mode == 'platform'
     - rover_bootstrap == false or rover_bootstrap == 'false'

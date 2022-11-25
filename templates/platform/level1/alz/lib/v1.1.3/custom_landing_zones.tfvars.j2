@@ -38,7 +38,7 @@ custom_landing_zones = {
 {% endif %}
 {% if level.archetype_config.access_control is defined %}
       access_control = {
-{% if resources.azure_landing_zones.identity.azuread_identity_mode != "logged_in_user" %}
+{% if azure_landing_zones.identity.azuread_identity_mode != "logged_in_user" %}
 {% for level_ac_key, level_ac in level.archetype_config.access_control.items() %}
         "{{level_ac_key}}" = {
 {% for level_role_key, level_role in level_ac.items()  %}
@@ -52,7 +52,7 @@ custom_landing_zones = {
 {% endfor %}
 {% else %}
       "Owner" = {
-         "principal_ids" = ["{{ resources.billing_subscription_role_delegations.azuread_user_ea_account_owner_object_id }}"]
+         "principal_ids" = ["{{ billing_subscription_role_delegations.azuread_user_ea_account_owner_object_id }}"]
       }
 {% endif %}
       }

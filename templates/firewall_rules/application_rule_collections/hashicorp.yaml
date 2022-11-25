@@ -6,7 +6,7 @@ hashicorp:
       name: terraform
 {% if vnet_launchpad is defined %}
       source_addresses:
-        {{ vnet_launchpad.vnet_region1.address_space | to_nice_yaml }}
+        {{ vnet_launchpad.vnet_region1.address_space | from_yaml }}
 {% endif %}
       destination_fqdns:
         - checkpoint-api.hashicorp.com
@@ -20,7 +20,7 @@ hashicorp:
       name: azuread provider
 {% if vnet_launchpad is defined %}
       source_addresses:
-        {{ vnet_launchpad.vnet_region1.address_space | to_nice_yaml }}
+        {{ vnet_launchpad.vnet_region1.address_space | from_yaml }}
 {% endif %}
       destination_fqdns:
         - graph.windows.net

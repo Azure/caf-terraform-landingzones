@@ -1,0 +1,3 @@
+{% import 'library.j2' as render %}
+{% set value = resources[tfstate_resource].resources[subscription_key].storage_account_queues %}
+{{ render.hcl("storage_account_queues", value, multiple_lines_list=multiple_lines_list) }}

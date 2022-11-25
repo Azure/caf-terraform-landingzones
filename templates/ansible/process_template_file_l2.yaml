@@ -1,0 +1,37 @@
+# - name: file l2 {{level}}
+#   debug:
+#     msg: 
+#       - "level2: {{level2}}"
+#       - "item: {{item}}"
+#       - "index: {{index}}"
+#       - "input: {{input}}"
+#       - "{{input[level2]}}"
+#       - "{{input[level2] | type_debug}}"
+
+- set_fact:
+    level2_current_input: "{{input[level2]}}"
+
+
+- include_tasks: process_template_file_l3.yaml
+  loop: "{{level2_current_input.keys()}}"
+  loop_control:
+    loop_var: level3
+  vars:
+    input: "{{level2_current_input}}"
+    index: "level3"
+    level: 3
+  when: (level2_current_input | type_debug) == "dict"
+
+
+- name: Template to load {{input[level2]}})
+  set_fact:
+    yaml_files_to_process: "{{yaml_files_to_process + [input[level2]]}}"
+  when: 
+    - (input[level2]  | type_debug) == "str"
+
+# - name: Template to load {{input[level2]}})
+#   debug:
+#     msg: 
+#       - "{{input[level2]}}"
+#   when: 
+#     - (input[level2]  | type_debug) == "str"

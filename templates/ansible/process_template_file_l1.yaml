@@ -1,0 +1,23 @@
+# - name: file l1
+#   debug:
+#     msg: 
+#       - "level1: {{level1}}"
+#       - "item: {{item}}"
+#       - "index: {{index}}"
+#       - "input: {{input}}"
+#       - "{{input[level1]}}"
+#       - "{{input[level1] | type_debug}}"
+
+- set_fact:
+    level1_current_input: "{{input[level1]}}"
+
+
+- include_tasks: process_template_file_l2.yaml
+  loop: "{{level1_current_input.keys()}}"
+  loop_control:
+    loop_var: level2
+  vars:
+    input: "{{level1_current_input}}"
+    index: "level2"
+    level: 2
+  when: (level1_current_input | type_debug) == "dict"

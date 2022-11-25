@@ -1,0 +1,20 @@
+
+# - name: "processing {{item}} from {{level}} / {{input }}"
+#   debug:
+#     msg: 
+#       - "item: {{item}}"
+#       - "source: {{source}}"
+#       - "input: {{input}}"
+  
+- set_fact:
+    current_item: "{{ item }}"
+    current_input: "{{input}}"
+
+- include_tasks: process_template_file_l1.yaml
+  loop: "{{current_input.keys()}}"
+  loop_control:
+    loop_var: level1
+  vars:
+    input: "{{current_input}}"
+    index: "level1"
+    level: 1

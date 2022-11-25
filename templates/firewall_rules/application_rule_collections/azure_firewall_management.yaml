@@ -7,9 +7,9 @@ azure_firewall_management:
       name: metric and health
       source_addresses:
 {% if private_dns_firewalls is defined %}
-        {{ private_dns_firewalls_vnets[env | default('prod')].vnet.address_space | to_nice_yaml }}
+        {{ private_dns_firewalls_vnets[env | default('prod')].vnet.address_space | from_yaml }}
 {% else %}
-        {{ variables.variables_cidr.platform.private_dns_firewalls.region1[env | default('prod')].address_prefixes | to_nice_yaml }}
+        {{ variables.variables_cidr.platform.private_dns_firewalls.region1[env | default('prod')].address_prefixes | from_yaml }}
 {% endif %}
       destination_fqdns:
         - gcs.prod.monitoring.core.windows.net
@@ -32,9 +32,9 @@ azure_firewall_management:
       name: threat protection updates
       source_addresses:
 {% if private_dns_firewalls is defined %}
-        {{ private_dns_firewalls_vnets[env | default('prod')].vnet.address_space | to_nice_yaml }}
+        {{ private_dns_firewalls_vnets[env | default('prod')].vnet.address_space | from_yaml }}
 {% else %}
-        {{ variables.variables_cidr.platform.private_dns_firewalls.region1[env | default('prod')].address_prefixes | to_nice_yaml }}
+        {{ variables.variables_cidr.platform.private_dns_firewalls.region1[env | default('prod')].address_prefixes | from_yaml }}
 {% endif %}
       destination_fqdns:
         - webres1.msazure.ctmail.com

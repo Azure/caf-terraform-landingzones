@@ -2,27 +2,27 @@
 
 ## Deploy Enterprise Scale
 
-Note you need to adjust the branch to deploy Enterprise Scale to {{ resources.variables_azure_landing_zones.private_lib[tfstate_object.alz_version].caf_landingzone_branch }}
+Note you need to adjust the branch to deploy Enterprise Scale to {{ variables.variables_azure_landing_zones.private_lib[tfstate_object.alz_version].caf_landingzone_branch }}
 
 ```bash
 az account clear
 # login a with a user member of the caf-platform-maintainers group
-rover login -t {{ resources.azure_landing_zones.identity.tenant_name }}
+rover login -t {{ azure_landing_zones.identity.tenant_name }}
 
 cd {{ landingzones_folder }}
 git fetch origin
-git checkout {{ resources.variables_azure_landing_zones.private_lib[tfstate_object.alz_version].caf_landingzone_branch }}
+git checkout {{ variables.variables_azure_landing_zones.private_lib[tfstate_object.alz_version].caf_landingzone_branch }}
 
 rover \
-{% if keyvaults is defined and keyvaults[ tfstate_object.identity_aad_key] is defined and resources.azure_landing_zones.identity.azuread_identity_mode != "logged_in_user" %}
+{% if keyvaults is defined and keyvaults[ tfstate_object.identity_aad_key] is defined and azure_landing_zones.identity.azuread_identity_mode != "logged_in_user" %}
   --impersonate-sp-from-keyvault-url {{ keyvaults[tfstate_object.identity_aad_key].vault_uri }} \
 {% endif %}
   -lz {{ landingzones_folder }}/caf_solution/add-ons/caf_eslz \
   -var-folder {{ destination_path }} \
-  -tfstate_subscription_id {{ resources.caf_launchpad.subscription_id }} \
-  -target_subscription {{ resources.caf_launchpad.subscription_id }} \
+  -tfstate_subscription_id {{ caf_launchpad.subscription_id }} \
+  -target_subscription {{ caf_launchpad.subscription_id }} \
   -tfstate {{ tfstate_object.tfstate }} \
-  -env {{ resources.caf_environment }} \
+  -env {{ caf_environment }} \
   -level {{ tfstate_object.level }} \
   -p ${TF_DATA_DIR}/{{ tfstate_object.tfstate }}.tfplan \
   -a plan

@@ -2,10 +2,10 @@
 # Storage accounts, log analytics, event hubs
 
 diagnostic_storage_accounts = {
-{% for key in resources.caf_regions.keys() %}
+{% for key in caf_regions.keys() %}
   # Stores diagnostic logging for {{key}}
-  diaglogs_{{resources.caf_regions[key].slug}} = {
-    name                     = "diaglogs{{ resources.caf_regions[key].slug }}"
+  diaglogs_{{caf_regions[key].slug}} = {
+    name                     = "diaglogs{{ caf_regions[key].slug }}"
     region                   = "{{key}}"
     resource_group_key       = "{{ resources[tfstate_resource].resources[subscription_key].diagnostic_storage_accounts.diagnostics.resource_group_key }}"
     account_kind             = "{{ resources[tfstate_resource].resources[subscription_key].diagnostic_storage_accounts.diagnostics.account_kind }}"
@@ -14,10 +14,10 @@ diagnostic_storage_accounts = {
     access_tier              = "{{ resources[tfstate_resource].resources[subscription_key].diagnostic_storage_accounts.diagnostics.access_tier }}"
   }
 {% endfor %}
-{% for key in resources.caf_regions.keys() %}
+{% for key in caf_regions.keys() %}
   # Stores security logs for siem for {{key}}
-  diagsiem_{{resources.caf_regions[key].slug}} = {
-    name                     = "siem{{ resources.caf_regions[key].slug }}"
+  diagsiem_{{caf_regions[key].slug}} = {
+    name                     = "siem{{ caf_regions[key].slug }}"
     region                   = "{{key}}"
     resource_group_key       = "{{ resources[tfstate_resource].resources[subscription_key].diagnostic_storage_accounts.siem.resource_group_key }}"
     account_kind             = "{{ resources[tfstate_resource].resources[subscription_key].diagnostic_storage_accounts.siem.account_kind }}"
@@ -26,10 +26,10 @@ diagnostic_storage_accounts = {
     access_tier              = "{{ resources[tfstate_resource].resources[subscription_key].diagnostic_storage_accounts.siem.access_tier }}"
   }
 {% endfor %}
-{% for key in resources.caf_regions.keys() %}
+{% for key in caf_regions.keys() %}
   # Stores boot diagnostic for {{key}}
-  bootdiag_{{resources.caf_regions[key].slug}} = {
-    name                     = "boot{{ resources.caf_regions[key].slug }}"
+  bootdiag_{{caf_regions[key].slug}} = {
+    name                     = "boot{{ caf_regions[key].slug }}"
     region                   = "{{key}}"
     resource_group_key       = "{{ resources[tfstate_resource].resources[subscription_key].diagnostic_storage_accounts.bootdiagnostics.resource_group_key }}"
     account_kind             = "{{ resources[tfstate_resource].resources[subscription_key].diagnostic_storage_accounts.bootdiagnostics.account_kind }}"

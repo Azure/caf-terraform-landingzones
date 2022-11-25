@@ -14,8 +14,8 @@
   register: storage_account
   shell: |
     az storage account list \
-      --subscription {{ resources.caf_launchpad.subscription_id | default(caf_launchpad.subscription_id) }} \
-      --query "[?tags.caf_tfstate=='{{ caf_level | default('level0') }}' && tags.caf_environment=='{{ resources.caf_environment | default(caf_environment) }}'].{name:name}[0]" -o json | jq -r .name
+      --subscription {{ caf_launchpad.subscription_id | default(caf_launchpad.subscription_id) }} \
+      --query "[?tags.caf_tfstate=='{{ caf_level | default('level0') }}' && tags.caf_environment=='{{ caf_environment | default(caf_environment) }}'].{name:name}[0]" -o json | jq -r .name
 
 - set_fact:
     "{{tfstate_key_name}}_storage_account": "{{ lookup('vars', 'storage_account') }}"

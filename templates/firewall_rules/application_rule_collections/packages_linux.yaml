@@ -5,7 +5,8 @@ packages_linux:
     ubuntu:
       name: ubuntu
       description: Upstream addresses to get Ubuntu package updates
-      source_addresses: ["*"]
+      source_addresses: 
+        - "*"
       protocols:
         https:
           port: 443
@@ -21,7 +22,8 @@ packages_linux:
     github:
       name: github
       description: github package updates
-      source_addresses: ["*"]
+      source_addresses: 
+        - "*"
       protocols:
         https:
           port: 443
@@ -31,7 +33,8 @@ packages_linux:
     docker:
       name: docker
       description: docker package updates
-      source_addresses: ["*"]
+      source_addresses: 
+        - "*"
       protocols:
         https:
           port: 443
@@ -41,7 +44,8 @@ packages_linux:
     microsoft:
       name: microsoft
       description: Microsoft package updates
-      source_addresses: ["*"]
+      source_addresses: 
+        - "*"
       protocols:
         https:
           port: 443
@@ -51,7 +55,8 @@ packages_linux:
     kubernetes:
       name: kubernetes
       description: kubernetes package updates
-      source_addresses: ["*"]
+      source_addresses: 
+        - "*"
       protocols:
         https:
           port: 443
@@ -61,7 +66,8 @@ packages_linux:
     google:
       name: google
       description: Google package updates
-      source_addresses: ["*"]
+      source_addresses: 
+        - "*"
       protocols:
         https:
           port: 443

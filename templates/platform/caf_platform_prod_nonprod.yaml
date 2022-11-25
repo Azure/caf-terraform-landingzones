@@ -164,7 +164,11 @@ deployments:
         management: management.yaml
         asvm: asvm.yaml
         security: security.yaml
+{% if gitops_agent_compute_type is defined %}
+{% if gitops_agent_compute_type == "aci" %}
         gitops_agents: gitops_agents_aci.yaml
+{% endif %}
+{% endif %}
     alz:
       {{default_region_key}}:
         {{alz_mg_prefix}}: alz.yaml

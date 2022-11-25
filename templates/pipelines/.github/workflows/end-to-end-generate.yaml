@@ -31,7 +31,7 @@ concurrency:
 env:
   LZ_REPO: '{{resources.terraform_code_repository | default(topology.terraform_code_repository)}}'
   LZ_BRANCH: '{{resources.caf_landingzone_branch | default(topology.caf_landingzone_branch)}}'
-  CAF_ENVIRONMENT: {{resources.caf_environment | default(caf_environment)}}
+  CAF_ENVIRONMENT: {{caf_environment | default(caf_environment)}}
 
 jobs:
 {% raw %}
@@ -78,7 +78,6 @@ jobs:
       environment: ${{ needs.environment.outputs.environment }}
 
   configuration_updates:
-    if: always()
     uses: ./.github/workflows/generate-configuration-files.yaml
     name: Generate configuration tfvars files
     permissions:

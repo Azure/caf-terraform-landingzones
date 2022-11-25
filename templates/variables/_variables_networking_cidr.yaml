@@ -6,36 +6,40 @@ variables_cidr:
     launchpad:
       region1:
         prod:
-          address_prefixes:
+          address_prefixes: 
+            - 10.101.8.0/23
             - 10.101.10.0/24
           subnets:
-            available_cidr:
+            level0:
+              - 10.101.10.0/28
+            level1:
+              - 10.101.10.16/28
+            level2:
               - 10.101.10.32/28
-              - 10.101.10.128/26
-            gitops_agents:
-              - 10.101.10.0/27
-            jumpbox:
+            credentials:
               - 10.101.10.48/28
-            bastion:
+            gitops:
               - 10.101.10.64/26
-            private_endpoints:
-              - 10.101.10.192/26
+            runners:
+              - 10.101.8.0/23
       region2:
         prod:
-          address_prefixes:
+          address_prefixes: 
+            - 10.102.8.0/23
             - 10.102.10.0/24
           subnets:
-            available_cidr:
+            level0:
+              - 10.102.10.0/28
+            level1:
+              - 10.102.10.16/28
+            level2:
               - 10.102.10.32/28
-              - 10.102.10.128/26
-            gitops_agents:
-              - 10.102.10.0/27
-            jumpbox:
+            credentials:
               - 10.102.10.48/28
-            bastion:
+            gitops:
               - 10.102.10.64/26
-            private_endpoints:
-              - 10.102.10.192/26
+            runners:
+              - 10.102.8.0/23
 
   #
   # asvm services
@@ -43,15 +47,15 @@ variables_cidr:
     asvm:
       region1:
         prod:
-          address_prefixes:
-            - 10.100.1.0/24
+          address_prefixes: 
+            - 10.101.1.0/24
           subnets:
             level3:
-                - 10.100.1.0/27
+                - 10.101.1.0/27
             level4:
-                - 10.100.1.32/27
+                - 10.101.1.32/27
             credentials:
-                - 10.100.1.64/27
+                - 10.101.1.64/27
                 
   #
   # connectivity services

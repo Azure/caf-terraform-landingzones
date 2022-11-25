@@ -6,7 +6,7 @@ gitops:
       name: azure-cli
 {% if vnet_launchpad is defined %}
       source_addresses:
-        {{ vnet_launchpad.vnet_region1.address_space | to_nice_yaml }}
+        {{ vnet_launchpad.vnet_region1.address_space | from_yaml }}
 {% endif %}
       destination_fqdns:
         - aka.ms
@@ -27,7 +27,7 @@ gitops:
       description: Services for self-hosted runners
 {% if vnet_launchpad is defined %}
       source_addresses:
-        {{ vnet_launchpad.vnet_region1.address_space | to_nice_yaml }}
+        {{ vnet_launchpad.vnet_region1.address_space | from_yaml }}
 {% endif %}
       protocols:
         https:
