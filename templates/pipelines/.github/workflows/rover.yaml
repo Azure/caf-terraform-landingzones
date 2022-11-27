@@ -160,9 +160,9 @@ jobs:
           command_plan="${rover[@]}${impresonate[@]}${landingzone_code_path[@]}${landingzone_configuration_path[@]}${tfstate_subscription_id[@]}${target_subscription[@]}${tfstate[@]}${environment[@]}${level[@]}${launchpad[@]}${plan_path[@]}${output[@]}${action_plan[@]}${{inputs.terraform_action_plan}}"
           command_apply="${rover[@]}${impresonate[@]}${landingzone_code_path[@]}${landingzone_configuration_path[@]}${tfstate_subscription_id[@]}${target_subscription[@]}${tfstate[@]}${environment[@]}${level[@]}${launchpad[@]}"
           
-          echo "::set-output name=rover-command-plan::$(echo ${command_plan})"
-          echo "::set-output name=rover-command-apply::$(echo ${command_apply})"
-          echo "::set-output name=output_file::$(echo ${output_file})"
+          echo "rover-command-plan=$(echo ${command_plan})" >> $GITHUB_OUTPUT
+          echo "rover-command-apply=$(echo ${command_apply})" >> $GITHUB_OUTPUT
+          echo "output_file=$(echo ${output_file})" >> $GITHUB_OUTPUT
 
       - id: plan
         name: Execute terraform plan
@@ -218,9 +218,9 @@ jobs:
           echo "apply: ${apply}"
           echo "verify: ${verify}"
 
-          echo "::set-output name=apply::$(echo ${apply})"
-          echo "::set-output name=verify::$(echo ${verify})"
-          echo "::set-output name=plan_file::${plan_file}"
+          echo "apply=$(echo ${apply})" >> $GITHUB_OUTPUT
+          echo "verify=$(echo ${verify})" >> $GITHUB_OUTPUT
+          echo "plan_file=${plan_file}" >> $GITHUB_OUTPUT
 
       - id: apply
         if: (inputs.terraform_action == 'plan_apply') && (steps.plan.outputs.apply == 'true')
