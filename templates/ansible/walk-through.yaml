@@ -77,10 +77,24 @@
       - "{{ agent_token }}"
 
 - set_fact:
+    object_id: "{{ bash_object_id.stdout }}"
+  when: bash_object_id.stdout is defined
+
+- set_fact:
+    object_id: "{{ bash_object_id_sp.stdout }}"
+  when: object_id is not defined and bash_object_id_sp.stdout is defined
+
+- set_fact:
+    upn: "{{ upn_owner | default(bash_upn.stdout) }}"
+  when: upn_owner is defined or bash_upn.stdout is defined
+
+- debug:
+    msg:
+      - "{{ upn | default('UPN not defined')}}"    
+
+- set_fact:
     regions:  "{{ azure_regions }}"
     deployment_mode: "platform"
-    object_id: "{{ bash_object_id.stdout }}"
-    upn: "{{ upn_owner | default(bash_upn.stdout) }}"
     tenant_name: "{{ tenant_name | default(bash_tenant_name.stdout) }}"
     base_folder: "{{ base_folder | default('/tf/caf') }}"
     PUBLIC_IP_WHITE_LIST: "{{ [public_ip.stdout] }}"
@@ -90,9 +104,8 @@
       - "{{ regions }}"
       - "{{ customer_name }}"
       - "{{ object_id }}"
-      - "{{ upn }}"
       - "{{ base_folder }}"
-      - "{{ input_caf_environment if input_caf_environment is defined else TF_VAR_environment }}"
+      - "{{ input_caf_environment if input_caf_environment is defined else TF_VAR_environment }}"      
 
 - name: "load {{ template_folder | default(platform_definition_folder)}}/ignite.yaml"
   include_vars:
