@@ -33,6 +33,7 @@ bootstrap:
       alz:
         region1:
           es: alz.yaml
+          as: alz.yaml
       scale_out_domains:
         region1:
           identity_level2:
