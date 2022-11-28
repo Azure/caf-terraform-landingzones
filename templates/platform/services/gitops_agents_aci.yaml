@@ -51,8 +51,8 @@ gitops_agents:
             rover_level0:
               name: rover-level0
               image: {{topology.gitops_default_rover_image}}
-              cpu: 4
-              memory: 2
+              cpu: 2
+              memory: 1
               ports:
                 ssh:
                   port: 22
@@ -89,8 +89,8 @@ gitops_agents:
             rover_agent{{i}}:
               name: rover-agent{{i}}
               image: {{topology.gitops_default_rover_image}}
-              cpu: 4
-              memory: 2
+              cpu: 2
+              memory: 1
               ports:
                 ssh:
                   port: 22
