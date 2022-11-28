@@ -648,7 +648,10 @@ launchpad:
           prevent_duplicate_name: true
           members:
             object_ids:
+                - {{object_id}}
+{% if bootstrap_sp_object_id != '' %}
                 - {{bootstrap_sp_object_id}}
+{% endif %}
           owners:
             - {{object_id}}
         caf_platform_contributors:
@@ -658,7 +661,9 @@ launchpad:
           members:
             object_ids:
                 - {{object_id}}
+{% if bootstrap_sp_object_id != '' %}
                 - {{bootstrap_sp_object_id}}
+{% endif %}
           owners:
             - {{object_id}}
         level0:
