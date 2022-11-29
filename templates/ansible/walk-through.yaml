@@ -61,16 +61,18 @@
 
 - set_fact:
     agent_token_part1: "gh api --method POST -H 'Accept: application/vnd.github.v3+json' /repos/"
+    github_org_repo: "{{ GITOPS_SERVER_URL | regex_replace('^https://github.com/', '') }}"
     agent_token_part2: "/actions/runners/registration-token | jq -r ' {value: .token}'"
 
 - debug:
     msg: 
       - "{{ agent_token_part1 }}"
+      - "{{ github_org_repo }}"
       - "{{ agent_token_part2 }}"
-      - "{{ GITHUB_ORG_REPO }}"
+
 
 - set_fact:
-    agent_token: "\"{{ agent_token_part1 }}{{ GITHUB_ORG_REPO }}{{ agent_token_part2 }}\""
+    agent_token: "\"{{ agent_token_part1 }}{{ github_org_repo }}{{ agent_token_part2 }}\""
 
 - debug:
     msg:

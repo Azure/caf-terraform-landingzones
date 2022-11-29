@@ -102,8 +102,6 @@ jobs:
           ansible-playbook $(readlink -f ./landingzones/templates/ansible/walk-through-bootstrap.yaml) \
             --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)" \
             -e base_folder=$(pwd) \
-            -e GITHUB_ORG={{GITHUB_ORG}} \
-            -e GITHUB_ORG_REPO={{GITHUB_ORG}}/{{GITHUB_REPOSITORY}} \
             -e GITOPS_SERVER_URL={{GITHUB_SERVER_URL}}/{{GITHUB_REPOSITORY}} \
             -e RUNNER_NUMBERS={{ secrets.RUNNER_NUMBERS }} \
             -e ROVER_AGENT_DOCKER_IMAGE=${{secrets.ROVER_AGENT_DOCKER_IMAGE}} \

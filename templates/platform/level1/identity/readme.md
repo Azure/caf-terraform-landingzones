@@ -22,13 +22,7 @@ rover \
   -lz {{ landingzones_folder }}/caf_solution \
   -var-folder {{ destination_path }} \
   -tfstate_subscription_id {{ resources.caf_launchpad.subscription_id }} \
-{% if platform_subscriptions_details is defined %}
-  -target_subscription {{ platform_subscriptions_details.identity.subscription_id }} \
-{% elif subscriptions.platform_subscriptions.identity.subscription_id is defined %}
-  -target_subscription {{ subscriptions.platform_subscriptions.identity.subscription_id }} \
-{% else %}
-  -target_subscription {{ resources.caf_launchpad.subscription_id }} \
-{% endif %}
+  -target_subscription {{ resources.initial_subscriptions.identity.subscription_id | default(resources.caf_launchpad.subscription_id) }} \
   -tfstate {{ resources.tfstates.platform.identity.tfstate }} \
   -env {{ resources.caf_environment }} \
   -level {{ level }} \

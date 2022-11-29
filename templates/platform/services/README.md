@@ -60,6 +60,7 @@ ansible-playbook $(readlink -f ./landingzones/templates/ansible/walk-through-ci.
   -e topology_file={{topology_file}} \
   -e RUNNER_NUMBERS={{ RUNNER_NUMBERS }} \
   -e gitops_agent={{gitops_agent}} \
+  -e GITOPS_SERVER_URL={{GITOPS_SERVER_URL}}
   -e ROVER_AGENT_DOCKER_IMAGE={{ROVER_AGENT_DOCKER_IMAGE}} \
   -e subscription_deployment_mode={{subscription_deployment_mode}} \
   -e sub_management={{sub_management}} \

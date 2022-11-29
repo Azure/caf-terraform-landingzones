@@ -9,16 +9,7 @@ params=$(echo ${@} | xargs -n1 | xargs -I@ echo "-e @ " )
 echo ${params} | xargs
 echo "sub_management: ${sub_management}"
 
-tmp1=$(git remote -v | grep origin | head -1 )
-tmp2=${tmp1% *}
-tmp3=${tmp2#*//*/}
-export GITHUB_REMOTE="https://github.com/${tmp3}"
-export GITHUB_ORG=${tmp3%/*}
-GITHUB_REPOSITORY=${tmp3#*/}
-export GITHUB_REPOSITORY=${GITHUB_REPOSITORY%.*}
-
 ansible-playbook /tf/caf/landingzones/templates/ansible/walk-through-bootstrap.yaml \
-  -e GITHUB_ORG_REPO="$GITHUB_ORG/$GITHUB_REPOSITORY" \
   -e public_templates_folder=/tf/caf/landingzones/templates \
   -e landingzones_folder=/tf/caf/landingzones \
   -e platform_configuration_folder=/tf/caf/configuration \
@@ -37,6 +28,8 @@ ansible-playbook /tf/caf/landingzones/templates/ansible/walk-through-bootstrap.y
 ansible-playbook $(readlink -f ./landingzones/templates/ansible/ansible.yaml) \
   --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)" \
   -e base_folder=$(pwd)
+
+sleep 12h
 
 /tf/rover/rover.sh \
   -lz /tf/caf/landingzones/caf_launchpad \

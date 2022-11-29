@@ -9,7 +9,7 @@ bootstrap:
     region1:
       es:
         management_group_prefix: "es"
-        management_group_name: "bsdev"
+        management_group_name: "AlZone"
         deploy_core_landing_zones: True
         clean_up_destination_folder: False
         update_lib_folder: True
