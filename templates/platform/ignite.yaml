@@ -13,7 +13,7 @@ bootstrap:
         deploy_core_landing_zones: True
         clean_up_destination_folder: False
         update_lib_folder: True
-        version_to_deploy: "v2.4.0"
+        version_to_deploy: "v3.0.0"
 
   # subscription_deployment_mode: single_reuse
 

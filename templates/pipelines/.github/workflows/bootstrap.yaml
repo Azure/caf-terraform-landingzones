@@ -111,7 +111,6 @@ jobs:
       terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
       terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
       environment: ${{ needs.environment.outputs.environment }}
-      topology_file: '../platform/caf_platform_prod_nonprod.yaml'
 
 
 {% endraw %}
