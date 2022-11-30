@@ -895,7 +895,12 @@ launchpad:
                     - connectivity
                     - subscription_creation_platform
                     - caf_platform_contributors
-
+      
+      network_security_group_definition:
+        empty_nsg:
+          version: 1
+          resource_group_key: gitops
+          name: empty_nsg          
 
       virtual_networks:
         vnet_region1:
@@ -909,15 +914,17 @@ launchpad:
           subnets:
             level0:
               name: level0
+              nsg_key: empty_nsg
               cidr: ["10.100.0.0/27"]
               service_endpoints:
                 - Microsoft.KeyVault
                 - Microsoft.Storage
 {% if private_endpoints is defined %}
-              enforce_private_link_endpoint_network_policies: true
+              enforce_private_link_endpoint_network_policies: true              
 {% endif %}
             level1:
               name: level1
+              nsg_key: empty_nsg
               cidr: ["10.100.0.32/27"]
               service_endpoints:
                 - Microsoft.KeyVault
@@ -925,8 +932,10 @@ launchpad:
 {% if private_endpoints is defined %}
               enforce_private_link_endpoint_network_policies: true
 {% endif %}
+
             level2:
               name: level2
+              nsg_key: empty_nsg
               cidr: ["10.100.0.64/27"]
               service_endpoints:
                 - Microsoft.KeyVault
@@ -936,6 +945,7 @@ launchpad:
 {% endif %}
             credentials:
               name: credentials
+              nsg_key: empty_nsg
               cidr: ["10.100.0.96/27"]
               service_endpoints:
                 - Microsoft.KeyVault
@@ -945,6 +955,7 @@ launchpad:
 {% endif %}
             containergroups:
               name: containergroups
+              nsg_key: empty_nsg
               cidr: ["10.100.0.128/27"]
               delegation:
                 name: Microsoft.ContainerInstance/containerGroups
