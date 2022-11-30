@@ -25,6 +25,7 @@ locals {
       mssql_servers                      = var.mssql_servers
       mysql_databases                    = var.mysql_databases
       mysql_servers                      = var.mysql_servers
+      mysql_flexible_server              = var.mysql_flexible_server
       postgresql_servers                 = var.postgresql_servers
       postgresql_flexible_servers        = var.postgresql_flexible_servers
       synapse_workspaces                 = var.synapse_workspaces
