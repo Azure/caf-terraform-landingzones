@@ -11,14 +11,13 @@ azuread_groups_membership = {
 {% if bootstrap.azure_landing_zones.identity.azuread_identity_mode != 'logged_in_user' %}
     members = {
 {% if bootstrap.azure_landing_zones.identity.caf_platform_maintainers.user_principal_names is defined %}
-      user_principal_names = [
-        "{{ bootstrap.billing_subscription_role_delegations.azuread_user_ea_account_owner }}",
 {% if bootstrap.azure_landing_zones.identity.azuread_identity_mode != 'logged_in_user' and bootstrap.azure_landing_zones.identity.caf_platform_maintainers.user_principal_names is mapping%}
+      user_principal_names = [
 {% for user in bootstrap.azure_landing_zones.identity.caf_platform_maintainers.user_principal_names %}
         "{{ user }}",
 {% endfor %}
-{% endif %}
       ]
+{% endif %}
 {% endif %}
     }
 {% endif %}
