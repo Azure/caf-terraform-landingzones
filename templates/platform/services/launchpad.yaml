@@ -674,6 +674,11 @@ launchpad:
           members:
             azuread_service_principal_keys:
               - level0
+            object_ids:
+# THIS DON'T WORK YEAT - MANUAL WORKAROUND INCLUDE TO ADD THE APP TO THE GROUP FROM AZURE PORTAL BEFORE PUSHING THE BOOTSTRAP BRANCH TO GITHUB
+{% if app_platform_landing_zones_object_id.stdout != '' and 'fix' == 'true' %}
+             - {{app_platform_landing_zones_object_id.stdout}}
+{% endif %}
           owners:
             - {{group_owner_object_id.stdout}}
             - {{object_id}}

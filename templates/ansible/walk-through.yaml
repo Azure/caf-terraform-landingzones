@@ -2,16 +2,26 @@
 # Get launchpad subscription details
 #
 
-
-# blinQ:
+# blinQ start:
 # Workaround for Graph API Issue https://github.com/microsoftgraph/msgraph-metadata/issues/92
-# We require a normal user principal to become Azure AD Group owner for every groups created by template
+# We require a normal user principal to become Azure AD Group owner for every groups created by template. To avoid template brake the code when it run in different context as user and service principal, this user can't be picked up by logged_in_user. We ask for this input in the walk-through-bootstrap.yaml.
 - name: Get Azure AD object_id for default Azure AD Group Owner user principal
   shell: az ad user show --id "{{ default_azure_ad_group_owner }}" | jq -r .id
   register: group_owner_object_id
 
 - debug:
-    msg: group_owner_object_id    
+    msg: "Group Owner Object Id: {{ group_owner_object_id.stdout }}"
+
+# We need to add the object_id for platform-landing-zones App to the caf-level0 Azure AD group so it have the required access to keyvaults
+# Get object_id for <orgname>-platform-landing-zones app registration, we need to add this object to Azure AD group caf-level0
+# THIS DON'T WORK YEAT - MANUAL WORKAROUND INCLUDE TO ADD THE APP TO THE GROUP FROM AZURE PORTAL BEFORE PUSHING THE BOOTSTRAP BRANCH TO GITHUB
+- name: Get App {{TF_VAR_environment}}-platform-landing-zones object_id
+  shell: az ad app list --query "[].{DisplayName:displayName, id:id} | [? contains(DisplayName,'{{TF_VAR_environment}}-platform-landing-zones')]" | jq -r '.[].id'
+  register: app_platform_landing_zones_object_id
+
+- debug:
+    msg: "App Platform Landing Zone Object Id: {{ app_platform_landing_zones_object_id.stdout }}"
+# blinQ end!
 
 - name: Get user type logged in with azure
   shell: az account show | jq -r .user.type

@@ -104,9 +104,9 @@ jobs:
             -e base_folder=$(pwd) \
 {% endraw %}
 {% if topology_file is defined %}
-            -e topology_file={{ topology_file | regex_replace('/tf/caf', '.') }} \
+            -e topology_file={{ '"@$(readlink -f ' + topology_file | regex_replace('/tf/caf', '.') + ')"'}} \
 {% else %}
-            -e topology_file=./landingzones/templates/platform/caf_platform_prod_nonprod.yaml \
+            -e topology_file="@$(readlink -f ./landingzones/templates/platform/caf_platform_prod_nonprod.yaml)" \
 {% endif %}
 {% raw %}            -e GITOPS_SERVER_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY} \
             -e RUNNER_NUMBERS=${{ secrets.RUNNER_NUMBERS }} \
