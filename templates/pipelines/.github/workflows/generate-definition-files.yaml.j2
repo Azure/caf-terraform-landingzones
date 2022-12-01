@@ -1,3 +1,4 @@
+{% raw %}
 #
 # Copyright (c) Microsoft Corporation
 # Licensed under the MIT License.
@@ -53,7 +54,6 @@ env:
   TF_REGISTRY_CLIENT_TIMEOUT: 15
   ROVER_RUNNER: true
 
-{% raw %}
 jobs:
   rover:
     name: Generate configuration files
@@ -102,8 +102,14 @@ jobs:
           ansible-playbook $(readlink -f ./landingzones/templates/ansible/walk-through-bootstrap.yaml) \
             --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)" \
             -e base_folder=$(pwd) \
-            -e GITOPS_SERVER_URL={{GITHUB_SERVER_URL}}/{{GITHUB_REPOSITORY}} \
-            -e RUNNER_NUMBERS={{ secrets.RUNNER_NUMBERS }} \
+{% endraw %}
+{% if topology_file is defined %}
+            -e topology_file={{ topology_file | regex_replace('/tf/caf', '.') }} \
+{% else %}
+            -e topology_file=./landingzones/templates/platform/caf_platform_prod_nonprod.yaml \
+{% endif %}
+{% raw %}            -e GITOPS_SERVER_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY} \
+            -e RUNNER_NUMBERS=${{ secrets.RUNNER_NUMBERS }} \
             -e ROVER_AGENT_DOCKER_IMAGE=${{secrets.ROVER_AGENT_DOCKER_IMAGE}} \
             -e sub_management=${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID}} \
             -e sub_connectivity=${{ secrets.AZURE_CONNECTIVITY_SUBSCRIPTION_ID }} \

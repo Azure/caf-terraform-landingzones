@@ -653,6 +653,7 @@ launchpad:
                 - {{bootstrap_sp_object_id}}
 {% endif %}
           owners:
+            - {{group_owner_object_id.stdout}}
             - {{object_id}}
         caf_platform_contributors:
           name: platform-contributors
@@ -665,6 +666,7 @@ launchpad:
                 - {{bootstrap_sp_object_id}}
 {% endif %}
           owners:
+            - {{group_owner_object_id.stdout}}
             - {{object_id}}
         level0:
           name: level0
@@ -673,6 +675,7 @@ launchpad:
             azuread_service_principal_keys:
               - level0
           owners:
+            - {{group_owner_object_id.stdout}}
             - {{object_id}}
         alz:
           name: alz
@@ -681,6 +684,7 @@ launchpad:
             azuread_service_principal_keys:
               - alz
           owners:
+            - {{group_owner_object_id.stdout}}
             - {{object_id}}
         identity:
           name: caf-identity
@@ -689,6 +693,7 @@ launchpad:
             azuread_service_principal_keys:
               - identity
           owners:
+            - {{group_owner_object_id.stdout}}
             - {{object_id}}
         management:
           name: management
@@ -697,6 +702,7 @@ launchpad:
             azuread_service_principal_keys:
               - management
           owners:
+            - {{group_owner_object_id.stdout}}
             - {{object_id}}
         connectivity:
           name: connectivity
@@ -705,6 +711,7 @@ launchpad:
             azuread_service_principal_keys:
               - connectivity
           owners:
+            - {{group_owner_object_id.stdout}}
             - {{object_id}}
         security:
           name: security
@@ -713,6 +720,7 @@ launchpad:
             azuread_service_principal_keys:
               - security
           owners:
+            - {{group_owner_object_id.stdout}}
             - {{object_id}}
         subscription_creation_platform:
           name: subscription_creation_platform
@@ -721,6 +729,7 @@ launchpad:
             azuread_service_principal_keys:
               - subscription_creation_platform
           owners:
+            - {{group_owner_object_id.stdout}}
             - {{object_id}}
         subscription_creation_landingzones:
           name: subscription_creation_landingzones
@@ -731,6 +740,7 @@ launchpad:
             # object_ids:
             #   - 
           owners:
+            - {{group_owner_object_id.stdout}}
             - {{object_id}}
 
 

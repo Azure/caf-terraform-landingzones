@@ -43,6 +43,14 @@
       private: no
       default: support@blinq.no
 
+# blinQ:
+# Workaround for Graph API Issue https://github.com/microsoftgraph/msgraph-metadata/issues/92
+# We require a normal user principal to become Azure AD Group owner for every groups created by template
+    - name: default_azure_ad_group_owner
+      prompt: UPN of Azure AD Group owner for all groups.
+      private: no
+      default: caf-group-owner@blinqservicesdev.onmicrosoft.com
+
     - name: azure_regions
       prompt: Azure regions (lowercase, short version)
       private: no

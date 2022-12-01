@@ -13,7 +13,7 @@ rover \
   -lz {{ landingzones_folder }}/caf_solution \
   -var-folder {{ destination_path }} \
   -tfstate_subscription_id {{ resources.caf_launchpad.subscription_id }} \
-  -target_subscription {{ resources.initial_subscriptions.identity.subscription_id | default(resources.caf_launchpad.subscription_id) }} \
+  -target_subscription {{ resources.caf_launchpad.subscription_id }} \
   -tfstate {{ resources.tfstates.platform.launchpad_credentials.tfstate }} \
   -launchpad \
   -env {{ resources.caf_environment }} \
@@ -36,7 +36,7 @@ rover \
   -lz {{ landingzones_folder }}/caf_solution \
   -var-folder {{ destination_path }} \
   -tfstate_subscription_id {{ resources.caf_launchpad.subscription_id }} \
-  -target_subscription {{ resources.initial_subscriptions.identity.subscription_id | default(resources.caf_launchpad.subscription_id) }} \
+  -target_subscription {{ resources.caf_launchpad.subscription_id }} \
   -tfstate {{ resources.tfstates.platform.launchpad_credentials.tfstate }} \
   -launchpad \
   -env {{ resources.caf_environment }} \

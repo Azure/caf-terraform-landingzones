@@ -146,7 +146,7 @@
     - name: copy github workflows
       ansible.builtin.template:
         src: "{{ item.path }}"
-        dest: "{{base_folder}}/{{ item.path | regex_replace(public_templates_folder + '/pipelines', '') }}"
+        dest: "{{base_folder}}/{{ item.path | regex_replace(public_templates_folder + '/pipelines', '') | regex_replace('.j2$', '') }}"
       loop: "{{github_workflows_to_process.files}}"
 
 # Copy default firewall rules

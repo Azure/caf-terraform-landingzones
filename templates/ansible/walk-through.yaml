@@ -2,6 +2,17 @@
 # Get launchpad subscription details
 #
 
+
+# blinQ:
+# Workaround for Graph API Issue https://github.com/microsoftgraph/msgraph-metadata/issues/92
+# We require a normal user principal to become Azure AD Group owner for every groups created by template
+- name: Get Azure AD object_id for default Azure AD Group Owner user principal
+  shell: az ad user show --id "{{ default_azure_ad_group_owner }}" | jq -r .id
+  register: group_owner_object_id
+
+- debug:
+    msg: group_owner_object_id    
+
 - name: Get user type logged in with azure
   shell: az account show | jq -r .user.type
   register: az_user_type
@@ -222,7 +233,7 @@
 - name: copy github workflows
   ansible.builtin.template:
     src: "{{ item.path }}"
-    dest: "{{base_folder}}/{{ item.path | regex_replace(public_templates_folder + '/pipelines', '') }}"
+    dest: "{{base_folder}}/{{ item.path | regex_replace(public_templates_folder + '/pipelines', '') | regex_replace('.j2$', '') }}"
   loop: "{{github_workflows_to_process.files}}"
 
 # Copy default firewall rules
