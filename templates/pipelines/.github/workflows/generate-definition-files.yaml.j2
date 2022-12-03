@@ -109,6 +109,7 @@ jobs:
             -e topology_file=$(readlink -f ./landingzones/templates/platform/caf_platform_prod_nonprod.yaml) \
 {% endif %}
 {% raw %}            -e gitops_pipelines=github \
+            -e gitops_agent=github \
             -e GITHUB_SERVER_URL=${GITHUB_SERVER_URL} \
             -e GITHUB_REPOSITORY=${GITHUB_REPOSITORY} \
             -e GITOPS_SERVER_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY} \
