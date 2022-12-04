@@ -41,7 +41,7 @@ jobs:
           echo "environment=$CAF_ENVIRONMENT" >> $GITHUB_OUTPUT
 
   generate_definition_files:
-    uses: ./.github/workflows/generate-definition-files.yaml
+    uses: ./.github/workflows/ansible-generate-definition-files.yaml
     needs: [environment]
     concurrency: 
       group: credentials
