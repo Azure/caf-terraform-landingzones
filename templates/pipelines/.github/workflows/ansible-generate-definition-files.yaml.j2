@@ -127,7 +127,7 @@ jobs:
             -e template_folder="$(pwd)/platform/definition"
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v4
+        uses: peter-evans/create-pull-request@v4.2.3
         with:
           token: ${{ secrets.BOOTSTRAP_TOKEN }}
           commit-message: "Update definition files"
