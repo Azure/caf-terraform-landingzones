@@ -81,7 +81,7 @@ jobs:
           subscription-id: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
           allow-no-subscriptions: true
 
-      - name: Create configuration files
+      - name: Ansible playbook generate configuration files from definition files
         run: |
           rm -rf ./landingzones
           git clone -b ${{ inputs.terraform_code_ref }} --single-branch ${{ inputs.terraform_code_repository }} ./landingzones
