@@ -1,3 +1,4 @@
+
 #
 # Copyright (c) Microsoft Corporation
 # Licensed under the MIT License.
@@ -6,7 +7,10 @@
 name: "Generate configuration files"
 
 on:
-  workflow_call:
+  pull_request:
+    types: [merged]
+    branches:
+      - bootstrap
     inputs:
       terraform_code_repository:
         description: "Git repository of the the terraform entry code."
@@ -27,13 +31,25 @@ on:
         required: true
       AZURE_LAUNCHPAD_SUBSCRIPTION_ID:
         required: true
+      AZURE_MANAGEMENT_SUBSCRIPTION_ID:
+        required: false
+      AZURE_CONNECTIVITY_SUBSCRIPTION_ID:
+        required: false
+      AZURE_IDENTITY_SUBSCRIPTION_ID:
+        required: false
+      AZURE_SECURITY_SUBSCRIPTION_ID:
+        required: false
       AZURE_TARGET_SUBSCRIPTION_ID:
         required: true
       RUNNER_REGISTRATION_TOKEN:
         required: true
+      AZURE_OBJECT_ID:
+        required: true
+      ROVER_AGENT_DOCKER_IMAGE:
+        required: true
       RUNNER_NUMBERS:
         required: true
-      AZURE_OBJECT_ID:
+      BOOTSTRAP_TOKEN:
         required: true
 
 
@@ -43,7 +59,6 @@ env:
   TF_REGISTRY_CLIENT_TIMEOUT: 15
   ROVER_RUNNER: true
 
-{% raw %}
 jobs:
   rover:
     name: Generate configuration files
@@ -55,7 +70,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          ref: ${{ github.event.pull_request.head.ref }}
+          ref: bootstrap
 
       - name: 'Azure Login'
         uses: azure/login@v1
@@ -96,22 +111,16 @@ jobs:
             -e GITHUB_SERVER_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY} \
             -e base_folder=$(pwd)
 
-      - name: Update pull Request
-        run: |
-          git config --global --add safe.directory $(pwd)
-          git remote -v
-          
-          git config user.name "GitHub Actions Bot"
-          git config user.email "github-actions@github.com"
-
-          echo ${GITHUB_HEAD_REF}
-          
-          if [ -z "$(git status --porcelain)" ];
-          then
-              echo "Nothing to commit"
-          else
-            git add --all .
-            git commit -m "Update configuration files"
-            git push
-          fi
-{% endraw %}
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          token: ${{ secrets.BOOTSTRAP_TOKEN }}
+          commit-message: "Update configuration files"
+          committer: "Github Action Bot <github-actions@github.com>"
+          branch: "bootstrap"
+          base: "main"
+          delete-branch: true
+          title: "Configuration files updated, merge with main"
+          body: "${body}"
+          assignees: "@me"
+        
