@@ -7,7 +7,7 @@
 name: "Ansible generate configuration files"
 
 on:
-  pull:
+  push:
     branches:
       - definition  
 
