@@ -5,6 +5,7 @@
 #
 
 name: "Ansible generate configuration files"
+needs: [definition-files]
 
 on:
   push:
