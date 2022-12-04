@@ -4,7 +4,7 @@
 # Licensed under the MIT License.
 #
 
-name: "Generate configuration files"
+name: "Ansible generate configuration files"
 
 on:
   pull_request:

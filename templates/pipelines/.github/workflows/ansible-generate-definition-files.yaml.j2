@@ -4,7 +4,7 @@
 # Licensed under the MIT License.
 #
 
-name: "Generate definition files"
+name: "Ansible generate definition files"
 
 on:
   workflow_call:
@@ -126,36 +126,14 @@ jobs:
             -e bootstrap_sp_object_id=${{secrets.AZURE_OBJECT_ID}} \
             -e template_folder="$(pwd)/platform/definition"
 
-      - name: Git add and commit updates to branch definition
-        run: |
-          git config --global --add safe.directory $(pwd)
-          git config user.name "GitHub Actions Bot"
-          git config user.email "github-actions@github.com"
-
-          git checkout -b definition
-          git add .
-          pre-commit
-          git commit -am "Update definition files."
-
-          echo ${GITHUB_HEAD_REF}
-          
-          if [ -z "$(git status --porcelain)" ];
-          then
-              echo "Nothing to commit"
-          else
-            git add --all .
-            git commit -m "Update configuration files"
-            git push
-          fi
-
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
           token: ${{ secrets.BOOTSTRAP_TOKEN }}
           commit-message: "Update definition files"
           committer: "Github Action Bot <github-actions@github.com>"
-          branch: "definition"
-          base: "bootstrap"
+          branch: definition
+          base: bootstrap
           delete-branch: true
           title: "Definition files updated, merge with bootstrap"
           body: "${body}"
