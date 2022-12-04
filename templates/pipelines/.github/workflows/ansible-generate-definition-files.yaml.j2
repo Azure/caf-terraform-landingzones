@@ -132,10 +132,10 @@ jobs:
           token: ${{ secrets.BOOTSTRAP_TOKEN }}
           commit-message: "Update definition files"
           committer: "Github Action Bot <github-actions@github.com>"
-          branch: definition
-          base: bootstrap
+          branch: bootstrap
+          base: main
           delete-branch: true
-          title: "Definition files updated, merge with bootstrap"
+          title: "Definition files updated, create pull_request with main"
           body: "${body}"
           assignees: "@me"
         

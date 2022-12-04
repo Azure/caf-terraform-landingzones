@@ -7,8 +7,10 @@
 name: "Ansible generate configuration files"
 
 on:
-  pull_request:
-    types: [merged]
+  push:
+    branches:
+      - bootstrap
+  pull_request:    
     branches:
       - bootstrap
     inputs:
@@ -112,16 +114,16 @@ jobs:
             -e GITHUB_SERVER_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY} \
             -e base_folder=$(pwd)
 
-      - name: Create Pull Request
+      - name: Update Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
           token: ${{ secrets.BOOTSTRAP_TOKEN }}
           commit-message: "Update configuration files"
           committer: "Github Action Bot <github-actions@github.com>"
-          branch: "bootstrap"
-          base: "main"
+          branch: bootstrap
+          base: main
           delete-branch: true
-          title: "Configuration files updated, merge with main"
+          title: "Configuration files updated, update pull_request to merge with main"
           body: "${body}"
           assignees: "@me"
 {% endraw %}

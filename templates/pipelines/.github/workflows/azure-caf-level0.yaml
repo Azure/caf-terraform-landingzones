@@ -46,30 +46,6 @@ jobs:
           echo "terraform_code_ref=$LZ_BRANCH" >> $GITHUB_OUTPUT
           echo "environment=$CAF_ENVIRONMENT" >> $GITHUB_OUTPUT
 
-  configuration_updates:
-    name: Generate configuration tfvars files
-    runs-on: [self-hosted, platform]
-
-    permissions:
-      id-token: write
-      contents: write
-      
-    needs: [environment]
-    uses: ./.github/workflows/generate-configuration-files.yaml
-    secrets:
-      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-      AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
-      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
-      RUNNER_REGISTRATION_TOKEN: ${{ secrets.RUNNER_REGISTRATION_TOKEN }}
-      RUNNER_NUMBERS: ${{ secrets.RUNNER_NUMBERS }}
-      AZURE_OBJECT_ID: ${{ secrets.AZURE_OBJECT_ID }}
-    with:
-      terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
-      terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
-      environment: ${{ needs.environment.outputs.environment }}
-
-
   launchpad:
     uses: ./.github/workflows/rover.yaml
     needs: [environment, configuration_updates]
