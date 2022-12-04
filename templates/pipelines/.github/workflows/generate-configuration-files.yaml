@@ -59,6 +59,7 @@ env:
   TF_REGISTRY_CLIENT_TIMEOUT: 15
   ROVER_RUNNER: true
 
+{% raw %}
 jobs:
   rover:
     name: Generate configuration files
@@ -123,4 +124,5 @@ jobs:
           title: "Configuration files updated, merge with main"
           body: "${body}"
           assignees: "@me"
+{% endraw %}
         
