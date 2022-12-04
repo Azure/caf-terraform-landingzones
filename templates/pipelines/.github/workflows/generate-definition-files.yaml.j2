@@ -58,12 +58,12 @@ env:
 
 jobs:
   rover:
-    name: Generate configuration files
+    name: Generate definition files
     runs-on: [self-hosted, platform]
     
     steps:
       
-      - name: Checkout Configuration
+      - name: Checkout Repository
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
@@ -77,7 +77,7 @@ jobs:
           subscription-id: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
           allow-no-subscriptions: true
 
-      - name: Create definition files
+      - name: Ansible playbook generate definition files from template
         run: |
           rm -rf ./landingzones
           git clone -b ${{ inputs.terraform_code_ref }} --single-branch ${{ inputs.terraform_code_repository }} ./landingzones
@@ -132,7 +132,7 @@ jobs:
           token: ${{ secrets.BOOTSTRAP_TOKEN }}
           commit-message: "Update definition files"
           committer: "Github Action Bot <github-actions@github.com>"
-          branch: "end2end"
+          branch: "definition"
           delete-branch: true
           title: "Definition files updated, merge with bootstrap"
           body: "${body}"
