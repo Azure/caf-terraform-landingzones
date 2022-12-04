@@ -23,6 +23,11 @@
     msg: "App Platform Landing Zone Object Id: {{ app_platform_landing_zones_object_id.stdout }}"
 # blinQ end!
 
+# We use this to not update documentation for manual deployment when running in github worker nodes
+- Name: Get Execution mode from Rover environment variable
+  shell: echo $gitops_execution_mode
+  register: gitops_execution_mode
+
 - name: Get user type logged in with azure
   shell: az account show | jq -r .user.type
   register: az_user_type
@@ -303,4 +308,5 @@
   ansible.builtin.template:
     src: "{{platform_service_folder}}/README.md"
     dest: "{{destination_path}}/GETTING-STARTED.md"
+  when: gitops_execution_mode.stdout == "local"
   

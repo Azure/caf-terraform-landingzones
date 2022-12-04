@@ -65,7 +65,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          ref: ${{ github.event.pull_request.head.ref }}
+          ref: bootstrap
 
       - name: 'Azure Login'
         uses: azure/login@v1
@@ -75,7 +75,7 @@ jobs:
           subscription-id: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
           allow-no-subscriptions: true
 
-      - name: Create defnition files
+      - name: Create definition files
         run: |
           rm -rf ./landingzones
           git clone -b ${{ inputs.terraform_code_ref }} --single-branch ${{ inputs.terraform_code_repository }} ./landingzones
@@ -99,12 +99,12 @@ jobs:
             az login --service-principal -u ${ARM_CLIENT_ID} -p ${ARM_CLIENT_SECRET} -t ${ARM_TENANT_ID}  --only-show-errors 1> /dev/null
           fi
 
-          ansible-playbook $(readlink -f ./landingzones/templates/ansible/walk-through-bootstrap.yaml) \
+          ansible-playbook $(readlink -f ./landingzones/templates/ansible/walk-through-ci.yaml) \
             --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)" \
             -e base_folder=$(pwd) \
 {% endraw %}
 {% if topology_file is defined %}
-            -e topology_file={{ '"$(readlink -f ' + topology_file | regex_replace('/tf/caf', '.') + ')"'}} \
+            -e topology_file={{ '$(readlink -f ' + topology_file | regex_replace('/tf/caf', '.') + ')'}} \
 {% else %}
             -e topology_file=$(readlink -f ./landingzones/templates/platform/caf_platform_prod_nonprod.yaml) \
 {% endif %}
@@ -124,18 +124,16 @@ jobs:
             -e bootstrap_sp_object_id=${{secrets.AZURE_OBJECT_ID}} \
             -e template_folder="$(pwd)/platform/definition"
 
-      # \\blinQ: Removed AGENT_TOKE, use gh to receive with tf
-      # -e AGENT_TOKEN=${AGENT_TOKEN} \
-
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
-          commit-message: "Update configuration files"
+          token: ${{ secrets.BOOTSTRAP_TOKEN }}
+          commit-message: "Update definition files"
           committer: "Github Action Bot <github-actions@github.com>"
           branch: "end2end"
           base: "bootstrap"
           delete-branch: true
-          title: "Complete the deployment of the platform services."
+          title: "Complete the deployment of level0."
           body: "${body}"
           assignees: "@me"
         

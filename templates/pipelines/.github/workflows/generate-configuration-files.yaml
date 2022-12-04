@@ -96,9 +96,6 @@ jobs:
             -e GITHUB_SERVER_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY} \
             -e base_folder=$(pwd)
 
-            # -e AGENT_TOKEN=${{ secrets.RUNNER_REGISTRATION_TOKEN }} \
-
-
       - name: Update pull Request
         run: |
           git config --global --add safe.directory $(pwd)

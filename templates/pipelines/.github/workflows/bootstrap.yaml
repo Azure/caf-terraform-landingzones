@@ -107,6 +107,7 @@ jobs:
       RUNNER_NUMBERS: ${{ secrets.RUNNER_NUMBERS }}
       AZURE_OBJECT_ID: ${{ secrets.AZURE_OBJECT_ID }}
       ROVER_AGENT_DOCKER_IMAGE: ${{ secrets.ROVER_AGENT_DOCKER_IMAGE }}
+      BOOTSTRAP_TOKEN: ${{ secrets.BOOTSTRAP_TOKEN }}
     with:
       terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
       terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
