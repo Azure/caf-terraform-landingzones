@@ -64,31 +64,4 @@ jobs:
       terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
       terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
       environment: ${{ needs.environment.outputs.environment }}
-
-  generate_configuration_files:
-    uses: ./.github/workflows/ansible-generate-configuration-files.yaml
-    needs: [environment, generate_definition_files]
-    concurrency: 
-      group: credentials
-    secrets:
-
-      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-      AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
-      AZURE_MANAGEMENT_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
-      AZURE_CONNECTIVITY_SUBSCRIPTION_ID: ${{ secrets.AZURE_CONNECTIVITY_SUBSCRIPTION_ID }}
-      AZURE_IDENTITY_SUBSCRIPTION_ID: ${{ secrets.AZURE_IDENTITY_SUBSCRIPTION_ID }}
-      AZURE_SECURITY_SUBSCRIPTION_ID: ${{ secrets.AZURE_SECURITY_SUBSCRIPTION_ID }}
-      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_TARGET_SUBSCRIPTION_ID }}
-      RUNNER_REGISTRATION_TOKEN: ${{ secrets.RUNNER_REGISTRATION_TOKEN }}
-      RUNNER_NUMBERS: ${{ secrets.RUNNER_NUMBERS }}
-      AZURE_OBJECT_ID: ${{ secrets.AZURE_OBJECT_ID }}
-      ROVER_AGENT_DOCKER_IMAGE: ${{ secrets.ROVER_AGENT_DOCKER_IMAGE }}
-      BOOTSTRAP_TOKEN: ${{ secrets.BOOTSTRAP_TOKEN }}
-    with:
-      terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
-      terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
-      environment: ${{ needs.environment.outputs.environment }}
-
-
 {% endraw %}
