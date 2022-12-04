@@ -7,12 +7,7 @@
 name: "Ansible generate configuration files"
 
 on:
-  push:
-    branches:
-      - bootstrap
-  pull_request:    
-    branches:
-      - bootstrap
+  workflow_call:
     inputs:
       terraform_code_repository:
         description: "Git repository of the the terraform entry code."
