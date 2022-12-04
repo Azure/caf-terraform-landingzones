@@ -126,6 +126,10 @@ jobs:
             -e bootstrap_sp_object_id=${{secrets.AZURE_OBJECT_ID}} \
             -e template_folder="$(pwd)/platform/definition"
 
+            git checkout -b definition
+            git add --all .
+            git commit -m "GitHub Action Bot Updated definition files"
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
