@@ -24,7 +24,7 @@
 # blinQ end!
 
 # We use this to not update documentation for manual deployment when running in github worker nodes
-- Name: Get Execution mode from Rover environment variable
+- name: Get Execution mode from Rover environment variable
   shell: echo $gitops_execution_mode
   register: gitops_execution_mode
 
