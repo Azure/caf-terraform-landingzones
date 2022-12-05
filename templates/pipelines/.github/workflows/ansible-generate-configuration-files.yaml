@@ -109,9 +109,6 @@ jobs:
             -e GITHUB_SERVER_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY} \
             -e base_folder=$(pwd)
           
-          # The .md files contain documentation for manual deployment and should not include paths for GitHub worker nodes, as this can clutter the documentation and make it difficult to read.
-          git ls-files | grep .md | xargs git restore
-
       - name: Update Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
@@ -125,5 +122,6 @@ jobs:
           title: "Configuration files updated, update pull_request to merge with main"
           body: "${body}"
           assignees: "@me"
+          pull_request_template: .github/pull_request_template.md
 {% endraw %}
         
