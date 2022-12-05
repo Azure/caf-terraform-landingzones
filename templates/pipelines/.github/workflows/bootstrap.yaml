@@ -9,8 +9,7 @@ on:
   push:
     branches:
       - bootstrap
-    unless:
-      - "github.event.pull_request.labels.some(label => label.name === 'bootstrap')"
+    if: "github.event.commits.some(commit => commit.labels.some(label => label.name === 'bootstrap'))"
 
 permissions:
   id-token: write
