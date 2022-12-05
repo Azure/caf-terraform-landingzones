@@ -308,5 +308,4 @@
   ansible.builtin.template:
     src: "{{platform_service_folder}}/README.md"
     dest: "{{destination_path}}/GETTING-STARTED.md"
-  when: gitops_execution_mode.stdout == "local"
   
