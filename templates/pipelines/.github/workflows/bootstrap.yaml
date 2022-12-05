@@ -9,7 +9,8 @@ on:
   push:
     branches:
       - bootstrap
-    if: "github.event.commits.some(commit => commit.labels.some(label => label.name === 'bootstrap'))"
+    message:
+      contains: 'deploy'
 
 permissions:
   id-token: write
