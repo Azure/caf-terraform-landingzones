@@ -129,6 +129,12 @@ jobs:
             -e bootstrap_sp_object_id=${{secrets.AZURE_OBJECT_ID}} \
             -e template_folder="$(pwd)/platform/definition"
 
+      # We don't want the documentation to be cluttered with GitHub worker node paths
+      - name: Exclude readme.md files from the pull request
+          run: |
+            git diff --name-only origin/master...HEAD | grep -v 'readme.md$' | xargs git reset HEAD
+            git diff --name-only origin/master...HEAD | grep -v 'GETTING-STARTED.md$' | xargs git reset HEAD
+                      
       - name: Update Pull Request
         uses: peter-evans/create-pull-request@v4.2.3
         with:
