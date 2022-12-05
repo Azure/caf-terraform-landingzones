@@ -109,7 +109,6 @@ jobs:
             -e GITHUB_SERVER_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY} \
             -e base_folder=$(pwd)
 
-      # We don't want the documentation to be cluttered with GitHub worker node paths, we add them to a temp branch and than delete this branch.
       - name: Exclude readme.md files from the pull request
         run: |          
           if git show-branch temp &>/dev/null; then          
