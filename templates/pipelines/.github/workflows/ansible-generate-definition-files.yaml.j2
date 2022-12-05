@@ -142,8 +142,7 @@ jobs:
           git branch -D temp
                       
       - name: Update Pull Request
-        with:
-          pull_request_template: .github/pull_request_template.md
+        with:          
           token: ${{ secrets.BOOTSTRAP_TOKEN }}
           commit-message: "Update configuration files"
           committer: "Github Action Bot <github-actions@github.com>"
