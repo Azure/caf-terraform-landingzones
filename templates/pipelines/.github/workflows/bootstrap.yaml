@@ -6,11 +6,7 @@
 name: bootstrap
 
 on:
-  push:
-    branches:
-      - bootstrap
-    message:
-      contains: 'deploy'
+  workflow_dispatch:
 
 permissions:
   id-token: write
