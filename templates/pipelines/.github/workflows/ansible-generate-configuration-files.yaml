@@ -61,7 +61,6 @@ jobs:
   rover:
     name: Generate configuration files
     runs-on: [self-hosted, platform]
-    needs: [environment]
 
     steps:
        
