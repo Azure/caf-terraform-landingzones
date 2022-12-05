@@ -7,9 +7,47 @@
 name: "Ansible generate configuration files"
 
 on:
-  push:
-    branches:
-      - definition  
+  workflow_call:
+    inputs:
+      terraform_code_repository:
+        description: "Git repository of the the terraform entry code."
+        required: true
+        type: string
+      terraform_code_ref:
+        description: "Tag or branch name."
+        required: true
+        type: string
+      environment:
+        description: Name of the CAF environment
+        required: true
+        type: string
+    secrets:
+      AZURE_CLIENT_ID:
+        required: true
+      AZURE_TENANT_ID:
+        required: true
+      AZURE_LAUNCHPAD_SUBSCRIPTION_ID:
+        required: true
+      AZURE_MANAGEMENT_SUBSCRIPTION_ID:
+        required: false
+      AZURE_CONNECTIVITY_SUBSCRIPTION_ID:
+        required: false
+      AZURE_IDENTITY_SUBSCRIPTION_ID:
+        required: false
+      AZURE_SECURITY_SUBSCRIPTION_ID:
+        required: false
+      AZURE_TARGET_SUBSCRIPTION_ID:
+        required: true
+      RUNNER_REGISTRATION_TOKEN:
+        required: true
+      AZURE_OBJECT_ID:
+        required: true
+      ROVER_AGENT_DOCKER_IMAGE:
+        required: true
+      RUNNER_NUMBERS:
+        required: true
+      BOOTSTRAP_TOKEN:
+        required: true 
 
 env:
   TF_CLI_ARGS: '-no-color'
@@ -19,21 +57,6 @@ env:
 
 {% raw %}
 jobs:
-
-  environment:
-    name: Setup dynamic environment variables
-    runs-on: ubuntu-latest
-    outputs:
-      terraform_code_repository: ${{ steps.set_env.outputs.terraform_code_repository }}
-      terraform_code_ref: ${{ steps.set_env.outputs.terraform_code_ref }}
-      environment: ${{ steps.set_env.outputs.environment }}
-    steps:
-      - name: Set environment variables for re-usable workflows
-        id: set_env
-        run: |
-          echo "terraform_code_repository=$LZ_REPO" >> $GITHUB_OUTPUT
-          echo "terraform_code_ref=$LZ_BRANCH" >> $GITHUB_OUTPUT
-          echo "environment=$CAF_ENVIRONMENT" >> $GITHUB_OUTPUT
 
   rover:
     name: Generate configuration files
@@ -93,7 +116,7 @@ jobs:
           token: ${{ secrets.BOOTSTRAP_TOKEN }}
           commit-message: "Update configuration files"
           committer: "Github Action Bot <github-actions@github.com>"
-          branch: configuration
+          branch: bootstrap
           base: main
           delete-branch: true
           title: "Configuration files updated, update pull_request to merge with main"
