@@ -115,6 +115,7 @@ jobs:
           token: ${{ secrets.BOOTSTRAP_TOKEN }}
           commit-message: "Update configuration files"
           committer: "Github Action Bot <github-actions@github.com>"
+          labels: bootstrap, configuration
           branch: bootstrap
           base: main
           delete-branch: true
