@@ -101,6 +101,9 @@ jobs:
             az login --service-principal -u ${ARM_CLIENT_ID} -p ${ARM_CLIENT_SECRET} -t ${ARM_TENANT_ID}  --only-show-errors 1> /dev/null
           fi
 
+          # Debug - always create some updates
+          echo "test123" >> deleteme.txt
+
           ansible-playbook $(readlink -f ./landingzones/templates/ansible/walk-through-ci.yaml) \
             --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)" \
             -e base_folder=$(pwd) \
