@@ -111,9 +111,9 @@ jobs:
           
       # We don't want the documentation to be cluttered with GitHub worker node paths
       - name: Exclude readme.md files from the pull request
-          run: |
-            git diff --name-only origin/master...HEAD | grep -v 'readme.md$' | xargs git reset HEAD
-            git diff --name-only origin/master...HEAD | grep -v 'GETTING-STARTED.md$' | xargs git reset HEAD
+        run: |
+          git diff --name-only origin/master...HEAD | grep -v 'readme.md$' | xargs git reset HEAD
+          git diff --name-only origin/master...HEAD | grep -v 'GETTING-STARTED.md$' | xargs git reset HEAD
 
 
       - name: Update Pull Request
