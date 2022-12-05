@@ -110,8 +110,9 @@ jobs:
             -e base_folder=$(pwd)
           
       - name: Update Pull Request
-        uses: peter-evans/create-pull-request@v4
+        uses: peter-evans/create-pull-request@v4.2.3
         with:
+          pull_request_template: .github/pull_request_template.md
           token: ${{ secrets.BOOTSTRAP_TOKEN }}
           commit-message: "Update configuration files"
           committer: "Github Action Bot <github-actions@github.com>"
@@ -120,8 +121,8 @@ jobs:
           base: main
           delete-branch: true
           title: "Configuration files updated, update pull_request to merge with main"
-          body: "${body}"
-          assignees: "@me"
-          pull_request_template: .github/pull_request_template.md
+          body: | 
+            echo " - Configuration files updated"
+          assignees: "heintonny"
 {% endraw %}
         

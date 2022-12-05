@@ -129,22 +129,21 @@ jobs:
             -e bootstrap_sp_object_id=${{secrets.AZURE_OBJECT_ID}} \
             -e template_folder="$(pwd)/platform/definition"
 
-          # The .md files contain documentation for manual deployment and should not include paths for GitHub worker nodes, as this can clutter the documentation and make it difficult to read.
-          git ls-files | grep .md | xargs git restore
-
-      - name: Create Pull Request
+      - name: Update Pull Request
         uses: peter-evans/create-pull-request@v4.2.3
         with:
+          pull_request_template: .github/pull_request_template.md
           token: ${{ secrets.BOOTSTRAP_TOKEN }}
-          commit-message: "Update definition files"
+          commit-message: "Update configuration files"
           committer: "Github Action Bot <github-actions@github.com>"
           labels: bootstrap, definition
           branch: bootstrap
           base: main
-          delete-branch: false
-          title: "Definition files updated, create pull_request with main"
-          body: "${body}"
-          assignees: "@me"
-          pull_request_template: .github/pull_request_template.md
+          delete-branch: true
+          title: "Configuration files updated, update pull_request to merge with main"
+          body: | 
+            echo "This pull_request was created by GitHub Action workflow and peter-evans/create-pull-request@v4.2.3"
+            echo " - Definition files updated"
+          assignees: "heintonny"
         
 {% endraw %}
