@@ -133,7 +133,7 @@ jobs:
           delete-branch: true
           title: "Configuration files updated, update pull_request to merge with main"
           body: | 
-            echo " - Configuration files updated"
+            - Configuration files updated
           assignees: "heintonny"
 {% endraw %}
         

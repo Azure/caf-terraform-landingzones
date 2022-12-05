@@ -144,7 +144,7 @@ jobs:
       - name: Update Pull Request
         with:          
           token: ${{ secrets.BOOTSTRAP_TOKEN }}
-          commit-message: "Update configuration files"
+          commit-message: "Update definition files"
           committer: "Github Action Bot <github-actions@github.com>"
           labels: bootstrap, definition
           branch: bootstrap
@@ -152,8 +152,8 @@ jobs:
           delete-branch: true
           title: "Configuration files updated, update pull_request to merge with main"
           body: | 
-            echo "This pull_request was created by GitHub Action workflow and peter-evans/create-pull-request@v4.2.3"
-            echo " - Definition files updated"
+            This pull_request was created by GitHub Action workflow and peter-evans/create-pull-request@v4.2.3
+            - Definition files updated
           assignees: "heintonny"
         
 {% endraw %}
