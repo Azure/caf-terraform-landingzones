@@ -75,6 +75,7 @@
       ansible.builtin.template:
         src: "{{topology_folder}}/readme.md"
         dest: "{{template_folder}}/readme.md"
+      when: gitops_execution_mode.stdout == "local"
 
     - debug:
         msg: 

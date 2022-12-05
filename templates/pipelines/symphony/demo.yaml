@@ -24,3 +24,4 @@
     force: yes
   with_fileglob:
     - "{{ base_folder }}/README.md"
+  when: gitops_execution_mode.stdout == "local"
