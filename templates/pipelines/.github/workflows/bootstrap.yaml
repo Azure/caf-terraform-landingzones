@@ -9,6 +9,11 @@ on:
   push:
     branches:
       - bootstrap
+  pull_request:
+    branches:
+      - bootstrap
+    except:
+      - [push]
 
 permissions:
   id-token: write
