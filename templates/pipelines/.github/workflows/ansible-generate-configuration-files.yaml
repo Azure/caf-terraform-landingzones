@@ -40,19 +40,8 @@ jobs:
     runs-on: [self-hosted, platform]
     needs: [environment]
 
-    outputs:
-      terraform_code_repository: ${{ steps.set_env.outputs.terraform_code_repository }}
-      terraform_code_ref: ${{ steps.set_env.outputs.terraform_code_ref }}
-      environment: ${{ steps.set_env.outputs.environment }}
-    
     steps:
-      - name: Get environment variables for re-usable workflows
-        id: set_env
-        run: |
-          echo "terraform_code_repository=$LZ_REPO" >> $GITHUB_OUTPUT
-          echo "terraform_code_ref=$LZ_BRANCH" >> $GITHUB_OUTPUT
-          echo "environment=$CAF_ENVIRONMENT" >> $GITHUB_OUTPUT
-    
+       
       - name: Checkout Configuration
         uses: actions/checkout@v3
         with:
