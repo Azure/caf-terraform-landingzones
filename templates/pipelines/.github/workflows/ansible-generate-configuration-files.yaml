@@ -108,13 +108,19 @@ jobs:
             -e AZURE_OBJECT_ID=${{ secrets.AZURE_OBJECT_ID }} \
             -e GITHUB_SERVER_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY} \
             -e base_folder=$(pwd)
-          
-      # We don't want the documentation to be cluttered with GitHub worker node paths
-      - name: Exclude readme.md files from the pull request
-        run: |
-          git diff --name-only origin/main...HEAD | grep -v 'readme.md$' | xargs git reset HEAD
-          git diff --name-only origin/main...HEAD | grep -v 'GETTING-STARTED.md$' | xargs git reset HEAD
 
+      # We don't want the documentation to be cluttered with GitHub worker node paths, we add them to a temp branch and than delete this branch.
+      - name: Exclude readme.md files from the pull request
+        run: |          
+          if git show-branch temp &>/dev/null; then          
+            git branch -D temp
+          fi          
+          git checkout -b temp
+          git diff --name-only origin/main | grep 'readme.md$' | xargs git add
+          git diff --name-only origin/main | grep 'GETTING-STARTED.md$' | xargs git add          
+          git commit -m "Commit changes to documentation files in a temprarly branch"
+          git checkout bootstrap
+          git branch -D temp
 
       - name: Update Pull Request
         uses: peter-evans/create-pull-request@v4.2.3
