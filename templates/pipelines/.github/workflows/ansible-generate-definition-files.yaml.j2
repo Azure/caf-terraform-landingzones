@@ -142,6 +142,7 @@ jobs:
           git branch -D temp
                       
       - name: Update Pull Request
+        uses: peter-evans/create-pull-request@v4.2.3
         with:          
           token: ${{ secrets.BOOTSTRAP_TOKEN }}
           commit-message: "Update definition files"
