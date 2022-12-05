@@ -81,9 +81,9 @@ jobs:
       - name: Ansible playbook generate configuration files from definition files
         run: |
           rm -rf ./landingzones
-          git clone -b ${{ needs.environment.terraform_code_ref }} --single-branch ${{ needs.environment.terraform_code_repository }} ./landingzones
+          git clone -b ${{ inputs.terraform_code_ref }} --single-branch ${{ inputs.terraform_code_repository }} ./landingzones
           
-          cred_vault_name=$(az keyvault list --query "[?(tags.caf_identity_aad_key=='cred_level0' && tags.caf_environment=='${{ needs.environment.environment }}')].{name:name}[0]" -o tsv)
+          cred_vault_name=$(az keyvault list --query "[?(tags.caf_identity_aad_key=='cred_level0' && tags.caf_environment=='${{ inputs.environment }}')].{name:name}[0]" -o tsv)
           if [ "${cred_vault_name}" != ''  ]; then
             sp_keyvault_url="https://${cred_vault_name}.vault.azure.net/"
             

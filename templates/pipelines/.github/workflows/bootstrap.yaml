@@ -41,6 +41,7 @@ jobs:
           echo "environment=$CAF_ENVIRONMENT" >> $GITHUB_OUTPUT
 
   generate_definition_files:
+    name: Ansible generate definition files
     uses: ./.github/workflows/ansible-generate-definition-files.yaml
     needs: [environment]
     concurrency: 
@@ -66,6 +67,7 @@ jobs:
       environment: ${{ needs.environment.outputs.environment }}
 
   generate_configuration_files:
+    name: Ansible generate configuration files
     uses: ./.github/workflows/ansible-generate-configuration-files.yaml
     needs: [environment, generate_definition_files]
     concurrency: 
