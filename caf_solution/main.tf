@@ -35,7 +35,7 @@ provider "azurerm" {
   # partner identifier for CAF Terraform landing zones.
   features {
     api_management {
-      purge_soft_delete_on_destroy         = var.provider_azurerm_features_api_management.purge_soft_delete_on_destroy
+      purge_soft_delete_on_destroy = var.provider_azurerm_features_api_management.purge_soft_delete_on_destroy
       # recover_soft_deleted_api_managements = var.provider_azurerm_features_api_management.recover_soft_deleted_api_managements
     }
     # application_insights {
