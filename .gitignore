@@ -11,3 +11,4 @@
 **/backend.azurerm.tf
 public
 *output.json
+**/templates/ansible/action_plugins/__pycache__
