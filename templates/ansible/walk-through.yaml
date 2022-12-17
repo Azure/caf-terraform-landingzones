@@ -269,7 +269,7 @@
   register: firewall_files_to_process
 
 - name: copy firewall files
-  ansible.builtin.copy:
+  ansible.builtin.template:
     src: "{{ item.path }}"
     dest: "{{firewall_rules_path}}/{{ item.path | regex_replace(public_templates_folder + '/firewall_rules', '') }}"
   loop: "{{firewall_files_to_process.files}}"
