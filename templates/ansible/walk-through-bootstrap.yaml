@@ -16,7 +16,7 @@
     - name: customer_name
       prompt: Set the short version of your customer name with no spaces
       private: no
-      default: bsdev
+      default: alz
 
     - name: input_caf_environment
       prompt: Set the CAF Environment value
@@ -26,7 +26,7 @@
     - name: prefix
       prompt: Set the prefix to add to all resource.
       private: no
-      default: caf
+      default: alz
 
     - name: alz_mg_prefix
       prompt: Management group prefix (value must be between 2 to 10 characters long and can only contain alphanumeric characters and hyphens). 
@@ -36,7 +36,7 @@
     - name: alz_mg_name
       prompt: Management group name
       private: no
-      default: BSDev
+      default: ALZ
 
     - name: default_email_address
       prompt: Email address to send all notifications
@@ -49,7 +49,7 @@
     - name: default_azure_ad_group_owner
       prompt: UPN of Azure AD Group owner for all groups.
       private: no
-      default: caf-group-owner@blinqservicesdev.onmicrosoft.com
+      default: caf-group-owner@blinqservices.onmicrosoft.com
 
     - name: azure_regions
       prompt: Azure regions (lowercase, short version)

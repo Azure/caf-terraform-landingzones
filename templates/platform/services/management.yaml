@@ -57,7 +57,7 @@ management:
           private_endpoints:
             nsgflogs:
               name: stg-nsgflogs
-              resource_group_key: level0
+              resource_group_key: management
               vnet_key: vnet_region1
               subnet_key: level0
               private_service_connection:

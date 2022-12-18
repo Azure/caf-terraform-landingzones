@@ -785,6 +785,7 @@ launchpad:
                 azuread_groups:
                   keys:
                     - level0
+                    - management
                     - subscription_creation_platform
                     - caf_platform_maintainers
               Reader:
