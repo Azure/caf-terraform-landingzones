@@ -41,7 +41,7 @@ archetype_definitions:
       # https://github.com/Azure/azure-policy/blob/f2706e05bccaac0a7410f8613107a6ee3bd88afd/built-in-policies/policyDefinitions/Azure%20Government/Security%20Center/ASC_ExportToLogAnalyticsWorkspaceAzureSecurityCenterAlertsAndRecommendations_Deploy.json
       sec_export_log_analytics:
         createResourceGroup: true
-        resourceGroupName: "{{ topology.alz_mg_prefix + 'asc-export' }}"
+        resourceGroupName: "{{ topology.alz_mg_prefix + '-asc-export' }}"
         resourceGroupLocation: "{{ topology.caf_regions[topology.default_region_key] }}"
         workspaceResourceId:
           lz_key: management
