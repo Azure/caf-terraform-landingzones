@@ -968,9 +968,7 @@ launchpad:
 {% if private_endpoints is defined %}
               enforce_private_link_endpoint_network_policies: true              
 {% endif %}
-{% if route_table_key is defined %}
               route_table_key: azure_default
-{% endif %}
             level1:
               name: level1
               nsg_key: empty_nsg
@@ -981,9 +979,7 @@ launchpad:
 {% if private_endpoints is defined %}
               enforce_private_link_endpoint_network_policies: true
 {% endif %}
-{% if route_table_key is defined %}
               route_table_key: azure_default
-{% endif %}
             level2:
               name: level2
               nsg_key: empty_nsg
@@ -994,9 +990,7 @@ launchpad:
 {% if private_endpoints is defined %}
               enforce_private_link_endpoint_network_policies: true
 {% endif %}
-{% if route_table_key is defined %}
               route_table_key: azure_default
-{% endif %}
             credentials:
               name: credentials
               nsg_key: empty_nsg
@@ -1007,9 +1001,7 @@ launchpad:
 {% if private_endpoints is defined %}
               enforce_private_link_endpoint_network_policies: true
 {% endif %}
-{% if route_table_key is defined %}
               route_table_key: azure_default
-{% endif %}
             containergroups:
               name: containergroups
               nsg_key: empty_nsg
@@ -1022,9 +1014,7 @@ launchpad:
 {% if private_endpoints is defined %}
               enforce_private_link_endpoint_network_policies: true
 {% endif %}
-{% if route_table_key is defined %}
               route_table_key: azure_default
-{% endif %}
 
 
 {% if virtual_hubs_resources is defined %}
