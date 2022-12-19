@@ -1,0 +1,10 @@
+azurerm_routes = {
+{% for key, value in resources[tfstate_resource].resources[subscription_key].azurerm_routes_definition.items() %}
+  {{ key }} = {
+    name = "{{ value.name }}"
+    resource_group_key = "{{ value.resource_group_key }}"
+    route_table_key = "{{ value.route_table_key }}"
+    address_prefix = "{{ value.address_prefix }}"
+    next_hop_type = "{{ value.next_hop_type }}"
+{% endfor %}
+}

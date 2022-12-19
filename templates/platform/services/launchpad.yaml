@@ -933,7 +933,20 @@ launchpad:
         empty_nsg:
           version: 1
           resource_group_key: gitops
-          name: empty_nsg          
+          name: empty_nsg
+
+      route_table_definition:
+        azure_default:
+          name: azure-default
+          resource_group_key: gitops
+
+      azurerm_routes_definition:
+        internet:
+          name: internet
+          resource_group_key: gitops
+          route_table_key: azure_default
+          address_prefix: "0.0.0.0"
+          next_hop_type: Internet
 
       virtual_networks:
         vnet_region1:
@@ -955,6 +968,9 @@ launchpad:
 {% if private_endpoints is defined %}
               enforce_private_link_endpoint_network_policies: true              
 {% endif %}
+{% if route_table_key is defined %}
+              route_table_key: azure_default
+{% endif %}
             level1:
               name: level1
               nsg_key: empty_nsg
@@ -965,7 +981,9 @@ launchpad:
 {% if private_endpoints is defined %}
               enforce_private_link_endpoint_network_policies: true
 {% endif %}
-
+{% if route_table_key is defined %}
+              route_table_key: azure_default
+{% endif %}
             level2:
               name: level2
               nsg_key: empty_nsg
@@ -976,6 +994,9 @@ launchpad:
 {% if private_endpoints is defined %}
               enforce_private_link_endpoint_network_policies: true
 {% endif %}
+{% if route_table_key is defined %}
+              route_table_key: azure_default
+{% endif %}
             credentials:
               name: credentials
               nsg_key: empty_nsg
@@ -985,6 +1006,9 @@ launchpad:
                 - Microsoft.Storage
 {% if private_endpoints is defined %}
               enforce_private_link_endpoint_network_policies: true
+{% endif %}
+{% if route_table_key is defined %}
+              route_table_key: azure_default
 {% endif %}
             containergroups:
               name: containergroups
@@ -997,6 +1021,9 @@ launchpad:
                   - Microsoft.Network/virtualNetworks/subnets/action
 {% if private_endpoints is defined %}
               enforce_private_link_endpoint_network_policies: true
+{% endif %}
+{% if route_table_key is defined %}
+              route_table_key: azure_default
 {% endif %}
 
 
