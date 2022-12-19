@@ -60,20 +60,54 @@ management:
               resource_group_key: management
               vnet_key: vnet_region1
               subnet_key: level0
+              lz_key: launchpad
               private_service_connection:
                 name: stg-nsgflogs-link
                 is_manual_connection: false
                 subresource_names:
                   - blob
-                  - table
-                  - dfs
-                  
+               
               private_dns:
                 zone_group_name: gitops
                 lz_key: launchpad
                 keys: 
                   - privatelink.blob.core.windows.net
 
+            nsgflogstable:
+              name: stg-nsgflogs-table
+              resource_group_key: management
+              vnet_key: vnet_region1
+              subnet_key: level0
+              lz_key: launchpad
+              private_service_connection:
+                name: stg-nsgflogs-table-link
+                is_manual_connection: false
+                subresource_names:
+                  - table
+                  
+              private_dns:
+                zone_group_name: gitops
+                lz_key: launchpad
+                keys: 
+                  - privatelink.table.core.windows.net
+
+            nsgflogsdfs:
+              name: stg-nsgflogs-dfs
+              resource_group_key: management
+              vnet_key: vnet_region1
+              subnet_key: level0
+              lz_key: launchpad
+              private_service_connection:
+                name: stg-nsgflogs-dfs-link
+                is_manual_connection: false
+                subresource_names:
+                  - dfs
+                  
+              private_dns:
+                zone_group_name: gitops
+                lz_key: launchpad
+                keys: 
+                  - privatelink.dfs.core.windows.net
 {% endif %}
 
       diagnostic_log_analytics:

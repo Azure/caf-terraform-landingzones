@@ -41,7 +41,7 @@ archetype_definitions:
       # https://github.com/Azure/azure-policy/blob/f2706e05bccaac0a7410f8613107a6ee3bd88afd/built-in-policies/policyDefinitions/Azure%20Government/Security%20Center/ASC_ExportToLogAnalyticsWorkspaceAzureSecurityCenterAlertsAndRecommendations_Deploy.json
       sec_export_log_analytics:
         createResourceGroup: false
-        resourceGroupName: "notused"
+        resourceGroupName: "{{ topology.alz_mg_prefix + 'asc-export' }}"
         resourceGroupLocation: "{{ topology.caf_regions[topology.default_region_key] }}"
         workspaceResourceId:
           lz_key: management
@@ -117,8 +117,7 @@ archetype_definitions:
           output_key: diagnostics
           resource_type: log_analytics
           resource_key: region1
-          attribute_key: id
-      Deploy-LX-Arc-Monitoring:
+          attribute_key: id      
       Deploy-Resource-Diag:
         profileName: alz-diagnostic-log
         logAnalytics:
@@ -126,8 +125,7 @@ archetype_definitions:
           output_key: diagnostics
           resource_type: log_analytics
           resource_key: region1
-          attribute_key: id
-      Deploy-WS-Arc-Monitoring:
+          attribute_key: id      
         logAnalytics:
           lz_key: management
           output_key: diagnostics
@@ -185,6 +183,7 @@ archetype_definitions:
       Deny-Subnet-Without-Nsg:
       Deny-Subnet-Without-Udr:
       Deny-VNET-Peer-Cross-Sub:
+      Deny-VNET-Peering-To-Non-Approved-VNETs:
       Deny-VNet-Peering:
       Deploy-ASC-SecurityContacts:
       Deploy-Budget:
@@ -196,7 +195,9 @@ archetype_definitions:
       Deploy-Diagnostics-AnalysisService:
       Deploy-Diagnostics-ApiForFHIR:
       Deploy-Diagnostics-APIMgmt:
-      Deploy-Diagnostics-ApplicationGateway:
+      Deploy-Diagnostics-ApplicationGateway:      
+      Deploy-Diagnostics-AVDScalingPlans:
+      Deploy-Diagnostics-Bastion:
       Deploy-Diagnostics-CDNEndpoints:
       Deploy-Diagnostics-CognitiveServices:
       Deploy-Diagnostics-CosmosDB:
@@ -214,6 +215,7 @@ archetype_definitions:
       Deploy-Diagnostics-HDInsight:
       Deploy-Diagnostics-iotHub:
       Deploy-Diagnostics-LoadBalancer:
+      Deploy-Diagnostics-LogAnalytics:
       Deploy-Diagnostics-LogicAppsISE:
       Deploy-Diagnostics-MariaDB:
       Deploy-Diagnostics-MediaService:
@@ -251,11 +253,13 @@ archetype_definitions:
       Deploy-Sql-vulnerabilityAssessments:
       Deploy-SqlMi-minTLS:
       Deploy-Storage-sslEnforcement:
+      Deploy-VNET-HubSpoke:
       Deploy-Windows-DomainJoin:
     policy_set_definitions:
       Deny-PublicPaaSEndpoints:
-      Deploy-MDFC-Config:
       Deploy-Diagnostics-LogAnalytics:
+      Deploy-MDFC-Config:
+      Deploy-Private-DNS-Zones:
       Deploy-Sql-Security:
       Enforce-Encryption-CMK:
       Enforce-EncryptTransit:
