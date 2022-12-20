@@ -962,50 +962,55 @@ launchpad:
               name: level0
               nsg_key: empty_nsg
               cidr: ["10.100.0.0/27"]
+              route_table_key: azure_default
               service_endpoints:
                 - Microsoft.KeyVault
                 - Microsoft.Storage
 {% if private_endpoints is defined %}
               enforce_private_link_endpoint_network_policies: true              
 {% endif %}
-              route_table_key: azure_default
+   
             level1:
               name: level1
               nsg_key: empty_nsg
               cidr: ["10.100.0.32/27"]
+              route_table_key: azure_default
               service_endpoints:
                 - Microsoft.KeyVault
                 - Microsoft.Storage
 {% if private_endpoints is defined %}
               enforce_private_link_endpoint_network_policies: true
 {% endif %}
-              route_table_key: azure_default
+
             level2:
               name: level2
               nsg_key: empty_nsg
               cidr: ["10.100.0.64/27"]
+              route_table_key: azure_default
               service_endpoints:
                 - Microsoft.KeyVault
                 - Microsoft.Storage
 {% if private_endpoints is defined %}
               enforce_private_link_endpoint_network_policies: true
 {% endif %}
-              route_table_key: azure_default
+
             credentials:
               name: credentials
               nsg_key: empty_nsg
               cidr: ["10.100.0.96/27"]
+              route_table_key: azure_default
               service_endpoints:
                 - Microsoft.KeyVault
                 - Microsoft.Storage
 {% if private_endpoints is defined %}
               enforce_private_link_endpoint_network_policies: true
 {% endif %}
-              route_table_key: azure_default
+
             containergroups:
               name: containergroups
               nsg_key: empty_nsg
               cidr: ["10.100.0.128/27"]
+              route_table_key: azure_default
               delegation:
                 name: Microsoft.ContainerInstance/containerGroups
                 service_delegation: Microsoft.ContainerInstance/containerGroups
@@ -1014,8 +1019,6 @@ launchpad:
 {% if private_endpoints is defined %}
               enforce_private_link_endpoint_network_policies: true
 {% endif %}
-              route_table_key: azure_default
-
 
 {% if virtual_hubs_resources is defined %}
       virtual_hub_connections:

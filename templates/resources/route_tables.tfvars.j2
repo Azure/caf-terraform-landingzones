@@ -1,7 +1,8 @@
 route_tables = {
-{% for key, value in resources[tfstate_resource].resources[subscription_key].route_tables_definition.items() %}
+{% for key, value in resources[tfstate_resource].resources[subscription_key].route_tables.items() %}
   {{ key }} = {
     name = "{{ value.name }}"
     resource_group_key = "{{ value.resource_group_key }}"
 {% endfor %}
+  }
 }
