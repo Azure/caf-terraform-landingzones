@@ -945,7 +945,7 @@ launchpad:
           name: internet
           resource_group_key: gitops
           route_table_key: azure_default
-          address_prefix: "0.0.0.0"
+          address_prefix: "0.0.0.0/0"
           next_hop_type: Internet
 
       virtual_networks:
