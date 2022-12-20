@@ -935,12 +935,12 @@ launchpad:
           resource_group_key: gitops
           name: empty_nsg
 
-      route_table_definition:
+      route_tables:
         azure_default:
           name: azure-default
           resource_group_key: gitops
 
-      azurerm_routes_definition:
+      azurerm_routes:
         internet:
           name: internet
           resource_group_key: gitops
