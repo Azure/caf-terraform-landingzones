@@ -32,6 +32,9 @@ vnets = {
 {% if subnet.nsg_key is defined %}
         nsg_key = "{{ subnet.nsg_key }}"
 {% endif %}
+{% if subnet.route_table_key is defined %}
+        route_table_key = "{{ subnet.route_table_key }}"
+{% endif %}
 {% if subnet.service_endpoints is defined %}
         service_endpoints = {{ subnet.service_endpoints | replace('None','[]') | replace('\'','\"')  }}
 {% endif %}
@@ -43,6 +46,9 @@ vnets = {
 {% else %}
 {% if subnet.nsg_key is not defined %}
         nsg_key = "empty_nsg"
+{% endif %}
+{% if subnet.route_table_key is not defined %}
+        route_table_key = "azurerm_default"
 {% endif %}
 {% endif %}
 {% if subnet.delegation is defined %}
