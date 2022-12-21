@@ -709,7 +709,7 @@ launchpad:
             - {{group_owner_object_id.stdout}}
             - {{object_id}}
         identity:
-          name: caf-identity
+          name: identity
           prevent_duplicate_name: true
           members:
             azuread_service_principal_keys:
