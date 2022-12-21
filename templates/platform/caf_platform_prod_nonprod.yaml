@@ -42,15 +42,15 @@ deployment_mode: {{deployment_mode}}
 
 terraform_code_repository: https://github.com/blinqas/caf-terraform-landingzones.git
 caf_landingzone_branch: {{caf_landingzone_branch | default('blinq-5.6.4')}}
-default_rover_image: aztfmod/rover:1.3.4-2211.2307
+default_rover_image: aztfmod/rover:1.3.6-2212.011747-preview
 # Default image for self-hosted agents
 {% if gitops_pipelines == 'github' %}
-gitops_default_rover_image: aztfmod/rover-agent:1.3.4-2211.2307-github
+gitops_default_rover_image: aztfmod/rover-agent:1.3.6-2212.011747-preview-github
 {% elif gitops_pipelines == 'tfcloud' %}
-gitops_default_rover_image: aztfmod/rover-agent:1.3.4-2211.2307-tfc
+gitops_default_rover_image: aztfmod/rover-agent:1.3.6-2212.011747-preview-tfc
 {% elif gitops_pipelines != 'tfcloud' %}
 # Temp debug activity
-gitops_default_rover_image: aztfmod/rover-agent:1.3.4-2211.2307-github
+gitops_default_rover_image: aztfmod/rover-agent:1.3.6-2212.011747-preview-github
 {% endif %}
 
 caf_regions:
