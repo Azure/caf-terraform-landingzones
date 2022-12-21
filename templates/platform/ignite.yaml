@@ -1,5 +1,5 @@
 bootstrap:
-  azuread_identity_mode: service_principal
+  azuread_identity_mode: logged_in_user
   enable_azuread_groups: True
   enable_azuread_applications: True
 
