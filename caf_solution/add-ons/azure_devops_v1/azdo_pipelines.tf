@@ -49,6 +49,21 @@ resource "azuredevops_build_definition" "build_definition" {
     use_yaml = true
   }
 
+  dynamic "schedules" {
+    for_each = try(each.value.schedules, null) == null ? [] : [1]
+    content {
+      branch_filter {
+        include = try(each.value.schedules.branch_filter.include, [])
+        exclude = try(each.value.schedules.branch_filter.exclude, [])
+      }
+      days_to_build =  each.value.schedules.days_to_build
+      schedule_only_with_changes = try(each.value.schedules.schedule_only_with_changes, true)
+      start_hours = each.value.schedules.start_hours
+      start_minutes = each.value.schedules.start_minutes
+      time_zone = try(each.value.schedules.time_zone, "(UTC) Coordinated Universal Time")
+    }
+  }
+
   dynamic "variable" {
     for_each = try(each.value.variables, {})
 
