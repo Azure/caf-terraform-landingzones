@@ -1,0 +1,155 @@
+{
+  "name": "Deploy-ASC-SecurityContacts-CAF",
+  "type": "Microsoft.Authorization/policyDefinitions",
+  "apiVersion": "2021-06-01",
+  "scope": null,
+  "properties": {
+    "policyType": "Custom",
+    "mode": "All",
+    "displayName": "Deploy Microsoft Defender for Cloud Security Contacts (CAF)",
+    "description": "Deploy Microsoft Defender for Cloud Security Contacts (CAF)",
+    "metadata": {
+      "version": "1.0.0",
+      "category": "Security Center",
+      "source": "https://github.com/Azure/Enterprise-Scale/",
+      "alzCloudEnvironments": [
+        "AzureCloud",
+        "AzureChinaCloud",
+        "AzureUSGovernment"
+      ]
+    },
+    "parameters": {
+      "emailSecurityContact": {
+        "type": "string",
+        "metadata": {
+          "displayName": "Security contacts email address",
+          "description": "Provide email address for Azure Security Center contact details"
+        }
+      },
+      "effect": {
+        "type": "string",
+        "defaultValue": "DeployIfNotExists",
+        "allowedValues": [
+          "DeployIfNotExists",
+          "Disabled"
+        ],
+        "metadata": {
+          "displayName": "Effect",
+          "description": "Enable or disable the execution of the policy"
+        }
+      },
+      "minimalSeverity": {
+        "type": "string",
+        "defaultValue": "High",
+        "allowedValues": [
+          "High",
+          "Medium",
+          "Low"
+        ],
+        "metadata": {
+          "displayName": "Minimal severity",
+          "description": "Defines the minimal alert severity which will be sent as email notifications"
+        }
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Resources/subscriptions"
+          }
+        ]
+      },
+      "then": {
+        "effect": "[parameters('effect')]",
+        "details": {
+          "type": "Microsoft.Security/securityContacts",
+          "deploymentScope": "subscription",
+          "existenceScope": "subscription",
+          "roleDefinitionIds": [
+            "/providers/Microsoft.Authorization/roleDefinitions/fb1c8493-542b-48eb-b624-b4c8fea62acd"
+          ],
+          "existenceCondition": {
+            "allOf": [
+              {
+                "field": "Microsoft.Security/securityContacts/email",
+                "contains": "[parameters('emailSecurityContact')]"
+              },
+              {
+                "field": "Microsoft.Security/securityContacts/alertNotifications.minimalSeverity",
+                "contains": "[parameters('minimalSeverity')]"
+              },
+              {
+                "field": "type",
+                "equals": "Microsoft.Security/securityContacts"
+              },
+              {
+                "field": "Microsoft.Security/securityContacts/alertNotifications",
+                "equals": "On"
+              },
+              {
+                "field": "Microsoft.Security/securityContacts/alertsToAdmins",
+                "equals": "On"
+              }
+            ]
+          },
+          "deployment": {
+            "location": "northeurope",
+            "properties": {
+              "mode": "incremental",
+              "parameters": {
+                "emailSecurityContact": {
+                  "value": "[parameters('emailSecurityContact')]"
+                },
+                "minimalSeverity": {
+                  "value": "[parameters('minimalSeverity')]"
+                }
+              },
+              "template": {
+                "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                "contentVersion": "1.0.0.0",
+                "parameters": {
+                  "emailSecurityContact": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Security contacts email address"
+                    }
+                  },
+                  "minimalSeverity": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Minimal severity level reported"
+                    }
+                  }
+                },
+                "variables": {},
+                "resources": [
+                  {
+                    "type": "Microsoft.Security/securityContacts",
+                    "name": "default",
+                    "apiVersion": "2020-01-01-preview",
+                    "properties": {
+                      "emails": "[parameters('emailSecurityContact')]",
+                      "notificationsByRole": {
+                        "state": "On",
+                        "roles": [
+                          "Owner"
+                        ]
+                      },
+                      "alertNotifications": {
+                        "state": "On",
+                        "minimalSeverity": "[parameters('minimalSeverity')]"
+                      }
+                    }
+                  }
+                ],
+                "outputs": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

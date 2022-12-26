@@ -93,16 +93,9 @@ archetype_definitions:
         useRbacRulesMonitoringEffect: Disabled
         vmssSystemUpdatesMonitoringEffect: Disabled
         windowsDefenderExploitGuardMonitoringEffect: Disabled
-      Deploy-MDFC-Config:
-        # blinQ: Temporarly removed emailSecurityContact from initative as this deployment is not working
-        # emailSecurityContact: {{topology.notifications.azure_defender.emailSecurityContact}}
-        logAnalytics:
-          lz_key: management
-          output_key: diagnostics
-          resource_type: log_analytics
-          resource_key: region1
-          attribute_key: id
-        ascExportResourceGroupLocation : {{ topology.caf_regions[topology.default_region_key] }}
+      Deploy-MDFC-Config:        
+        emailSecurityContact: {{topology.notifications.azure_defender.emailSecurityContact}}
+        minimalSeverity: {{topology.notifications.azure_defender.minimalSeverity}}
         enableAscForAppServices: DeployIfNotExists
         enableAscForArm: DeployIfNotExists
         enableAscForDns: DeployIfNotExists

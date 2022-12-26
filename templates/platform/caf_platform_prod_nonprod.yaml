@@ -21,6 +21,7 @@ default_azure_ad_group_owner: {{default_azure_ad_group_owner}}
 customer_name: {{customer_name}}
 caf_environment: {{caf_environment}}
 default_email_address: {{default_email_address}}
+minimalSeverity: {{minimalSeverity}}
 alz_mg_prefix: {{alz_mg_prefix}}
 alz_mg_name: {{alz_mg_name}}
 azure_regions: {{azure_regions}}
@@ -216,6 +217,7 @@ notifications:
   service_health_alerts: {{default_email_address}}
   azure_defender:
     emailSecurityContact: {{default_email_address}}
+    minimalSeverity: {{minimalSeverity}}
 
 
 backup_policies:           
