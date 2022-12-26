@@ -180,7 +180,7 @@ archetype_definitions:
       Deny-VNET-Peer-Cross-Sub:
       Deny-VNET-Peering-To-Non-Approved-VNETs:
       Deny-VNet-Peering:
-      Deploy-ASC-SecurityContacts:
+      Deploy-ASC-SecurityContacts-CAF:
       Deploy-Budget:
       Deploy-Custom-Route-Table:
       Deploy-DDoSProtection:
