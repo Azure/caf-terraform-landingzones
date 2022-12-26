@@ -1,5 +1,5 @@
 bootstrap:
-  azuread_identity_mode: logged_in_user
+  azuread_identity_mode: service_principal
   enable_azuread_groups: True
   enable_azuread_applications: True
 
@@ -33,7 +33,7 @@ bootstrap:
       alz:
         region1:
           es: alz.yaml
-          # as: alz.yaml blinQ: This don't work
+          
       scale_out_domains:
         region1:
           identity_level2:

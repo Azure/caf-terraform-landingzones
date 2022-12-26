@@ -94,7 +94,8 @@ archetype_definitions:
         vmssSystemUpdatesMonitoringEffect: Disabled
         windowsDefenderExploitGuardMonitoringEffect: Disabled
       Deploy-MDFC-Config:
-        emailSecurityContact: {{topology.notifications.azure_defender.emailSecurityContact}}
+        # blinQ: Temporarly removed emailSecurityContact from initative as this deployment is not working
+        # emailSecurityContact: {{topology.notifications.azure_defender.emailSecurityContact}}
         logAnalytics:
           lz_key: management
           output_key: diagnostics
@@ -400,6 +401,21 @@ archetype_definitions:
             attribute_key: id
             resource_keys:
               - identity
+  security:
+    archetype_id: platform_security
+    policy_assignments:
+      Deny-RDP-From-Internet:
+      Deny-Public-IP:
+      Deny-Private-DNS-Zones:
+      Deny-IP-Forwarding:
+    archetype_config:
+      access_control:
+        contributor:
+          azuread_groups:
+            lz_key: launchpad
+            attribute_key: id
+            resource_keys:
+              - security
   decommissioned:
     archetype_id: platform_decommissioned
     policy_assignments:

@@ -36,23 +36,23 @@ custom_landing_zones = {
 {% else %}
       parameters       = {}
 {% endif %}
-{% if level.archetype_config.access_control is defined %}
+{% if level.access_control is mapping %}
       access_control = {
 {% if resources.azure_landing_zones.identity.azuread_identity_mode != "logged_in_user" %}
-{% for level_ac_key, level_ac in level.archetype_config.access_control.items() %}
+{% for level_ac_key, level_ac in level.access_control.items() %}
         "{{level_ac_key}}" = {
 {% for level_role_key, level_role in level_ac.items()  %}
           "{{ level_role_key }}" = {
             lz_key        = "{{ level_role.lz_key }}"
             attribute_key = "{{ level_role.attribute_key }}"
-            resource_keys = {{ level_role.resource_keys | replace('None','[]') | replace('\'','\"') }}
+            resource_keys = ["{{ level_role.resource_keys | replace('None','[]') | replace('\'','\"') }}"]
           }
 {% endfor %}
         }
 {% endfor %}
 {% else %}
       "Owner" = {
-         "principal_ids" = ["{{ resources.billing_subscription_role_delegations.azuread_user_ea_account_owner_object_id }}"]
+         "principal_ids" = ["{{ resources.billing_subscription_role_delegations.azuread_user_ea_account_owner_object_id | default(upn) }}"]
       }
 {% endif %}
       }
@@ -60,7 +60,18 @@ custom_landing_zones = {
       access_control   = {}
 {% endif %}
     }
-    subscriptions    = {}
+{% if level.subscriptions is mapping %}
+      subscriptions    = {
+{% for level_group_key, level_group in level.subscriptions.items() %}
+      "{{level_group_key}}" = {
+            lz_key = "{{ level_group.lz_key }}"
+            key = "{{ level_group.key }}"
+      }
+{% endfor %}
+      }
+{% else %}
+      subscriptions    = {}
+{% endif %}    
 {% if level.subscription_ids is defined %}
     subscription_ids = {{ level.subscription_ids | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"') }}
 {% else %}
