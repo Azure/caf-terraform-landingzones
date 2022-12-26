@@ -93,7 +93,7 @@ archetype_definitions:
         useRbacRulesMonitoringEffect: Disabled
         vmssSystemUpdatesMonitoringEffect: Disabled
         windowsDefenderExploitGuardMonitoringEffect: Disabled
-      Deploy-MDFC-Config:        
+      Deploy-MDFC-Config-CAF:        
         emailSecurityContact: {{topology.notifications.azure_defender.emailSecurityContact}}
         minimalSeverity: {{topology.notifications.azure_defender.minimalSeverity}}
         enableAscForAppServices: DeployIfNotExists
