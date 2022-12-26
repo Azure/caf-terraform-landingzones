@@ -9,6 +9,8 @@ params=$(echo ${@} | xargs -n1 | xargs -I@ echo "-e @ " )
 echo ${params} | xargs
 echo "sub_management: ${sub_management}"
 
+read -p "Press Enter to continue to generate the definition files from Ansible template ..."
+
 ansible-playbook /tf/caf/landingzones/templates/ansible/walk-through-bootstrap.yaml \
   -e public_templates_folder=/tf/caf/landingzones/templates \
   -e landingzones_folder=/tf/caf/landingzones \
@@ -24,12 +26,14 @@ ansible-playbook /tf/caf/landingzones/templates/ansible/walk-through-bootstrap.y
   --extra-vars "@/tf/caf/landingzones/templates/platform/ignite.yaml" \
   -e $(echo ${params} | xargs)
 
+read -p "Press Enter to continue to generate the configuration files from Ansible definition files ..."
+
 # Generate initial configuration
 ansible-playbook $(readlink -f ./landingzones/templates/ansible/ansible.yaml) \
   --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)" \
   -e base_folder=$(pwd)
 
-sleep 12h
+read -p "Press Enter to continue to deploy the launchpad configuration with Rover ..."
 
 /tf/rover/rover.sh \
   -lz /tf/caf/landingzones/caf_launchpad \
@@ -46,6 +50,8 @@ sleep 12h
 tenant_id=$(az account show --query tenantId -o tsv)
 az account clear
 
+read -p "Press Enter to continue to deploy the gitops_agents configuration with Rover, you will be asked to login to Azure again ..."
+
 /tf/rover/rover.sh login -t ${tenant_id} -s ${sub_management}
 
 /tf/rover/rover.sh \
@@ -57,6 +63,8 @@ az account clear
   -env ${TF_VAR_environment} \
   -level level0 \
   -a apply
+
+read -p "Press Enter to continue to deploy the credentials configuration with Rover."
 
 /tf/rover/rover.sh \
   -lz /tf/caf/landingzones/caf_solution \
