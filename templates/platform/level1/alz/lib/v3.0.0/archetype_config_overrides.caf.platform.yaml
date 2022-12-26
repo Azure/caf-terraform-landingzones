@@ -253,7 +253,7 @@ archetype_definitions:
     policy_set_definitions:
       Deny-PublicPaaSEndpoints:
       Deploy-Diagnostics-LogAnalytics:
-      Deploy-MDFC-Config:
+      Deploy-MDFC-Config-CAF:
       Deploy-Private-DNS-Zones:
       Deploy-Sql-Security:
       Enforce-Encryption-CMK:
@@ -275,7 +275,7 @@ archetype_definitions:
           - storageaccountdeploydiagnosticlogdeployloganalytics
           - VirtualNetworkDeployDiagnosticLogDeployLogAnalytics
           - VNetGWDeployDiagnosticLogDeployLogAnalytics
-        Deploy-MDFC-Config:
+        Deploy-MDFC-Config-CAF:
           - defenderForOssDb
           - defenderForVM
           - defenderForSqlServerVirtualMachines
