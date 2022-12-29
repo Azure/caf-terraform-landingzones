@@ -1,5 +1,5 @@
-[submodule "aztfmod"]
-	path = aztfmod
+[submodule "blinqtfmod"]
+	path = blinqtfmod
 	url = https://github.com/blinqas/terraform-azurerm-caf.git
 	branch = blinq-5.8.0
 	ignore = all
