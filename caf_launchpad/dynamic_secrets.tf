@@ -1,6 +1,6 @@
 
 module "dynamic_keyvault_secrets" {
-  source = "../azure-caf-modules/modules/security/dynamic_keyvault_secrets"
+  source = "../aztfmod/modules/security/dynamic_keyvault_secrets"
 
   for_each = try(var.dynamic_keyvault_secrets, {})
 

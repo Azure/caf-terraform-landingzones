@@ -40,9 +40,6 @@ provider "azurerm" {
   subscription_id            = var.virtual_hub_subscription_id
   tenant_id                  = var.virtual_hub_tenant_id
 
-  # partner identifier for CAF Terraform landing zones.
-  partner_id = "047b6579-da91-4bea-a9e1-df0fbc86f832"
-
   # Source tenants for virtual networks.
   # Client ID must have permissions on those virtual_networks
   auxiliary_tenant_ids = try(var.landingzone.tfstates[var.virtual_hub_lz_key].auxiliary_tenant_ids, null)
@@ -53,8 +50,5 @@ provider "azurerm" {
   skip_provider_registration = true
   subscription_id            = var.virtual_network_subscription_id
   tenant_id                  = var.virtual_network_tenant_id
-
-  # partner identifier for CAF Terraform landing zones.
-  partner_id = "047b6579-da91-4bea-a9e1-df0fbc86f832"
 }
 

@@ -1,11 +1,5 @@
 
 provider "azurerm" {
-  # partner identifier for CAF Terraform landing zones.
-  partner_id = "047b6579-da91-4bea-a9e1-df0fbc86f832"
-  
-  # blinQ: Workaround to solve temporarly issue with provider registration
-  # skip_provider_registration = true
-
   features {
   }
 
@@ -14,13 +8,6 @@ provider "azurerm" {
 provider "azurerm" {
   alias           = "launchpad"
   subscription_id = var.tfstate_subscription_id
-  
-  # partner identifier for CAF Terraform landing zones.
-  partner_id = "047b6579-da91-4bea-a9e1-df0fbc86f832"
-
-  # blinQ: Workaround to solve temporarly issue with provider registration
-  skip_provider_registration = true
-
   features {
   }
 

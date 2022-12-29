@@ -33,11 +33,7 @@ terraform {
 
 provider "azurerm" {
   # partner identifier for CAF Terraform landing zones.
-  partner_id = "047b6579-da91-4bea-a9e1-df0fbc86f832"
-
-  # blinQ: Workaround to solve temporarly issue with provider registration
-  # skip_provider_registration = true
-
+  partner_id = "ca4078f8-9bc4-471b-ab5b-3af6b86a42c8"
   features {
     api_management {
       purge_soft_delete_on_destroy         = var.provider_azurerm_features_api_management.purge_soft_delete_on_destroy
@@ -91,10 +87,7 @@ provider "azurerm" {
 }
 
 provider "azuread" {
-
-  # partner identifier for CAF Terraform landing zones.
-  partner_id = "047b6579-da91-4bea-a9e1-df0fbc86f832"
-
+  partner_id = "ca4078f8-9bc4-471b-ab5b-3af6b86a42c8"
 }
 
 

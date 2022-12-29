@@ -1,5 +1,5 @@
 module "launchpad" {
-  source = "../azure-caf-modules"
+  source = "../aztfmod"
 
   providers = {
     azurerm.vhub = azurerm.vhub
