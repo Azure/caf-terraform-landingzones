@@ -162,6 +162,10 @@ initial_subscriptions:
     name: security
     create_alias: false 
     subscription_id: {{sub_security | default(subscription_id.stdout)}}
+  sandbox:  # Do not rename the key
+    name: sandbox
+    create_alias: false 
+    subscription_id: {{sub_sandbox | default(subscription_id.stdout)}}
 
 deployments:
   scale_out_domain_keys:

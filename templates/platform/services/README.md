@@ -69,6 +69,7 @@ ansible-playbook $(readlink -f ./landingzones/templates/ansible/walk-through-ci.
   -e sub_connectivity={{sub_connectivity}} \
   -e sub_identity={{sub_identity}} \
   -e sub_security={{sub_security}} \
+  -e sub_sandbox={{sub_sandbox}} \
   -e gitops_pipelines={{gitops_pipelines}} \
   -e TF_VAR_environment={{caf_environment}} \
   -e bootstrap_sp_object_id={{bootstrap_sp_object_id}} \
