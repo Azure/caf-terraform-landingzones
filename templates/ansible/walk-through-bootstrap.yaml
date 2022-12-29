@@ -36,12 +36,12 @@
     - name: alz_mg_name
       prompt: Management group name
       private: no
-      default: ALZ
+      default: Contoso
 
     - name: default_email_address
       prompt: Email address to send all notifications
       private: no
-      default: support@blinq.no
+      default: email@address.com
 
     - name: minimalSeverity
       prompt: Notify about alerts with the following severity (or higher). ["High","Medium","Low"]
@@ -60,8 +60,8 @@
       prompt: Azure regions (lowercase, short version)
       private: no
       default:
-        region1: westeurope
-        region2: norwayeast
+        region1: australiaeast
+        region2: australiacentral
 
     - name: default_region_key
       prompt: Default CAF Azure region key
@@ -72,6 +72,8 @@
       prompt: "github or tfcloud. Select the gitops agent you are using to deploy the landing zones."
       private: no
       default: github
+
+
 
   tasks:
 

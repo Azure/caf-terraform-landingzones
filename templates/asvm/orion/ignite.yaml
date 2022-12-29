@@ -1,7 +1,7 @@
 
 landingzone_definition: {{landingzone_definition}}
 
-caf_landingzone_branch: blinq-5.6.4
+caf_landingzone_branch: blinq-5.8.0
 
 subscriptions:
 {% for env in scale_out_domains %}

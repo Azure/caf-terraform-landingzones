@@ -393,7 +393,7 @@
             vms:
               default:
                 name: vm-default-policy
-                timezone: "W. Europe Standard Time"
+                timezone: "SE Asia Standard Time"
                 backup:
                   frequency: Daily
                   time: "23:00"

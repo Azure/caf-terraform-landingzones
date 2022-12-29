@@ -2,7 +2,7 @@
 # Get launchpad subscription details
 #
 
-# blinQ start:
+# blinQ:
 # Workaround for Graph API Issue https://github.com/microsoftgraph/msgraph-metadata/issues/92
 # We require a normal user principal to become Azure AD Group owner for every groups created by template. To avoid template brake the code when it run in different context as user and service principal, this user can't be picked up by logged_in_user. We ask for this input in the walk-through-bootstrap.yaml.
 - name: Get Azure AD object_id for default Azure AD Group Owner user principal
@@ -21,7 +21,6 @@
 
 - debug:
     msg: "App Platform Landing Zone Object Id: {{ app_platform_landing_zones_object_id.stdout }}"
-# blinQ end!
 
 # We use this to not update documentation for manual deployment when running in github worker nodes
 - name: Get Execution mode from Rover environment variable
@@ -58,6 +57,7 @@
 
 - debug:
     var: bash_object_id_sp
+# blinQ end!
 
 - name: Get deployment user UPN
   shell: az ad signed-in-user show --query userPrincipalName -o tsv
@@ -85,6 +85,7 @@
   shell: dig @resolver1.opendns.com A myip.opendns.com +short -4
   register: public_ip
 
+# blinQ: We don't want github agent token to be stored in repo, so we changed the logic to get the token during TF apply  
 - set_fact:
     agent_token_part1: "gh api --method POST -H 'Accept: application/vnd.github.v3+json' /repos/"
     github_org_repo: "{{ GITOPS_SERVER_URL | regex_replace('^https://github.com/', '') }}"
@@ -135,6 +136,7 @@
       - "{{ base_folder }}"
       - "{{ input_caf_environment if input_caf_environment is defined else TF_VAR_environment }}"      
 
+
 - name: "load {{ template_folder | default(platform_definition_folder)}}/ignite.yaml"
   include_vars:
     name: bootstrap
@@ -142,7 +144,7 @@
     depth: 1
     ignore_unknown_extensions: true
     files_matching: "ignite.yaml"
-    
+
 - set_fact:
     caf_environment: "{{ TF_VAR_environment }}"
   when: TF_VAR_environment is defined
@@ -268,7 +270,7 @@
     file_type: file
   register: firewall_files_to_process
 
-- name: copy firewall files
+- name: Process firewall files
   ansible.builtin.template:
     src: "{{ item.path }}"
     dest: "{{firewall_rules_path}}/{{ item.path | regex_replace(public_templates_folder + '/firewall_rules', '') }}"

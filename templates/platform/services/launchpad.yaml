@@ -92,8 +92,9 @@ launchpad:
               - Metrics
               - AzureServices
             default_action: Deny
-            public_network_access_enabled: true
+            
 {% if PUBLIC_IP_WHITE_LIST is defined %}
+            public_network_access_enabled: true
             ip_rules:
 {% for ip in PUBLIC_IP_WHITE_LIST %}
               - {{ ip }}
@@ -152,9 +153,9 @@ launchpad:
               - Logging
               - Metrics
               - AzureServices
-            default_action: Deny
-            public_network_access_enabled: true
+            default_action: Deny            
 {% if PUBLIC_IP_WHITE_LIST is defined %}
+            public_network_access_enabled: true
             ip_rules:
 {% for ip in PUBLIC_IP_WHITE_LIST %}
               - {{ ip }}
@@ -213,9 +214,9 @@ launchpad:
               - Logging
               - Metrics
               - AzureServices
-            default_action: Deny
-            public_network_access_enabled: true
+            default_action: Deny            
 {% if PUBLIC_IP_WHITE_LIST is defined %}
+            public_network_access_enabled: true
             ip_rules:
 {% for ip in PUBLIC_IP_WHITE_LIST %}
               - {{ ip }}
@@ -261,9 +262,9 @@ launchpad:
           enable_rbac_authorization: {{ keyvault_enable_rbac_authorization }}
           network:
             bypass: AzureServices
-            default_action: Deny
-            public_network_access_enabled: true
+            default_action: Deny            
 {% if PUBLIC_IP_WHITE_LIST is defined %}
+            public_network_access_enabled: true
             ip_rules:
 {% for ip in PUBLIC_IP_WHITE_LIST %}
               - {{ ip }}
@@ -317,9 +318,9 @@ launchpad:
           enable_rbac_authorization: {{ keyvault_enable_rbac_authorization }}
           network:
             bypass: AzureServices
-            default_action: Deny
-            public_network_access_enabled: true
+            default_action: Deny            
 {% if PUBLIC_IP_WHITE_LIST is defined %}
+            public_network_access_enabled: true
             ip_rules:
 {% for ip in PUBLIC_IP_WHITE_LIST %}
               - {{ ip }}
@@ -373,9 +374,9 @@ launchpad:
           enable_rbac_authorization: {{ keyvault_enable_rbac_authorization }}
           network:
             bypass: AzureServices
-            default_action: Deny
-            public_network_access_enabled: true
+            default_action: Deny            
 {% if PUBLIC_IP_WHITE_LIST is defined %}
+            public_network_access_enabled: true
             ip_rules:
 {% for ip in PUBLIC_IP_WHITE_LIST %}
               - {{ ip }}
@@ -690,12 +691,7 @@ launchpad:
           prevent_duplicate_name: true
           members:
             azuread_service_principal_keys:
-              - level0
-            object_ids:
-# THIS DON'T WORK YEAT - MANUAL WORKAROUND INCLUDE TO ADD THE APP TO THE GROUP FROM AZURE PORTAL BEFORE PUSHING THE BOOTSTRAP BRANCH TO GITHUB
-{% if app_platform_landing_zones_object_id.stdout != '' and 'fix' == 'true' %}
-             - {{app_platform_landing_zones_object_id.stdout}}
-{% endif %}
+              - level0            
           owners:
             - {{group_owner_object_id.stdout}}
             - {{object_id}}
@@ -967,9 +963,8 @@ launchpad:
                 - Microsoft.KeyVault
                 - Microsoft.Storage
 {% if private_endpoints is defined %}
-              enforce_private_link_endpoint_network_policies: true              
+              enforce_private_link_endpoint_network_policies: true
 {% endif %}
-   
             level1:
               name: level1
               nsg_key: empty_nsg
@@ -981,7 +976,6 @@ launchpad:
 {% if private_endpoints is defined %}
               enforce_private_link_endpoint_network_policies: true
 {% endif %}
-
             level2:
               name: level2
               nsg_key: empty_nsg
@@ -993,7 +987,6 @@ launchpad:
 {% if private_endpoints is defined %}
               enforce_private_link_endpoint_network_policies: true
 {% endif %}
-
             credentials:
               name: credentials
               nsg_key: empty_nsg

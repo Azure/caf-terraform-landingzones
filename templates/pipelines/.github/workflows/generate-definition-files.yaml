@@ -1,0 +1,148 @@
+#
+# Copyright (c) Microsoft Corporation
+# Licensed under the MIT License.
+#
+
+name: "Generate definition files"
+
+on:
+  workflow_call:
+    inputs:
+      terraform_code_repository:
+        description: "Git repository of the the terraform entry code."
+        required: true
+        type: string
+      terraform_code_ref:
+        description: "Tag or branch name."
+        required: true
+        type: string
+      environment:
+        description: Name of the CAF environment
+        required: true
+        type: string
+    secrets:
+      AZURE_CLIENT_ID:
+        required: true
+      AZURE_TENANT_ID:
+        required: true
+      AZURE_LAUNCHPAD_SUBSCRIPTION_ID:
+        required: true
+      AZURE_MANAGEMENT_SUBSCRIPTION_ID:
+        required: false
+      AZURE_CONNECTIVITY_SUBSCRIPTION_ID:
+        required: false
+      AZURE_IDENTITY_SUBSCRIPTION_ID:
+        required: false
+      AZURE_SECURITY_SUBSCRIPTION_ID:
+        required: false
+      AZURE_TARGET_SUBSCRIPTION_ID:
+        required: true
+      RUNNER_REGISTRATION_TOKEN:
+        required: true
+      AZURE_OBJECT_ID:
+        required: true
+      ROVER_AGENT_DOCKER_IMAGE:
+        required: true
+      RUNNER_NUMBERS:
+        required: true
+
+
+env:
+  TF_CLI_ARGS: '-no-color'
+  TF_REGISTRY_DISCOVERY_RETRY: 5
+  TF_REGISTRY_CLIENT_TIMEOUT: 15
+  ROVER_RUNNER: true
+
+{% raw %}
+jobs:
+  rover:
+    name: Generate configuration files
+    runs-on: [self-hosted, platform]
+    
+    steps:
+      
+      - name: Checkout Configuration
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: 'Azure Login'
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+
+      - name: Create defnition files
+        run: |
+          rm -rf ./landingzones
+          git clone -b ${{ inputs.terraform_code_ref }} --single-branch ${{ inputs.terraform_code_repository }} ./landingzones
+          
+          cred_vault_name=$(az keyvault list --query "[?(tags.caf_identity_aad_key=='cred_level0' && tags.caf_environment=='${{ inputs.environment }}')].{name:name}[0]" -o tsv)
+          if [ "${cred_vault_name}" != ''  ]; then
+            sp_keyvault_url="https://${cred_vault_name}.vault.azure.net/"
+            
+            # Test permissions
+            az keyvault secret show --id ${sp_keyvault_url}/secrets/sp-client-id --query 'value' -o tsv  --only-show-errors | read CLIENT_ID
+
+            if [ ! -z "${tenant}" ]; then
+                export ARM_TENANT_ID=${tenant}
+            else
+                export ARM_TENANT_ID=$(az keyvault secret show --id ${sp_keyvault_url}/secrets/sp-tenant-id --query 'value' -o tsv --only-show-errors)
+            fi
+
+            export ARM_CLIENT_ID=$(az keyvault secret show --id ${sp_keyvault_url}/secrets/sp-client-id --query 'value' -o tsv --only-show-errors)
+            export ARM_CLIENT_SECRET=$(az keyvault secret show --id ${sp_keyvault_url}/secrets/sp-client-secret --query 'value' -o tsv --only-show-errors)
+
+            az login --service-principal -u ${ARM_CLIENT_ID} -p ${ARM_CLIENT_SECRET} -t ${ARM_TENANT_ID}  --only-show-errors 1> /dev/null
+          fi
+
+          ansible-playbook $(readlink -f ./landingzones/templates/ansible/walk-through-bootstrap.yaml) \
+            --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)" \
+            -e base_folder=$(pwd) \
+            -e GITOPS_SERVER_URL={{GITHUB_SERVER_URL}}/{{GITHUB_REPOSITORY}} \
+            -e RUNNER_NUMBERS={{ secrets.RUNNER_NUMBERS }} \
+            -e AGENT_TOKEN={{ secrets.RUNNER_REGISTRATION_TOKEN }} \
+            -e ROVER_AGENT_DOCKER_IMAGE=${{secrets.ROVER_AGENT_DOCKER_IMAGE}} \
+            -e sub_management=${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID}} \
+            -e sub_connectivity=${{ secrets.AZURE_CONNECTIVITY_SUBSCRIPTION_ID }} \
+            -e sub_identity=${{ secrets.AZURE_IDENTITY_SUBSCRIPTION_ID }} \
+            -e sub_security=${{secrets.AZURE_SECURITY_SUBSCRIPTION_ID}} \
+            -e TF_VAR_environment=${{ inputs.environment }} \
+            -e bootstrap_sp_object_id=${{secrets.AZURE_OBJECT_ID}} \
+            -e template_folder="$(pwd)/platform/definition"
+
+
+      - name: Generate PR for 
+        run: |
+          git config --global --add safe.directory $(pwd)
+          git config user.name "GitHub Actions Bot"
+          git config user.email "github-actions@github.com"
+
+          git checkout -b end2end
+          git add .
+          pre-commit
+          git commit -am "Update definition files."
+
+          git remote -v
+
+          echo ${GITHUB_HEAD_REF}
+          
+          if [ -z "$(git status --porcelain)" ];
+          then
+              echo "Nothing to commit"
+          else
+            git add --all .
+            git commit -m "Update configuration files"
+            git push
+          fi
+
+          /usr/bin/gh pr create \
+            --assignee "@me" \
+            --title "Complete the deployment of the platform services." \
+            --body "${body}" \
+            --base bootstrap \
+            -R (echo "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}" || echo "git config --get remote.origin.url" | sed -e 's#^https://github.com/##; s#^git@github.com:##; s#.git$##')
+        
+{% endraw %}

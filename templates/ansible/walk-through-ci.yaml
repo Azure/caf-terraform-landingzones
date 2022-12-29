@@ -14,5 +14,6 @@
   hosts: localhost
 
   tasks:
+
     - include_tasks: "walk-through.yaml"
 

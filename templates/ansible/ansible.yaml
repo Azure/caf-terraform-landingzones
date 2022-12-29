@@ -2,7 +2,7 @@
   hosts: localhost
 
   tasks:
-  
+
     - name: "Set variables"
       set_fact:
         job_cache_base_path: "/home/vscode/.terraform.cache"

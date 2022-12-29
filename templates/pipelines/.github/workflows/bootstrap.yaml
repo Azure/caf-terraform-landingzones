@@ -7,6 +7,9 @@ name: bootstrap
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - bootstrap
 
 permissions:
   id-token: write
