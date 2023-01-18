@@ -63,7 +63,7 @@ naming_convention:
   random_length: 3
 
 caf_launchpad:
-  # Subscription_id to deploy the launchpad. Note 1 existing manual subscription is required to deploy the launhchapd.
+  # Subscription_id to deploy the launchpad. Note 1 existing manual subscription is required to deploy the launchpad.
   subscription_id: {{subscription_id.stdout}}
   subscription_name: {{subscription_name.stdout}}
   tenant_id: {{tenant_id.stdout}}
