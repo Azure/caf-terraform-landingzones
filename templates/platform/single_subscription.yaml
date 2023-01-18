@@ -59,7 +59,7 @@ naming_convention:
   # set: define the prefix to add to all resource names
   # unset: if passthrough is set to false, generate a random prefix
   prefix: {{prefix}}
-  # if passthrough is set to false, add random suffix to name, up to the random_lenght value.
+  # if passthrough is set to false, add random suffix to name, up to the random_length value.
   random_length: 3
 
 caf_launchpad:
