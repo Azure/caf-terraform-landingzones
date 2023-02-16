@@ -94,7 +94,7 @@ for agent_num in $(seq 1 ${num_agent}); do
     name="${agent_prefix}-${agent_num}"
     echo "installing agent $name"
     tar zxvf ../agent_package.tar.gz
-    chmod -R 777 .
+    chmod -R 770 .
     echo "extracted"
     ./bin/installdependencies.sh || true
     echo "dependencies installed"
