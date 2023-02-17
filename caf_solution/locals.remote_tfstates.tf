@@ -34,7 +34,7 @@ locals {
         sas_token            = try(value.sas_token, null) != null ? var.sas_token : null
         use_azuread_auth     = try(value.use_azuread_auth, true)
       } if try(value.backend_type, "azurerm") == "azurerm"
-    } 
+    }
     remote = {
       for key, value in try(var.landingzone.tfstates, {}) : key => {
         hostname     = try(value.hostname, null)
@@ -46,14 +46,21 @@ locals {
     }
   }
 
-  tags = merge(try(local.global_settings.tags, {}), { "level" = var.landingzone.level }, try({ "environment" = local.global_settings.environment }, {}), { "rover_version" = var.rover_version }, var.tags)
+  tags = merge(
+    try(local.global_settings.tags, {}),
+    { "level" = var.landingzone.level },
+    try({ "environment" = local.global_settings.environment }, {}),
+    { "rover_version" = var.rover_version },
+    var.tags,
+    try(var.global_settings.tags, {}),
+    try(local.custom_variables.tags, {}),
+  )
 
   global_settings = merge(
-    var.global_settings,
     try(data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.objects[var.landingzone.global_settings_key].global_settings, null),
     try(data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.global_settings, null),
-    try(data.terraform_remote_state.remote[keys(var.landingzone.tfstates)[0]].outputs.global_settings, null),
-    local.custom_variables
+    try(var.global_settings, {}),
+    try(local.custom_variables, {}),
   )
 
 
