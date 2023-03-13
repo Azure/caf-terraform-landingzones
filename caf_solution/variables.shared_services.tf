@@ -28,6 +28,10 @@ variable "monitor_action_groups" {
   default = {}
 }
 
+variable "monitor_activity_log_alert" {
+  default = {}
+}
+
 variable "monitoring" {
   default = {}
 }
