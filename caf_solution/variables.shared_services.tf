@@ -32,6 +32,10 @@ variable "monitor_action_groups" {
   default = {}
 }
 
+variable "monitor_metric_alert" {
+  default = {}
+}
+
 variable "monitoring" {
   default = {}
 }
