@@ -36,6 +36,10 @@ variable "monitor_metric_alert" {
   default = {}
 }
 
+variable "monitor_activity_log_alert" {
+  default = {}
+}
+
 variable "monitoring" {
   default = {}
 }
