@@ -36,10 +36,10 @@ custom_landing_zones = {
 {% else %}
       parameters       = {}
 {% endif %}
-{% if level.archetype_resources.access_control is defined %}
+{% if level.archetype_config.access_control is defined %}
       access_control = {
 {% if resources.azure_landing_zones.identity.azuread_identity_mode != "logged_in_user" %}
-{% for level_ac_key, level_ac in level.archetype_resources.access_control.items() %}
+{% for level_ac_key, level_ac in level.archetype_config.access_control.items() %}
         "{{level_ac_key}}" = {
 {% for level_role_key, level_role in level_ac.items()  %}
           "{{ level_role_key }}" = {
@@ -60,7 +60,18 @@ custom_landing_zones = {
       access_control   = {}
 {% endif %}
     }
+{% if level.subscriptions is defined %}
+    subscriptions = {
+{% for s_key, lz_key in level.subscriptions.items() %}
+        {{ s_key }} = {
+            lz_key = "{{ resources.tfstates.platform[lz_key].lz_key_name }}"
+            key    = "{{ s_key }}"
+        }
+{% endfor %}
+    }
+{% else %}
     subscriptions    = {}
+{% endif %}
 {% if level.subscription_ids is defined %}
     subscription_ids = {{ level.subscription_ids | replace('None','[]') | replace('[', '[\n') | replace(']', '\n]') | replace(',', ',\n') | replace('\'','\"') }}
 {% else %}

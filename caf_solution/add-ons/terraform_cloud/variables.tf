@@ -80,6 +80,10 @@ variable "tfe_servers" {
   default = {}
 }
 
-variable "tfe_agents" {
+variable "tfe_agent_pools" {
+  default = {}
+}
+
+variable "tfe_agent_pool_tokens" {
   default = {}
 }

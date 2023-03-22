@@ -1,0 +1,3 @@
+{% import 'library.j2' as render %}
+{% set value = resources[tfstate_resource].resources[subscription_key].keyvault_keys %}
+{{ render.hcl("keyvault_keys", value, multiple_lines_list=multiple_lines_list) }}

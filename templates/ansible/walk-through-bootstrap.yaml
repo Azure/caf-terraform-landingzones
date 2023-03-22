@@ -18,10 +18,10 @@
       private: no
       default: contoso
 
-    - name: caf_environment
+    - name: input_caf_environment
       prompt: Set the CAF Environment value
       private: no
-      default: contoso
+      default: "{{TF_VAR_environment}}"
 
     - name: prefix
       prompt: Set the prefix to add to all resource.

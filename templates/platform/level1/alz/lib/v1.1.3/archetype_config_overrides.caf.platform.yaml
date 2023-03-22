@@ -315,6 +315,8 @@ archetype_definitions:
               - subscription_creation_landingzones
               - identity
               - management
+              - level0
+              - security
   management:
     archetype_id: platform_management
     policy_assignments:

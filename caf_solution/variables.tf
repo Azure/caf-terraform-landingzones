@@ -44,20 +44,37 @@ variable "sas_token" {
 
 variable "landingzone" {
   default = {
-    backend_type        = "azurerm"
-    global_settings_key = "launchpad"
-    level               = "level1"
-    key                 = "caf_examples"
-    tfstates = {
-      launchpad = {
-        level   = "lower"
-        tfstate = "caf_launchpad.tfstate"
+    azurerm = {
+      backend_type        = "azurerm"
+      global_settings_key = "launchpad"
+      level               = "level1"
+      key                 = "caf_examples"
+      tfstates = {
+        launchpad = {
+          level   = "lower"
+          tfstate = "caf_launchpad.tfstate"
+        }
+      }
+    }
+    remote = {
+      backend_type        = "remote"
+      global_settings_key = "launchpad"
+      level               = "level1"
+      key                 = "caf_examples"
+      tfstates = {
+        launchpad = {
+          tfstate = "caf_launchpad.tfstate"
+        }
       }
     }
   }
 }
 
 variable "global_settings" {
+  default = {}
+}
+
+variable "global_settings_override" {
   default = {}
 }
 

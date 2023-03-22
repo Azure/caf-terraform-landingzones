@@ -39,6 +39,20 @@ management:
           account_tier: Standard
           shared_access_key_enabled: false
           account_replication_type: LRS
+          network:
+            bypass: 
+              - Logging
+              - Metrics
+            default_action: Deny
+            ip_rules:
+{% for ip in PUBLIC_IP_WHITE_LIST %}
+              - {{ ip }}
+{% endfor %}
+            subnets:
+              level0:
+                lz_key: launchpad
+                vnet_key: vnet_region1
+                subnet_key: level0
 
       diagnostic_log_analytics:
         # if you change this key you also need to change it in the alz deployment

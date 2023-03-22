@@ -1,0 +1,936 @@
+launchpad:
+  gitops:
+    caf_landingzone_branch: {{topology.caf_landingzone_branch}}
+
+  relative_destination_folder: level0/launchpad
+
+  tfstate:
+    lz_key_name: launchpad
+    tfstate: caf_launchpad.tfstate
+    workspace: tfstate
+    level: level0
+    identity_aad_key: cred_level0
+    config_file: launchpad.yaml
+    sub_template_folder: platform/level0/launchpad
+    # Do not rename the tfstate_key_name
+    tfstate_key_name: launchpad
+
+  deployments:
+    landingzone:
+{% if platform_subscriptions is defined and virtual_hubs_resources %}
+    custom_variables:
+      virtual_hub_subscription_id: {{ platform_subscriptions.connectivity.subscription_id }}
+{% endif %}
+
+  resources:
+    launchpad:
+      resource_groups:
+        gitops:
+          name: gitops-agents
+        level0:
+          name: level0
+        level1:
+          name: level1
+        level2:
+          name: level2
+
+      storage_accounts:
+        level0:
+          name: l0
+          resource_group_key: level0
+          account_kind: BlobStorage
+          account_tier: Standard
+          shared_access_key_enabled: false
+          account_replication_type: GRS
+          blob_properties:
+            versioning_enabled: true
+            last_access_time_enabled: true
+            container_delete_retention_policy:
+              days: 7
+            delete_retention_policy:
+              days: 7
+          containers:
+            tfstate:
+              name: tfstate
+          network:
+            bypass: 
+              - Logging
+              - Metrics
+              - AzureServices
+            default_action: Deny
+{% if PUBLIC_IP_WHITE_LIST is defined %}
+            ip_rules:
+{% for ip in PUBLIC_IP_WHITE_LIST %}
+              - {{ ip }}
+{% endfor %}
+{% endif %}
+            subnets:
+              level0:
+                lz_key: launchpad
+                vnet_key: vnet_region1
+                subnet_key: level0
+{% if private_endpoints is defined %}
+          private_endpoints:
+            level0:
+              name: stg-level0
+              resource_group_key: level0
+              vnet_key: vnet_region1
+              subnet_key: level0
+              private_service_connection:
+                name: stg-level0-link
+                is_manual_connection: false
+                subresource_names:
+                  - blob
+{% if private_endpoints is defined and private_dns is defined %}
+              private_dns:
+                zone_group_name: default
+                ids:
+                  - {{ private_dns[env|default('prod')]["privatelink.blob.core.windows.net"].id }}
+{% endif %}
+{% endif %}
+          tags:
+            ## Those tags must never be changed after being set as they are used by the rover to locate the launchpad and the tfstates.
+            # Only adjust the environment value at creation time
+            caf_environment: {{ caf_environment }}
+            caf_launchpad: launchpad
+            caf_tfstate: level0
+        level1:
+          name: l1
+          resource_group_key: level1
+          account_kind: BlobStorage
+          account_tier: Standard
+          shared_access_key_enabled: false
+          account_replication_type: GRS
+          blob_properties:
+            versioning_enabled: true
+            last_access_time_enabled: true
+            container_delete_retention_policy:
+              days: 7
+            delete_retention_policy:
+              days: 7
+          containers:
+            tfstate:
+              name: tfstate
+          network:
+            bypass: 
+              - Logging
+              - Metrics
+              - AzureServices
+            default_action: Deny
+{% if PUBLIC_IP_WHITE_LIST is defined %}
+            ip_rules:
+{% for ip in PUBLIC_IP_WHITE_LIST %}
+              - {{ ip }}
+{% endfor %}
+{% endif %}
+            subnets:
+              level1:
+                lz_key: launchpad
+                vnet_key: vnet_region1
+                subnet_key: level1
+{% if private_endpoints is defined %}
+          private_endpoints:
+            level1:
+              name: stg-level1
+              resource_group_key: level1
+              vnet_key: vnet_region1
+              subnet_key: level1
+              private_service_connection:
+                name: stg-level1-link
+                is_manual_connection: false
+                subresource_names:
+                  - blob
+{% if private_endpoints is defined and private_dns is defined %}
+              private_dns:
+                zone_group_name: default
+                ids:
+                  - {{ private_dns[env|default('prod')]["privatelink.blob.core.windows.net"].id }}
+{% endif %}
+{% endif %}
+          tags:
+            ## Those tags must never be changed after being set as they are used by the rover to locate the launchpad and the tfstates.
+            # Only adjust the environment value at creation time
+            caf_environment: {{ caf_environment }}
+            caf_launchpad: launchpad
+            caf_tfstate: level1
+        level2:
+          name: l2
+          resource_group_key: level2
+          account_kind: BlobStorage
+          account_tier: Standard
+          shared_access_key_enabled: false
+          account_replication_type: GRS
+          blob_properties:
+            versioning_enabled: true
+            last_access_time_enabled: true
+            container_delete_retention_policy:
+              days: 7
+            delete_retention_policy:
+              days: 7
+          containers:
+            tfstate:
+              name: tfstate
+          network:
+            bypass: 
+              - Logging
+              - Metrics
+              - AzureServices
+            default_action: Deny
+{% if PUBLIC_IP_WHITE_LIST is defined %}
+            ip_rules:
+{% for ip in PUBLIC_IP_WHITE_LIST %}
+              - {{ ip }}
+{% endfor %}
+{% endif %}
+            subnets:
+              level2:
+                lz_key: launchpad
+                vnet_key: vnet_region1
+                subnet_key: level2
+{% if private_endpoints is defined %}
+          private_endpoints:
+            level2:
+              name: stg-level2
+              resource_group_key: level2
+              vnet_key: vnet_region1
+              subnet_key: level2
+              private_service_connection:
+                name: stg-level2-link
+                is_manual_connection: false
+                subresource_names:
+                  - blob
+{% if private_endpoints is defined and private_dns is defined %}
+              private_dns:
+                zone_group_name: default
+                ids:
+                  - {{ private_dns[env|default('prod')]["privatelink.blob.core.windows.net"].id }}
+{% endif %}
+{% endif %}
+          tags:
+            ## Those tags must never be changed after being set as they are used by the rover to locate the launchpad and the tfstates.
+            # Only adjust the environment value at creation time
+            caf_environment: {{ caf_environment }}
+            caf_launchpad: launchpad
+            caf_tfstate: level2
+
+      keyvaults:
+        level0:
+          name: l0
+          sku_name: premium
+          resource_group_key: level0
+          purge_protection_enabled: {{ keyvault_purge_protection_enabled }}
+          enable_rbac_authorization: {{ keyvault_enable_rbac_authorization }}
+          network:
+            bypass: AzureServices
+            default_action: Deny
+{% if PUBLIC_IP_WHITE_LIST is defined %}
+            ip_rules:
+{% for ip in PUBLIC_IP_WHITE_LIST %}
+              - {{ ip }}
+{% endfor %}
+{% endif %}
+            subnets:
+              level0:
+                lz_key: launchpad
+                vnet_key: vnet_region1
+                subnet_key: level0
+{% if private_endpoints is defined %}
+          private_endpoints:
+            level0:
+              name: kv-level0
+              resource_group_key: level0
+              vnet_key: vnet_region1
+              subnet_key: level0
+              private_service_connection:
+                name: kv-level0-link
+                is_manual_connection: false
+                subresource_names:
+                  - vault
+{% if private_endpoints is defined and private_dns is defined %}
+              private_dns:
+                zone_group_name: default
+                ids:
+                  - {{ private_dns[env|default('prod')]["privatelink.vaultcore.azure.net"].id }}
+{% endif %}
+{% endif %}
+{% if keyvault_enable_rbac_authorization == false %}
+          creation_policies:
+            bootstrap_user:
+              object_id: "{{ billing_subscription_role_delegations.azuread_user_ea_account_owner_object_id }}"
+              secret_permissions:
+                - "Set"
+                - "Get"
+                - "List"
+                - "Delete"
+                - "Purge"
+                - "Recover"
+{% endif %}
+          tags:
+            caf_tfstate: level0
+            caf_environment: {{ caf_environment }}
+        level1:
+          name: l1
+          sku_name: premium
+          resource_group_key: level1
+          purge_protection_enabled: {{ keyvault_purge_protection_enabled }}
+          enable_rbac_authorization: {{ keyvault_enable_rbac_authorization }}
+          network:
+            bypass: AzureServices
+            default_action: Deny
+{% if PUBLIC_IP_WHITE_LIST is defined %}
+            ip_rules:
+{% for ip in PUBLIC_IP_WHITE_LIST %}
+              - {{ ip }}
+{% endfor %}
+{% endif %}
+            subnets:
+              level1:
+                lz_key: launchpad
+                vnet_key: vnet_region1
+                subnet_key: level1
+{% if private_endpoints is defined %}
+          private_endpoints:
+            level1:
+              name: kv-level1
+              resource_group_key: level1
+              vnet_key: vnet_region1
+              subnet_key: level1
+              private_service_connection:
+                name: kv-level1-link
+                is_manual_connection: false
+                subresource_names:
+                  - vault
+{% if private_endpoints is defined and private_dns is defined %}
+              private_dns:
+                zone_group_name: default
+                ids:
+                  - {{ private_dns[env|default('prod')]["privatelink.vaultcore.azure.net"].id }}
+{% endif %}
+{% endif %}
+{% if keyvault_enable_rbac_authorization == false %}
+          creation_policies:
+            bootstrap_user:
+              object_id: "{{ billing_subscription_role_delegations.azuread_user_ea_account_owner_object_id }}"
+              secret_permissions:
+                - "Set"
+                - "Get"
+                - "List"
+                - "Delete"
+                - "Purge"
+                - "Recover"
+{% endif %}
+          tags:
+            caf_tfstate: level1
+            caf_environment: {{ caf_environment }}
+        level2:
+          name: l2
+          sku_name: premium
+          resource_group_key: level2
+          purge_protection_enabled: {{ keyvault_purge_protection_enabled }}
+          enable_rbac_authorization: {{ keyvault_enable_rbac_authorization }}
+          network:
+            bypass: AzureServices
+            default_action: Deny
+{% if PUBLIC_IP_WHITE_LIST is defined %}
+            ip_rules:
+{% for ip in PUBLIC_IP_WHITE_LIST %}
+              - {{ ip }}
+{% endfor %}
+{% endif %}
+            subnets:
+              level2:
+                lz_key: launchpad
+                vnet_key: vnet_region1
+                subnet_key: level2
+{% if private_endpoints is defined %}
+          private_endpoints:
+            level2:
+              name: kv-level2
+              resource_group_key: level2
+              vnet_key: vnet_region1
+              subnet_key: level2
+              private_service_connection:
+                name: kv-level2-link
+                is_manual_connection: false
+                subresource_names:
+                  - vault
+{% if private_endpoints is defined and private_dns is defined %}
+              private_dns:
+                zone_group_name: default
+                ids:
+                  - {{ private_dns[env|default('prod')]["privatelink.vaultcore.azure.net"].id }}
+{% endif %}
+{% endif %}
+{% if keyvault_enable_rbac_authorization == false %}
+          creation_policies:
+            bootstrap_user:
+              object_id: "{{ billing_subscription_role_delegations.azuread_user_ea_account_owner_object_id }}"
+              secret_permissions:
+                - "Set"
+                - "Get"
+                - "List"
+                - "Delete"
+                - "Purge"
+                - "Recover"
+{% endif %}
+          tags:
+            caf_tfstate: level2
+            caf_environment: {{ caf_environment }}
+
+
+{% if keyvault_enable_rbac_authorization == false %}
+      keyvault_access_policies:
+        level0:
+          sp_level0:
+            azuread_group_key: level0
+            secret_permissions:
+              - Set
+              - Get
+              - List
+              - Delete
+              - Purge
+              - Recover
+          identity:
+            azuread_group_key: identity
+            secret_permissions:
+              - Get
+        level1:
+          sp_level0:
+            azuread_group_key: level0
+            secret_permissions:
+              - Set
+              - Get
+              - List
+              - Delete
+              - Purge
+              - Recover
+          identity:
+            azuread_group_key: identity
+            secret_permissions:
+              - Get
+          management:
+            azuread_group_key: management
+            secret_permissions:
+              - Get
+          alz:
+            azuread_group_key: alz
+            secret_permissions:
+              - Get
+          subscription_creation_platform:
+            azuread_group_key: subscription_creation_platform
+            secret_permissions:
+              - Get
+        level2:
+          sp_level0:
+            azuread_group_key: level0
+            secret_permissions:
+              - Set
+              - Get
+              - List
+              - Delete
+              - Purge
+              - Recover
+          identity:
+            azuread_group_key: identity
+            secret_permissions:
+              - Get
+          management:
+            azuread_group_key: management
+            secret_permissions:
+              - Get
+          connectivity:
+            azuread_group_key: connectivity
+            secret_permissions:
+              - Get
+          subscription_creation_platform:
+            azuread_group_key: subscription_creation_platform
+            secret_permissions:
+              - Get
+{% endif %}
+
+      azuread_applications:
+        level0:
+          application_name: level0
+          owners:
+            - {{object_id}}
+        identity:
+          application_name: identity
+          owners:
+            - {{object_id}}
+        management:
+          application_name: management
+          owners:
+            - {{object_id}}
+        alz:
+          application_name: alz
+          owners:
+            - {{object_id}}
+        connectivity:
+          application_name: connectivity
+          owners:
+            - {{object_id}}
+        security:
+          application_name: security
+          owners:
+            - {{object_id}}
+        subscription_creation_platform:
+          application_name: subscription_creation_platform
+          owners:
+            - {{object_id}}
+        subscription_creation_landingzones:
+          application_name: subscription_creation_landingzones
+          owners:
+            - {{object_id}}
+
+      azuread_service_principals:
+        # Manage the deployment of the level0
+        level0:
+          azuread_application:
+            key: level0
+        # Manage the deployment of Enterprise Scale
+        alz:
+          azuread_application:
+            key: alz
+        # Manage the deployment of the connectivity services
+        connectivity:
+          azuread_application:
+            key: connectivity
+        # Manage the deployment of the shared services
+        management:
+          azuread_application:
+            key: management
+        # Manage the deployment of the identity services
+        identity:
+          azuread_application:
+            key: identity
+        # Manage the deployment of the security services
+        security:
+          azuread_application:
+            key: security
+        # Has delegation to create platform subscriptions
+        subscription_creation_platform:
+          azuread_application:
+            key: subscription_creation_platform
+        # Has delegation to create landingzone subscriptions
+        subscription_creation_landingzones:
+          azuread_application:
+            key: subscription_creation_landingzones
+
+      azuread_api_permissions:
+        level0:
+          microsoft_graph:
+            resource_app_id: 00000003-0000-0000-c000-000000000000
+            resource_access:
+              AppRoleAssignment_ReadWrite_All:
+                id: 06b708a9-e830-4db3-a914-8e69da51d44f
+                type: Role
+              DelegatedPermissionGrant_ReadWrite_All:
+                id: 8e8e4742-1d95-4f68-9d56-6ee75648c72a
+                type: Role
+              Application_ReadWrite_OwnedBy:
+                id: 18a4783c-866b-4cc7-a460-3d5e5662c884
+                type: Role
+        identity:
+          microsoft_graph:
+            resource_app_id: 00000003-0000-0000-c000-000000000000
+            resource_access:
+              AppRoleAssignment_ReadWrite_All:
+                id: 06b708a9-e830-4db3-a914-8e69da51d44f
+                type: Role
+              DelegatedPermissionGrant_ReadWrite_All:
+                id: 8e8e4742-1d95-4f68-9d56-6ee75648c72a
+                type: Role
+              GroupReadWriteAll:
+                id: 62a82d76-70ea-41e2-9197-370581804d09
+                type: Role
+              RoleManagement_ReadWrite_Directory:
+                id: 9e3f62cf-ca93-4989-b6ce-bf83c28f9fe8
+                type: Role
+
+      azuread_roles:
+        azuread_service_principals:
+          level0:
+            roles:
+              - Privileged Role Administrator
+              - Application Administrator
+              - Groups Administrator
+          identity:
+            roles:
+              - User Administrator
+              - Application Administrator
+              - Groups Administrator
+          subscription_creation_landingzones:
+            roles:
+              - Application Administrator
+              - Groups Administrator
+
+      dynamic_keyvault_secrets:
+        level0:
+          subscription_id:
+            output_key: client_config
+            attribute_key: subscription_id
+            secret_name: subscription-id
+          tenant_id:
+            output_key: client_config
+            attribute_key: tenant_id
+            secret_name: tenant-id
+        level1:
+          lower_stg:
+            output_key: storage_accounts
+            resource_key: level0
+            attribute_key: name
+            secret_name: lower-storage-account-name
+          lower_rg:
+            output_key: resource_groups
+            resource_key: level0
+            attribute_key: name
+            secret_name: lower-resource-group-name
+          subscription_id:
+            output_key: client_config
+            attribute_key: subscription_id
+            secret_name: subscription-id
+          tenant_id:
+            output_key: client_config
+            attribute_key: tenant_id
+            secret_name: tenant-id
+        level2:
+          lower_stg:
+            output_key: storage_accounts
+            resource_key: level1
+            attribute_key: name
+            secret_name: lower-storage-account-name
+          lower_rg:
+            output_key: resource_groups
+            resource_key: level1
+            attribute_key: name
+            secret_name: lower-resource-group-name
+          subscription_id:
+            output_key: client_config
+            attribute_key: subscription_id
+            secret_name: subscription-id
+          tenant_id:
+            output_key: client_config
+            attribute_key: tenant_id
+            secret_name: tenant-id
+
+      azuread_groups:
+        caf_platform_maintainers:
+          name: platform-maintainers
+          description: High privileged group to run all CAF deployments from vscode. Can be used to bootstrap or troubleshoot deployments.
+          prevent_duplicate_name: true
+          members:
+            object_ids:
+                - {{bootstrap_sp_object_id}}
+          owners:
+            - {{object_id}}
+        caf_platform_contributors:
+          name: platform-contributors
+          description: Can only execute terraform plans for level1 and level2. They can test platform improvements and propose PR.
+          prevent_duplicate_name: true
+          members:
+            object_ids:
+                - {{object_id}}
+                - {{bootstrap_sp_object_id}}
+          owners:
+            - {{object_id}}
+        level0:
+          name: level0
+          prevent_duplicate_name: true
+          members:
+            azuread_service_principal_keys:
+              - level0
+          owners:
+            - {{object_id}}
+        alz:
+          name: alz
+          prevent_duplicate_name: true
+          members:
+            azuread_service_principal_keys:
+              - alz
+          owners:
+            - {{object_id}}
+        identity:
+          name: caf-identity
+          prevent_duplicate_name: true
+          members:
+            azuread_service_principal_keys:
+              - identity
+          owners:
+            - {{object_id}}
+        management:
+          name: management
+          prevent_duplicate_name: true
+          members:
+            azuread_service_principal_keys:
+              - management
+          owners:
+            - {{object_id}}
+        connectivity:
+          name: connectivity
+          prevent_duplicate_name: true
+          members:
+            azuread_service_principal_keys:
+              - connectivity
+          owners:
+            - {{object_id}}
+        security:
+          name: security
+          prevent_duplicate_name: true
+          members:
+            azuread_service_principal_keys:
+              - security
+          owners:
+            - {{object_id}}
+        subscription_creation_platform:
+          name: subscription_creation_platform
+          prevent_duplicate_name: true
+          members:
+            azuread_service_principal_keys:
+              - subscription_creation_platform
+          owners:
+            - {{object_id}}
+        subscription_creation_landingzones:
+          name: subscription_creation_landingzones
+          prevent_duplicate_name: true
+          members:
+            azuread_service_principal_keys:
+              - subscription_creation_landingzones
+            # object_ids:
+            #   - 
+          owners:
+            - {{object_id}}
+
+
+      role_mapping:
+        built_in_role_mapping:
+          management_group:
+            # if you are using a root_parent_id, replace the following root by the root_parent_id value
+            root:
+              User Access Administrator:
+                azuread_groups:
+                  keys:
+                    - level0
+              Management Group Contributor:
+                azuread_groups:
+                  keys:
+                    - alz
+                    - caf_platform_maintainers
+              Owner:
+                azuread_groups:
+                  keys:
+                    - alz
+                    - caf_platform_maintainers
+{% if subscription_deployment_mode == 'single_reuse' %}
+                    - connectivity  # only when deploying in single subscription
+                    - identity      # only when deploying in single subscription
+                    - management    # only when deploying in single subscription
+                    - security    # only when deploying in single subscription
+                    - subscription_creation_landingzones # # only when deploying in single subscription
+{% endif %}
+              Reader:
+                azuread_groups:
+                  keys:
+                    - caf_platform_contributors
+          subscriptions:
+            logged_in_subscription:
+              Owner:
+                azuread_groups:
+                  keys:
+                    - level0
+                    - subscription_creation_platform
+                    - caf_platform_maintainers
+              Reader:
+                azuread_groups:
+                  keys:
+                    - identity
+          resource_groups:
+            level0:
+              Reader:
+                azuread_groups:
+                  keys:
+                    - identity
+                    - subscription_creation_platform
+                    - caf_platform_contributors
+            level1:
+              Reader:
+                azuread_groups:
+                  keys:
+                    - identity
+                    - management
+                    - alz
+                    - security
+                    - subscription_creation_platform
+                    - caf_platform_contributors
+            level2:
+              Reader:
+                azuread_groups:
+                  keys:
+                    - identity
+                    - management
+                    - connectivity
+                    - security
+                    - subscription_creation_platform
+                    - caf_platform_contributors
+
+          storage_accounts:
+            level0:
+              Storage Blob Data Contributor:
+                azuread_groups:
+                  keys:
+                    - level0
+                    - identity
+                    - caf_platform_maintainers
+              Storage Blob Data Reader:
+                azuread_groups:
+                  keys:
+                    - management
+                    - alz
+                    - security
+                    - subscription_creation_platform
+                    - caf_platform_contributors
+            level1:
+              Storage Blob Data Contributor:
+                azuread_groups:
+                  keys:
+                    - caf_platform_maintainers
+                    - identity
+                    - management
+                    - alz
+                    - security
+                    - subscription_creation_platform
+              Storage Blob Data Reader:
+                azuread_groups:
+                  keys:
+                    - caf_platform_contributors
+                    - level0
+            level2:
+              Storage Blob Data Contributor:
+                azuread_groups:
+                  keys:
+                    - identity
+                    - connectivity
+                    - management
+                    - security
+                    - caf_platform_maintainers
+                    - level0
+              Storage Blob Data Reader:
+                azuread_groups:
+                  keys:
+                    - subscription_creation_landingzones
+                    - caf_platform_contributors
+
+          keyvaults:
+            level0:
+              Key Vault Secrets Officer:
+                azuread_groups:
+                  keys:
+                    - level0
+                    - caf_platform_maintainers
+              Key Vault Secrets User:
+                azuread_groups:
+                  keys:
+                    - identity
+                    - caf_platform_maintainers
+            level1:
+              Key Vault Secrets Officer:
+                azuread_groups:
+                  keys:
+                    - level0
+                    - caf_platform_maintainers
+              Key Vault Secrets User:
+                azuread_groups:
+                  keys:
+                    - identity
+                    - management
+                    - alz
+                    - security
+                    - subscription_creation_platform
+                    - caf_platform_contributors
+            level2:
+              Key Vault Secrets Officer:
+                azuread_groups:
+                  keys:
+                    - level0
+                    - caf_platform_maintainers
+              Key Vault Secrets User:
+                azuread_groups:
+                  keys:
+                    - identity
+                    - management
+                    - alz
+                    - security
+                    - connectivity
+                    - subscription_creation_platform
+                    - caf_platform_contributors
+
+
+      virtual_networks:
+        vnet_region1:
+          resource_group_key: gitops
+          name: gitops
+          address_space: ["10.100.0.0/24"]
+{% if secure_firewalls_resources is defined %}
+          dns_servers:
+            - {{ secure_firewalls_resources[env | default('prod')].fw_secure_prod.virtual_hub[0].private_ip_address }}
+{% endif %}
+          subnets:
+            level0:
+              name: level0
+              cidr: ["10.100.0.0/27"]
+              delegation:
+                name: Microsoft.ContainerInstance/containerGroups
+                service_delegation: Microsoft.ContainerInstance/containerGroups
+                actions:
+                  - Microsoft.Network/virtualNetworks/subnets/action
+              service_endpoints:
+                - Microsoft.KeyVault
+                - Microsoft.Storage
+{% if private_endpoints is defined %}
+              enforce_private_link_endpoint_network_policies: true
+{% endif %}
+            level1:
+              name: level1
+              cidr: ["10.100.0.32/27"]
+              service_endpoints:
+                - Microsoft.KeyVault
+                - Microsoft.Storage
+{% if private_endpoints is defined %}
+              enforce_private_link_endpoint_network_policies: true
+{% endif %}
+            level2:
+              name: level2
+              cidr: ["10.100.0.64/27"]
+              service_endpoints:
+                - Microsoft.KeyVault
+                - Microsoft.Storage
+{% if private_endpoints is defined %}
+              enforce_private_link_endpoint_network_policies: true
+{% endif %}
+            credentials:
+              name: credentials
+              cidr: ["10.100.0.96/27"]
+              service_endpoints:
+                - Microsoft.KeyVault
+                - Microsoft.Storage
+{% if private_endpoints is defined %}
+              enforce_private_link_endpoint_network_policies: true
+{% endif %}
+
+{% if virtual_hubs_resources is defined %}
+      virtual_hub_connections:
+        vnet_to_hub:
+          name: vnet-launchpad-prod-TO-vhub-prod
+          virtual_hub:
+            id: {{ virtual_hubs_resources[env | default('prod')].prod.id }}
+          vnet:
+            vnet_key: vnet_region1
+          # to route internet traffic through firewall in secure hub, set internet_security_enabled to true
+          internet_security_enabled: true
+          routing:
+            firewall_manager:
+              virtual_hub_route_table_key: defaultRouteTable
+              propagated_route_table:
+                labels: ["none"] # To route vnet to vnet traffic through firewall manager (private traffic)
+                ids: # Route internet traffic through firewall manager (private traffic)
+                  - {{ virtual_hubs_resources[env | default('prod')].prod.id }}/hubRouteTables/noneRouteTable
+{% endif %}

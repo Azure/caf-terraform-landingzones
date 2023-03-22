@@ -5,6 +5,7 @@
     - "{{deployment_mode}}"
     - "{{tfstate}}"
     - "{{env}}"
+    - "{{tfstate_object}}"
 
 - name: "{{deployment_mode}} - Set ansible_to_process"
   set_fact:

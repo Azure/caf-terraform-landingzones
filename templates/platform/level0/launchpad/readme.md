@@ -48,7 +48,7 @@ git checkout {{ bootstrap.caf_landingzone_branch }}
 git pull
 
 rover \
-{% if bootstrap.azure_landing_zones.identity.azuread_identity_mode != "logged_in_user" and credentials_tfstate_exists.rc == 0 %}
+{% if bootstrap.azure_landing_zones.identity.azuread_identity_mode != "logged_in_user" and keyvaults is defined %}
   --impersonate-sp-from-keyvault-url {{ keyvaults[tfstate_object.identity_aad_key].vault_uri }} \
 {% endif %}
   -lz {{ landingzones_folder }}/caf_launchpad \
@@ -71,7 +71,7 @@ If the plan is not successfull you need to come back to the yaml ignite.yaml, fi
 # On success plan, execute
 
 rover \
-{% if bootstrap.azure_landing_zones.identity.azuread_identity_mode != "logged_in_user" and credentials_tfstate_exists.rc == 0 %}
+{% if bootstrap.azure_landing_zones.identity.azuread_identity_mode != "logged_in_user" and keyvaults is defined %}
   --impersonate-sp-from-keyvault-url {{ keyvaults.cred_level0.vault_uri }} \
 {% endif %}
   -lz {{ landingzones_folder }}/caf_launchpad \

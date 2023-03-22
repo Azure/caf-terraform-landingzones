@@ -4,7 +4,9 @@
 
 ```bash
 ansible-playbook {{public_templates_folder}}/ansible/ansible.yaml \
-  --extra-vars "@{{template_folder}}/ignite.yaml"
+  --extra-vars "@{{template_folder}}/ignite.yaml"  \
+  -e base_folder=$(pwd)
+
 
 ```
 
@@ -12,6 +14,7 @@ ansible-playbook {{public_templates_folder}}/ansible/ansible.yaml \
 
 ```bash
 ansible-playbook {{public_templates_folder}}/ansible/asvm_definition.yaml \
-  --extra-vars "@{{template_folder}}/ignite.yaml"
+  --extra-vars "@{{template_folder}}/ignite.yaml" \
+  -e base_folder=$(pwd)
 
 ```

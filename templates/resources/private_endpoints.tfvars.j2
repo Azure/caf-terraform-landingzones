@@ -23,12 +23,13 @@ private_endpoints = {
 {% if v.private_dns is defined %}
     private_dns = {
       zone_group_name = "{{v.private_dns.zone_group_name}}"
-      lz_key          = "{{v.private_dns.lz_key}}"
-{% if v.private_dns['keys'] is defined %}
-      keys            = {{v.private_dns['keys'] | replace('None','[]') | replace('\'','\"') }}
-{% endif %}
 {% if v.private_dns.ids is defined %}
       ids             = {{v.private_dns.ids | replace('None','[]') | replace('\'','\"') }}
+{% else %} 
+{% if v.private_dns.lz_key is defined %}
+      lz_key          = "{{v.private_dns.lz_key}}"
+{% endif %}
+      keys            = {{v.private_dns['keys'] | replace('None','[]') | replace('\'','\"') }}
 {% endif %} 
     }
 {% endif %}

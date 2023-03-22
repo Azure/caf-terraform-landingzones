@@ -12,6 +12,10 @@ variable "automations" {
   default = {}
 }
 
+variable "automation_log_analytics_links" {
+  default = {}
+}
+
 variable "consumption_budgets" {
   default = {}
 }
@@ -33,6 +37,10 @@ variable "monitoring" {
 }
 
 variable "packer_service_principal" {
+  default = {}
+}
+
+variable "packer_build" {
   default = {}
 }
 
