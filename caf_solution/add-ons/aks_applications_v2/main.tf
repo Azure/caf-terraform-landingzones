@@ -1,0 +1,24 @@
+terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~> 2.99.0"
+    }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "~> 2.19.0"
+    }
+    helm = {
+      source  = "hashicorp/helm"
+      version = "~> 2.9.0"
+    }
+    kustomization = {
+      source  = "kbst/kustomization"
+      version = "~> 0.5.0"
+    }
+    azurecaf = {
+      source = "aztfmod/azurecaf"
+    }
+  }
+  required_version = ">= 0.13"
+}
