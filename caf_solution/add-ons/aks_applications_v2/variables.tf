@@ -10,12 +10,12 @@ variable "tfstate_storage_account_name" {}
 variable "tfstate_container_name" {}
 variable "tfstate_key" {}
 variable "tfstate_resource_group_name" {}
-
 variable "global_settings" {
   default = {}
 }
-
-
+variable "settings" {
+  default = {}
+}
 variable "landingzone" {}
 variable "rover_version" {
   default = null
@@ -40,5 +40,18 @@ variable "kustomization_overlays" {
 }
 
 variable "kustomization_builds" {
+  default = {}
+}
+
+variable "role" {
+  default = {}
+}
+variable "cluster_role" {
+  default = {}
+}
+variable "role_binding" {
+  default = {}
+}
+variable "cluster_role_binding" {
   default = {}
 }

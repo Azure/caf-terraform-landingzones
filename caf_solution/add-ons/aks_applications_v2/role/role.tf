@@ -1,6 +1,5 @@
 resource "azurecaf_name" "role" {
-  for_each = var.role
-  name          = each.value.name
+  name          = var.settings.name
   resource_type = "azurerm_role_definition"
   prefixes      = var.global_settings.prefixes
   random_length = var.global_settings.random_length
@@ -10,14 +9,13 @@ resource "azurecaf_name" "role" {
 }
 
 resource "kubernetes_role_v1" "role" {
-  for_each = try(var.role, null) == null ? null : var.role
   metadata {
-    annotations = try(each.value.annotations, null)
-    labels      = try(each.value.labels, null)
-    name = azurecaf_name.role[each.key].result
+    annotations = try(var.settings.annotations, null)
+    labels      = try(var.settings.labels, null)
+    name = azurecaf_name.role.result
   }
   dynamic "rule" {
-    for_each = try(each.value.rule, {})
+    for_each = try(var.settings.rule, {})
       content {
         api_groups = try(rule.value.api_groups, null)
         resource_names = try(rule.value.resource_names, null)

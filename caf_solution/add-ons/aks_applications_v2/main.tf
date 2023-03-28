@@ -23,3 +23,5 @@ terraform {
   }
   required_version = ">= 0.13"
 }
+
+data "azurerm_client_config" "current" {}
