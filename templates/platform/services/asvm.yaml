@@ -18,14 +18,22 @@ asvm:
     landingzone:
       global_settings_key:
         platform:
-          virtual_hubs: prod
+          management:
       remote_tfstates:
         platform:
           management:
+{% if resources.tfstates.platform['virtual_hubs'] is defined %}
           virtual_hubs: prod
+{% endif %}
+{% if resources.tfstates.platform['private_dns'] is defined %}
           private_dns: prod
+{% endif %}
+{% if resources.tfstates.platform['secure_firewalls'] is defined %}
           secure_firewalls: prod
+{% endif %}
+{% if resources.tfstates.platform['identity_level2'] is defined %}
           identity_level2: prod
+{% endif %}
 
   resources:
     launchpad:
@@ -298,6 +306,21 @@ asvm:
               enforce_private_link_endpoint_network_policies: true
 {% endif %}
 
+{% if lookup('env', 'bootstrap_vnet_id') is defined %}
+      vnet_peerings_v1:
+        bootstrap_TO_asvm:
+          name: bootstrap-TO-asvm
+          from:
+            id: {{ lookup('env', 'bootstrap_vnet_id') }}
+          to:
+            vnet_key: vnet_region1
+        asvm_TO_bootstrap:
+          name: asvm-TO-bootstrap
+          from:
+            vnet_key: vnet_region1
+          to:
+            id: {{ lookup('env', 'bootstrap_vnet_id') }}
+{% else %}
       virtual_hub_connections:
         vnet_to_hub:
           name: vnet-asvm-prod
@@ -315,7 +338,7 @@ asvm:
                 labels: ["none"] # To route vnet to vnet traffic through firewall manager (private traffic)
                 virtual_hub_route_table_keys:
                   - noneRouteTable # Route internet traffic through firewall manager (private traffic)
-
+{% endif %}
 
       azuread_groups:
         caf_landingzone_maintainers_non_prod:

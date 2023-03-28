@@ -1,6 +1,6 @@
 module "solution" {
   source  = "aztfmod/caf/azurerm"
-  version = "5.6.6"
+  version = "5.6.7"
 
   providers = {
     azurerm.vhub = azurerm.vhub

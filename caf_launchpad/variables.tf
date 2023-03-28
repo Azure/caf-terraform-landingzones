@@ -226,6 +226,10 @@ variable "vnets" {
   default = {}
 }
 
+variable "vnet_peerings_v1" {
+  default = {}
+}
+
 variable "network_security_group_definition" {
   default = {}
 }

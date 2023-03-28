@@ -55,6 +55,9 @@ For your reference, if you need to re-generate the YAML definition files later, 
 
 ```bash
 
+export bootstrap_vnet_id={{bootstrap_vnet_id}}
+export ARM_STORAGE_USE_AZUREAD=true
+
 ansible-playbook $(readlink -f ./landingzones/templates/ansible/walk-through-ci.yaml) \
   -e base_folder=$(pwd) \
   -e topology_file=$(readlink -f ./platform/definition/ignite.yaml) \

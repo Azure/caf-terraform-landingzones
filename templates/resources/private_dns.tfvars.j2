@@ -15,7 +15,11 @@ private_dns = {
 {% for v_key, v_value in value.vnet_links.items() %}
     {{ v_key }} = {
         name     = "{{ v_value.name }}"
+{% if v_value.virtual_network_id is defined %}
+        virtual_network_id = "{{ v_value.virtual_network_id }}"
+{% else %}
         vnet_key = "{{ v_value.vnet_key }}"
+{% endif %}
 {% if v_value.registration_enabled is defined %}
         registration_enabled = {{ v_value.registration_enabled | string | lower }}
 {% endif %}

@@ -17,12 +17,12 @@ function bootstrap {
     echo "$PLATFORM_FOLDER exists in your current configuration. You need to delete first and restart the boostrap process."
     exit
   else
-    pwd
-    caf_landingzone_branch=$(cat .gitmodules | grep  "branch = " | awk '{gsub("\t|branch = ","",$0); print;}')
+    caf_landingzone_branch=$(cd /tf/caf/landingzones && git branch --show-current)
+    echo "efault tem"
+    read -p "Press Enter to continue to generate the definition files from Ansible template ..."
 
     ansible-playbook /tf/caf/landingzones/templates/ansible/walk-through-bootstrap.yaml \
       -e public_templates_folder=/tf/caf/landingzones/templates \
-      -e bootstrap_playbook=${topology_file:='/tf/caf/landingzones/templates/platform/caf_platform_prod_nonprod.yaml'} \
       -e topology_file=${topology_file:='/tf/caf/landingzones/templates/platform/caf_platform_prod_nonprod.yaml'} \
       -e landingzones_folder=/tf/caf/landingzones \
       -e platform_configuration_folder=/tf/caf/configuration \
@@ -35,10 +35,12 @@ function bootstrap {
       -e private_endpoints=true \
       -e rover_bootstrap=true \
       -e caf_landingzone_branch=${caf_landingzone_branch} \
-      --extra-vars "@/tf/caf/landingzones/templates/platform/ignite.yaml" \
+      --extra-vars "@${bootstrap_variables:="/tf/caf/landingzones/templates/platform/ignite.yaml"}" \
       -e $(echo ${params} | xargs)
 
     # Generate initial configuration
+    read -p "Press Enter to continue to generate the configuration files from Ansible definition files ..."
+
     ansible-playbook $(readlink -f ./landingzones/templates/ansible/ansible.yaml) \
       --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)" \
       -e topology_file="$(readlink -f ./platform/definition/ignite.yaml)" \
@@ -49,6 +51,8 @@ function bootstrap {
 function launchpad {
 
   check_environment_variable
+
+  read -p "Press Enter to continue to deploy the launchpad configuration with Rover ..."
 
   /tf/rover/rover.sh \
     -lz /tf/caf/landingzones/caf_launchpad \
@@ -202,7 +206,9 @@ function gitops_agents_aca()
 function credentials() {
 
   check_environment_variable
-  
+
+  read -p "Press Enter to continue to deploy the credentials configuration with Rover."
+
   /tf/rover/rover.sh \
     -lz /tf/caf/landingzones/caf_solution \
     -var-folder /tf/caf/platform/configuration/level0/credentials \

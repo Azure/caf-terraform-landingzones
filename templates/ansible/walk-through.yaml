@@ -51,7 +51,7 @@
       - "{{ object_id }}"
       - "{{ upn }}"
       - "{{ base_folder }}"
-      - "{{ input_caf_environment if input_caf_environment is defined else TF_VAR_environment }}"
+      - "{{ input_caf_environment if input_caf_environment is defined else lookup('env', 'TF_VAR_environment') }}"
       - "private_templates_folder: {{private_templates_folder is defined}}"
 
 
@@ -65,11 +65,10 @@
   when: rover_bootstrap == 'true'
 
 - set_fact:
-    caf_environment: "{{ TF_VAR_environment }}"
-  when: TF_VAR_environment is defined
+    caf_environment: "{{ input_caf_environment if input_caf_environment is defined else lookup('env', 'TF_VAR_environment') }}"
   
 - set_fact:
-    bootstrap: "{{ lookup('template', '{{ topology_file }}') | from_yaml }}"
+    bootstrap_vnet_id: "{{ lookup('env', 'bootstrap_vnet_id')  }}"
     topology: "{{ lookup('template', '{{ topology_file }}') | from_yaml }}"
     topology_deployment__to_merge: "{{ lookup('template', '{{ topology_file }}') | from_yaml }}"
     destination_path: "{{definition_folder | default(platform_definition_folder)}}"
@@ -266,7 +265,7 @@
     
 - name: ignite.yaml
   ansible.builtin.template:
-    src: "{{public_templates_folder}}/platform/caf_platform_prod_nonprod.yaml"
+    src: "{{topology_file}}"
     dest: "{{destination_path}}/ignite.yaml"
   when: rover_bootstrap == 'true'
 

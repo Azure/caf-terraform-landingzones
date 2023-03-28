@@ -101,7 +101,21 @@
     - deployment_mode == 'platform'
     - rover_bootstrap == false or rover_bootstrap == 'false'
 
-# Private DNS zones
+# Private DNS zones - connectivity level1
+- name: tfstate - private dns zones (level1) to variable
+  include_tasks: "get_tfstate_content.yaml"
+  vars:
+    env: ''
+    resource_type: private_dns
+    tfstate_key: connectivity
+    caf_level: level1
+    exported_variable_name: private_dns
+  when: 
+    - deployment_mode == 'platform'
+    - rover_bootstrap == false or rover_bootstrap == 'false'
+    - resources.tfstates.platform['connectivity'] is defined
+
+# Private DNS zones - connectivity level2
 - name: tfstate - private dns zones to variable
   include_tasks: "get_tfstate_content.yaml"
   vars:
@@ -115,6 +129,7 @@
   when: 
     - deployment_mode == 'platform'
     - rover_bootstrap == false or rover_bootstrap == 'false'
+    - resources.tfstates.platform['private_dns'] is defined
 
 # Virtual hub prod
 - name: tfstate - virtual hub prod to variable
@@ -130,6 +145,7 @@
   when: 
     - deployment_mode == 'platform'
     - rover_bootstrap == false or rover_bootstrap == 'false'
+    - resources.tfstates.platform['virtual_hubs'] is defined
 
 # Secure firewalls prod
 - name: tfstate - secure firewall prod to variable
@@ -145,6 +161,7 @@
   when: 
     - deployment_mode == 'platform'
     - rover_bootstrap == false or rover_bootstrap == 'false'
+    - resources.tfstates.platform['secure_firewalls'] is defined
 
 
 # azurerm_firewall for dns resolution
@@ -161,6 +178,7 @@
   when: 
     - deployment_mode == 'platform'
     - rover_bootstrap == false or rover_bootstrap == 'false'
+    - resources.tfstates.platform['private_dns_firewalls'] is defined
 
 # azurerm_firewall for dns resolution (vnets)
 - name: tfstate - azurerm_firewalls from private_dns_firewalls..vnets to variable
@@ -176,6 +194,7 @@
   when: 
     - deployment_mode == 'platform'
     - rover_bootstrap == false or rover_bootstrap == 'false'
+    - resources.tfstates.platform['private_dns_firewalls'] is defined
 
 
 # launchpad vnet
@@ -203,6 +222,7 @@
   when: 
     - deployment_mode == 'platform'
     - rover_bootstrap == false or rover_bootstrap == 'false'
+    - resources.tfstates.platform['asvm'] is defined
 
 # Platform asvm storage accounts
 - name: tfstate - level2_storage_account from launchpad to variable

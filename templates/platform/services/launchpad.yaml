@@ -38,10 +38,10 @@ launchpad:
         level0:
           name: l0
           resource_group_key: level0
-          account_kind: BlobStorage
+          account_kind: StorageV2
           account_tier: Standard
           shared_access_key_enabled: false
-          account_replication_type: GRS
+          account_replication_type: RAGRS
           blob_properties:
             versioning_enabled: true
             last_access_time_enabled: true
@@ -97,10 +97,10 @@ launchpad:
         level1:
           name: l1
           resource_group_key: level1
-          account_kind: BlobStorage
+          account_kind: StorageV2
           account_tier: Standard
           shared_access_key_enabled: false
-          account_replication_type: GRS
+          account_replication_type: RAGRS
           blob_properties:
             versioning_enabled: true
             last_access_time_enabled: true
@@ -156,10 +156,10 @@ launchpad:
         level2:
           name: l2
           resource_group_key: level2
-          account_kind: BlobStorage
+          account_kind: StorageV2
           account_tier: Standard
           shared_access_key_enabled: false
-          account_replication_type: GRS
+          account_replication_type: RAGRS
           blob_properties:
             versioning_enabled: true
             last_access_time_enabled: true
@@ -212,50 +212,6 @@ launchpad:
             caf_environment: {{ caf_environment }}
             caf_launchpad: launchpad
             caf_tfstate: level2
-        # Storage account to store Keda autoscaler queue
-        kedaplz:
-          name: kedaplz
-          resource_group_key: gitops
-          account_kind: StorageV2
-          account_tier: Standard
-          shared_access_key_enabled: false
-          account_replication_type: GRS
-          network:
-            bypass: 
-              - Logging
-              - Metrics
-              - AzureServices
-            default_action: Deny
-{% if PUBLIC_IP_WHITE_LIST is defined %}
-            ip_rules:
-{% for ip in PUBLIC_IP_WHITE_LIST %}
-              - {{ ip }}
-{% endfor %}
-{% endif %}
-{% if private_endpoints is defined %}
-          private_endpoints:
-            kedaplz:
-              name: stg-kedaplz
-              resource_group_key: gitops
-              vnet_key: vnet_region1
-              subnet_key: gitops
-              private_service_connection:
-                name: stg-kedaplz
-                is_manual_connection: false
-                subresource_names:
-                  - queue
-{% if private_endpoints is defined and private_dns is defined and private_dns[env|default('prod')] != '' %}
-              private_dns:
-                zone_group_name: default
-                ids:
-                  - {{ private_dns[env|default('prod')]["privatelink.queue.core.windows.net"].id }}
-{% else %}
-              private_dns:
-                zone_group_name: default
-                keys: 
-                  - privatelink.queue.core.windows.net
-{% endif %}
-{% endif %}
 
       keyvaults:
         level0:
@@ -294,7 +250,7 @@ launchpad:
               private_dns:
                 zone_group_name: default
                 keys: 
-                  - privatelink.vaultcore.azure.windows.net
+                  - privatelink.vaultcore.azure.net
 {% endif %}
 {% endif %}
 {% if keyvault_enable_rbac_authorization == false %}
@@ -348,7 +304,7 @@ launchpad:
               private_dns:
                 zone_group_name: default
                 keys: 
-                  - privatelink.vaultcore.azure.windows.net
+                  - privatelink.vaultcore.azure.net
 {% endif %}
 {% endif %}
 {% if keyvault_enable_rbac_authorization == false %}
@@ -402,7 +358,7 @@ launchpad:
               private_dns:
                 zone_group_name: default
                 keys: 
-                  - privatelink.vaultcore.azure.windows.net
+                  - privatelink.vaultcore.azure.net
 {% endif %}
 {% endif %}
 {% if keyvault_enable_rbac_authorization == false %}
@@ -810,6 +766,7 @@ launchpad:
                     - alz
                     - security
                     - subscription_creation_platform
+                    - subscription_creation_landingzones
                     - caf_platform_contributors
             level2:
               Reader:
@@ -820,6 +777,7 @@ launchpad:
                     - connectivity
                     - security
                     - subscription_creation_platform
+                    - subscription_creation_landingzones
                     - caf_platform_contributors
 
           storage_accounts:
@@ -852,6 +810,7 @@ launchpad:
                 azuread_groups:
                   keys:
                     - caf_platform_contributors
+                    - subscription_creation_landingzones
                     - level0
                     - connectivity
             level2:
@@ -869,14 +828,6 @@ launchpad:
                   keys:
                     - subscription_creation_landingzones
                     - caf_platform_contributors
-            kedaplz:
-              Storage Queue Data Contributor:
-                azuread_groups:
-                  keys:
-                    - level0
-                object_ids:
-                  keys:
-                    - {{bootstrap_sp_object_id}}
 
           keyvaults:
             level0:
@@ -904,6 +855,7 @@ launchpad:
                     - alz
                     - security
                     - subscription_creation_platform
+                    - subscription_creation_landingzones
                     - caf_platform_contributors
             level2:
               Key Vault Secrets Officer:
@@ -911,6 +863,7 @@ launchpad:
                   keys:
                     - level0
                     - caf_platform_maintainers
+                    - subscription_creation_landingzones
               Key Vault Secrets User:
                 azuread_groups:
                   keys:
@@ -921,14 +874,6 @@ launchpad:
                     - connectivity
                     - subscription_creation_platform
                     - caf_platform_contributors
-
-          azure_container_registries:
-            platform:
-              AcrPull:
-                managed_identities:
-                  keys:
-                    - gitops
-
 
       virtual_networks:
         vnet_region1:
@@ -985,66 +930,19 @@ launchpad:
                   - {{ virtual_hubs_resources[env | default('prod')].prod.id }}/hubRouteTables/noneRouteTable
 {% endif %}
 
-      azure_container_registries:
-        platform:
-          name: platform
-          resource_group_key: gitops
-          sku: Premium
-          public_network_access_enabled: true
-          admin_enabled: true
-          network_rule_set:
-            whitelist:
-              default_action: Deny
-{% if PUBLIC_IP_WHITE_LIST is defined %}
-              ip_rules:
-{% for ip in PUBLIC_IP_WHITE_LIST %}
-                rule_{{loop.index}}:
-                  ip_range: {{ ip }}
-{% endfor %}
-{% endif %}
-{% if private_endpoints is defined %}
-          private_endpoints:
-            platform:
-              name: acr-platform
-              resource_group_key: gitops
-              vnet_key: vnet_region1
-              subnet_key: gitops
-              private_service_connection:
-                name: acr-platform
-                is_manual_connection: false
-                subresource_names:
-                  - registry
-{% if private_endpoints is defined and private_dns is defined and private_dns[env|default('prod')] != '' %}
-              private_dns:
-                zone_group_name: default
-                ids:
-                  - {{ private_dns[env|default('prod')]["privatelink.azurecr.io"].id }}
-{% else %}
-              private_dns:
-                zone_group_name: default
-                keys: 
-                  - privatelink.azurecr.io
-{% endif %}
-{% endif %}
-
       managed_identities:
         gitops:
           name: gitops-platform-landingzones
           resource_group_key: gitops
 
-      storage_account_queues:
-        keda:
-          name: caf-terraform-platform-landgingzones
-          storage_account_key: kedaplz
-
       private_dns:
-        privatelink.azurecr.io:
-          name: privatelink.azurecr.io
-          resource_group_key: gitops
-          vnet_links:
-            vnet_region1:
-              name: gitops-region1
-              vnet_key: vnet_region1
+        # privatelink.azurecr.io:
+        #   name: privatelink.azurecr.io
+        #   resource_group_key: gitops
+        #   vnet_links:
+        #     vnet_region1:
+        #       name: gitops-region1
+        #       vnet_key: vnet_region1
         privatelink.blob.core.windows.net:
           name: privatelink.blob.core.windows.net
           resource_group_key: gitops
@@ -1052,13 +950,18 @@ launchpad:
             vnet_region1:
               name: gitops-region1
               vnet_key: vnet_region1
-        privatelink.queue.core.windows.net:
-          name: privatelink.queue.core.windows.net
-          resource_group_key: gitops
-          vnet_links:
-            vnet_region1:
-              name: gitops-region1
-              vnet_key: vnet_region1
+{% if lookup('env', 'bootstrap_vnet_id') is defined %}
+            bootstrap:
+              name: bootstrap
+              virtual_network_id: {{ lookup('env', 'bootstrap_vnet_id') }}
+{% endif %}
+        # privatelink.queue.core.windows.net:
+        #   name: privatelink.queue.core.windows.net
+        #   resource_group_key: gitops
+        #   vnet_links:
+        #     vnet_region1:
+        #       name: gitops-region1
+        #       vnet_key: vnet_region1
         privatelink.vaultcore.azure.net:
           name: privatelink.vaultcore.azure.net
           resource_group_key: gitops
@@ -1066,3 +969,24 @@ launchpad:
             vnet_region1:
               name: gitops-region1
               vnet_key: vnet_region1
+{% if lookup('env', 'bootstrap_vnet_id') is defined %}
+            bootstrap:
+              name: bootstrap
+              virtual_network_id: {{ lookup('env', 'bootstrap_vnet_id') }}
+{% endif %}
+
+{% if lookup('env', 'bootstrap_vnet_id') is defined %}
+      vnet_peerings_v1:
+        bootstrap_TO_devops:
+          name: bootstrap-TO-devops
+          from:
+            id: {{ lookup('env', 'bootstrap_vnet_id') }}
+          to:
+            vnet_key: vnet_region1
+        devops_TO_bootstrap:
+          name: devops-TO-bootstrap
+          from:
+            vnet_key: vnet_region1
+          to:
+            id: {{ lookup('env', 'bootstrap_vnet_id') }}
+{% endif %}

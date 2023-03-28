@@ -1,6 +1,7 @@
 module "launchpad" {
   source  = "aztfmod/caf/azurerm"
-  version = "5.6.6"
+  version = "5.6.7"
+  # source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=main"
 
   providers = {
     azurerm.vhub = azurerm.vhub
@@ -63,6 +64,7 @@ module "launchpad" {
     public_ip_addresses               = try(var.networking.public_ip_addresses, var.public_ip_addresses)
     route_tables                      = try(var.networking.route_tables, var.route_tables)
     virtual_hub_connections           = try(var.networking.virtual_hub_connections, var.virtual_hub_connections)
+    vnet_peerings_v1                  = try(var.networking.vnet_peerings_v1, var.vnet_peerings_v1)
     vnets                             = try(var.networking.vnets, var.vnets)
   }
 
