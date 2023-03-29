@@ -12,10 +12,6 @@ terraform {
       source  = "hashicorp/helm"
       version = "~> 2.9.0"
     }
-    kustomization = {
-      source  = "kbst/kustomization"
-      version = "~> 0.5.0"
-    }
     azurecaf = {
       source = "aztfmod/azurecaf"
       version = "~> 1.2.24"

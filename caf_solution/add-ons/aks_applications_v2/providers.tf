@@ -6,51 +6,70 @@ provider "azurerm" {
 }
 
 provider "kubernetes" {
-  host                   = try(local.k8sconfigs[var.aks_cluster_key].host, null)
-  username               = try(local.k8sconfigs[var.aks_cluster_key].username, null)
-  password               = try(local.k8sconfigs[var.aks_cluster_key].password, null)
-  client_certificate     = try(local.k8sconfigs[var.aks_cluster_key].client_certificate, null)
-  client_key             = try(local.k8sconfigs[var.aks_cluster_key].client_key, null)
-  cluster_ca_certificate = try(local.k8sconfigs[var.aks_cluster_key].cluster_ca_certificate, null)
+  host = yamldecode(data.azurerm_kubernetes_cluster.kubeconfig.kube_config_raw).clusters[0].cluster.server
+  cluster_ca_certificate = base64decode(yamldecode(data.azurerm_kubernetes_cluster.kubeconfig.kube_config_raw).clusters[0].cluster.certificate-authority-data)
+  exec {
+    api_version = "client.authentication.k8s.io/v1beta1"
+    command     = "kubelogin"
+    args = [
+      "get-token",
+      "--login",
+      "spn",
+      "--environment",
+      "AzurePublicCloud",
+      "--tenant-id",
+      data.azurerm_key_vault_secret.tenant_id.value,
+      "--server-id",
+      yamldecode(data.azurerm_kubernetes_cluster.kubeconfig.kube_config_raw).users[0].user.exec.args[4],
+      "--client-id",
+      data.azurerm_key_vault_secret.client_id.value,
+      "--client-secret",
+      data.azurerm_key_vault_secret.client_secret.value
+    ]
+  }
 }
 
 provider "helm" {
   kubernetes {
-    host                   = local.k8sconfigs[var.aks_cluster_key].host
-    username               = local.k8sconfigs[var.aks_cluster_key].username
-    password               = local.k8sconfigs[var.aks_cluster_key].password
-    client_certificate     = local.k8sconfigs[var.aks_cluster_key].client_certificate
-    client_key             = local.k8sconfigs[var.aks_cluster_key].client_key
-    cluster_ca_certificate = local.k8sconfigs[var.aks_cluster_key].cluster_ca_certificate
-  }
-}
-
-provider "kustomization" {
-  kubeconfig_raw = local.k8sconfigs[var.aks_cluster_key].kube_admin_config_raw
-}
-
-locals {
-  aks_clusters = {
-    for key, value in var.aks_clusters : key =>
-    local.remote.aks_clusters[value.lz_key][value.key]
-  }
-  k8sconfigs = {
-    for key, value in var.aks_clusters : key => {
-      kube_admin_config_raw  = data.azurerm_kubernetes_cluster.kubeconfig[key].kube_admin_config_raw
-      host                   = local.remote.aks_clusters[value.lz_key][value.key].enable_rbac ? data.azurerm_kubernetes_cluster.kubeconfig[key].kube_admin_config.0.host : data.azurerm_kubernetes_cluster.kubeconfig[key].kube_config.0.host
-      username               = local.remote.aks_clusters[value.lz_key][value.key].enable_rbac ? data.azurerm_kubernetes_cluster.kubeconfig[key].kube_admin_config.0.username : data.azurerm_kubernetes_cluster.kubeconfig[key].kube_config.0.username
-      password               = local.remote.aks_clusters[value.lz_key][value.key].enable_rbac ? data.azurerm_kubernetes_cluster.kubeconfig[key].kube_admin_config.0.password : data.azurerm_kubernetes_cluster.kubeconfig[key].kube_config.0.password
-      client_certificate     = local.remote.aks_clusters[value.lz_key][value.key].enable_rbac ? base64decode(data.azurerm_kubernetes_cluster.kubeconfig[key].kube_admin_config.0.client_certificate) : base64decode(data.azurerm_kubernetes_cluster.kubeconfig[key].kube_config.0.client_certificate)
-      client_key             = local.remote.aks_clusters[value.lz_key][value.key].enable_rbac ? base64decode(data.azurerm_kubernetes_cluster.kubeconfig[key].kube_admin_config.0.client_key) : base64decode(data.azurerm_kubernetes_cluster.kubeconfig[key].kube_config.0.client_key)
-      cluster_ca_certificate = local.remote.aks_clusters[value.lz_key][value.key].enable_rbac ? base64decode(data.azurerm_kubernetes_cluster.kubeconfig[key].kube_admin_config.0.cluster_ca_certificate) : base64decode(data.azurerm_kubernetes_cluster.kubeconfig[key].kube_config.0.cluster_ca_certificate)
+  host = yamldecode(data.azurerm_kubernetes_cluster.kubeconfig.kube_config_raw).clusters[0].cluster.server
+  cluster_ca_certificate = base64decode(yamldecode(data.azurerm_kubernetes_cluster.kubeconfig.kube_config_raw).clusters[0].cluster.certificate-authority-data)
+    exec {
+      api_version = "client.authentication.k8s.io/v1beta1"
+      command     = "kubelogin"
+      args = [
+        "get-token",
+        "--login",
+        "spn",
+        "--environment",
+        "AzurePublicCloud",
+        "--tenant-id",
+        data.azurerm_key_vault_secret.tenant_id.value,
+        "--server-id",
+        yamldecode(data.azurerm_kubernetes_cluster.kubeconfig.kube_config_raw).users[0].user.exec.args[4],
+        "--client-id",
+        data.azurerm_key_vault_secret.client_id.value,
+        "--client-secret",
+        data.azurerm_key_vault_secret.client_secret.value
+      ]
     }
   }
 }
 
 # Get kubeconfig from AKS clusters
 data "azurerm_kubernetes_cluster" "kubeconfig" {
-  for_each = var.aks_clusters
+  name                = local.remote.aks_clusters[var.aks_clusters.lz_key][var.aks_clusters.key].cluster_name
+  resource_group_name = local.remote.aks_clusters[var.aks_clusters.lz_key][var.aks_clusters.key].resource_group_name
+}
 
-  name                = local.remote.aks_clusters[each.value.lz_key][each.value.key].cluster_name
-  resource_group_name = local.remote.aks_clusters[each.value.lz_key][each.value.key].resource_group_name
+data "azurerm_key_vault_secret" "client_secret" {
+  key_vault_id = try(var.keyvaults.keyvaylt_id, local.remote.keyvaults[var.keyvaults.lz_key][var.keyvaults.key].id)
+  name = try(var.keyvaults.client_secret_name, "${local.kubelogin_cred.secret_prefix}-client-secret")
+}
+data "azurerm_key_vault_secret" "tenant_id" {
+  key_vault_id = try(var.keyvaults.keyvaylt_id, local.remote.keyvaults[var.keyvaults.lz_key][var.keyvaults.key].id)
+  name = try(var.keyvaults.tenant_id, "${local.kubelogin_cred.secret_prefix}-tenant-id")
+}
+data "azurerm_key_vault_secret" "client_id" {
+  key_vault_id = try(var.keyvaults.keyvaylt_id, local.remote.keyvaults[var.keyvaults.lz_key][var.keyvaults.key].id)
+  name = try(var.keyvaults.client_id, "${local.kubelogin_cred.secret_prefix}-client-id")
 }

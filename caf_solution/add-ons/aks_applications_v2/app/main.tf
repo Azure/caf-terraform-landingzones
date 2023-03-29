@@ -6,8 +6,5 @@ terraform {
     helm = {
       source = "hashicorp/helm"
     }
-    kustomization = {
-      source = "kbst/kustomization"
-    }
   }
 }

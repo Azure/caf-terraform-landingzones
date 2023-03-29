@@ -30,9 +30,8 @@ variable "namespaces" {
 variable "helm_charts" {
   default = {}
 }
-variable "aks_clusters" {}
-
-variable "aks_cluster_key" {
+variable "aks_clusters" {
+  default = {}
 }
 
 variable "kustomization_overlays" {
@@ -55,3 +54,4 @@ variable "role_binding" {
 variable "cluster_role_binding" {
   default = {}
 }
+variable "keyvaults" {}
