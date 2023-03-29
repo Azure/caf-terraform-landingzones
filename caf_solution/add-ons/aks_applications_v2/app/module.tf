@@ -21,7 +21,7 @@ resource "helm_release" "charts" {
   timeout          = try(each.value.timeout, 900)
   skip_crds        = try(each.value.skip_crds, false)
   create_namespace = try(each.value.create_namespace, false)
-  values           = try(each.value.values, null)
+  values           = can(each.value.values) ? try(file(each.value.values), each.value.values) : null
   version          = try(each.value.version, null)
 
   dynamic "set" {
