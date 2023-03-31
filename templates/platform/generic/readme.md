@@ -15,10 +15,12 @@ rover \
   -lz /tf/caf/landingzones/caf_solution \
   -var-folder {{ destination_path }} \
   -tfstate_subscription_id {{ resources.caf_launchpad.subscription_id }} \
-{% if platform_subscriptions_details is defined %}
-  -target_subscription {{ platform_subscriptions_details[resources.subscriptions.keys() | first].subscription_id }} \
-{% elif subscriptions.platform_subscriptions[resources.subscriptions.keys() | first].subscription_id is defined %}
-  -target_subscription {{ subscriptions.platform_subscriptions[resources.subscriptions.keys() | first].subscription_id }} \
+{% if platform_subscriptions is defined %}
+{% if platform_subscriptions[resources[tfstate_resource].resources.keys() | first] is defined %}
+  -target_subscription {{ platform_subscriptions[resources[tfstate_resource].resources.keys() | first].subscription_id }} \
+{% else %}
+  -target_subscription {{ resources.caf_launchpad.subscription_id }} \
+{% endif %}
 {% else %}
   -target_subscription {{ resources.caf_launchpad.subscription_id }} \
 {% endif %}

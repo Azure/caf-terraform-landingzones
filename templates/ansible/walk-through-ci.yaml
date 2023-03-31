@@ -1,0 +1,18 @@
+#
+# Initial script to select a topology and create the base templates for the definitions folder
+#
+# ansible-playbook /tf/caf/landingzones/templates/platform/walk-through-single.yaml \
+# -e topology_file=/tf/caf/landingzones/templates/platform/alz_single_subscription.yaml \
+# -e config_folder_platform_templates=/tf/caf/landingzones/templates/platform \
+# -e landingzones_folder=/tf/caf/landingzones \
+# -e destination_base_path=/tf/caf \
+# -e definitions_relative_path=definitions/v1 \
+# -e configuration_relative_path=configuration/demo
+#
+
+- name: Setup platform template repository
+  hosts: localhost
+
+  tasks:
+
+    - include_tasks: "walk-through.yaml"

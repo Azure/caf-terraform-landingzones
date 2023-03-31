@@ -28,6 +28,12 @@ variable "tfstate_key" {
 variable "tfstate_resource_group_name" {
   default = null
 }
+variable "tfstate_organization" {
+  default = null
+}
+variable "tfstate_hostname" {
+  default = null
+}
 variable "workspace" {
   default = null
 }
@@ -65,6 +71,10 @@ variable "landingzone" {
 }
 
 variable "global_settings" {
+  default = {}
+}
+
+variable "global_settings_override" {
   default = {}
 }
 

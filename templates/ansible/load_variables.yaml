@@ -1,0 +1,193 @@
+# Load variables from tfstates
+
+
+# Initial load
+
+- name: load variables
+  set_fact:
+    merged_resource__to_merge: "{{ merged_resource__to_merge | default({}) | combine( lookup('template', item.path ) | from_yaml )}}"
+  with_items: "{{yaml_files_to_process.files}}"
+  when: deployment_mode == 'platform'
+
+- name: Merge resources variables
+  merge_vars:
+    suffix_to_merge: _resource__to_merge
+    merged_var_name: merged_resources
+    expected_type: 'dict'
+    recursive_dict_merge: True
+
+- set_fact:
+    resources:  "{{ merged_resources }}"
+
+# Azure AD Groups
+- name: tfstate - azuread_groups from launchpad to variable
+  include_tasks: "get_tfstate_content.yaml"
+  register: launchpad_tfstate_exists
+  vars:
+    env: ''
+    tfstate_key: launchpad
+    resource_type: azuread_groups
+    caf_level: level0
+    exported_variable_name: launchpad_azuread_groups
+  when: deployment_mode == 'platform'
+
+# Keyvaults having credentials
+- name: tfstate - keyvaults from launchpad_credentials to variable
+  include_tasks: "get_tfstate_content.yaml"
+  register: credentials_tfstate_exists
+  vars:
+    env: ''
+    tfstate_key: launchpad_credentials
+    resource_type: keyvaults
+    caf_level: level0
+    exported_variable_name: keyvaults
+  when: deployment_mode == 'platform'
+
+# Keyvault_scl credentials
+- name: tfstate - keyvaults from launchpad_credentials to variable
+  include_tasks: "get_tfstate_content.yaml"
+  register: credentials_tfstate_exists
+  vars:
+    env: ''
+    tfstate_key: launchpad_credentials
+    resource_type: keyvaults
+    caf_level: cred_subscription_creation_landingzones
+    exported_variable_name: keyvault_scl
+  when: deployment_mode == 'asvm'
+
+# Platform subscriptions
+- name: tfstate - platform_subscriptions from subscriptions to variable
+  include_tasks: "get_tfstate_content.yaml"
+  when:
+    - resources.subscription_deployment_mode == 'multiple_subscriptions'
+  vars:
+    env: ''
+    tfstate_key: platform_subscriptions
+    resource_type: subscriptions
+    caf_level: level1
+    exported_variable_name: platform_subscriptions
+  when: deployment_mode == 'platform'
+
+# Private DNS zones
+- name: tfstate - private dns zones to variable
+  include_tasks: "get_tfstate_content.yaml"
+  vars:
+    resource_type: private_dns
+    tfstate_key: private_dns
+    caf_level: level2
+    exported_variable_name: private_dns
+  loop_control: 
+    loop_var: env
+  loop: "{{ deployments.scale_out_domain_keys }}"
+
+# Virtual hub prod
+- name: tfstate - virtual hub prod to variable
+  include_tasks: "get_tfstate_content.yaml"
+  vars:
+    resource_type: virtual_hubs
+    tfstate_key: virtual_hubs
+    caf_level: level2
+    exported_variable_name: virtual_hubs_resources
+  loop_control: 
+    loop_var: env
+  loop: "{{ deployments.scale_out_domain_keys }}"
+
+# Secure firewalls prod
+- name: tfstate - secure firewall prod to variable
+  include_tasks: "get_tfstate_content.yaml"
+  vars:
+    resource_type: azurerm_firewalls
+    tfstate_key: secure_firewalls
+    caf_level: level2
+    exported_variable_name: secure_firewalls_resources
+  loop_control: 
+    loop_var: env
+  loop: "{{ deployments.scale_out_domain_keys }}"
+
+
+# azurerm_firewall for dns resolution
+- name: tfstate - azurerm_firewalls from private_dns_firewalls to variable
+  include_tasks: "get_tfstate_content.yaml"
+  vars:
+    resource_type: azurerm_firewalls
+    tfstate_key: private_dns_firewalls
+    caf_level: level2
+    exported_variable_name: private_dns_firewalls
+  loop_control: 
+    loop_var: env
+  loop: "{{ deployments.scale_out_domain_keys }}"
+
+# azurerm_firewall for dns resolution (vnets)
+- name: tfstate - azurerm_firewalls from private_dns_firewalls..vnets to variable
+  include_tasks: "get_tfstate_content.yaml"
+  vars:
+    resource_type: vnets
+    tfstate_key: private_dns_firewalls
+    caf_level: level2
+    exported_variable_name: private_dns_firewalls_vnets
+  loop_control: 
+    loop_var: env
+  loop: "{{ deployments.scale_out_domain_keys }}"
+  when: deployment_mode == 'platform'
+
+
+# launchpad vnet
+- name: tfstate - launchpad vnets to variable
+  include_tasks: "get_tfstate_content.yaml"
+  vars:
+    env: ''
+    resource_type: vnets
+    tfstate_key: launchpad
+    caf_level: level0
+    exported_variable_name: vnet_launchpad
+  when: deployment_mode == 'platform'
+
+# asvn vnet
+- name: tfstate - asvm vnets to variable
+  include_tasks: "get_tfstate_content.yaml"
+  vars:
+    env: ''
+    resource_type: vnets
+    tfstate_key: asvm
+    caf_level: level2
+    exported_variable_name: vnet_asvm
+  when: deployment_mode == 'platform'
+
+# Platform asvm storage accounts
+- name: tfstate - level2_storage_account from launchpad to variable
+  include_tasks: "get_tfstate_content.yaml"
+  vars:
+    env: ''
+    caf_level: level0
+    tfstate_key: launchpad
+    resource_type: storage_accounts
+    resource_key: level2
+    exported_variable_name: level2_storage_account
+  when: deployment_mode == 'platform'
+    
+- name: tfstate - storage_account_level3 from launchpad to variable
+  include_tasks: "get_tfstate_content.yaml"
+  vars:
+    env: ''
+    caf_level: level0
+    tfstate_key: launchpad
+    resource_type: storage_accounts
+    resource_key: level3
+    exported_variable_name: storage_account_level3
+  when: deployment_mode == 'asvm'
+
+# Reloading with the variables from tfstates
+- name: load variables
+  set_fact:
+    "{{item.path | basename | regex_replace('.yaml$', '')}}_resource__to_merge": "{{ lookup('template', item.path )}}"
+  with_items: "{{yaml_files_to_process.files}}"
+  when: deployment_mode == 'platform'
+
+- name: Combine variables into resources
+  set_fact:
+    merged_resources: "{{ merged_resources | default({}) | combine( lookup('template', item.path ) | from_yaml )}}"
+  with_items: "{{yaml_files_to_process.files}}"
+  when: deployment_mode == 'platform'
+
+- set_fact:
+    resources:  "{{ merged_resources }}"

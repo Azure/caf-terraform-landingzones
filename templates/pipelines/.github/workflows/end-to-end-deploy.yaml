@@ -1,0 +1,445 @@
+#
+# Copyright (c) Microsoft Corporation
+# Licensed under the MIT License.
+#
+
+name: end-to-end
+
+on:
+  pull_request:
+    branches:
+      - end2end
+
+permissions:
+  id-token: write
+  contents: read
+
+{% raw %}
+concurrency: 
+  group: ${{ github.ref }}
+{% endraw %}
+
+env:
+  LZ_REPO: '{{resources.terraform_code_repository}}'
+  LZ_BRANCH: '{{resources.caf_landingzone_branch}}'
+  CAF_ENVIRONMENT: {{resources.caf_environment}}
+
+jobs:
+{% raw %}
+  environment:
+    name: Setup dynamic environment variables
+    runs-on: [self-hosted, platform]
+    outputs:
+      terraform_code_repository: ${{ steps.set_env.outputs.terraform_code_repository }}
+      terraform_code_ref: ${{ steps.set_env.outputs.terraform_code_ref }}
+      environment: ${{ steps.set_env.outputs.environment }}
+    steps:
+      - name: Set environment variables for re-usable workflows
+        id: set_env
+        run: |
+          echo "::set-output name=terraform_code_repository::$LZ_REPO"
+          echo "::set-output name=terraform_code_ref::$LZ_BRANCH"
+          echo "::set-output name=environment::$CAF_ENVIRONMENT"
+
+  configuration_updates:
+    name: Generate configuration tfvars files
+    runs-on: [self-hosted, platform]
+
+    permissions:
+      id-token: write
+      contents: write
+      
+    needs: [environment]
+    uses: ./.github/workflows/generate-configuration-files.yaml
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+      RUNNER_REGISTRATION_TOKEN: ${{ secrets.RUNNER_REGISTRATION_TOKEN }}
+      RUNNER_NUMBERS: ${{ secrets.RUNNER_NUMBERS }}
+      AZURE_OBJECT_ID: ${{ secrets.AZURE_OBJECT_ID }}
+    with:
+      terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
+      terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
+      environment: ${{ needs.environment.outputs.environment }}
+
+
+  launchpad:
+    uses: ./.github/workflows/rover.yaml
+    needs: [environment, configuration_updates]
+    concurrency: 
+      group: level0-launchpad
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+    with:
+      terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
+      terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
+      environment: ${{ needs.environment.outputs.environment }}
+      caf_identity_aad_key: cred_level0
+      landingzone_code_path: ./landingzones/caf_launchpad
+      landingzone_configuration_path: ./platform/configuration/level0/launchpad
+      plan_path: ${GITHUB_WORKSPACE}/caf_launchpad.tfstate.tfplan
+      tfstate: caf_launchpad.tfstate
+      level: level0
+      terraform_action: plan_apply
+
+  credentials:
+    uses: ./.github/workflows/rover.yaml
+    needs: [environment, launchpad]
+    concurrency: 
+      group: level0-credentials
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+    with:
+      terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
+      terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
+      environment: ${{ needs.environment.outputs.environment }}
+      caf_identity_aad_key: cred_identity
+      landingzone_code_path: ./landingzones/caf_solution
+      landingzone_configuration_path: ./platform/configuration/level0/credentials
+      plan_path: ${GITHUB_WORKSPACE}/launchpad_credentials.tfstate.tfplan
+      tfstate: launchpad_credentials.tfstate
+      level: level0
+      terraform_action: plan_apply
+
+  platform_subscriptions:
+    uses: ./.github/workflows/rover.yaml
+    needs: [environment, launchpad]
+    concurrency: 
+      group: level1-platform_subscriptions
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+    with:
+      terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
+      terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
+      environment: ${{ needs.environment.outputs.environment }}
+      caf_identity_aad_key: cred_subscription_creation_platform
+      landingzone_code_path: ./landingzones/caf_solution
+      landingzone_configuration_path: ./platform/configuration/level1/subscriptions
+      plan_path: ${GITHUB_WORKSPACE}/platform_subscriptions.tfstate.tfplan
+      tfstate: platform_subscriptions.tfstate
+      level: level1
+      terraform_action: plan_apply
+
+
+  management:
+    uses: ./.github/workflows/rover.yaml
+    needs: [environment, launchpad]
+    concurrency: 
+      group: level1-management
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+    with:
+      terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
+      terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
+      environment: ${{ needs.environment.outputs.environment }}
+      caf_identity_aad_key: cred_management
+      landingzone_code_path: ./landingzones/caf_solution
+      landingzone_configuration_path: ./platform/configuration/level1/management
+      plan_path: ${GITHUB_WORKSPACE}/management.tfstate.tfplan
+      tfstate: management.tfstate
+      level: level1
+      terraform_action: plan_apply
+
+  security:
+    uses: ./.github/workflows/rover.yaml
+    needs: [environment, launchpad]
+    concurrency: 
+      group: level1-security
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_SECURITY_SUBSCRIPTION_ID }}
+    with:
+      terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
+      terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
+      environment: ${{ needs.environment.outputs.environment }}
+      caf_identity_aad_key: cred_management
+      landingzone_code_path: ./landingzones/caf_solution
+      landingzone_configuration_path: ./platform/configuration/level1/security
+      plan_path: ${GITHUB_WORKSPACE}/security.tfstate.tfplan
+      tfstate: security.tfstate
+      level: level1
+      terraform_action: plan_apply
+
+  identity_level1:
+    uses: ./.github/workflows/rover.yaml
+    needs: [environment, launchpad]
+    concurrency: 
+      group: level1-identity
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_IDENTITY_SUBSCRIPTION_ID }}
+    with:
+      terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
+      terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
+      environment: ${{ needs.environment.outputs.environment }}
+      caf_identity_aad_key: cred_identity
+      landingzone_code_path: ./landingzones/caf_solution
+      landingzone_configuration_path: ./platform/configuration/level1/identity
+      plan_path: ${GITHUB_WORKSPACE}/identity.tfstate.tfplan
+      tfstate: identity.tfstate
+      level: level1
+      terraform_action: plan_apply
+
+  alz:
+    uses: ./.github/workflows/rover.yaml
+    needs: [environment, launchpad, identity_level1, management, platform_subscriptions]
+    concurrency: 
+      group: level1-alz
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+    with:
+      terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
+      environment: ${{ needs.environment.outputs.environment }}
+      terraform_code_ref: 'int-5.7.0'
+      caf_identity_aad_key: cred_alz
+      landingzone_code_path: ./landingzones/caf_solution/add-ons/caf_eslz
+      landingzone_configuration_path: ./platform/configuration/level1/alz/{{alz_mg_prefix}}
+      plan_path: ${GITHUB_WORKSPACE}/alz_{{alz_mg_prefix}}.tfstate.tfplan
+      tfstate: alz_{{alz_mg_prefix}}.tfstate
+      level: level1
+      terraform_action_apply: -parallelism=50
+      terraform_action: plan_apply
+
+  identity_level2_prod:
+    uses: ./.github/workflows/rover.yaml
+    needs: [environment, identity_level1]
+    concurrency: 
+      group: level2-identity_level2_prod
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_IDENTITY_SUBSCRIPTION_ID }}
+    with:
+      terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
+      terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
+      environment: ${{ needs.environment.outputs.environment }}
+      caf_identity_aad_key: cred_identity
+      landingzone_code_path: ./landingzones/caf_solution
+      landingzone_configuration_path: ./platform/configuration/level2/identity/prod
+      plan_path: ${GITHUB_WORKSPACE}/identity_level2_prod.tfstate.tfplan
+      tfstate: identity_level2_prod.tfstate
+      level: level2
+      terraform_action: plan_apply
+
+  identity_level2_non_prod:
+    uses: ./.github/workflows/rover.yaml
+    needs: [environment, identity_level1]
+    concurrency: 
+      group: level2-identity_level2_non_prod
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_IDENTITY_SUBSCRIPTION_ID }}
+    with:
+      terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
+      terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
+      environment: ${{ needs.environment.outputs.environment }}
+      caf_identity_aad_key: cred_identity
+      landingzone_code_path: ./landingzones/caf_solution
+      landingzone_configuration_path: ./platform/configuration/level2/identity/non_prod
+      plan_path: ${GITHUB_WORKSPACE}/identity_level2_non_prod.tfstate.tfplan
+      tfstate: identity_level2_non_prod.tfstate
+      level: level2
+      terraform_action: plan_apply
+
+  asvm:
+    uses: ./.github/workflows/rover.yaml
+    needs: [environment, management, connectivity_virtual_hubs_prod]
+    concurrency: 
+      group: level2-asvm_subscription_vending_machine
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+    with:
+      terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
+      terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
+      environment: ${{ needs.environment.outputs.environment }}
+      caf_identity_aad_key: cred_level0
+      landingzone_code_path: ./landingzones/caf_solution
+      landingzone_configuration_path: ./platform/configuration/level2/asvm
+      plan_path: ${GITHUB_WORKSPACE}/asvm_subscription_vending_machine.tfstate.tfplan
+      tfstate: asvm_subscription_vending_machine.tfstate
+      level: level2
+      terraform_action: plan_apply
+
+  connectivity_virtual_wans_prod:
+    uses: ./.github/workflows/rover.yaml
+    needs: [environment, management]
+    concurrency: 
+      group: level2-connectivity_virtual_wans_prod
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_CONNECTIVITY_SUBSCRIPTION_ID }}
+    with:
+      terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
+      terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
+      environment: ${{ needs.environment.outputs.environment }}
+      caf_identity_aad_key: cred_connectivity
+      landingzone_code_path: ./landingzones/caf_solution
+      landingzone_configuration_path: ./platform/configuration/level2/connectivity/virtual_wans
+      plan_path: ${GITHUB_WORKSPACE}/connectivity_virtual_wans_prod.tfstate.tfplan
+      tfstate: connectivity_virtual_wans_prod.tfstate
+      level: level2
+      terraform_action: plan_apply
+
+  connectivity_virtual_hubs_prod:
+    uses: ./.github/workflows/rover.yaml
+    needs: [environment, connectivity_virtual_wans_prod]
+    concurrency: 
+      group: level2-connectivity_virtual_hubs_prod
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_CONNECTIVITY_SUBSCRIPTION_ID }}
+    with:
+      terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
+      terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
+      environment: ${{ needs.environment.outputs.environment }}
+      caf_identity_aad_key: cred_connectivity
+      landingzone_code_path: ./landingzones/caf_solution
+      landingzone_configuration_path: ./platform/configuration/level2/connectivity/virtual_hubs/prod
+      plan_path: ${GITHUB_WORKSPACE}/connectivity_virtual_hubs_prod.tfstate.tfplan
+      tfstate: connectivity_virtual_hubs_prod.tfstate
+      level: level2
+      terraform_action: plan_apply
+
+  connectivity_firewall_policies_prod:
+    uses: ./.github/workflows/rover.yaml
+    needs: [environment, connectivity_virtual_wans_prod]
+    concurrency: 
+      group: level2-connectivity_firewall_policies_prod
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_CONNECTIVITY_SUBSCRIPTION_ID }}
+    with:
+      terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
+      terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
+      environment: ${{ needs.environment.outputs.environment }}
+      caf_identity_aad_key: cred_connectivity
+      landingzone_code_path: ./landingzones/caf_solution
+      landingzone_configuration_path: ./platform/configuration/level2/connectivity/azurerm_firewall_policies/prod
+      plan_path: ${GITHUB_WORKSPACE}/connectivity_firewall_policies_prod.tfstate.tfplan
+      tfstate: connectivity_firewall_policies_prod.tfstate
+      level: level2
+      terraform_action: plan_apply
+
+  connectivity_private_dns_firewalls_prod:
+    uses: ./.github/workflows/rover.yaml
+    needs: [environment, connectivity_virtual_hubs_prod, connectivity_firewall_policies_prod]
+    concurrency: 
+      group: level2-connectivity_private_dns_firewalls_prod
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_CONNECTIVITY_SUBSCRIPTION_ID }}
+    with:
+      terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
+      terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
+      environment: ${{ needs.environment.outputs.environment }}
+      caf_identity_aad_key: cred_connectivity
+      landingzone_code_path: ./landingzones/caf_solution
+      landingzone_configuration_path: ./platform/configuration/level2/connectivity/private_dns_firewalls/prod
+      plan_path: ${GITHUB_WORKSPACE}/connectivity_private_dns_firewalls_prod.tfstate.tfplan
+      tfstate: connectivity_private_dns_firewalls_prod.tfstate
+      level: level2
+      terraform_action: plan_apply
+
+  connectivity_secure_firewalls_prod:
+    uses: ./.github/workflows/rover.yaml
+    needs: [environment, connectivity_virtual_hubs_prod, connectivity_firewall_policies_prod]
+    concurrency: 
+      group: level2-connectivity_secure_firewalls_prod
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_CONNECTIVITY_SUBSCRIPTION_ID }}
+    with:
+      terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
+      terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
+      environment: ${{ needs.environment.outputs.environment }}
+      caf_identity_aad_key: cred_connectivity
+      landingzone_code_path: ./landingzones/caf_solution
+      landingzone_configuration_path: ./platform/configuration/level2/connectivity/secure_firewalls/prod
+      plan_path: ${GITHUB_WORKSPACE}/connectivity_secure_firewalls_prod.tfstate.tfplan
+      tfstate: connectivity_secure_firewalls_prod.tfstate
+      level: level2
+      terraform_action: plan_apply
+
+  virtual_hubs_route_tables_prod:
+    uses: ./.github/workflows/rover.yaml
+    needs: [environment, connectivity_virtual_hubs_prod, connectivity_secure_firewalls_prod, connectivity_private_dns_firewalls_prod]
+    concurrency: 
+      group: level2-connectivity_virtual_hubs_route_tables_prod
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_CONNECTIVITY_SUBSCRIPTION_ID }}
+    with:
+      terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
+      terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
+      environment: ${{ needs.environment.outputs.environment }}
+      caf_identity_aad_key: cred_connectivity
+      landingzone_code_path: ./landingzones/caf_solution
+      landingzone_configuration_path: ./platform/configuration/level2/connectivity/virtual_hubs_route_tables/prod
+      plan_path: ${GITHUB_WORKSPACE}/connectivity_virtual_hubs_route_tables_prod.tfstate.tfplan
+      tfstate: connectivity_virtual_hubs_route_tables_prod.tfstate
+      level: level2
+      terraform_action: plan_apply
+
+  connectivity_private_dns_prod:
+    uses: ./.github/workflows/rover.yaml
+    needs: [environment, connectivity_private_dns_firewalls_prod, identity_level2_prod]
+    concurrency: 
+      group: level2-connectivity_private_dns_prod
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_CONNECTIVITY_SUBSCRIPTION_ID }}
+    with:
+      terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
+      terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
+      environment: ${{ needs.environment.outputs.environment }}
+      caf_identity_aad_key: cred_connectivity
+      landingzone_code_path: ./landingzones/caf_solution
+      landingzone_configuration_path: ./platform/configuration/level2/connectivity/private_dns/prod
+      plan_path: ${GITHUB_WORKSPACE}/connectivity_private_dns_prod.tfstate.tfplan
+      tfstate: connectivity_private_dns_prod.tfstate
+      terraform_action_apply: -parallelism=50
+      level: level2
+      terraform_action: plan_apply
+
+{% endraw %}

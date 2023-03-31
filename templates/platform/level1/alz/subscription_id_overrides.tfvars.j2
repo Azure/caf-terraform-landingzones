@@ -64,23 +64,23 @@ subscription_id_overrides = {
 subscription_id_overrides_by_keys = {
   connectivity = {
     connectivity = {
-      lz_key = "{{ resources.tfstates.platform.platform_subscriptions.lz_key_name }}"
+      lz_key = "{{ resources.tfstates.platform.platform_subscriptions.lz_key_name | default(resources.tfstates.platform_subscriptions.subscriptions.lz_key_name) }}"
       key    = "connectivity"
     }
   }
   management = {
     launchpad = {
-      lz_key = "{{ resources.tfstates.platform.platform_subscriptions.lz_key_name }}"
+      lz_key = "{{ resources.tfstates.platform.platform_subscriptions.lz_key_name | default(resources.tfstates.platform_subscriptions.subscriptions.lz_key_name) }}"
       key    = "launchpad"
     }
     management = {
-      lz_key = "{{ resources.tfstates.platform.platform_subscriptions.lz_key_name }}"
+      lz_key = "{{ resources.tfstates.platform.platform_subscriptions.lz_key_name | default(resources.tfstates.platform_subscriptions.subscriptions.lz_key_name) }}"
       key    = "management"
     }
   }
   identity = {
     identity = {
-      lz_key = "{{ resources.tfstates.platform.platform_subscriptions.lz_key_name }}"
+      lz_key = "{{ resources.tfstates.platform.platform_subscriptions.lz_key_name | default(resources.tfstates.platform_subscriptions.subscriptions.lz_key_name) }}"
       key    = "identity"
     }
   }

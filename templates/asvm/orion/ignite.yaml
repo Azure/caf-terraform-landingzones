@@ -1,6 +1,8 @@
 
 landingzone_definition: {{landingzone_definition}}
 
+caf_landingzone_branch: int.5.6.0
+
 subscriptions:
 {% for env in scale_out_domains %}
   {{landingzone_definition}}_{{env}}:
@@ -15,17 +17,20 @@ subscriptions:
 #
 
 deployments:
+  platform:
+    scale_out_domain_keys:
+      - prod
+      - non_prod
   asvm:
+    mappings:
+{%for key, value in platform_domain_mapping.items() %}
+      {{key}}: {{value}}
+{% endfor %}
     root:
       region1:
         asvm_subscriptions: subscriptions.asvm.yaml
 {% for env in scale_out_domains %}
         {{landingzone_definition}}_{{env}}: subscriptions.asvm.yaml
-{% endfor %}
-
-platform_mappings:
-{%for key, value in platform_domain_mapping.items() %}
-  {{key}}: {{value}}
 {% endfor %}
 
 #

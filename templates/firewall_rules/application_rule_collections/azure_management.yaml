@@ -1,0 +1,39 @@
+azure_management:
+  name: Azure management services
+  action: Allow
+  rules:
+    # '443':
+    #   name: "443"
+    #   source_addresses:
+    #     - "*"
+    #   destination_fqdns:
+    #     - "*"
+    #   protocols:
+    #     https:
+    #       port: 443
+    #       type: Https
+    monitoring:
+      name: azure-monitor
+      source_addresses:
+        - "*"
+      destination_fqdns:
+        - dc.services.visualstudio.com
+        - "*.ods.opinsights.azure.com"
+        - "*.oms.opinsights.azure.com"
+        - "*.monitoring.azure.com"
+      protocols:
+        https:
+          port: 443
+          type: Https
+    policy:
+      name: azure-policy
+      source_addresses:
+        - "*"
+      destination_fqdns:
+        - data.policy.core.windows.net
+        - store.policy.core.windows.net
+        - dc.services.visualstudio.com
+      protocols:
+        https:
+          port: 443
+          type: Https

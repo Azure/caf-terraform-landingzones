@@ -1,0 +1,117 @@
+- debug:
+    msg: 
+      - "env: '{{env}}'"
+      - "exported_variable_name: '{{exported_variable_name}}'"
+      - "resource_key: '{{resource_key | default('')}}'"
+
+- set_fact:
+    tfstate_obj: "{{resources.tfstates.platform[tfstate_key] if env == '' else resources.tfstates.platform[tfstate_key][env]}}"
+    tfstate_key_name: "{{resources.tfstates.platform[tfstate_key].lz_key_name if env == '' else resources.tfstates.platform[tfstate_key][env].lz_key_name}}"
+    env_var: "{{ env if env != '' else '' }}"
+
+# Get tfstate
+- name: "[Get {{ tfstate_key_name }} tfstate account name"
+  register: storage_account
+  shell: |
+    az storage account list \
+      --subscription {{ resources.caf_launchpad.subscription_id }} \
+      --query "[?tags.caf_tfstate=='{{ caf_level | default('level0') }}' && tags.caf_environment=='{{ resources.caf_environment }}'].{name:name}[0]" -o json | jq -r .name
+
+- set_fact:
+    "{{tfstate_key_name}}_storage_account": "{{ lookup('vars', 'storage_account') }}"
+
+- debug:
+    msg: "{{lookup('vars', tfstate_key_name + '_storage_account')}}"
+
+- name: "[Get subscription details for {{ tfstate_obj.tfstate }} }}"
+  register: tfstate_exists
+  ignore_errors: true
+  shell: |
+    az storage blob download \
+      --name "{{ tfstate_obj.tfstate }}" \
+      --account-name "{{ lookup('vars', tfstate_key_name + '_storage_account').stdout }}" \
+      --container-name "{{ tfstate_obj.workspace | default('tfstate') }}" \
+      --auth-mode "login" \
+      --file "{{ job_cache_base_path }}/launchpad/{{ tfstate_obj.tfstate }}" 
+
+- set_fact:
+    "{{tfstate_key_name}}_tfstate_exists": "{{ lookup('vars', 'tfstate_exists') }}"
+
+- name: "Get {{tfstate_key_name}} details from tfstate"
+  when:
+    - lookup('vars', tfstate_key_name + '_tfstate_exists').rc == 0
+  shell: "cat {{ job_cache_base_path }}/launchpad/{{ tfstate_obj.tfstate }}"
+  register: "tfstate_file"
+
+- set_fact:
+    "{{tfstate_key_name}}_tfstate": "{{ lookup('vars', 'tfstate_file') }}"
+  when:
+    - lookup('vars', tfstate_key_name + '_tfstate_exists').rc == 0
+
+# - debug:
+#     msg: "{{lookup('vars', tfstate_key_name + '_tfstate')}}"
+
+- name: "Get {{tfstate_key_name}} json data"
+  when:
+    - lookup('vars', tfstate_key_name + '_tfstate_exists').rc == 0
+    - lookup('vars', tfstate_key_name + '_storage_account').rc == 0
+  set_fact:
+    jsondata: "{{ lookup('vars', tfstate_key_name + '_tfstate').stdout | from_json }}"
+
+- name: "Set {{exported_variable_name}}"
+  when:
+    - lookup('vars', tfstate_key_name + '_tfstate_exists').rc == 0
+    - lookup('vars', tfstate_key_name + '_tfstate')
+    - resource_key is undefined
+    - env_var == ''
+  set_fact:
+    "{{exported_variable_name}}": "{{ jsondata | default({}) | json_query(path)}}"
+  vars:
+    path: 'outputs.objects.value.{{tfstate_key_name}}.{{resource_type}}'
+
+- name: "Set {{exported_variable_name}} with env:{{env}} - no resource_key"
+  when:
+    - lookup('vars', tfstate_key_name + '_tfstate_exists').rc == 0
+    - lookup('vars', tfstate_key_name + '_tfstate')
+    - resource_key is undefined
+    - env_var != ''
+  set_fact:
+    "{{exported_variable_name}}": "{{ lookup('vars', exported_variable_name, default={}) | combine({item.0: item.1}, recursive=True ) }}"
+  with_together:
+    - ["{{env}}"]
+    - ["{{jsondata | default({}) | json_query(path)}}"]
+  vars:
+    path: 'outputs.objects.value.{{tfstate_key_name}}.{{resource_type}}'
+
+- name: "Set {{exported_variable_name}} - (with resource_key: {{resource_key}})"
+  when:
+    - lookup('vars', tfstate_key_name + '_tfstate_exists').rc == 0
+    - lookup('vars', tfstate_key_name + '_tfstate')
+    - resource_key is defined
+    - env == ''
+  set_fact:
+    "{{exported_variable_name}}": "{{ jsondata | default({}) | json_query(path)}}"
+  vars:
+    path: 'outputs.objects.value.{{tfstate_key_name}}.{{resource_type}}.{{resource_key}}'
+
+
+- name: "Set {{exported_variable_name}} with env:'{{env}}' - (with resource_key: {{resource_key}})"
+  when:
+    - resource_key is defined
+    - env != ''
+    - lookup('vars', tfstate_key_name + '_tfstate_exists').rc == 0
+    - lookup('vars', tfstate_key_name + '_tfstate')
+  set_fact:
+    "{{exported_variable_name}}": "{{ lookup('vars', exported_variable_name, default={}) | combine({item.0: item.1}, recursive=True )) }}"
+  with_together:
+    - ["{{env}}"]
+    - ["{{jsondata | default({}) | json_query(path)}}"]
+  vars:
+    path: 'outputs.objects.value.{{tfstate_key_name}}.{{resource_type}}.{{resource_key}}'
+
+- name: "[{{resources[tfstate].relative_destination_folder}}] cleanup"
+  when:
+    - lookup('vars', tfstate_key_name + '_tfstate_exists') == 0
+  file:
+    path: "{{ job_cache_base_path }}/launchpad/{{ tfstate_obj.tfstate }}"
+    state: absent

@@ -1,8 +1,9 @@
 module "launchpad" {
-  source = "../aztfmod"
+  source  = "aztfmod/caf/azurerm"
+  version = "5.6.6"
 
   providers = {
-    azurerm.vhub = azurerm
+    azurerm.vhub = azurerm.vhub
   }
 
   current_landingzone_key               = var.landingzone.key
@@ -59,6 +60,7 @@ module "launchpad" {
     network_security_group_definition = try(var.networking.network_security_group_definition, var.network_security_group_definition)
     public_ip_addresses               = try(var.networking.public_ip_addresses, var.public_ip_addresses)
     route_tables                      = try(var.networking.route_tables, var.route_tables)
+    virtual_hub_connections           = try(var.networking.virtual_hub_connections, var.virtual_hub_connections)
     vnets                             = try(var.networking.vnets, var.vnets)
   }
 

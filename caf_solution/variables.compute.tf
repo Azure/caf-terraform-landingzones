@@ -78,3 +78,6 @@ variable "wvd_workspaces" {
 variable "runbooks" {
   default = {}
 }
+variable "aro_clusters" {
+  default = {}
+}
