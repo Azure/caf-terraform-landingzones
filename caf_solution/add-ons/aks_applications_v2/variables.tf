@@ -55,3 +55,6 @@ variable "cluster_role_binding" {
   default = {}
 }
 variable "keyvaults" {}
+variable "kv_csi_driver" {
+  default = {}
+}
