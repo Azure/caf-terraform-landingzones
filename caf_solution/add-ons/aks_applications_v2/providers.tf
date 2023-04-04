@@ -10,7 +10,7 @@ provider "kubernetes" {
   cluster_ca_certificate = base64decode(yamldecode(data.azurerm_kubernetes_cluster.kubeconfig.kube_config_raw).clusters[0].cluster.certificate-authority-data)
   exec {
     api_version = "client.authentication.k8s.io/v1beta1"
-    command     = "kubelogin"
+    command     = "/usr/local/bin/kubelogin"
     args = [
       "get-token",
       "--login",
@@ -35,7 +35,7 @@ provider "helm" {
   cluster_ca_certificate = base64decode(yamldecode(data.azurerm_kubernetes_cluster.kubeconfig.kube_config_raw).clusters[0].cluster.certificate-authority-data)
     exec {
       api_version = "client.authentication.k8s.io/v1beta1"
-      command     = "kubelogin"
+      command     = "/usr/local/bin/kubelogin"
       args = [
         "get-token",
         "--login",

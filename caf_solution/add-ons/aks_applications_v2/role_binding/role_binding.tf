@@ -23,7 +23,7 @@ resource "kubernetes_role_binding_v1" "role_binding" {
   dynamic "subject" {
     for_each = try(var.settings.subjects, {})
     content {
-        name = coalesce(try(subject.value.uuid, null), try(var.managed_identities[subject.value.lz_key][subject.value.object_key].rbac_id, null), try(var.azuread_service_principals[subject.value.lz_key][subject.value.object_key].rbac_id, null), try(var.azuread_groups[subject.value.lz_key][subject.value.object_key].rbac_id, null))
+        name = coalesce(try(subject.value.name, null), try(var.managed_identities[subject.value.lz_key][subject.value.object_key].rbac_id, null), try(var.azuread_service_principals[subject.value.lz_key][subject.value.object_key].rbac_id, null), try(var.azuread_groups[subject.value.lz_key][subject.value.object_key].rbac_id, null))
         kind = can(subject.value.kind) ?  subject.value.kind : can(try(var.managed_identities[subject.value.lz_key][subject.value.object_key].rbac_id, null)) ? "User" : can(try(var.azuread_service_principals[subject.value.lz_key][subject.value.object_key].rbac_id, null)) ? "User" : can(try(var.azuread_groups[subject.value.lz_key][subject.value.object_key].rbac_id, null)) ? "Group" : null
         api_group = "rbac.authorization.k8s.io"
     }

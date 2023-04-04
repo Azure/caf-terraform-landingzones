@@ -58,3 +58,6 @@ variable "keyvaults" {}
 variable "kv_csi_driver" {
   default = {}
 }
+variable "secret_identity_id" {
+  default = null
+}
