@@ -1,6 +1,6 @@
 module "launchpad" {
   source  = "aztfmod/caf/azurerm"
-  version = "5.6.6"
+  version = "5.6.8"
 
   providers = {
     azurerm.vhub = azurerm.vhub
