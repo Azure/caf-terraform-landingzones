@@ -1,0 +1,70 @@
+packages_linux:
+  name: security packages
+  action: Allow
+  rules:
+    ubuntu:
+      name: ubuntu
+      description: Upstream addresses to get Ubuntu package updates
+      source_addresses: ["*"]
+      protocols:
+        https:
+          port: 443
+          type: Https
+        http:
+          port: 80
+          type: Http
+      destination_fqdns:
+        - archive.ubuntu.com
+        - azure.archive.ubuntu.com
+        - changelogs.ubuntu.com
+        - security.ubuntu.com
+    github:
+      name: github
+      description: github package updates
+      source_addresses: ["*"]
+      protocols:
+        https:
+          port: 443
+          type: Https
+      destination_fqdns:
+        - cli.github.com
+    docker:
+      name: docker
+      description: docker package updates
+      source_addresses: ["*"]
+      protocols:
+        https:
+          port: 443
+          type: Https
+      destination_fqdns:
+        - download.docker.com
+    microsoft:
+      name: microsoft
+      description: Microsoft package updates
+      source_addresses: ["*"]
+      protocols:
+        https:
+          port: 443
+          type: Https
+      destination_fqdns:
+        - packages.microsoft.com
+    kubernetes:
+      name: kubernetes
+      description: kubernetes package updates
+      source_addresses: ["*"]
+      protocols:
+        https:
+          port: 443
+          type: Https
+      destination_fqdns:
+        - apt.kubernetes.io
+    google:
+      name: google
+      description: Google package updates
+      source_addresses: ["*"]
+      protocols:
+        https:
+          port: 443
+          type: Https
+      destination_fqdns:
+        - packages.cloud.google.com

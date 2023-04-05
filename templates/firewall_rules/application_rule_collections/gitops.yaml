@@ -1,0 +1,42 @@
+gitops:
+  name: gitops
+  action: Allow
+  rules:
+{% if vnet_launchpad is defined and vnet_asvm is defined %}
+    azure_cli:
+      name: azure-cli
+      source_addresses:
+        {{ vnet_launchpad.vnet_region1.address_space | to_nice_yaml }}
+      destination_fqdns:
+        - aka.ms
+        - app.aladdin.microsoft.com
+        - azcliextensionsync.blob.core.windows.net
+        - azcliprod.blob.core.windows.net
+        - azure.microsoft.com
+        - azurecliextensionsync.blob.core.windows.net
+        - graph.microsoft.com
+        - login.microsoftonline.com
+        - management.azure.com
+      protocols:
+        https:
+          port: 443
+          type: Https
+    github:
+      name: github.com
+      description: Services for self-hosted runners
+      source_addresses:
+        {{ vnet_launchpad.vnet_region1.address_space | to_nice_yaml }}
+      protocols:
+        https:
+          port: 443
+          type: Https
+      destination_fqdns:
+        - api.github.com
+        - codeload.github.com
+        - docs.github.com
+        - github.com
+        - objects.githubusercontent.com
+        - pipelines.actions.githubusercontent.com
+        - raw.githubusercontent.com
+        - vstoken.actions.githubusercontent.com
+{% endif %}

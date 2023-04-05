@@ -31,10 +31,36 @@ azurerm_firewall_policies_{{env}}:
           region_key: region1
 
       azurerm_firewall_policies:
-        secure_root:
+        fw_secure_prod:
           name: "secure-root-policy-{{env}}"
           region_key: region1
           resource_group:
             key: firewall_policies
           threat_intelligence_mode: "Alert"
-
+{% if private_dns_firewalls is defined %}
+          dns:
+            proxy_enabled: true
+            servers:
+{% set resource_index = 'fw_' + env | default('prod') + '_dns' %}
+              - {{ private_dns_firewalls[env | default('prod')][resource_index].ip_configuration[0].private_ip_address }}
+{% endif %}
+      azurerm_firewall_policy_rule_collection_groups:
+        root:
+          name: firewall-policy-root
+          priority: 1000
+          passthrough: true
+          firewall_policy:
+            key: fw_secure_prod
+          # 10000+ priorities for nat_rule_collections
+          nat_rule_collections:
+          # 20000+ priorities for network_rule_collections
+          network_rule_collections:
+            services: 20000
+            caf_terraform_lz: 20001
+          # 30000+ priorities for application_rule_collections
+          application_rule_collections:
+            azure_management: 30000
+            azure_firewall_management: 30001
+            packages_linux: 30100
+            gitops: 30200
+            hashicorp: 30300

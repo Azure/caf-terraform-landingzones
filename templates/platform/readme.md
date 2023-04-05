@@ -1,18 +1,22 @@
 
 # Generate the terraform configuration files
 
-## Deploy into a single subscription
+## Deploy into a multi subscription
 
 ```
-ansible-playbook /tf/caf/landingzones/templates/ansible/walk-through-single.yaml \
-  -e topology_file=/tf/caf/landingzones/templates/platform/single_subscription.yaml \
-  -e config_folder_platform_templates=/tf/caf/landingzones/templates/platform \
-  -e platform_service_folder=/tf/caf/landingzones/templates/platform/services \
-  -e public_templates_folder=/tf/caf/landingzones/templates \
-  -e resource_template_folder=/tf/caf/landingzones/templates/resources \
-  -e landingzones_folder=/tf/caf/landingzones \
-  -e platform_configuration_folder=/tf/caf/configuration \
-  -e platform_definition_folder=/tf/caf/platform/definition
+org_name=contoso_ind
+
+rover -bootstrap \
+  -aad-app-name ${org_name}-platform-landing-zones \
+  -gitops-service github \
+  -gitops-number-runners 4 \
+  -bootstrap-script '/tf/caf/landingzones/templates/platform/deploy_platform.sh ' \
+  -playbook '/tf/caf/landingzones/templates/platform/caf_platform_prod_nonprod.yaml' \
+  -subscription-deployment-mode multi_subscriptions \
+  -sub-management www-guid \
+  -sub-connectivity xxx-guid \
+  -sub-identity yyy-guid \
+  -sub-security zzz-guid
 
 ```
 

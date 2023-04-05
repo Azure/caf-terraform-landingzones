@@ -1,0 +1,42 @@
+azure_firewall_management:
+  name: Azure Firewall management
+  action: Allow
+  rules:
+{% if private_dns_firewalls is defined %}
+    # https://docs.microsoft.com/en-us/azure/api-management/virtual-network-reference?tabs=stv2#metrics-and-health-monitoring-1
+    metrics_and_health:
+      name: metric and health
+      source_addresses: 
+        {{ private_dns_firewalls_vnets[env | default('prod')].vnet.address_space | to_nice_yaml }}
+      destination_fqdns:
+        - gcs.prod.monitoring.core.windows.net
+        - global.prod.microsoftmetrics.com
+        - shoebox2.prod.microsoftmetrics.com
+        - shoebox2-red.prod.microsoftmetrics.com
+        - shoebox2-black.prod.microsoftmetrics.com
+        - prod3.prod.microsoftmetrics.com
+        - prod3-black.prod.microsoftmetrics.com
+        - prod3-red.prod.microsoftmetrics.com
+        - gcs.prod.warm.ingestion.monitoring.azure.com
+        - nfvprodmainsy.blob.core.windows.net
+        - cnfwsecurityaue.blob.core.windows.net
+        - cnfwaue.blob.core.windows.net
+      protocols:
+        https:
+          port: 443
+          type: Https
+    threat_protection:
+      name: threat protection updates
+      source_addresses: 
+        {{ private_dns_firewalls_vnets[env | default('prod')].vnet.address_space | to_nice_yaml }}
+      destination_fqdns:
+        - webres1.msazure.ctmail.com
+        - webres2.msazure.ctmail.com
+        - webres3.msazure.ctmail.com
+        - webres4.msazure.ctmail.com
+        - webres5.msazure.ctmail.com
+      protocols:
+        https:
+          port: 80
+          type: Http
+{% endif %}

@@ -5,12 +5,12 @@
   when: stage != 'alz'
 
 - include_tasks: "load_deployments.yaml"
-  loop: "{{topology.deployments[deployment_mode][stage].keys()}}"
+  loop: "{{bootstrap.deployments[deployment_mode][stage].keys()}}"
   loop_control:
     loop_var: region
   when: 
     - stage == 'alz'
-    - topologies is not defined
+    - resources is not defined
 
 - include_tasks: "load_alz.yaml"
   loop: "{{topology.deployments[deployment_mode][stage].keys()}}"
@@ -18,5 +18,5 @@
     loop_var: region
   when: 
     - stage == 'alz'
-    - topologies is defined
+    - resources is defined
 

@@ -12,7 +12,19 @@ variable "automations" {
   default = {}
 }
 
+variable "automation_schedules" {
+  default = {}
+}
+
+variable "automation_runbooks" {
+  default = {}
+}
+
 variable "automation_log_analytics_links" {
+  default = {}
+}
+
+variable "automation_software_update_configurations" {
   default = {}
 }
 
@@ -32,11 +44,23 @@ variable "monitor_action_groups" {
   default = {}
 }
 
+variable "monitor_metric_alert" {
+  default = {}
+}
+
+variable "monitor_activity_log_alert" {
+  default = {}
+}
+
 variable "monitoring" {
   default = {}
 }
 
 variable "packer_service_principal" {
+  default = {}
+}
+
+variable "packer_build" {
   default = {}
 }
 

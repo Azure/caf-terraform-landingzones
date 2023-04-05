@@ -1,3 +1,4 @@
+# list - https://docs.microsoft.com/en-us/azure/private-link/private-endpoint-dns
 variables_private_dns_zones:
   zones:
     privatelink.adf.azure.com:
@@ -9,8 +10,10 @@ variables_private_dns_zones:
     privatelink.azure-devices.net:
     privatelink.azurecr.io:
     privatelink.azurehdinsight.net:
+    privatelink.azurestaticapps.net:
     privatelink.azuresynapse.net:
     privatelink.azurewebsites.net:
+    privatelink.batch.azure.com:
     privatelink.blob.core.windows.net:
     privatelink.cassandra.cosmos.azure.com:
     privatelink.cognitiveservices.azure.com:
@@ -54,4 +57,4 @@ variables_private_dns_zones:
   regional_zones:
     privatelink.region.azmk8s.io:
     privatelink.region.backup.windowsazure.com:
-    privatelink.region.batch.azure.com:
+    privatelink.region.kusto.windows.net:

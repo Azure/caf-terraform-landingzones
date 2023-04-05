@@ -4,7 +4,7 @@ module "solution" {
   source = "git::https://github.com/VolkerWessels/terraform-azurerm-caf.git?ref=vw-combined"
   # source = "aztfmod/caf/azurerm"
   # source = "../../aztfmod"
-  # version = "5.5.5"
+  # version = "5.6.8"
 
   providers = {
     azurerm.vhub = azurerm.vhub
@@ -15,10 +15,11 @@ module "solution" {
   compute                               = local.compute
   apim                                  = local.apim
   cognitive_services                    = local.cognitive_services
-  current_landingzone_key               = var.landingzone.key
+  current_landingzone_key               = try(var.landingzone.key, var.landingzone[var.backend_type].key)
   custom_role_definitions               = var.custom_role_definitions
   data_factory                          = local.data_factory
   database                              = local.database
+  data_protection                       = local.data_protection
   diagnostic_storage_accounts           = var.diagnostic_storage_accounts
   diagnostics_definition                = var.diagnostics_definition
   diagnostics_destinations              = var.diagnostics_destinations

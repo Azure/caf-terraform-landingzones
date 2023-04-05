@@ -7,7 +7,8 @@ terraform {
       #version = ">= 3.02" # upped the version to allow v2.0.0+ caf_eslz support
     }
   }
-  required_version = ">= 0.14"
+  required_version = ">= 1.1.0"
+  experiments      = [module_variable_optional_attrs]
 }
 
 

@@ -15,20 +15,21 @@ bootstrap:
         update_lib_folder: True
         version_to_deploy: "v1.1.3"
 
-  subscription_deployment_mode: single_reuse
-
-  caf_landingzone_branch: 2203.0
+  # subscription_deployment_mode: single_reuse
 
   deployments:
     platform:
       root:
         region1:
-          launchpad: launchpad_azuread_sp_single_subscription.yaml
-          launchpad_credentials: launchpad_credentials_azuread_sp.yaml
-          subscriptions: subscriptions.yaml
+          launchpad: launchpad.yaml
+          launchpad_credentials: launchpad_credentials.yaml
+          platform_subscriptions: platform_subscriptions.yaml
+          level: level1
           identity: identity.yaml
           management: management.yaml
           asvm: asvm.yaml
+          security: security.yaml
+          gitops_agents: gitops_agents_aci.yaml
       alz:
         region1:
           es: alz.yaml
@@ -57,3 +58,6 @@ bootstrap:
           private_dns:
             prod: connectivity_private_dns.yaml
             non_prod: connectivity_private_dns.yaml
+          security_level2:
+            prod: security_level2.yaml
+            non_prod: security_level2.yaml
