@@ -33,4 +33,6 @@ module "enterprise_scale" {
   deploy_identity_resources        = var.deploy_identity_resources
   deploy_management_resources      = var.deploy_management_resources
   disable_telemetry                = var.disable_telemetry
+  subscription_id_connectivity     = var.subscription_id_connectivity
+  subscription_id_management       = var.subscription_id_management
 }
