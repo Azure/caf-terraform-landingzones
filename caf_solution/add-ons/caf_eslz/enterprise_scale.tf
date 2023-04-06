@@ -33,6 +33,11 @@ module "enterprise_scale" {
   deploy_identity_resources        = var.deploy_identity_resources
   deploy_management_resources      = var.deploy_management_resources
   disable_telemetry                = var.disable_telemetry
-  subscription_id_connectivity     = var.subscription_id_connectivity
-  subscription_id_management       = var.subscription_id_management
+  subscription_id_connectivity     = local.subscription_id_connectivity
+  subscription_id_management       = local.subscription_id_management
+}
+
+locals {
+  subscription_id_connectivity     = var.subscription_id_connectivity == null ? data.azurerm_client_config.current.subscription_id : var.subscription_id_connectivity
+  subscription_id_management       = var.subscription_id_management == null ? data.azurerm_client_config.current.subscription_id : var.subscription_id_management
 }

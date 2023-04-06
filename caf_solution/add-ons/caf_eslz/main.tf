@@ -19,7 +19,7 @@ provider "azurerm" {
   partner_id = "ca4078f8-9bc4-471b-ab5b-3af6b86a42c8"
   alias      = "connectivity"
   features {}
-  subscription_id = var.subscription_id_connectivity == null ? data.azurerm_client_config.current.subscription_id : var.subscription_id_connectivity
+  subscription_id = local.subscription_id_connectivity
   tenant_id       = var.tenant_id
 }
 
