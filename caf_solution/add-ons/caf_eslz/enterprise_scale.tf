@@ -8,8 +8,8 @@ module "enterprise_scale" {
 
   providers = {
     azurerm              = azurerm
-    azurerm.connectivity = azurerm
-    azurerm.management   = azurerm
+    azurerm.connectivity = azurerm.connectivity
+    azurerm.management   = azurerm.management
   }
 
   root_parent_id   = var.root_parent_id == null ? data.azurerm_client_config.current.tenant_id : var.root_parent_id
@@ -28,6 +28,7 @@ module "enterprise_scale" {
   configure_connectivity_resources = var.configure_connectivity_resources
   configure_identity_resources     = var.configure_identity_resources
   configure_management_resources   = var.configure_management_resources
+  default_location                 = var.default_location
   deploy_connectivity_resources    = var.deploy_connectivity_resources
   deploy_diagnostics_for_mg        = var.deploy_diagnostics_for_mg
   deploy_identity_resources        = var.deploy_identity_resources
