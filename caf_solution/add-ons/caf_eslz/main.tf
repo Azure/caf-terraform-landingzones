@@ -17,17 +17,17 @@ provider "azurerm" {
 
 provider "azurerm" {
   partner_id = "ca4078f8-9bc4-471b-ab5b-3af6b86a42c8"
-  alias                      = "connectivity"
+  alias      = "connectivity"
   features {}
-  subscription_id = var.subscription_id_connectivity
+  subscription_id = var.subscription_id_connectivity == null ? data.azurerm_client_config.subscription_id : var.subscription_id_connectivity
   tenant_id       = var.tenant_id
 }
 
 provider "azurerm" {
   partner_id = "ca4078f8-9bc4-471b-ab5b-3af6b86a42c8"
-  alias                      = "management"
+  alias      = "management"
   features {}
-  subscription_id = var.subscription_id_management
+  subscription_id = var.subscription_id_management == null ? data.azurerm_client_config.subscription_id : var.subscription_id_management == null
   tenant_id       = var.tenant_id
 }
 
