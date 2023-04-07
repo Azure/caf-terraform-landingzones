@@ -31,4 +31,12 @@ provider "azurerm" {
   tenant_id       = var.tenant_id
 }
 
+provider "azurerm" {
+  partner_id = "ca4078f8-9bc4-471b-ab5b-3af6b86a42c8"
+  alias      = "identity"
+  features {}
+  subscription_id = var.subscription_id_identity == null ? data.azurerm_client_config.current.subscription_id : var.subscription_id_identity
+  tenant_id       = var.tenant_id
+}
+
 data "azurerm_client_config" "current" {}

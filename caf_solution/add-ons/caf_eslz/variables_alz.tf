@@ -604,3 +604,9 @@ variable "subscription_id_management" {
   description = "If specified, identifies the Platform subscription for \"Management\" for resource deployment and correct placement in the Management Group hierarchy."
   default     = null
 }
+
+variable "subscription_id_identity" {
+  type        = string
+  description = "If specified, identifies the Platform subscription for \"Identity\" for resource deployment and correct placement in the Management Group hierarchy."
+  default     = null
+}
