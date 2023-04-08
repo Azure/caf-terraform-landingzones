@@ -61,3 +61,6 @@ variable "kv_csi_driver" {
 variable "secret_identity_id" {
   default = null
 }
+variable "manifests" {
+  default = {}
+}
