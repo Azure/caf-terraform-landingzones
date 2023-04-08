@@ -5,3 +5,7 @@ variable "namespaces" {
 variable "helm_charts" {
   default = {}
 }
+
+variable "manifests" {
+  default = {}
+}

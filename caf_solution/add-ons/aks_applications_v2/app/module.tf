@@ -8,6 +8,11 @@ resource "kubernetes_namespace" "namespaces" {
 
 }
 
+resource "kubernetes_manifest" "cluster_manifest" {
+  for_each = var.manifests
+    manifest = try(yamldecode(each.value.contents), yamldecode(file("$(path.cwd)/each.value.file")), yamldecode(file("$(path.module)/each.value.file")), yamldecode(file(each.value.file)) )
+}
+
 # https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release
 resource "helm_release" "charts" {
   for_each = var.helm_charts
