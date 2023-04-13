@@ -20,28 +20,15 @@ variable "landingzone" {}
 variable "rover_version" {
   default = null
 }
-variable "tags" {
-  default = {}
-}
 variable "namespaces" {
   default = {}
 }
-
 variable "helm_charts" {
   default = {}
 }
 variable "aks_clusters" {
   default = {}
 }
-
-variable "kustomization_overlays" {
-  default = {}
-}
-
-variable "kustomization_builds" {
-  default = {}
-}
-
 variable "role" {
   default = {}
 }
