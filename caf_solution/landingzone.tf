@@ -1,7 +1,6 @@
 module "solution" {
-  # source  = "aztfmod/caf/azurerm"
-  # version = "5.6.6"
-  source = "../../terraform-azurerm-caf"
+  source  = "aztfmod/caf/azurerm"
+  version = "5.6.6"
   providers = {
     azurerm.vhub = azurerm.vhub
   }
