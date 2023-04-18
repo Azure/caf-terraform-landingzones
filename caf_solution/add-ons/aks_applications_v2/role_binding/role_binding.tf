@@ -13,7 +13,7 @@ resource "kubernetes_role_binding_v1" "role_binding" {
     annotations = try(var.settings.annotations, null)
     labels      = try(var.settings.labels, null)
     name = azurecaf_name.role_binding.result
-    namespace = var.settings.namespace
+    namespace = try(var.settings.namespace, var.namespaces[each.value.namespace_key].name)
   }
   role_ref {
     name = try(var.role[var.settings.role_key].name, var.settings.role_name)

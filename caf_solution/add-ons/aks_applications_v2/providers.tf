@@ -6,7 +6,7 @@ provider "azurerm" {
 }
 
 provider "kubernetes" {
-  host = yamldecode(data.azurerm_kubernetes_cluster.kubeconfig.kube_config_raw).clusters[0].cluster.server
+  host                   = yamldecode(data.azurerm_kubernetes_cluster.kubeconfig.kube_config_raw).clusters[0].cluster.server
   cluster_ca_certificate = base64decode(yamldecode(data.azurerm_kubernetes_cluster.kubeconfig.kube_config_raw).clusters[0].cluster.certificate-authority-data)
   exec {
     api_version = "client.authentication.k8s.io/v1beta1"
@@ -31,8 +31,8 @@ provider "kubernetes" {
 
 provider "helm" {
   kubernetes {
-  host = yamldecode(data.azurerm_kubernetes_cluster.kubeconfig.kube_config_raw).clusters[0].cluster.server
-  cluster_ca_certificate = base64decode(yamldecode(data.azurerm_kubernetes_cluster.kubeconfig.kube_config_raw).clusters[0].cluster.certificate-authority-data)
+    host                   = yamldecode(data.azurerm_kubernetes_cluster.kubeconfig.kube_config_raw).clusters[0].cluster.server
+    cluster_ca_certificate = base64decode(yamldecode(data.azurerm_kubernetes_cluster.kubeconfig.kube_config_raw).clusters[0].cluster.certificate-authority-data)
     exec {
       api_version = "client.authentication.k8s.io/v1beta1"
       command     = "/usr/local/bin/kubelogin"
@@ -63,13 +63,13 @@ data "azurerm_kubernetes_cluster" "kubeconfig" {
 
 data "azurerm_key_vault_secret" "client_secret" {
   key_vault_id = try(var.keyvaults.keyvaylt_id, local.remote.keyvaults[var.keyvaults.lz_key][var.keyvaults.key].id)
-  name = try(var.keyvaults.client_secret_name, "${local.kubelogin_cred.secret_prefix}-client-secret")
+  name         = try(var.keyvaults.client_secret_name, "${local.kubelogin_cred.secret_prefix}-client-secret")
 }
 data "azurerm_key_vault_secret" "tenant_id" {
   key_vault_id = try(var.keyvaults.keyvaylt_id, local.remote.keyvaults[var.keyvaults.lz_key][var.keyvaults.key].id)
-  name = try(var.keyvaults.tenant_id, "${local.kubelogin_cred.secret_prefix}-tenant-id")
+  name         = try(var.keyvaults.tenant_id, "${local.kubelogin_cred.secret_prefix}-tenant-id")
 }
 data "azurerm_key_vault_secret" "client_id" {
   key_vault_id = try(var.keyvaults.keyvaylt_id, local.remote.keyvaults[var.keyvaults.lz_key][var.keyvaults.key].id)
-  name = try(var.keyvaults.client_id, "${local.kubelogin_cred.secret_prefix}-client-id")
+  name         = try(var.keyvaults.client_id, "${local.kubelogin_cred.secret_prefix}-client-id")
 }
