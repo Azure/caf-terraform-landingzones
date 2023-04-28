@@ -3,8 +3,12 @@ virtual_hub_connections = {
   {{ key }} = {
     name = "{{ vhc.name }}"
     virtual_hub = {
+{% if vhc.virtual_hub.id is defined %}
+      id = "{{ vhc.virtual_hub.id }}"
+{% else %}
       lz_key = "{{ vhc.virtual_hub.lz_key }}"
       key    = "{{ vhc.virtual_hub.key }}"
+{% endif %}
     }
     vnet = {
 {% if vhc.vnet.lz_key is defined %}
@@ -12,6 +16,24 @@ virtual_hub_connections = {
 {% endif %}
       vnet_key = "{{ vhc.vnet.vnet_key }}"
     }
+    internet_security_enabled = true
+{% if vhc.routing is defined %}
+    routing = {
+{% for r_key, r_value in vhc.routing.items() %}
+      {{r_key}} = {
+        virtual_hub_route_table_key = "{{r_value.virtual_hub_route_table_key}}"
+        propagated_route_table = {
+          labels = {{ r_value.propagated_route_table.labels | replace('None','[]') | replace('\'','\"') }}
+{% if r_value.propagated_route_table.virtual_hub_route_table_keys is defined %}
+          virtual_hub_route_table_keys = {{ r_value.propagated_route_table.virtual_hub_route_table_keys | replace('None','[]') | replace('\'','\"') }}
+{% elif r_value.propagated_route_table.ids is defined %}
+          ids = {{ r_value.propagated_route_table.ids | replace('None','[]') | replace('\'','\"') }}
+{% endif %}
+        }
+      }
+{% endfor %}
+    }
+{% endif %}
   }
 {% endfor %}
 }

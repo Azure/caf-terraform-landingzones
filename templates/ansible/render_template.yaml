@@ -1,0 +1,24 @@
+- debug:
+    msg: 
+      - "{{item}}"
+
+- set_fact:
+    template_dest_file: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"
+
+- name: "resources - {{resource_type}}"
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ template_dest_file }}"
+    force: yes
+
+- name: Cleanup file from empty lines
+  shell: "cat '{{template_dest_file}}' | awk 'NF' "
+  register: grep_output
+
+- copy:
+    content: "{{grep_output.stdout }}"
+    dest: "{{ template_dest_file }}"
+
+- name: Format and validate file
+  shell: "terraform fmt {{ template_dest_file }}"
+  register: fmt

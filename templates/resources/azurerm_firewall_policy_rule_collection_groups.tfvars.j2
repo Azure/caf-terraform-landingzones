@@ -1,0 +1,55 @@
+{% import 'library.j2' as render %}
+azurerm_firewall_policy_rule_collection_groups = {
+{% for key, value in resources[tfstate_resource].resources[subscription_key].azurerm_firewall_policy_rule_collection_groups.items() %}
+  {{ key }} = {
+    name = "{{ value.name }}"
+    priority = {{ value.priority }}
+{% if value.passthrough is defined %}
+    passthrough = {{ value.passthrough | lower }}
+{% endif %}
+    {{ render.hcl("firewall_policy", value.firewall_policy, multiple_lines_list=multiple_lines_list) }}
+
+{% if value.application_rule_collections is defined and value.application_rule_collections is mapping %}
+    application_rule_collections = {
+      {% for rule_group_key, priority in value.application_rule_collections.items() | sort %}
+        {{rule_group_key}} = {
+          {% set rule_group = fw_rules_application_rule_collections[rule_group_key] %}
+          {{ render.hcl("name", rule_group.name) }}
+          {{ render.hcl("action", rule_group.action) }}
+          {{ render.hcl("priority", priority) }}
+          {{ render.hcl("rules", rule_group.rules, multiple_lines_list=multiple_lines_list) }}
+        }
+      {% endfor %}
+    }
+{% endif %}
+
+{% if value.network_rule_collections is defined and value.network_rule_collections is mapping %}
+    network_rule_collections = {
+      {% for rule_group_key, priority in value.network_rule_collections.items() | sort %}
+        {{rule_group_key}} = {
+          {% set rule_group = fw_rules_network_rule_collections[rule_group_key] %}
+          {{ render.hcl("name", rule_group.name) }}
+          {{ render.hcl("action", rule_group.action) }}
+          {{ render.hcl("priority", priority) }}
+          {{ render.hcl("rules", rule_group.rules, multiple_lines_list=multiple_lines_list) }}
+        }
+      {% endfor %}
+    }
+{% endif %}
+
+{% if value.nat_rule_collections is defined and value.nat_rule_collections is mapping %}
+    nat_rule_collections = {
+      {% for rule_group_key, priority in value.nat_rule_collections.items() | sort %}
+        {{rule_group_key}} = {
+          {% set rule_group = fw_rules_nat_rule_collections[rule_group_key] %}
+          {{ render.hcl("name", rule_group.name) }}
+          {{ render.hcl("action", rule_group.action) }}
+          {{ render.hcl("priority", priority) }}
+          {{ render.hcl("rules", rule_group.rules, multiple_lines_list=multiple_lines_list) }}
+        }
+      {% endfor %}
+    }
+{% endif %}
+  }
+{% endfor %}
+}

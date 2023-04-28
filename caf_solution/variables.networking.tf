@@ -81,6 +81,9 @@ variable "networking" {
   default = {}
   type    = map(any)
 }
+variable "network_profiles" {
+  default = {}
+}
 variable "front_door_waf_policies" {
   default = {}
 }
@@ -138,7 +141,13 @@ variable "vhub_peerings" {
 variable "vnet_peerings" {
   default = {}
 }
+variable "vnet_peerings_v1" {
+  default = {}
+}
 variable "virtual_hub_er_gateway_connections" {
+  default = {}
+}
+variable "virtual_hub_route_table_routes" {
   default = {}
 }
 variable "virtual_hub_route_tables" {
@@ -153,6 +162,19 @@ variable "vpn_sites" {
 variable "vpn_gateway_connections" {
   default = {}
 }
-variable "network_profiles" {
+variable "lb" {
   default = {}
 }
+variable "lb_backend_address_pool" {
+  default = {}
+}
+variable "lb_backend_address_pool_address" {
+  default = {}
+}
+variable "network_interface_backend_address_pool_association" {
+  default = {}
+}
+variable "public_ip_prefixes" {
+  default = {}
+}
+

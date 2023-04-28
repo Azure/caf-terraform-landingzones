@@ -29,6 +29,9 @@ locals {
     app_service_environments = {
       for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].app_service_environments, {}))
     }
+    app_service_environments_v3 = {
+      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].app_service_environments_v3, {}))
+    }
     app_service_plans = {
       for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].app_service_plans, {}))
     }
@@ -70,6 +73,9 @@ locals {
     }
     databricks_workspaces = {
       for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].databricks_workspaces, {}))
+    }
+    ddos_services = {
+      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].ddos_services, {}))
     }
     cosmos_dbs = {
       for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].cosmos_dbs, {}))
@@ -118,6 +124,9 @@ locals {
     }
     keyvaults = {
       for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].keyvaults, {}))
+    }
+    lb = {
+      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].lb, {}))
     }
     logic_app_integration_account = {
       for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].logic_app_integration_account, {}))
@@ -169,6 +178,9 @@ locals {
     postgresql_servers = {
       for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].postgresql_servers, {}))
     }
+    postgresql_flexible_servers = {
+      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].postgresql_flexible_servers, {}))
+    }
     private_dns = {
       for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].private_dns, {}))
     }
@@ -177,6 +189,9 @@ locals {
     }
     public_ip_addresses = {
       for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].public_ip_addresses, {}))
+    }
+    public_ip_prefixes = {
+      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].public_ip_prefixes, {}))
     }
     recovery_vaults = {
       for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].recovery_vaults, {}))
@@ -217,6 +232,12 @@ locals {
     virtual_hubs = {
       for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].virtual_hubs, {}))
     }
+    virtual_machines = {
+      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].virtual_machines, {}))
+    }
+    virtual_subnets = {
+      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].virtual_subnets, {}))
+    }
     virtual_wans = {
       for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].virtual_wans, {}))
     }
@@ -247,5 +268,9 @@ locals {
     wvd_workspaces = {
       for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].wvd_workspaces, {}))
     }
+    image_definitions = {
+      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].image_definitions, {}))
+    }
   }
+
 }

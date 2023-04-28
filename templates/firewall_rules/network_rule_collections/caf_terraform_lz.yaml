@@ -1,0 +1,16 @@
+caf_terraform_lz:
+  name: CAF Terraform landing zones
+  action: Allow
+  rules:
+{% if vnet_launchpad is defined and vnet_asvm is defined %}
+    gitops_bootstrap_to_asvm:
+      name: gitops bootstrap to asvm
+      source_addresses:
+        {{ vnet_launchpad.vnet_region1.address_space | to_nice_yaml }}
+      destination_ports:
+        - 443
+      destination_addresses:
+        {{ vnet_asvm.vnet_region1.address_space | to_nice_yaml }}
+      protocols:
+        - TCP
+{% endif %}

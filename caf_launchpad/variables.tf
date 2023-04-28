@@ -11,6 +11,15 @@ variable "tfstate_key" {
 variable "tfstate_resource_group_name" {
   default = null
 }
+variable "tfstate_organization" {
+  default = null
+}
+variable "tfstate_hostname" {
+  default = null
+}
+variable "workspace" {
+  default = null
+}
 
 variable "tenant_id" {}
 variable "landingzone" {
@@ -247,5 +256,12 @@ variable "network_profiles" {
 
 variable "data_sources" {
   description = "Data gathering for resources not managed by CAF Module"
+  default = {}
+}
+variable "virtual_hub_connections" {
+  default = {}
+}
+
+variable "custom_variables" {
   default = {}
 }

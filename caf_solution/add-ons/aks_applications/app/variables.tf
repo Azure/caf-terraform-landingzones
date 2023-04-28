@@ -9,3 +9,7 @@ variable "helm_charts" {
 variable "kuztomization_settings" {
   default = {}
 }
+
+variable "azure_container_registries" {
+  default = {}
+}

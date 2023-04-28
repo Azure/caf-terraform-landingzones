@@ -39,37 +39,37 @@ vnets = {
     subnets = {
       AzureBastionSubnet = {
         name    = "AzureBastionSubnet" #Must be called AzureBastionSubnet
-        cidr    = ["10.100.100.24/29"]
+        cidr    = ["10.100.100.0/26"]
         nsg_key = "azure_bastion_nsg"
       }
       jumpbox = {
         name              = "jumpbox"
-        cidr              = ["10.100.100.32/29"]
+        cidr              = ["10.100.100.64/29"]
         service_endpoints = ["Microsoft.KeyVault"]
       }
       release_agent_level0 = {
         name              = "level0"
-        cidr              = ["10.100.100.40/29"]
+        cidr              = ["10.100.100.72/29"]
         service_endpoints = ["Microsoft.KeyVault"]
       }
       release_agent_level1 = {
         name              = "level1"
-        cidr              = ["10.100.100.48/29"]
+        cidr              = ["10.100.100.80/29"]
         service_endpoints = ["Microsoft.KeyVault"]
       }
       release_agent_level2 = {
         name              = "level2"
-        cidr              = ["10.100.100.56/29"]
+        cidr              = ["10.100.100.88/29"]
         service_endpoints = ["Microsoft.KeyVault"]
       }
       release_agent_level3 = {
         name              = "level3"
-        cidr              = ["10.100.100.64/29"]
+        cidr              = ["10.100.100.96/29"]
         service_endpoints = ["Microsoft.KeyVault"]
       }
       release_agent_level4 = {
         name              = "level4"
-        cidr              = ["10.100.100.72/29"]
+        cidr              = ["10.100.100.104/29"]
         service_endpoints = ["Microsoft.KeyVault"]
       }
       private_endpoints = {

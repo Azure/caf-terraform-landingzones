@@ -1,0 +1,114 @@
+gitops_agents:
+  gitops:
+    caf_landingzone_branch: {{caf_landingzone_branch}}
+
+  relative_destination_folder: level0/gitops_agents
+
+  tfstate:
+    lz_key_name: gitops_agents
+    tfstate: gitops_agents.tfstate
+    workspace: tfstate
+    level: level0
+    identity_aad_key: cred_level0
+    config_file: gitops_agents.yaml
+    sub_template_folder: platform/level0/gitops_agents
+    # Do not rename the tfstate_key_name
+    tfstate_key_name: gitops_agents
+
+  deployments:
+    landingzone:
+      global_settings_key:
+        platform:
+          launchpad:
+      remote_tfstates:
+        platform:
+          launchpad:
+
+  resources:
+    launchpad:
+
+      container_groups:
+        level0:
+          name: rover-platform
+          region: region1
+          resource_group:
+            lz_key: launchpad
+            key: gitops
+          ip_address_type: Private
+          os_type: Linux
+          restart_policy: Never
+          network_profile:
+            key: level0
+{% if secure_firewalls_resources is defined %}
+          dns_config:
+            nameservers:
+              - {{ secure_firewalls_resources[env | default('prod')].fw_secure_prod.virtual_hub[0].private_ip_address }}
+{% endif %}
+          containers:
+            rover_level0:
+              name: rover-level0
+              image: {{topology.gitops_default_rover_image}}
+              cpu: 4
+              memory: 2
+              ports:
+                ssh:
+                  port: 22
+                  protocol: TCP
+              environment_variables:
+                AGENT_NAME: rover_level0
+                LABELS: platform,master
+                ROVER_RUNNER: true
+                URL: {{GITOPS_SERVER_URL}}
+              secure_environment_variables:
+                AGENT_TOKEN: {{AGENT_TOKEN}}
+{% set MAX_RUNNERS = RUNNER_NUMBERS | int %}
+{% for i in range(MAX_RUNNERS - 1) %}
+        agent{{i}}:
+          name: rover-platform-agent{{i}}
+          region: region1
+          resource_group:
+            lz_key: launchpad
+            key: gitops
+          ip_address_type: Private
+          os_type: Linux
+          restart_policy: Never
+          network_profile:
+            key: level0
+{% if secure_firewalls_resources is defined %}
+          dns_config:
+            nameservers:
+              - {{ secure_firewalls_resources[env | default('prod')].fw_secure_prod.virtual_hub[0].private_ip_address }}
+{% endif %}
+          containers:
+            rover_agent{{i}}:
+              name: rover-agent{{i}}
+              image: {{topology.gitops_default_rover_image}}
+              cpu: 4
+              memory: 2
+              ports:
+                ssh:
+                  port: 22
+                  protocol: TCP
+              environment_variables:
+                AGENT_NAME: agent{{i}}
+                LABELS: platform
+                ROVER_RUNNER: true
+                URL: {{GITOPS_SERVER_URL}}
+              secure_environment_variables:
+                AGENT_TOKEN: {{AGENT_TOKEN}}
+{% endfor %}
+
+      network_profiles:
+        level0:
+          resource_group:
+            lz_key: launchpad
+            key: gitops
+          name: level0
+          container_network_interface:
+            name: level0
+            ip_configurations:
+              gitops:
+                name: ipconfig
+                lz_key: launchpad
+                vnet_key: vnet_region1
+                subnet_key: level0

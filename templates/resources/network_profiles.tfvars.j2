@@ -18,7 +18,7 @@ network_profiles = {
             subnet_id  = "{{ ip_value.subnet_id }}"
 {% endif %}
 {% if ip_value.lz_key is defined %}
-            subnetlz_key_id  = "{{ ip_value.lz_key }}"
+            lz_key  = "{{ ip_value.lz_key }}"
 {% endif %}
 {% if ip_value.vnet_key is defined %}
             vnet_key  = "{{ ip_value.vnet_key }}"

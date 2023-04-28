@@ -1,0 +1,246 @@
+#
+# Copyright (c) Microsoft Corporation
+# Licensed under the MIT License.
+#
+
+name: "Run terraform with CAF rover"
+
+on:
+  workflow_call:
+    inputs:
+      bootstrap:
+        default: false
+        type: boolean
+      terraform_code_repository:
+        description: "Git repository of the the terraform entry code."
+        required: false
+        type: string
+      terraform_code_ref:
+        description: "Tag or branch name."
+        required: false
+        type: string
+      terraform_action:
+        description: "Terraform action one of (plan_apply, apply)"
+        type: string
+        default: plan
+      terraform_action_plan:
+        description: "Terraform action plan and additional parameters"
+        type: string
+        required: false
+      terraform_action_apply:
+        description: "Terraform action apply and additional parameters"
+        type: string
+        required: false
+      tenant:
+        description: "Azure Active Directory tenant domain name (e.g: mytenant.onmicrosoft.com or the default custom domain) or the GUID."
+        required: false
+        type: string
+      client_id:
+        description: Client Id to login Azure profile with OIDC
+        required: false
+        type: string
+      tenant_id:
+        description: Tenant Id to login Azure profile with OIDC
+        required: false
+        type: string
+      landingzone_code_path:
+        description: Path of the terraform code
+        required: false
+        type: string
+      landingzone_configuration_path:
+        description: Path of the configuration files
+        required: false
+        type: string
+      tfstate:
+        description: name of the tfstate
+        required: false
+        type: string
+      launchpad:
+        description: Boolean value to specify if the deployment is the launchpad or not
+        default: false
+        type: string
+      environment:
+        description: Name of the CAF environment
+        required: false
+        type: string
+      level:
+        description: CAF terraform level of the deployment
+        required: false
+        default: level0
+        type: string
+      caf_identity_aad_key:
+        description: Tag's name of the Keyvault wit the credential to use.
+        required: false
+        type: string
+      plan_path:
+        description: Full path of the of terraform plan
+        required: false
+        type: string
+    secrets:
+      AZURE_CLIENT_ID:
+        required: true
+      AZURE_TENANT_ID:
+        required: true
+      AZURE_LAUNCHPAD_SUBSCRIPTION_ID:
+        required: true
+      AZURE_TARGET_SUBSCRIPTION_ID:
+        required: true
+
+
+env:
+  TF_CLI_ARGS: '-no-color'
+  TF_REGISTRY_DISCOVERY_RETRY: 5
+  TF_REGISTRY_CLIENT_TIMEOUT: 15
+  ROVER_RUNNER: true
+
+{% raw %}
+jobs:
+  rover:
+    name: ${{ inputs.level }}
+    runs-on: [self-hosted, platform]
+    
+    steps:
+      
+      - name: 'Azure Login'
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+
+      - name: Checkout Configuration
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: checkout base terraform landingzone code
+        shell: bash
+        run: |
+          rm -rf ./landingzones
+          git clone --branch ${{ inputs.terraform_code_ref }} --single-branch ${{ inputs.terraform_code_repository }} ./landingzones
+      
+      - id: generate-rover-command
+        if: inputs.terraform_action == 'plan_apply'
+        shell: bash
+        run: |
+          echo "Retreiving keyvault for credentials"
+          # Get the keyvault with the credentials
+          cred_vault_name=$(az keyvault list --query "[?(tags.caf_identity_aad_key=='${{inputs.caf_identity_aad_key}}' && tags.caf_environment=='${{inputs.environment}}')].{name:name}[0]" -o tsv)
+          if [ -z "${cred_vault_name}" ]; then
+            echo "Cannot retreive the credentials. Make sure the RBAC are set properly."
+            echo "Bootstraping the environment."
+          else
+            impresonate=("--impersonate-sp-from-keyvault-url https://${cred_vault_name}.vault.azure.net/ ")
+          fi
+
+          set +e
+
+          rover=("/tf/rover/rover.sh ")
+          action_plan=("-a plan ${{inputs.terraform_action_plan }} ")
+          action_apply=("-a apply ${{inputs.terraform_action_apply }} ")
+          landingzone_code_path=("-lz $(readlink -f ${{inputs.landingzone_code_path}}) ")
+          landingzone_configuration_path=("-var-folder $(readlink -f ${{inputs.landingzone_configuration_path}}) ")
+          tfstate_subscription_id=("-tfstate_subscription_id ${{secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID}} ")
+          target_subscription=("-target_subscription ${{secrets.AZURE_TARGET_SUBSCRIPTION_ID}} ")
+          tfstate=("-tfstate ${{inputs.tfstate}} ")
+          environment=("-env ${{inputs.environment}} ")
+          level=("-level ${{inputs.level}} ")
+          output_file=$(readlink -f ./${{inputs.tfstate}}.output)
+          output=("--output ${output_file} ")
+          
+          if [ "${{inputs.launchpad}}" = "true" ]; then
+            launchpad=("-launchpad ")
+          fi
+          if [ ! -z "${{inputs.plan_path}}" ]; then
+            plan_path=("-p ${{inputs.plan_path}} ")
+          fi
+
+          command_plan="${rover[@]}${impresonate[@]}${landingzone_code_path[@]}${landingzone_configuration_path[@]}${tfstate_subscription_id[@]}${target_subscription[@]}${tfstate[@]}${environment[@]}${level[@]}${launchpad[@]}${plan_path[@]}${output[@]}${action_plan[@]}${{inputs.terraform_action_plan}}"
+          command_apply="${rover[@]}${impresonate[@]}${landingzone_code_path[@]}${landingzone_configuration_path[@]}${tfstate_subscription_id[@]}${target_subscription[@]}${tfstate[@]}${environment[@]}${level[@]}${launchpad[@]}"
+          
+          echo "::set-output name=rover-command-plan::$(echo ${command_plan})"
+          echo "::set-output name=rover-command-apply::$(echo ${command_apply})"
+          echo "::set-output name=output_file::$(echo ${output_file})"
+
+      - id: plan
+        name: Execute terraform plan
+        shell: bash
+        run: |
+          set +e
+
+          echo "${{ steps.generate-rover-command.outputs.rover-command-plan }}"
+          eval ${{ steps.generate-rover-command.outputs.rover-command-plan }} 2>&1 | tee outputfile
+
+          plan=$(cat outputfile | grep ' -plan:  ')
+          plan_file=${plan//' -plan:  '/}
+          echo "plan file: '${plan_file}'"
+
+          apply=false
+
+          if [ "${{ inputs.terraform_action }}" = 'plan_apply' ]; then
+            echo "condition 0f"
+            verify=false
+          else
+            echo "condition 0t"
+            verify=true
+          fi
+
+          if [ "$(cat outputfile | grep -o 'No changes')" != 'No changes' ]; then
+            if [ "$(cat outputfile | grep -o '0 to destroy')" != '0 to destroy' ]; then
+              echo "condition 1"
+              apply=true
+              verify=true
+            fi
+            if [ "$(cat outputfile | grep -o '0 to change')" != '0 to change' ]; then
+              echo "condition 2"
+              apply=true
+            fi
+            if [ "$(cat outputfile | grep -o '0 to add')" != '0 to add' ]; then
+              echo "condition 3"
+              apply=true
+            fi
+            if [ "$(cat outputfile | grep -o 'so no changes are needed')" = 'so no changes are needed' ]; then
+              echo "condition 4"
+              apply=false
+              verify=false
+            fi
+            if [ "$(cat outputfile | grep -o 'Error on or near line')" = 'Error on or near line' ]; then
+              echo "condition 5"
+              apply=false
+              verify=false
+              set -e
+              exit 1
+            fi
+          fi
+
+          echo "apply: ${apply}"
+          echo "verify: ${verify}"
+
+          echo "::set-output name=apply::$(echo ${apply})"
+          echo "::set-output name=verify::$(echo ${verify})"
+          echo "::set-output name=plan_file::${plan_file}"
+
+      - id: apply
+        if: (inputs.terraform_action == 'plan_apply') && (steps.plan.outputs.apply == 'true')
+        name: Execute terraform apply
+        shell: bash
+        run: |
+
+          plan_path=("-p ${{ steps.plan.outputs.plan_file }} ")
+          action=("-a apply ")
+          command_apply="${{ steps.generate-rover-command.outputs.rover-command-apply }} ${plan_path[@]}${action[@]}${{inputs.terraform_action_apply}}"
+          echo ${command_apply}
+          eval ${command_apply}
+
+      - name: Cleanup
+        if: always()
+        run: |
+          az account clear
+          echo "Azure session closed."
+          rm -rf outputfile
+          rm -rf "$(readlink -f ${{inputs.tfstate}}.output)"
+          rm -rf ${{inputs.tfstate}}
+          rm -rf ${{inputs.plan_path}}
+
+{% endraw %}

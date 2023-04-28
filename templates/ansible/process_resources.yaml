@@ -20,11 +20,16 @@
 #
 # resources
 #
+# - name: "resources - {{resource_type}}"
+#   ansible.builtin.template:
+#     src: "{{ item }}"
+#     dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"
+#     force: yes
+#   with_fileglob:
+#     - "{{resource_type_override if override_file.stat.exists else resource_type_template}}"
+
 - name: "resources - {{resource_type}}"
-  ansible.builtin.template:
-    src: "{{ item }}"
-    dest: "{{ destination_path }}/{{ item | basename | regex_replace('.j2$', '') }}"
-    force: yes
+  include_tasks: "render_template.yaml"
   with_fileglob:
     - "{{resource_type_override if override_file.stat.exists else resource_type_template}}"
 

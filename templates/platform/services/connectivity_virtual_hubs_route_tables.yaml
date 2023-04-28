@@ -27,19 +27,37 @@ virtual_hubs_route_tables_{{env}}:
 
   resources:
     connectivity:
-      virtual_hub_route_tables:
-        egress_internet:
-          name: egress-internet
+      virtual_hub_route_table_routes:
+        all_traffic:
+          name: all_traffic
           virtual_hub:
             lz_key: connectivity_virtual_hubs_{{env}}
             key: {{env}}
-          routes:
-            egress_internet:
-              name: egress-internet
-              destinations_type: CIDR
-              destinations:
-                - 0.0.0.0/0
-              next_hop:
-                lz_key: connectivity_secure_firewalls_{{env}}
-                resource_type: azurerm_firewalls
-                key: fw_secure_{{env}}
+          route_table:
+            name: defaultRouteTable
+          destinations_type: CIDR
+          next_hop_type: ResourceId
+          next_hop:
+            resource_type: azurerm_firewall
+            lz_key: connectivity_secure_firewalls_{{env}}
+            key: fw_secure_{{env}}
+          destinations:
+            - 0.0.0.0/0
+            - 10.0.0.0/8
+            - 172.16.0.0/12
+            - 192.168.0.0/16
+        # public_traffic:
+        #   name: public_traffic
+        #   virtual_hub:
+        #     lz_key: connectivity_virtual_hubs_{{env}}
+        #     key: {{env}}
+        #   route_table:
+        #     name: defaultRouteTable
+        #   destinations_type: CIDR
+        #   next_hop_type: ResourceId
+        #   next_hop:
+        #     resource_type: azurerm_firewall
+        #     lz_key: connectivity_secure_firewalls_{{env}}
+        #     key: fw_secure_{{env}}
+        #   destinations:
+        #     - 0.0.0.0/0
