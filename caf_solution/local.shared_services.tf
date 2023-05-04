@@ -11,6 +11,7 @@ locals {
       image_definitions                         = var.image_definitions
       log_analytics_storage_insights            = var.log_analytics_storage_insights
       monitor_action_groups                     = var.monitor_action_groups
+      monitor_activity_log_alert                = var.monitor_activity_log_alert
       monitor_autoscale_settings                = var.monitor_autoscale_settings
       monitor_metric_alert                      = var.monitor_metric_alert
       monitoring                                = var.monitoring
