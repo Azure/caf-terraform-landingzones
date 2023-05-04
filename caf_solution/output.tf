@@ -1,7 +1,7 @@
 output "objects" {
   value = tomap(
     {
-      (var.landingzone.key) = {
+      (try(var.landingzone.key, var.landingzone[var.backend_type].key)) = {
         for key, value in module.solution : key => value
         if try(value, {}) != {}
       }

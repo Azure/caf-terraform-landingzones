@@ -1,0 +1,39 @@
+services:
+  name: services
+  action: Allow
+  rules:
+    ntp:
+      name: ntp
+      source_addresses: ["*"]
+      destination_ports:
+        - 123
+      destination_addresses: ["*"]
+      protocols:
+        - UDP
+    dns:
+      name: dns
+      source_addresses: ["*"]
+      destination_ports:
+        - 53
+      destination_addresses:
+{% if secure_firewalls_resources is defined %}
+        - {{ secure_firewalls_resources[env | default('prod')].fw_secure_prod.virtual_hub[0].private_ip_address }}
+{% else %}
+        - "168.63.129.16"
+{% endif %}
+      protocols:
+        - UDP
+        - TCP
+{% if secure_firewalls_resources is defined %}
+    service_bus:
+      name: service bus
+      source_addresses:
+        {{ private_dns_firewalls_vnets[env | default('prod')].vnet.address_space | to_nice_yaml }}
+      destination_ports:
+        - 5671
+      destination_addresses:
+        # Australia
+        - 13.70.72.7
+      protocols:
+        - TCP
+{% endif %}

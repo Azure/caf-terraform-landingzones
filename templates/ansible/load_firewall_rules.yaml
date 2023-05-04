@@ -1,0 +1,55 @@
+# Load firewall rules
+
+# application_rule_collections
+
+- find:
+    paths: "{{firewall_rules_path}}/application_rule_collections"
+    recurse: yes
+    patterns: "*.yaml"
+    file_type: file
+  register: fw_rules_application_rule_collections
+
+- name: load firewall application_rule_collections
+  set_fact:
+    merged_fw_rules_application_rule_collections: "{{ merged_fw_rules_application_rule_collections | default({}) | combine( lookup('template', item.path ) | from_yaml )}}"
+  with_items: "{{fw_rules_application_rule_collections.files}}"
+
+- set_fact:
+    fw_rules_application_rule_collections:  "{{ merged_fw_rules_application_rule_collections }}"
+  when: fw_rules_application_rule_collections is defined
+
+# fw_rules_nat_rule_collections
+
+- find:
+    paths: "{{firewall_rules_path}}/nat_rule_collections"
+    recurse: yes
+    patterns: "*.yaml"
+    file_type: file
+  register: fw_rules_nat_rule_collections
+
+- name: load firewall nat_rule_collections
+  set_fact:
+    merged_fw_rules_nat_rule_collections: "{{ merged_fw_rules_nat_rule_collections | default({}) | combine( lookup('template', item.path ) | from_yaml )}}"
+  with_items: "{{fw_rules_nat_rule_collections.files}}"
+
+- set_fact:
+    fw_rules_nat_rule_collections:  "{{ merged_fw_rules_nat_rule_collections }}"
+  when: merged_fw_rules_nat_rule_collections is defined
+
+# network_rule_collections
+
+- find:
+    paths: "{{firewall_rules_path}}/network_rule_collections"
+    recurse: yes
+    patterns: "*.yaml"
+    file_type: file
+  register: fw_rules_network_rule_collections
+
+- name: load firewall network_rule_collections
+  set_fact:
+    merged_fw_rules_network_rule_collections: "{{ merged_fw_rules_network_rule_collections | default({}) | combine( lookup('template', item.path ) | from_yaml )}}"
+  with_items: "{{fw_rules_network_rule_collections.files}}"
+
+- set_fact:
+    fw_rules_network_rule_collections:  "{{ merged_fw_rules_network_rule_collections }}"
+  when: merged_fw_rules_network_rule_collections is defined

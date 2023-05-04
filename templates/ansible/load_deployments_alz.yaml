@@ -7,7 +7,7 @@
     
 - name: "{{destination_alz_path}} - Set tfstate_object"
   set_fact:
-    tfstate_object: "{{topologies['alz_' + service].tfstate}}"
+    tfstate_object: "{{resources['alz_' + service].tfstate}}"
 
 - name: "{{destination_path}}/{{stage}} - Set landingzone file_path"
   set_fact:
@@ -65,5 +65,5 @@
 - name: "{{deployment_mode}}/{{stage}}/{{region}}/{{service}} to {{destination_path}}/{{'alz_' + service}}.yaml"
   ansible.builtin.template:
     src: "{{platform_service_folder}}/{{topology.deployments[deployment_mode][stage][region][item]}}"
-    dest: "{{destination_path}}/{{topologies[stage + '_' + item].tfstate.config_file}}"  
+    dest: "{{destination_path}}/{{resources[stage + '_' + item].tfstate.config_file}}"  
   loop: "{{topology.deployments[deployment_mode][stage][region].keys()}}"

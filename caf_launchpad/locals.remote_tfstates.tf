@@ -11,8 +11,8 @@ locals {
 data "terraform_remote_state" "remote" {
   for_each = try(var.landingzone.tfstates, {})
 
-  backend = var.landingzone.backend_type
-  config  = local.remote_state[try(each.value.backend_type, var.landingzone.backend_type, "azurerm")][each.key]
+  backend = try(var.landingzone.backend_type, var.backend_type)
+  config  = local.remote_state[try(each.value.backend_type, var.landingzone.backend_type, var.backend_type)][each.key]
 }
 
 locals {

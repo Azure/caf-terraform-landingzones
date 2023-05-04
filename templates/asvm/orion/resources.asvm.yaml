@@ -1,6 +1,6 @@
 {{landingzone_definition}}_{{env}}:
   gitops:
-    caf_landingzone_branch: 2203.0
+    caf_landingzone_branch: {{caf_landingzone_branch}}
 
   relative_destination_folder: level3/{{landingzone_definition}}/{{env}}
 
@@ -8,15 +8,16 @@
     landingzone:
       global_settings_key:
         platform:
-          virtual_hubs: {{platform_mappings[env]}}
+          virtual_hubs: {{deployments.asvm.mappings[env]}}
       remote_tfstates:
         asvm:
           asvm_subscriptions:
         platform:
-          virtual_hubs: {{platform_mappings[env]}}
-          virtual_hubs_route_tables: {{platform_mappings[env]}}
-          private_dns_firewalls: {{platform_mappings[env]}}
-          identity_level2: {{platform_mappings[env]}}
+          virtual_hubs: {{deployments.asvm.mappings[env]}}
+          virtual_hubs_route_tables: {{deployments.asvm.mappings[env]}}
+          private_dns_firewalls: {{deployments.asvm.mappings[env]}}
+          private_dns: {{deployments.asvm.mappings[env]}}
+          identity_level2: {{deployments.asvm.mappings[env]}}
           asvm:
 
   resources:
@@ -43,10 +44,10 @@
           resource_group_key: networking
           region_key: region1
           dns_servers_keys:
-            fw_secure_{{platform_mappings[env]}}:
+            fw_secure_{{deployments.asvm.mappings[env]}}:
               resource_type: azurerm_firewall
-              lz_key: connectivity_private_dns_firewalls_{{platform_mappings[env]}}
-              key: fw_prod_dns_{{platform_mappings[env]}}
+              lz_key: connectivity_private_dns_firewalls_{{deployments.asvm.mappings[env]}}
+              key: fw_prod_dns_{{deployments.asvm.mappings[env]}}
           address_space:
             - 10.101.8.0/23
           subnets:
@@ -368,16 +369,21 @@
                 destination_port_range: "*"
 
       virtual_hub_connections:
-        vnet_to_{{platform_mappings[env]}}:
-          name: vnet-{{landingzone_definition}}-{{env}}-TO-{{platform_mappings[env]}}
+        vnet_to_{{deployments.asvm.mappings[env]}}:
+          name: vnet-{{landingzone_definition}}-{{env}}-TO-{{deployments.asvm.mappings[env]}}
           virtual_hub:
-            lz_key: connectivity_virtual_hubs_{{platform_mappings[env]}}
-            key: {{platform_mappings[env]}}
+            lz_key: connectivity_virtual_hubs_{{deployments.asvm.mappings[env]}}
+            key: {{deployments.asvm.mappings[env]}}
           vnet:
             vnet_key: vnet
           routing:
-            egress:
-              lz_key: virtual_hubs_route_tables_{{platform_mappings[env]}}
+            firewall_manager:
+              virtual_hub_route_table_key: "defaultRouteTable"
+              propagated_route_table:
+                labels:
+                  - none
+                virtual_hub_route_table_keys:
+                  - noneRouteTable
 
       recovery_vaults:
         asr:
@@ -393,11 +399,58 @@
                   time: "23:00"
                 retention_daily:
                   count: 7
+{% if private_endpoints is defined %}
+          private_endpoints:
+            asr:
+              name: vault-{{landingzone_definition}}-{{env}}
+              resource_group_key: backup
+              vnet_key: vnet
+              subnet_key: private_endpoints
+              private_service_connection:
+                name: vault-{{landingzone_definition}}-{{env}}
+                is_manual_connection: false
+                subresource_names:
+                  - vault
+{% if private_endpoints is defined and private_dns is defined %}
+              private_dns:
+                zone_group_name: default
+                lz_key: connectivity_private_dns_{{deployments.asvm.mappings[env]}}
+                keys: 
+                  - privatelink.siterecovery.windowsazure.com
+{% endif %}
+{% endif %}
 
       keyvaults:
         kv_delegated_sp:
           name: {{landingzone_definition}}{{env}}001
           resource_group_key: rg
+          network:
+            bypass: AzureServices
+            default_action: Deny
+{% if PUBLIC_IP_WHITE_LIST is defined %}
+            ip_rules:
+              {{ PUBLIC_IP_WHITE_LIST | default('None') }}
+{% endif %}
+{% if private_endpoints is defined %}
+          private_endpoints:
+            level2:
+              name: {{landingzone_definition}}{{env}}001
+              resource_group_key: rg
+              vnet_key: vnet_region1
+              subnet_key: private_endpoints
+              private_service_connection:
+                name: {{landingzone_definition}}{{env}}001
+                is_manual_connection: false
+                subresource_names:
+                  - vault
+{% if private_endpoints is defined and private_dns is defined %}
+              private_dns:
+                zone_group_name: default
+                lz_key: connectivity_private_dns_{{deployments.asvm.mappings[env]}}
+                keys: 
+                  - privatelink.vaultcore.azure.net
+{% endif %}
+{% endif %}
           creation_policies:
             logged_in_user:
               secret_permissions:
@@ -407,9 +460,9 @@
                 - Delete
                 - Purge
                 - Recover
-            landingzone_maintainers_{{platform_mappings[env]}}:
+            landingzone_maintainers_{{deployments.asvm.mappings[env]}}:
               lz_key: asvm
-              azuread_group_key: caf_ac_landingzone_maintainers_{{platform_mappings[env]}}
+              azuread_group_key: caf_ac_landingzone_maintainers_{{deployments.asvm.mappings[env]}}
               secret_permissions:
                 - Set
                 - Get
@@ -457,13 +510,13 @@
             days: 58
 
       azuread_groups_membership:
-        caf_{{platform_mappings[env]}}_landingzones_dns_contributors:
+        caf_{{deployments.asvm.mappings[env]}}_landingzones_dns_contributors:
           azuread_service_principals:
             sp_LZContributors:
-              group_lz_key: identity_level2_{{platform_mappings[env]}}
+              group_lz_key: identity_level2_{{deployments.asvm.mappings[env]}}
               keys:
                 - sp_LZContributors
-        caf_ac_landingzone_maintainers_{{platform_mappings[env]}}:
+        caf_ac_landingzone_maintainers_{{deployments.asvm.mappings[env]}}:
           azuread_service_principals:
             sp_LZContributors:
               group_lz_key: asvm

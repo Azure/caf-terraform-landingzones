@@ -16,8 +16,8 @@ locals {
 data "terraform_remote_state" "remote" {
   for_each = try(var.landingzone.tfstates, {})
 
-  backend = try(each.value.backend_type, var.landingzone.backend_type, "azurerm")
-  config  = local.remote_state[try(each.value.backend_type, var.landingzone.backend_type, "azurerm")][each.key]
+  backend = try(each.value.backend_type, "azurerm")
+  config  = local.remote_state[try(each.value.backend_type, "azurerm")][each.key]
 }
 
 locals {
@@ -34,11 +34,11 @@ locals {
         sas_token            = try(value.sas_token, null) != null ? var.sas_token : null
         use_azuread_auth     = try(value.use_azuread_auth, true)
       } if try(value.backend_type, "azurerm") == "azurerm"
-    } 
+    }
     remote = {
       for key, value in try(var.landingzone.tfstates, {}) : key => {
-        hostname     = try(value.hostname, null)
-        organization = value.organization
+        hostname     = try(value.hostname, var.tf_cloud_hostname)
+        organization = try(value.organization, var.tf_cloud_organization)
         workspaces = {
           name = value.workspace
         }
@@ -46,14 +46,15 @@ locals {
     }
   }
 
-  tags = merge(try(local.global_settings.tags, {}), { "level" = var.landingzone.level }, try({ "environment" = local.global_settings.environment }, {}), { "rover_version" = var.rover_version }, var.tags)
+  tags = merge(try(local.global_settings.tags, {}), { "level" = try(var.landingzone.level, var.landingzone[var.backend_type].level) }, try({ "environment" = local.global_settings.environment }, {}), { "rover_version" = var.rover_version }, var.tags)
 
   global_settings = merge(
     var.global_settings,
     try(data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.objects[var.landingzone.global_settings_key].global_settings, null),
     try(data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.global_settings, null),
     try(data.terraform_remote_state.remote[keys(var.landingzone.tfstates)[0]].outputs.global_settings, null),
-    local.custom_variables
+    local.custom_variables,
+    var.global_settings_override
   )
 
 

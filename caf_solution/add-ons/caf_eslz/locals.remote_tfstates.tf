@@ -16,8 +16,8 @@ locals {
 data "terraform_remote_state" "remote" {
   for_each = try(var.landingzone.tfstates, {})
 
-  backend = var.landingzone.backend_type
-  config  = local.remote_state[try(each.value.backend_type, var.landingzone.backend_type, "azurerm")][each.key]
+  backend = try(each.value.backend_type, "azurerm")
+  config  = local.remote_state[try(each.value.backend_type, "azurerm")][each.key]
 }
 
 locals {
@@ -31,6 +31,15 @@ locals {
         subscription_id      = try(value.subscription_id, var.tfstate_subscription_id)
         tenant_id            = try(value.tenant_id, data.azurerm_client_config.current.tenant_id)
       }
+    }
+    remote = {
+      for key, value in try(var.landingzone.tfstates, {}) : key => {
+        hostname     = try(value.hostname, var.tf_cloud_hostname)
+        organization = try(value.organization, var.tf_cloud_organization)
+        workspaces = {
+          name = value.workspace
+        }
+      } if try(value.backend_type, "azurerm") == "remote"
     }
   }
 

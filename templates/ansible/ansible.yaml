@@ -8,7 +8,11 @@
         job_cache_base_path: "/home/vscode/.terraform.cache"
         destination_base_path: '{{ platform_configuration_folder }}'
         resource_template_folder: "{{ public_templates_folder }}/resources"
-        platform_service_folder: "{{ public_templates_folder }}/platform/services"
+        platform_service_folder: "{{ private_templates_folder if private_templates_folder is defined else public_templates_folder + '/platform/services' }}"
+        multiple_lines_list: "{{ multiple_lines_list | default(false) }}"
+
+    - debug:
+        msg: "platform_service_folder is: {{platform_service_folder}}"
 
     - name: "load {{ template_folder | default(platform_definition_folder)}}/ignite.yaml"
       include_vars:
@@ -54,40 +58,31 @@
     - find:
         paths: "{{definition_folder | default(platform_definition_folder)}}"
         recurse: yes
-        patterns: "*.yaml"
+        patterns: ["*.yaml","*.j2"]
         file_type: file
         excludes: "*.caf.platform.yaml"
       register: yaml_files_to_process
+
+    - name: "Creates cache directory"
+      file:
+        path: "{{ job_cache_base_path }}/launchpad"
+        state: directory
+        
+    - name: Load platform variables from tfstates
+      include_tasks: "load_variables.yaml"
+
+    - name: Load firewall rules
+      include_tasks: "load_firewall_rules.yaml"
       when: deployment_mode == 'platform'
-
-
-    - name: load variables
-      set_fact:
-        "{{item.path | basename | regex_replace('.yaml$', '')}}_resource__to_merge": "{{ lookup('template', item.path )}}"
-      with_items: "{{yaml_files_to_process.files}}"
-      when: deployment_mode == 'platform'
-
-    - name: load variables
-      set_fact:
-        merged_resources: "{{ merged_resources | default({}) | combine( lookup('template', item.path ) | from_yaml )}}"
-      with_items: "{{yaml_files_to_process.files}}"
-      when: deployment_mode == 'platform'
-
-    - set_fact:
-        resources:  "{{ merged_resources }}"
 
     - name: "Creates destination directory - {{destination_base_path}}"
       file:
         path: "{{destination_base_path}}"
         state: directory
 
-    - name: "Creates cache directory"
-      file:
-        path: "{{ job_cache_base_path }}/launchpad"
-        state: directory
-
     - debug:
         msg: 
+        - "launchpad_tfstate_exists: {{launchpad_tfstate_exists}}"
         - "bootstrap: {{bootstrap}}"
         - "resources: {{resources}}"
 
@@ -110,10 +105,12 @@
       loop_control:
         loop_var: region
       when:
-        - bootstrap.deployments[deployment_mode].alz is defined and launchpad_tfstate_exists.rc == 0
+        - launchpad_tfstate_exists.rc == 0
+        - bootstrap.deployments[deployment_mode].alz is defined
       vars:
         lz_type: "{{deployment_mode}}"
         stage: alz
+      when: deployment_mode == 'platform'
 
 #
 # Process the deployments folders
@@ -137,12 +134,46 @@
       vars:
         lz_type: "{{deployment_mode}}"
         stage: scale_out_domains
-      
+  
 
-#
-# Formatting & Linters
-#
+# Copy github workflows
+    - find:
+        paths: "{{public_templates_folder}}/pipelines/.github/workflows"
+        recurse: yes
+        file_type: file
+      register: github_workflows_to_process
 
-    - name: Terraform Formatting
-      shell: |
-        terraform fmt -recursive {{ destination_base_path }}
+    - name: copy github workflows
+      ansible.builtin.template:
+        src: "{{ item.path }}"
+        dest: "{{base_folder}}/{{ item.path | regex_replace(public_templates_folder + '/pipelines', '') }}"
+      loop: "{{github_workflows_to_process.files}}"
+
+# Copy default firewall rules
+
+    - name: "Creates destination directory - {{firewall_rules_path}}"
+      file:
+        path: "{{firewall_rules_path}}/{{item}}"
+        state: directory
+      with_items:
+      - application_rule_collections
+      - network_rule_collections
+      - nat_rule_collections
+        
+    - find:
+        paths: "{{public_templates_folder}}/firewall_rules"
+        recurse: yes
+        file_type: file
+      register: firewall_files_to_process
+
+    - name: copy firewall files
+      ansible.builtin.copy:
+        src: "{{ item.path }}"
+        dest: "{{firewall_rules_path}}/{{ item.path | regex_replace(public_templates_folder + '/firewall_rules', '') }}"
+        force: no
+      loop: "{{firewall_files_to_process.files}}"
+
+
+    - name: Format and validate file
+      shell: "terraform fmt -recursive {{ platform_configuration_folder }}"
+      register: fmt

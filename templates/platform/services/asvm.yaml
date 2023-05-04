@@ -11,7 +11,6 @@ asvm:
     config_file: asvm.yaml
     identity_aad_key: cred_level0
     sub_template_folder: platform/level2/asvm
-    yaml: platform/level2/asvm/ansible.yaml
     # Do not rename the tfstate_key_name
     tfstate_key_name: asvm
 
@@ -19,14 +18,20 @@ asvm:
     landingzone:
       global_settings_key:
         platform:
-          management:
+          virtual_hubs: prod
       remote_tfstates:
         platform:
           management:
+          virtual_hubs: prod
+          private_dns: prod
+          secure_firewalls: prod
+          identity_level2: prod
 
   resources:
     launchpad:
       resource_groups:
+        asvm_vnet:
+          name: caf-asvm-networking
         level3:
           name: caf-level3
           tags:
@@ -44,6 +49,18 @@ asvm:
           account_tier: Standard
           shared_access_key_enabled: false
           account_replication_type: GRS
+          network:
+            bypass: 
+              - Logging
+              - Metrics
+              - AzureServices
+            default_action: Deny
+{% if PUBLIC_IP_WHITE_LIST is defined %}
+            ip_rules:
+{% for ip in PUBLIC_IP_WHITE_LIST %}
+              - {{ ip }}
+{% endfor %}
+{% endif %}
           blob_properties:
             versioning_enabled: true
             last_access_time_enabled: true
@@ -54,10 +71,30 @@ asvm:
           containers:
             tfstate:
               name: tfstate
+{% if private_endpoints is defined %}
+          private_endpoints:
+            level3:
+              name: stg-level3
+              resource_group_key: level3
+              vnet_key: vnet_region1
+              subnet_key: level3
+              private_service_connection:
+                name: stg-level3-link
+                is_manual_connection: false
+                subresource_names:
+                  - blob
+{% if private_endpoints is defined and private_dns is defined %}
+              private_dns:
+                zone_group_name: default
+                lz_key: connectivity_private_dns_prod
+                keys:
+                  - privatelink.blob.core.windows.net
+{% endif %}
+{% endif %}
           tags:
             ## Those tags must never be changed after being set as they are used by the rover to locate the launchpad and the tfstates.
             # Only adjust the environment value at creation time
-            caf_environment: {{topology.caf_environment}}
+            caf_environment: {{ caf_environment }}
             caf_launchpad: launchpad
             caf_tfstate: level3
         level4:
@@ -67,6 +104,18 @@ asvm:
           account_tier: Standard
           shared_access_key_enabled: false
           account_replication_type: GRS
+          network:
+            bypass: 
+              - Logging
+              - Metrics
+              - AzureServices
+            default_action: Deny
+{% if PUBLIC_IP_WHITE_LIST is defined %}
+            ip_rules:
+{% for ip in PUBLIC_IP_WHITE_LIST %}
+              - {{ ip }}
+{% endfor %}
+{% endif %}
           blob_properties:
             versioning_enabled: true
             last_access_time_enabled: true
@@ -74,10 +123,30 @@ asvm:
               days: 7
             delete_retention_policy:
               days: 7
+{% if private_endpoints is defined %}
+          private_endpoints:
+            level4:
+              name: stg-level4
+              resource_group_key: level4
+              vnet_key: vnet_region1
+              subnet_key: level4
+              private_service_connection:
+                name: stg-level4-link
+                is_manual_connection: false
+                subresource_names:
+                  - blob
+{% if private_endpoints is defined and private_dns is defined %}
+              private_dns:
+                zone_group_name: default
+                lz_key: connectivity_private_dns_prod
+                keys:
+                  - privatelink.blob.core.windows.net
+{% endif %}
+{% endif %}
           tags:
             ## Those tags must never be changed after being set as they are used by the rover to locate the launchpad and the tfstates.
             # Only adjust the environment value at creation time
-            caf_environment: {{topology.caf_environment}}
+            caf_environment: {{ caf_environment }}
             caf_launchpad: launchpad
             caf_tfstate: level4
 
@@ -85,9 +154,164 @@ asvm:
         level3:
           name: l3
           resource_group_key: level3
+          purge_protection_enabled: {{ keyvault_purge_protection_enabled }}
+          enable_rbac_authorization: {{ keyvault_enable_rbac_authorization }}
+          network:
+            bypass: AzureServices
+            default_action: Deny
+{% if PUBLIC_IP_WHITE_LIST is defined %}
+            ip_rules:
+{% for ip in PUBLIC_IP_WHITE_LIST %}
+              - {{ ip }}
+{% endfor %}
+{% endif %}
+{% if private_endpoints is defined %}
+          private_endpoints:
+            level3:
+              name: kv-level3
+              resource_group_key: level3
+              vnet_key: vnet_region1
+              subnet_key: level3
+              private_service_connection:
+                name: kv-level3-link
+                is_manual_connection: false
+                subresource_names:
+                  - vault
+{% if private_endpoints is defined and private_dns is defined %}
+              private_dns:
+                zone_group_name: default
+                lz_key: connectivity_private_dns_prod
+                keys:
+                  - privatelink.vaultcore.azure.net
+{% endif %}
+{% endif %}
+{% if keyvault_enable_rbac_authorization == false %}
+          creation_policies:
+            bootstrap_user:
+              object_id: "{{ billing_subscription_role_delegations.azuread_user_ea_account_owner_object_id }}"
+              secret_permissions:
+                - "Set"
+                - "Get"
+                - "List"
+                - "Delete"
+                - "Purge"
+                - "Recover"
+{% endif %}
+          tags:
+            caf_tfstate: level3
+            caf_environment: {{ caf_environment }}
         level4:
           name: l4
           resource_group_key: level4
+          purge_protection_enabled: {{ keyvault_purge_protection_enabled }}
+          enable_rbac_authorization: {{ keyvault_enable_rbac_authorization }}
+          network:
+            bypass: AzureServices
+            default_action: Deny
+{% if PUBLIC_IP_WHITE_LIST is defined %}
+            ip_rules:
+{% for ip in PUBLIC_IP_WHITE_LIST %}
+              - {{ ip }}
+{% endfor %}
+{% endif %}
+{% if private_endpoints is defined %}
+          private_endpoints:
+            level4:
+              name: kv-level4
+              resource_group_key: level4
+              vnet_key: vnet_region1
+              subnet_key: level4
+              private_service_connection:
+                name: kv-level4-link
+                is_manual_connection: false
+                subresource_names:
+                  - vault
+{% if private_endpoints is defined and private_dns is defined %}
+              private_dns:
+                zone_group_name: default
+                lz_key: connectivity_private_dns_prod
+                keys:
+                  - privatelink.vaultcore.azure.net
+{% endif %}
+{% endif %}
+{% if keyvault_enable_rbac_authorization == false %}
+          creation_policies:
+            bootstrap_user:
+              object_id: "{{ billing_subscription_role_delegations.azuread_user_ea_account_owner_object_id }}"
+              secret_permissions:
+                - "Set"
+                - "Get"
+                - "List"
+                - "Delete"
+                - "Purge"
+                - "Recover"
+{% endif %}
+          tags:
+            caf_tfstate: level4
+            caf_environment: {{ caf_environment }}
+
+      virtual_networks:
+        vnet_region1:
+          name: gitops_vnet_asvm
+          resource_group_key: asvm_vnet
+          address_space: 
+            - 10.100.1.0/24
+{% if secure_firewalls_resources is defined %}
+          dns_servers_keys:
+            secure_firewall_prod:
+              lz_key: connectivity_secure_firewalls_prod
+              key: fw_secure_prod
+              resource_type: azurerm_firewalls
+{% endif %}
+          subnets:
+            level3:
+              name: caf-level3
+              cidr: 
+                - 10.100.1.0/27
+              service_endpoints:
+                - Microsoft.KeyVault
+                - Microsoft.Storage
+{% if private_endpoints is defined %}
+              enforce_private_link_endpoint_network_policies: true
+{% endif %}
+            level4:
+              name: caf-level4
+              cidr: 
+                - 10.100.1.32/27
+              service_endpoints:
+                - Microsoft.KeyVault
+                - Microsoft.Storage
+{% if private_endpoints is defined %}
+              enforce_private_link_endpoint_network_policies: true
+{% endif %}
+            credentials:
+              name: credentials
+              cidr: 
+                - 10.100.1.64/27
+              service_endpoints:
+                - Microsoft.KeyVault
+                - Microsoft.Storage
+{% if private_endpoints is defined %}
+              enforce_private_link_endpoint_network_policies: true
+{% endif %}
+
+      virtual_hub_connections:
+        vnet_to_hub:
+          name: vnet-asvm-prod-TO-vhub-prod
+          virtual_hub:
+            lz_key: connectivity_virtual_hubs_prod
+            key: prod
+          vnet:
+            vnet_key: vnet_region1
+          # to route internet traffic through firewall in secure hub, set internet_security_enabled to true
+          internet_security_enabled: true
+          routing:
+            firewall_manager:
+              virtual_hub_route_table_key: defaultRouteTable
+              propagated_route_table:
+                labels: ["none"] # To route vnet to vnet traffic through firewall manager (private traffic)
+                virtual_hub_route_table_keys:
+                  - noneRouteTable # Route internet traffic through firewall manager (private traffic)
 
 
       azuread_groups:
@@ -96,3 +320,113 @@ asvm:
 
         caf_ac_landingzone_maintainers_prod:
           name: caf_ac_landingzone_maintainers_prod
+
+      role_mapping:
+        built_in_role_mapping:
+          resource_groups:
+            level3:
+              Reader:
+{% if topology.azure_landing_zones.identity.azuread_identity_mode != 'logged_in_user' and launchpad_azuread_groups is defined %}
+                object_ids:
+                  keys:
+                    - {{launchpad_azuread_groups.caf_platform_maintainers.id}}           # caf_platform_maintainers
+                    - {{launchpad_azuread_groups.subscription_creation_landingzones.id}} # subscription_creation_landingzones
+                azuread_groups:
+                  keys:
+                    - caf_ac_landingzone_maintainers_non_prod
+                    - caf_ac_landingzone_maintainers_prod
+{% else %}
+                logged_in:
+                  keys:
+                    - user
+{% endif %}
+            level4:
+              Reader:
+{% if topology.azure_landing_zones.identity.azuread_identity_mode != 'logged_in_user' and launchpad_azuread_groups is defined %}
+                object_ids:
+                  keys:
+                    - {{launchpad_azuread_groups.caf_platform_maintainers.id}}           # caf_platform_maintainers
+                    - {{launchpad_azuread_groups.subscription_creation_landingzones.id}} # subscription_creation_landingzones
+                azuread_groups:
+                  keys:
+                    - caf_ac_landingzone_maintainers_non_prod
+                    - caf_ac_landingzone_maintainers_prod
+{% else %}
+                logged_in:
+                  keys:
+                    - user
+{% endif %}
+          storage_accounts:
+            level3:
+              Storage Blob Data Contributor:
+{% if topology.azure_landing_zones.identity.azuread_identity_mode != 'logged_in_user' and launchpad_azuread_groups is defined %}
+                object_ids:
+                  keys:
+                    - {{launchpad_azuread_groups.caf_platform_maintainers.id}}           # caf_platform_maintainers
+                    - {{launchpad_azuread_groups.subscription_creation_landingzones.id}} # subscription_creation_landingzones
+{% else %}
+                logged_in:
+                  keys:
+                    - user
+{% endif %}
+{% if topology.azure_landing_zones.identity.azuread_identity_mode != 'logged_in_user' and launchpad_azuread_groups is defined %}
+              Owner:
+                object_ids:
+                  keys:
+                    - {{launchpad_azuread_groups.subscription_creation_landingzones.id}} # subscription_creation_landingzones
+{% endif %}
+            level4:
+              Storage Blob Data Contributor:
+{% if topology.azure_landing_zones.identity.azuread_identity_mode != 'logged_in_user' and launchpad_azuread_groups is defined %}
+                object_ids:
+                  keys:
+                    - {{launchpad_azuread_groups.caf_platform_maintainers.id}}           # caf_platform_maintainers
+                    - {{launchpad_azuread_groups.subscription_creation_landingzones.id}} # subscription_creation_landingzones
+{% else %}
+                logged_in:
+                  keys:
+                    - user
+{% endif %}
+{% if topology.azure_landing_zones.identity.azuread_identity_mode != 'logged_in_user' and launchpad_azuread_groups is defined %}
+              Owner:
+                object_ids:
+                  keys:
+                    - {{launchpad_azuread_groups.subscription_creation_landingzones.id}} # subscription_creation_landingzones
+{% endif %}
+          keyvaults:
+            level3:
+              Key Vault Secrets Officer:
+{% if topology.azure_landing_zones.identity.azuread_identity_mode != 'logged_in_user' and launchpad_azuread_groups is defined %}
+                object_ids:
+                  keys:
+                    - {{launchpad_azuread_groups.caf_platform_maintainers.id}}           # caf_platform_maintainers
+                    - {{launchpad_azuread_groups.level0.id}} # level0
+{% else %}
+                logged_in:
+                  keys:
+                    - user
+{% endif %}
+{% if topology.azure_landing_zones.identity.azuread_identity_mode != 'logged_in_user' and launchpad_azuread_groups is defined %}
+              Key Vault Secrets User:
+                object_ids:
+                  keys:
+                    - {{launchpad_azuread_groups.subscription_creation_landingzones.id}}
+{% endif %}
+            level4:
+              Key Vault Secrets Officer:
+{% if topology.azure_landing_zones.identity.azuread_identity_mode != 'logged_in_user' and launchpad_azuread_groups is defined %}
+                object_ids:
+                  keys:
+                    - {{launchpad_azuread_groups.caf_platform_maintainers.id}}           # caf_platform_maintainers
+                    - {{launchpad_azuread_groups.level0.id}} # level0
+{% else %}
+                logged_in:
+                  keys:
+                    - user
+{% endif %}
+{% if topology.azure_landing_zones.identity.azuread_identity_mode != 'logged_in_user' and launchpad_azuread_groups is defined %}
+              Key Vault Secrets User:
+                object_ids:
+                  keys:
+                    - {{launchpad_azuread_groups.subscription_creation_landingzones.id}}
+{% endif %}

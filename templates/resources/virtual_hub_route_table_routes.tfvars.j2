@@ -1,0 +1,22 @@
+virtual_hub_route_table_routes = {
+{% for key, value in resources[tfstate_resource].resources[subscription_key].virtual_hub_route_table_routes.items() %}
+  {{ key }} = {
+      name = "{{value.name}}"
+      virtual_hub = {
+        lz_key = "{{value.virtual_hub.lz_key}}"
+        key = "{{value.virtual_hub.key}}"
+      }
+      route_table = {
+        name = "{{value.route_table.name}}"
+      }
+      destinations_type = "{{value.destinations_type}}"
+      next_hop_type = "{{value.next_hop_type}}"
+      next_hop = {
+        resource_type = "{{value.next_hop.resource_type}}"
+        lz_key = "{{value.next_hop.lz_key}}"
+        key = "{{value.next_hop.key}}"
+      }
+      destinations = {{ value.destinations | replace('None','[]') | replace('\'','\"') }}
+  }
+{% endfor %}
+}

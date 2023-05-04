@@ -3,6 +3,7 @@ locals {
     var.compute,
     {
       aks_clusters                        = var.aks_clusters
+      aro_clusters                        = var.aro_clusters
       availability_sets                   = var.availability_sets
       azure_container_registries          = var.azure_container_registries
       batch_accounts                      = var.batch_accounts

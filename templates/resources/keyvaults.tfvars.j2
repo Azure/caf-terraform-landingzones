@@ -30,7 +30,6 @@
 {% endfor %}
       }
 {% endif %}
-{% include 'network_acls.j2' %}
 {% if value.creation_policies is defined %}
     creation_policies = {
 {% if resources.platform_identity is defined %}

@@ -25,7 +25,7 @@ gitops_agents:
           launchpad:
 
   resources:
-    gitops_agents:
+    launchpad:
 
       container_groups:
         level0:
@@ -36,13 +36,18 @@ gitops_agents:
             key: gitops
           ip_address_type: Private
           os_type: Linux
-          restart_policy: OnFailure
+          restart_policy: Never
           network_profile:
             key: level0
+{% if secure_firewalls_resources is defined %}
+          dns_config:
+            nameservers:
+              - {{ secure_firewalls_resources[env | default('prod')].fw_secure_prod.virtual_hub[0].private_ip_address }}
+{% endif %}
           containers:
             rover_level0:
               name: rover-level0
-              image: aztfmod/rover-agent:{{ ROVER_AGENT_DOCKER_IMAGE }}
+              image: {{topology.gitops_default_rover_image}}
               cpu: 4
               memory: 2
               ports:
@@ -66,13 +71,18 @@ gitops_agents:
             key: gitops
           ip_address_type: Private
           os_type: Linux
-          restart_policy: OnFailure
+          restart_policy: Never
           network_profile:
             key: level0
+{% if secure_firewalls_resources is defined %}
+          dns_config:
+            nameservers:
+              - {{ secure_firewalls_resources[env | default('prod')].fw_secure_prod.virtual_hub[0].private_ip_address }}
+{% endif %}
           containers:
             rover_agent{{i}}:
               name: rover-agent{{i}}
-              image: aztfmod/rover-agent:{{ ROVER_AGENT_DOCKER_IMAGE }}
+              image: {{topology.gitops_default_rover_image}}
               cpu: 4
               memory: 2
               ports:

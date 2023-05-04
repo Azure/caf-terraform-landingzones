@@ -56,7 +56,7 @@ private_dns_firewalls_{{env}}:
 
       azurerm_firewalls:
         fw_{{env}}_dns:
-          name: fw-{{env}}-dns-01
+          name: dns-{{env}}-01
           resource_group_key: firewall
           vnet_key: vnet
           sku_tier: Standard
@@ -91,3 +91,12 @@ private_dns_firewalls_{{env}}:
             key: {{env}}
           vnet:
             vnet_key: vnet
+          # to route internet traffic through firewall in secure hub, set internet_security_enabled to true
+          internet_security_enabled: true
+          routing:
+            firewall_manager:
+              virtual_hub_route_table_key: defaultRouteTable
+              propagated_route_table:
+                labels: ["none"] # To route vnet to vnet traffic through firewall manager (private traffic)
+                virtual_hub_route_table_keys:
+                  - noneRouteTable # Route internet traffic through firewall manager (private traffic)
