@@ -45,12 +45,12 @@ provider "azurerm" {
       purge_soft_delete_on_destroy = var.provider_azurerm_features_cognitive_account.purge_soft_delete_on_destroy
     }
     key_vault {
-      purge_soft_delete_on_destroy = var.provider_azurerm_features_keyvault.purge_soft_delete_on_destroy
+      purge_soft_delete_on_destroy = try(var.provider_azurerm_features_keyvault.purge_soft_delete_on_destroy, false)
       # purge_soft_deleted_certificates_on_destroy = var.provider_azurerm_features_keyvault.purge_soft_deleted_certificates_on_destroy
       # purge_soft_deleted_keys_on_destroy         = var.provider_azurerm_features_keyvault.purge_soft_deleted_keys_on_destroy
       # purge_soft_deleted_secrets_on_destroy      = var.provider_azurerm_features_keyvault.purge_soft_deleted_secrets_on_destroy
       # recover_soft_deleted_certificates          = var.provider_azurerm_features_keyvault.recover_soft_deleted_certificates
-      # recover_soft_deleted_key_vaults            = var.provider_azurerm_features_keyvault.recover_soft_deleted_key_vaults
+      recover_soft_deleted_key_vaults            = try(var.provider_azurerm_features_keyvault.recover_soft_deleted_key_vaults, true)
       # recover_soft_deleted_keys                  = var.provider_azurerm_features_keyvault.recover_soft_deleted_keys
       # recover_soft_deleted_secrets               = var.provider_azurerm_features_keyvault.recover_soft_deleted_secrets
     }
