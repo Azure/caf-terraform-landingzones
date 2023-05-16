@@ -102,6 +102,9 @@ variable "networking_interface_asg_associations" {
 variable "network_security_group_definition" {
   default = {}
 }
+variable "network_security_security_rules" {
+  default = {}
+}
 variable "private_endpoints" {
   default = {}
 }
