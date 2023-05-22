@@ -51,6 +51,7 @@ module "solution" {
   tenant_id                             = var.tenant_id
   tfstates                              = var.tfstates
   user_type                             = var.user_type
+  var_folder_path                       = var.var_folder_path
   webapp                                = local.webapp
 
   diagnostics = {
