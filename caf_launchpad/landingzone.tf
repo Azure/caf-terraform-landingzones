@@ -8,6 +8,7 @@ module "launchpad" {
 
   current_landingzone_key               = var.landingzone.key
   custom_role_definitions               = var.custom_role_definitions
+  data_sources                          = try(local.data_sources.data, {})
   enable                                = var.enable
   event_hub_namespaces                  = var.event_hub_namespaces
   global_settings                       = local.global_settings

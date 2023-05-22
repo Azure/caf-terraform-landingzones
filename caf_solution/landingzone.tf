@@ -14,6 +14,7 @@ module "solution" {
   current_landingzone_key               = try(var.landingzone.key, var.landingzone[var.backend_type].key)
   custom_role_definitions               = var.custom_role_definitions
   data_factory                          = local.data_factory
+  data_sources                          = try(local.data_sources.data, {})
   database                              = local.database
   data_protection                       = local.data_protection
   diagnostic_storage_accounts           = var.diagnostic_storage_accounts
