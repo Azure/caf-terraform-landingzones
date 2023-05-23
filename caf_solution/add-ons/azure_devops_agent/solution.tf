@@ -1,6 +1,10 @@
 module "caf" {
   source  = "aztfmod/caf/azurerm"
-  version = "~>5.4.2"
+  version = "~>5.6.8"
+
+  providers = {
+    azurerm.vhub = azurerm.vhub
+  }
 
   azuread                     = local.azuread
   current_landingzone_key     = var.landingzone.key
@@ -19,11 +23,13 @@ module "caf" {
   managed_identities          = var.managed_identities
   role_mapping                = var.role_mapping
   custom_role_definitions     = var.custom_role_definitions
+  var_folder_path             = var.var_folder_path
   compute = {
     virtual_machines = var.virtual_machines
   }
   storage = {
     storage_account_blobs = var.storage_account_blobs
+    storage_containers    = var.storage_containers
   }
 
   # Pass the remote objects you need to connect to.
@@ -32,5 +38,6 @@ module "caf" {
     vnets              = local.remote.vnets
     managed_identities = local.remote.managed_identities
     azuread_groups     = local.remote.azuread_groups
+    resource_groups    = local.remote.resource_groups
   }
 }

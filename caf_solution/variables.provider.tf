@@ -1,6 +1,6 @@
 variable "provider_azurerm_features_api_management" {
   default = {
-    purge_soft_delete_on_destroy         = true
+    purge_soft_delete_on_destroy         = false
     recover_soft_deleted_api_managements = true
   }
 }
@@ -13,7 +13,7 @@ variable "provider_azurerm_features_application_insights" {
 
 variable "provider_azurerm_features_cognitive_account" {
   default = {
-    purge_soft_delete_on_destroy = true
+    purge_soft_delete_on_destroy = false
   }
 }
 
@@ -32,19 +32,19 @@ variable "provider_azurerm_features_keyvault" {
 
 variable "provider_azurerm_features_log_analytics_workspace" {
   default = {
-    permanently_delete_on_destroy = true
+    permanently_delete_on_destroy = false
   }
 }
 
 variable "provider_azurerm_features_resource_group" {
   default = {
-    prevent_deletion_if_contains_resources = false
+    prevent_deletion_if_contains_resources = true
   }
 }
 
 variable "provider_azurerm_features_template_deployment" {
   default = {
-    delete_nested_items_during_deletion = false
+    delete_nested_items_during_deletion = true
   }
 }
 
