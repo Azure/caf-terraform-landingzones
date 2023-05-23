@@ -51,7 +51,7 @@ module "launchpad" {
   compute = {
     bastion_hosts              = try(var.compute.bastion_hosts, var.bastion_hosts)
     container_groups           = var.container_groups
-    azure_container_registries = try(var.compute.private_dns, var.azure_container_registries)
+    azure_container_registries = try(var.compute.azure_container_registries, var.azure_container_registries)
     virtual_machines           = try(var.compute.virtual_machines, var.virtual_machines)
   }
 
