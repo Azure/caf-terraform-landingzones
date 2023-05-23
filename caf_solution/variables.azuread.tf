@@ -25,6 +25,12 @@ variable "azuread_credential_policies" {
 variable "azuread_roles" {
   default = {}
 }
+variable "azuread_administrative_units" {
+  default = {}
+}
+variable "azuread_administrative_unit_members" {
+  default = {}
+}
 variable "azuread_service_principals" {
   default = {}
 }

@@ -2,6 +2,8 @@ locals {
   azuread = merge(
     var.azuread,
     {
+      azuread_administrative_unit_members = var.azuread_administrative_unit_members
+      azuread_administrative_units        = var.azuread_administrative_units
       azuread_api_permissions             = var.azuread_api_permissions
       azuread_applications                = var.azuread_applications
       azuread_apps                        = var.azuread_apps
