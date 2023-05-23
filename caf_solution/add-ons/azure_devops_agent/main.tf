@@ -7,11 +7,11 @@ terraform {
     }
     random = {
       source  = "hashicorp/random"
-      version = "~> 2.2.1"
+      version = "~> 3.3.1"
     }
     null = {
       source  = "hashicorp/null"
-      version = "~> 2.1.0"
+      version = "~> 3.1.0"
     }
     external = {
       source  = "hashicorp/external"
@@ -19,18 +19,17 @@ terraform {
     }
     azuredevops = {
       source  = "microsoft/azuredevops"
-      version = "~> 0.1.1"
+      version = "~> 0.5.0"
     }
     tls = {
       source  = "hashicorp/tls"
-      version = "~> 2.2.0"
+      version = "~> 3.1.0"
     }
     azurecaf = {
       source  = "aztfmod/azurecaf"
       version = "~> 1.2.0"
     }
   }
-  required_version = ">= 0.13"
 }
 
 provider "azurerm" {
@@ -41,6 +40,12 @@ provider "azurerm" {
       purge_soft_delete_on_destroy = true
     }
   }
+}
+
+provider "azurerm" {
+  alias                      = "vhub"
+  skip_provider_registration = true
+  features {}
 }
 
 data "azurerm_client_config" "current" {}
