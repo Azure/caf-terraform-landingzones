@@ -1,6 +1,6 @@
 module "solution" {
   source  = "aztfmod/caf/azurerm"
-  version = "5.6.8"
+  version = "5.6.9"
 
   providers = {
     azurerm.vhub = azurerm.vhub
@@ -51,6 +51,7 @@ module "solution" {
   tenant_id                             = var.tenant_id
   tfstates                              = var.tfstates
   user_type                             = var.user_type
+  var_folder_path                       = var.var_folder_path
   webapp                                = local.webapp
 
   diagnostics = {
