@@ -116,6 +116,9 @@ variable "azuread_users" {
 variable "azuread_roles" {
   default = {}
 }
+variable "azuread_conditional_access" {
+  default = {}
+}
 variable "azuread_credential_policies" {
   default = {}
 }

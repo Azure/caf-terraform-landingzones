@@ -10,6 +10,9 @@ variable "azuread_applications" {
 variable "azuread_apps" {
   default = {}
 }
+variable "azuread_conditional_access" {
+  default = {}
+}
 variable "azuread_credentials" {
   default = {}
 }
