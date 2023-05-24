@@ -14,6 +14,12 @@ variable "cosmos_dbs" {
 variable "cosmosdb_sql_databases" {
   default = {}
 }
+variable "cosmosdb_role_definitions" {
+  default = {}
+}
+variable "cosmosdb_role_mapping" {
+  default = {}
+}
 variable "database" {
   description = "Database configuration objects"
   default     = {}
