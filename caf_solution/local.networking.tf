@@ -40,6 +40,7 @@ locals {
       network_interface_backend_address_pool_association      = var.network_interface_backend_address_pool_association
       network_profiles                                        = var.network_profiles
       network_security_group_definition                       = var.network_security_group_definition
+      network_security_security_rules                         = var.network_security_security_rules
       network_watchers                                        = var.network_watchers
       networking_interface_asg_associations                   = var.networking_interface_asg_associations
       network_interface_backend_address_pool_association      = var.network_interface_backend_address_pool_association
