@@ -34,7 +34,7 @@ locals {
         sas_token            = try(value.sas_token, null) != null ? var.sas_token : null
         use_azuread_auth     = try(value.use_azuread_auth, true)
       } if try(value.backend_type, "azurerm") == "azurerm"
-    } 
+    }
     remote = {
       for key, value in try(var.landingzone.tfstates, {}) : key => {
         hostname     = try(value.hostname, var.tf_cloud_hostname)

@@ -2,14 +2,14 @@
 
 module "enterprise_scale" {
   source  = "Azure/caf-enterprise-scale/azurerm"
-  version = "1.1.3"
+  version = "3.3.0"
 
   # source = "/tf/caf/alz"
 
   providers = {
     azurerm              = azurerm
-    azurerm.connectivity = azurerm
-    azurerm.management   = azurerm
+    azurerm.connectivity = azurerm.connectivity
+    azurerm.management   = azurerm.management
   }
 
   root_parent_id   = var.root_parent_id == null ? data.azurerm_client_config.current.tenant_id : var.root_parent_id
@@ -23,4 +23,23 @@ module "enterprise_scale" {
   root_id                    = var.root_id
   root_name                  = var.root_name
   subscription_id_overrides  = local.subscription_id_overrides
+
+  # To support native alz deployment mode
+  configure_connectivity_resources = var.configure_connectivity_resources
+  configure_identity_resources     = var.configure_identity_resources
+  configure_management_resources   = var.configure_management_resources
+  deploy_connectivity_resources    = var.deploy_connectivity_resources
+  deploy_diagnostics_for_mg        = var.deploy_diagnostics_for_mg
+  deploy_identity_resources        = var.deploy_identity_resources
+  deploy_management_resources      = var.deploy_management_resources
+  disable_telemetry                = var.disable_telemetry
+  subscription_id_connectivity     = local.subscription_id_connectivity
+  subscription_id_management       = local.subscription_id_management
+  subscription_id_identity         = local.subscription_id_identity
+}
+
+locals {
+  subscription_id_connectivity     = var.subscription_id_connectivity == null ? data.azurerm_client_config.current.subscription_id : var.subscription_id_connectivity
+  subscription_id_management       = var.subscription_id_management == null ? data.azurerm_client_config.current.subscription_id : var.subscription_id_management
+  subscription_id_identity         = var.subscription_id_identity  == null ? data.azurerm_client_config.current.subscription_id : var.subscription_id_identity
 }

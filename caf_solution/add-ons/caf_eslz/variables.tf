@@ -62,6 +62,16 @@ variable "tags" {
   default = {}
 }
 
+variable "root_parent_id" {
+  type        = string
+  description = "The root_parent_id is used to specify where to set the root for all Landing Zone deployments. Usually the Tenant ID when deploying the core Enterprise-scale Landing Zones."
+  default     = null
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9-_\\(\\)\\.]{1,36}$", var.root_parent_id)) || var.root_parent_id == null
+    error_message = "Value must be a valid Management Group ID, consisting of alphanumeric characters, hyphens, underscores, periods and parentheses."
+  }
+}
 
 variable "root_id" {
   type        = string
@@ -83,12 +93,6 @@ variable "root_name" {
     condition     = can(regex("^[A-Za-z][A-Za-z0-9- ._]{1,22}[A-Za-z0-9]?$", var.root_name))
     error_message = "The root_name value must be between 2 to 24 characters long, start with a letter, end with a letter or number, and can only contain space, hyphen, underscore or period characters."
   }
-}
-
-variable "root_parent_id" {
-  type        = string
-  description = "If specified, will deploy the Enterprise scale bellow the root_parent_id."
-  default     = null
 }
 
 variable "deploy_core_landing_zones" {

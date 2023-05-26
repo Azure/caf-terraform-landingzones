@@ -33,6 +33,7 @@ module "vm_extensions" {
         [
           for key, value in try(var.storage_account_blobs, []) : module.caf.storage_account_blobs[key].url
       ])
+      managed_identity = can(each.value.virtual_machine_extensions.devops_selfhosted_agent.managed_identity.lz_key) ? local.remote.managed_identities[each.value.virtual_machine_extensions.devops_selfhosted_agent.managed_identity.lz_key][each.value.virtual_machine_extensions.devops_selfhosted_agent.managed_identity.key].rbac_id : module.caf.managed_identities[each.value.virtual_machine_extensions.devops_selfhosted_agent.managed_identity.key].rbac_id
     }
   }
 }

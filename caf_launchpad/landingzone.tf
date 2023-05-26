@@ -49,22 +49,27 @@ module "launchpad" {
   }
 
   compute = {
-    bastion_hosts    = try(var.compute.bastion_hosts, var.bastion_hosts)
-    container_groups = var.container_groups
-    virtual_machines = try(var.compute.virtual_machines, var.virtual_machines)
+    bastion_hosts              = try(var.compute.bastion_hosts, var.bastion_hosts)
+    container_groups           = var.container_groups
+    azure_container_registries = try(var.compute.azure_container_registries, var.azure_container_registries)
+    virtual_machines           = try(var.compute.virtual_machines, var.virtual_machines)
   }
 
   networking = {
     azurerm_routes                    = try(var.networking.azurerm_routes, var.azurerm_routes)
     network_profiles                  = var.network_profiles
     network_security_group_definition = try(var.networking.network_security_group_definition, var.network_security_group_definition)
+    private_dns                       = try(var.networking.private_dns, var.private_dns)
     public_ip_addresses               = try(var.networking.public_ip_addresses, var.public_ip_addresses)
     route_tables                      = try(var.networking.route_tables, var.route_tables)
     virtual_hub_connections           = try(var.networking.virtual_hub_connections, var.virtual_hub_connections)
+    vnet_peerings_v1                  = try(var.networking.vnet_peerings_v1, var.vnet_peerings_v1)
     vnets                             = try(var.networking.vnets, var.vnets)
   }
 
   security = {
     keyvault_keys = var.keyvault_keys
   }
+
+  storage = local.storage
 }

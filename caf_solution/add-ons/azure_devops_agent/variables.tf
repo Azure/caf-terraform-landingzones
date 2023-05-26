@@ -61,6 +61,9 @@ variable "mssql_servers" {
 variable "storage_accounts" {
   default = {}
 }
+variable "storage_containers" {
+  default = {}
+}
 variable "storage_account_blobs" {
   default = {}
 }
@@ -102,4 +105,7 @@ variable "dynamic_keyvault_secrets" {
 }
 variable "managed_identities" {
   default = {}
+}
+variable "var_folder_path" {
+  default = null
 }
