@@ -1,9 +1,0 @@
-- name: load variables (for {{service}})
-  include_tasks: "load_variables_sod_env.yaml"
-  loop: "{{topology.deployments[deployment_mode].scale_out_domains[topology.default_region_key][service].keys()}}"
-  loop_control:
-    loop_var: env
-
-- name: load topology file into resources variable
-  set_fact:
-    merged_resource__to_merge: "{{ merged_resource__to_merge | default({}) | combine( lookup('template', topology_file ) | from_yaml )}}"

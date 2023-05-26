@@ -28,7 +28,7 @@ gitops_agents:
     launchpad:
 
       container_groups:
-        master:
+        level0:
           name: rover-platform
           region: region1
           resource_group:
@@ -38,15 +38,15 @@ gitops_agents:
           os_type: Linux
           restart_policy: Never
           network_profile:
-            key: gitops
-{% if secure_firewalls_resources is defined and secure_firewalls_resources[env|default('prod')] != "" %}
+            key: level0
+{% if secure_firewalls_resources is defined %}
           dns_config:
             nameservers:
               - {{ secure_firewalls_resources[env | default('prod')].fw_secure_prod.virtual_hub[0].private_ip_address }}
 {% endif %}
           containers:
-            rover_master:
-              name: rover-master
+            rover_level0:
+              name: rover-level0
               image: {{topology.gitops_default_rover_image}}
               cpu: 4
               memory: 2
@@ -54,15 +54,15 @@ gitops_agents:
                 ssh:
                   port: 22
                   protocol: TCP
-              secure_environment_variables:
-                AGENT_TOKEN: "{{AGENT_TOKEN}}"
               environment_variables:
                 AGENT_NAME: rover_level0
-                LABELS: master
+                LABELS: platform,master
                 ROVER_RUNNER: true
-                URL: {{GITOPS_SERVER_URL }}
+                URL: {{GITOPS_SERVER_URL}}
+              secure_environment_variables:
+                AGENT_TOKEN: {{AGENT_TOKEN}}
 {% set MAX_RUNNERS = RUNNER_NUMBERS | int %}
-{% for i in range(MAX_RUNNERS) %}
+{% for i in range(MAX_RUNNERS - 1) %}
         agent{{i}}:
           name: rover-platform-agent{{i}}
           region: region1
@@ -73,8 +73,8 @@ gitops_agents:
           os_type: Linux
           restart_policy: Never
           network_profile:
-            key: gitops
-{% if secure_firewalls_resources is defined and secure_firewalls_resources[env|default('prod')] != "" %}
+            key: level0
+{% if secure_firewalls_resources is defined %}
           dns_config:
             nameservers:
               - {{ secure_firewalls_resources[env | default('prod')].fw_secure_prod.virtual_hub[0].private_ip_address }}
@@ -89,27 +89,26 @@ gitops_agents:
                 ssh:
                   port: 22
                   protocol: TCP
-
-              secure_variables_from_command:
-                AGENT_TOKEN: "gh api --method POST -H 'Accept: application/vnd.github.v3+json' /repos/{{ GITOPS_SERVER_URL | regex_replace('^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/?\n]+)/', '') }}/actions/runners/registration-token | jq -r ' {value: .token}'"
               environment_variables:
                 AGENT_NAME: agent{{i}}
                 LABELS: platform
                 ROVER_RUNNER: true
                 URL: {{GITOPS_SERVER_URL}}
+              secure_environment_variables:
+                AGENT_TOKEN: {{AGENT_TOKEN}}
 {% endfor %}
 
       network_profiles:
-        gitops:
+        level0:
           resource_group:
             lz_key: launchpad
             key: gitops
-          name: gitops
+          name: level0
           container_network_interface:
-            name: gitops
+            name: level0
             ip_configurations:
               gitops:
                 name: ipconfig
                 lz_key: launchpad
                 vnet_key: vnet_region1
-                subnet_key: gitops
+                subnet_key: level0

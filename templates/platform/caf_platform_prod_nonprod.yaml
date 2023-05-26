@@ -36,11 +36,14 @@ firewall_rules_path: "{{base_folder}}/platform/firewall_rules"
 deployment_mode: {{deployment_mode}}
 
 terraform_code_repository: https://github.com/Azure/caf-terraform-landingzones.git
-caf_landingzone_branch: {{caf_landingzone_branch | default('fix.bootstrap_order')}}
-default_rover_image: aztfmod/rover-preview:1.4.2-2303.231443
+caf_landingzone_branch: {{caf_landingzone_branch | default('int.5.6.0')}}
+default_rover_image: aztfmod/rover-preview:1.2.3-2206.301920
 # Default image for self-hosted agents
-gitops_default_rover_image: aztfmod/rover-agent:{{ROVER_AGENT_DOCKER_IMAGE}}
-
+{% if gitops_pipelines == 'github' %}
+gitops_default_rover_image: aztfmod/rover-agent:1.1.9-2206.301920-preview-github
+{% elif gitops_pipelines == 'tfcloud' %}
+gitops_default_rover_image: aztfmod/rover-agent:1.1.9-2206.301920-preview-tfc
+{% endif %}
 
 caf_regions:
 {% for region, location in regions.items() %}
@@ -79,7 +82,7 @@ naming_convention:
   # When set to false use the CAF provider to generate names aligned to CAF guidance
   # true: use the name as defined in the configuration files. You may have to iterate multiple times to prevent conflicts with Azure unique names with servides like storage account, keyvault or log analytics workspace.
   passthrough: false
-  inherit_tags: true
+  inherit_tags: false
   # set: define the prefix to add to all resource names
   # unset: if passthrough is set to false, generate a random prefix
   prefix: {{prefix}}
@@ -105,7 +108,6 @@ enable_azuread_applications: True
 
 enable_azure_subscription_vending_machine: {{bootstrap.enable_azure_subscription_vending_machine | default(bootstrap.enable_azure_subscription_vending_machine)}}
 
-# single_reuse or multi_subscriptions
 subscription_deployment_mode: {{subscription_deployment_mode | default('single_reuse')}}
 
 billing_subscription_role_delegations:
@@ -113,7 +115,7 @@ billing_subscription_role_delegations:
   # false: disable this deployment.
   #     azuread_user_ea_account_owner: set the upn of the user doing the manual deployment of the platform
   #     azuread_user_ea_account_owner_object_id: if that user is already loged-in to an azure cli session you can get the object_id by running:
-  #         az ad signed-in-user show --query id -o tsv
+  #         az ad signed-in-user show --query objectId -o tsv
   #     The remaining attributes are ignored: [billing_account_name, enrollment_account_name]
   enable: false
   # Azure Active Directory User (UPN) that is Account Owner in the EA portal
@@ -145,10 +147,10 @@ initial_subscriptions:
     name: management
     create_alias: false 
     subscription_id: {{sub_management | default(subscription_id.stdout)}}
-  # security:  # Do not rename the key
-  #   name: security
-  #   create_alias: false 
-  #   subscription_id: {{sub_security | default(subscription_id.stdout)}}
+  security:  # Do not rename the key
+    name: security
+    create_alias: false 
+    subscription_id: {{sub_security | default(subscription_id.stdout)}}
 
 deployments:
   scale_out_domain_keys:
@@ -163,13 +165,8 @@ deployments:
         identity: identity.yaml
         management: management.yaml
         asvm: asvm.yaml
-        connectivity: connectivity_l1.yaml
-        # security: security.yaml
-# {% if gitops_agent_compute_type is defined %}
-# {% if gitops_agent_compute_type == "aci" %}
-#         gitops_agents: gitops_agents_aci.yaml
-# {% endif %}
-# {% endif %}
+        security: security.yaml
+        gitops_agents: gitops_agents_aci.yaml
     alz:
       {{default_region_key}}:
         {{alz_mg_prefix}}: alz.yaml
@@ -270,9 +267,9 @@ azure_landing_zones:
     backup_policy:
       vms: default
 
-  # security:
-  #   backup_policy:
-  #     vms: default
+  security:
+    backup_policy:
+      vms: default
 
   connectivity:
     networking_bootstrap:
@@ -293,12 +290,12 @@ management_groups:
   {{region}}:
 {% for key in a_value.keys() %}
     {{alz_mg_prefix}}:
-      management_group_prefix: "{{ alz_mg_prefix | default(bootstrap.management_groups[region].es.management_group_prefix)}}"
-      management_group_name: "{{ alz_mg_name | default(bootstrap.management_groups[region].es.management_group_name)}}"
-      deploy_core_landing_zones: {{bootstrap.management_groups[region].es.deploy_core_landing_zones | default(true)}}
-      clean_up_destination_folder: {{bootstrap.management_groups[region].es.clean_up_destination_folder | default(true)}}
-      update_lib_folder: {{bootstrap.management_groups[region].es.update_lib_folder | default(true)}}
-      version_to_deploy: "{{bootstrap.management_groups[region].es.version_to_deploy | default('v3.3.0')}}"
+      management_group_prefix: "{{ bootstrap.management_groups[region].es.management_group_prefix | default(alz_mg_prefix)}}"
+      management_group_name: "{{ bootstrap.management_groups[region].es.management_group_name | default(alz_mg_name)}}"
+      deploy_core_landing_zones: {{bootstrap.management_groups[region].es.deploy_core_landing_zones | default(True)}}
+      clean_up_destination_folder: {{bootstrap.management_groups[region].es.clean_up_destination_folder | default(True)}}
+      update_lib_folder: {{bootstrap.management_groups[region].es.update_lib_folder | default(True)}}
+      version_to_deploy: "{{bootstrap.management_groups[region].es.version_to_deploy | default('v1.1.3')}}"
 {% if bootstrap.management_groups[region].es.root_parent_id is defined %}
       root_parent_id: "{{bootstrap.management_groups[region][key].root_parent_id}}"
 {% endif %}
@@ -311,14 +308,8 @@ management_groups:
         template_lib_folder: platform/level1/alz
         sub_template_folder: platform/level1/alz
         yaml: platform/level1/alz/ansible.yaml
-        alz_version: v3.3.0
+        alz_version: v1.1.3
         # Do not rename the item_key_name
         tfstate_key_name: alz_{{alz_mg_prefix}}
 {% endfor %}
 {% endfor %}
-
-
-
-# Original input values - 
-bootstrap_sp_object_id: {{bootstrap_sp_object_id}}
-gitops_pipelines: {{gitops_pipelines}}

@@ -1,7 +1,5 @@
 variables_azure_landing_zones:
   private_lib:
-    v3.3.0:
-      caf_landingzone_branch: fix.bootstrap_order
     v2.1.0:
       caf_landingzone_branch: int-5.7.0
     v1.1.3:

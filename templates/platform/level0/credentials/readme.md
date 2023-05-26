@@ -3,20 +3,20 @@
 
 ```bash
 # For manual bootstrap:
-# Login to the subscription {{ caf_launchpad.subscription_name }} with the user {{ billing_subscription_role_delegations.azuread_user_ea_account_owner }}
-rover login -t {{ azure_landing_zones.identity.tenant_name }}
+# Login to the subscription {{ resources.caf_launchpad.subscription_name }} with the user {{ resources.billing_subscription_role_delegations.azuread_user_ea_account_owner }}
+rover login -t {{ resources.azure_landing_zones.identity.tenant_name }}
 
 rover \
-{% if azure_landing_zones.identity.azuread_identity_mode != "logged_in_user" and keyvaults is defined and keyvaults[tfstate_object.identity_aad_key] is defined %}
+{% if resources.azure_landing_zones.identity.azuread_identity_mode != "logged_in_user" and keyvaults is defined %}
   --impersonate-sp-from-keyvault-url {{ keyvaults[tfstate_object.identity_aad_key].vault_uri }} \
 {% endif %}
   -lz {{ landingzones_folder }}/caf_solution \
   -var-folder {{ destination_path }} \
-  -tfstate_subscription_id {{ caf_launchpad.subscription_id }} \
-  -target_subscription {{ caf_launchpad.subscription_id }} \
+  -tfstate_subscription_id {{ resources.caf_launchpad.subscription_id }} \
+  -target_subscription {{ resources.caf_launchpad.subscription_id }} \
   -tfstate {{ resources.tfstates.platform.launchpad_credentials.tfstate }} \
   -launchpad \
-  -env {{ caf_environment }} \
+  -env {{ resources.caf_environment }} \
   -level {{ level }} \
   -p ${TF_DATA_DIR}/{{ resources.tfstates.platform.launchpad_credentials.tfstate }}.tfplan \
   -a plan
@@ -30,16 +30,16 @@ If the plan is not successfull you need to come back to the yaml ignite.yaml, fi
 # On success plan, execute
 
 rover \
-{% if azure_landing_zones.identity.azuread_identity_mode != "logged_in_user" and keyvaults is defined and keyvaults[tfstate_object.identity_aad_key] is defined %}
+{% if resources.azure_landing_zones.identity.azuread_identity_mode != "logged_in_user" and keyvaults is defined %}
   --impersonate-sp-from-keyvault-url {{ keyvaults[tfstate_object.identity_aad_key].vault_uri }} \
 {% endif %}
   -lz {{ landingzones_folder }}/caf_solution \
   -var-folder {{ destination_path }} \
-  -tfstate_subscription_id {{ caf_launchpad.subscription_id }} \
-  -target_subscription {{ caf_launchpad.subscription_id }} \
+  -tfstate_subscription_id {{ resources.caf_launchpad.subscription_id }} \
+  -target_subscription {{ resources.caf_launchpad.subscription_id }} \
   -tfstate {{ resources.tfstates.platform.launchpad_credentials.tfstate }} \
   -launchpad \
-  -env {{ caf_environment }} \
+  -env {{ resources.caf_environment }} \
   -level {{ level }} \
   -p ${TF_DATA_DIR}/{{ resources.tfstates.platform.launchpad_credentials.tfstate }}.tfplan \
   -a apply
@@ -50,9 +50,6 @@ rover \
 # On success, re-execute the rover ignite
 
 ansible-playbook $(readlink -f ./landingzones/templates/ansible/ansible.yaml) \
-  -e base_folder=$(pwd) \
-  -e rover_bootstrap=false \
-  -e topology_file=$(readlink -f ./platform/definition/ignite.yaml) \
   --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)"
 
 ```
@@ -65,7 +62,7 @@ Just re-execute the plan/apply command as above and you will notice the rover wi
 
 When you have successfully deployed the launchpad you can  move to the next step.
 
-{% if billing_subscription_role_delegations.enable %}
+{% if resources.billing_subscription_role_delegations.enable %}
  [[Deploy the billing subscription role delegation](../billing_subscription_role_delegations/readme.md)
 {% else %}
  [Deploy the subscription services](../../level1/subscriptions/readme.md)

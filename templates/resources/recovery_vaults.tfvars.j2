@@ -4,7 +4,7 @@ recovery_vaults = {
     name               = "{{ asr.name }}"
     resource_group_key = "{{ asr.resource_group_key }}"
 
-    region              = "{{ asr.region | default(default_region_key) }}"
+    region              = "{{ asr.region | default(resources.default_region_key) }}"
     soft_delete_enabled = {{ asr.soft_delete_enabled | default(true) | string | lower }}
 {% if asr.backup_policies is defined %}
     backup_policies = {

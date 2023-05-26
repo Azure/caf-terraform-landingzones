@@ -2,8 +2,8 @@ subscription_billing_role_assignments = {
   # Delegated accounts who can create subscriptions.
   # Used by Gitops pipelines
   subscription_creators = {
-    billing_account_name         = "{{ billing_subscription_role_delegations.billing_account_name }}"
-    enrollment_account_name      = "{{ billing_subscription_role_delegations.enrollment_account_name }}"
+    billing_account_name         = "{{ resources.billing_subscription_role_delegations.billing_account_name }}"
+    enrollment_account_name      = "{{ resources.billing_subscription_role_delegations.enrollment_account_name }}"
     billing_role_definition_name = "Enrollment account subscription creator"
 
     principals = {

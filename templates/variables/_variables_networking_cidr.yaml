@@ -1,64 +1,44 @@
 variables_cidr:
   platform:
   #
-  # launchpad services
+  # launchpad landingzone
   #
     launchpad:
       region1:
         prod:
-          address_prefixes: 
-            - 10.101.8.0/23
+          address_prefixes:
             - 10.101.10.0/24
           subnets:
-            level0:
-              - 10.101.10.0/28
-            level1:
-              - 10.101.10.16/28
-            level2:
+            available_cidr:
               - 10.101.10.32/28
-            credentials:
+              - 10.101.10.128/26
+            gitops_agents:
+              - 10.101.10.0/27
+            jumpbox:
               - 10.101.10.48/28
-            gitops:
+            bastion:
               - 10.101.10.64/26
-            runners:
-              - 10.101.8.0/23
+            private_endpoints:
+              - 10.101.10.192/26
       region2:
         prod:
-          address_prefixes: 
-            - 10.102.8.0/23
+          address_prefixes:
             - 10.102.10.0/24
           subnets:
-            level0:
-              - 10.102.10.0/28
-            level1:
-              - 10.102.10.16/28
-            level2:
+            available_cidr:
               - 10.102.10.32/28
-            credentials:
+              - 10.102.10.128/26
+            gitops_agents:
+              - 10.102.10.0/27
+            jumpbox:
               - 10.102.10.48/28
-            gitops:
+            bastion:
               - 10.102.10.64/26
-            runners:
-              - 10.102.8.0/23
+            private_endpoints:
+              - 10.102.10.192/26
 
   #
-  # asvm services
-  #
-    asvm:
-      region1:
-        prod:
-          address_prefixes: 
-            - 10.101.1.0/24
-          subnets:
-            level3:
-                - 10.101.1.0/27
-            level4:
-                - 10.101.1.32/27
-            credentials:
-                - 10.101.1.64/27
-                
-  #
-  # connectivity services
+  # connectivity landingzone
   #
     virtual_hubs:
       region1:
@@ -74,7 +54,7 @@ variables_cidr:
 
 
   #
-  # private_dns_firewalls services
+  # private_dns_firewalls landingzone
   #
     private_dns_firewalls:
       region1:

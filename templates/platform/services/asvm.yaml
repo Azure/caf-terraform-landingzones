@@ -18,34 +18,26 @@ asvm:
     landingzone:
       global_settings_key:
         platform:
-          management:
+          virtual_hubs: prod
       remote_tfstates:
         platform:
           management:
-{% if resources.tfstates.platform['virtual_hubs'] is defined %}
           virtual_hubs: prod
-{% endif %}
-{% if resources.tfstates.platform['private_dns'] is defined %}
           private_dns: prod
-{% endif %}
-{% if resources.tfstates.platform['secure_firewalls'] is defined %}
           secure_firewalls: prod
-{% endif %}
-{% if resources.tfstates.platform['identity_level2'] is defined %}
           identity_level2: prod
-{% endif %}
 
   resources:
     launchpad:
       resource_groups:
         asvm_vnet:
-          name: asvm-networking
+          name: caf-asvm-networking
         level3:
-          name: level3
+          name: caf-level3
           tags:
             level: level3
         level4:
-          name: level4
+          name: caf-level4
           tags:
             level: level4
 
@@ -76,6 +68,9 @@ asvm:
               days: 7
             delete_retention_policy:
               days: 7
+          containers:
+            tfstate:
+              name: tfstate
 {% if private_endpoints is defined %}
           private_endpoints:
             level3:
@@ -84,11 +79,11 @@ asvm:
               vnet_key: vnet_region1
               subnet_key: level3
               private_service_connection:
-                name: stg-level3
+                name: stg-level3-link
                 is_manual_connection: false
                 subresource_names:
                   - blob
-{% if private_endpoints is defined and private_dns is defined and private_dns[env|default('prod')] != "" %}
+{% if private_endpoints is defined and private_dns is defined %}
               private_dns:
                 zone_group_name: default
                 lz_key: connectivity_private_dns_prod
@@ -136,11 +131,11 @@ asvm:
               vnet_key: vnet_region1
               subnet_key: level4
               private_service_connection:
-                name: stg-level4
+                name: stg-level4-link
                 is_manual_connection: false
                 subresource_names:
                   - blob
-{% if private_endpoints is defined and private_dns is defined and private_dns[env|default('prod')] != "" %}
+{% if private_endpoints is defined and private_dns is defined %}
               private_dns:
                 zone_group_name: default
                 lz_key: connectivity_private_dns_prod
@@ -154,12 +149,6 @@ asvm:
             caf_environment: {{ caf_environment }}
             caf_launchpad: launchpad
             caf_tfstate: level4
-
-      storage_containers:
-        level3_tfstate:
-          name: tfstate
-          storage_account:
-            key: level3
 
       keyvaults:
         level3:
@@ -188,7 +177,7 @@ asvm:
                 is_manual_connection: false
                 subresource_names:
                   - vault
-{% if private_endpoints is defined and private_dns is defined and private_dns[env|default('prod')] != "" %}
+{% if private_endpoints is defined and private_dns is defined %}
               private_dns:
                 zone_group_name: default
                 lz_key: connectivity_private_dns_prod
@@ -237,7 +226,7 @@ asvm:
                 is_manual_connection: false
                 subresource_names:
                   - vault
-{% if private_endpoints is defined and private_dns is defined and private_dns[env|default('prod')] != "" %}
+{% if private_endpoints is defined and private_dns is defined %}
               private_dns:
                 zone_group_name: default
                 lz_key: connectivity_private_dns_prod
@@ -267,7 +256,7 @@ asvm:
           resource_group_key: asvm_vnet
           address_space: 
             - 10.100.1.0/24
-{% if secure_firewalls_resources is defined and secure_firewalls_resources[env | default('prod')] != "" %}
+{% if secure_firewalls_resources is defined %}
           dns_servers_keys:
             secure_firewall_prod:
               lz_key: connectivity_secure_firewalls_prod
@@ -306,24 +295,9 @@ asvm:
               enforce_private_link_endpoint_network_policies: true
 {% endif %}
 
-{% if lookup('env', 'bootstrap_vnet_id') is defined %}
-      vnet_peerings_v1:
-        bootstrap_TO_asvm:
-          name: bootstrap-TO-asvm
-          from:
-            id: {{ lookup('env', 'bootstrap_vnet_id') }}
-          to:
-            vnet_key: vnet_region1
-        asvm_TO_bootstrap:
-          name: asvm-TO-bootstrap
-          from:
-            vnet_key: vnet_region1
-          to:
-            id: {{ lookup('env', 'bootstrap_vnet_id') }}
-{% else %}
       virtual_hub_connections:
         vnet_to_hub:
-          name: vnet-asvm-prod
+          name: vnet-asvm-prod-TO-vhub-prod
           virtual_hub:
             lz_key: connectivity_virtual_hubs_prod
             key: prod
@@ -338,14 +312,14 @@ asvm:
                 labels: ["none"] # To route vnet to vnet traffic through firewall manager (private traffic)
                 virtual_hub_route_table_keys:
                   - noneRouteTable # Route internet traffic through firewall manager (private traffic)
-{% endif %}
+
 
       azuread_groups:
-        caf_landingzone_maintainers_non_prod:
-          name: caf_landingzone_maintainers_non_prod
+        caf_ac_landingzone_maintainers_non_prod:
+          name: caf_ac_landingzone_maintainers_non_prod
 
-        caf_landingzone_maintainers_prod:
-          name: caf_landingzone_maintainers_prod
+        caf_ac_landingzone_maintainers_prod:
+          name: caf_ac_landingzone_maintainers_prod
 
       role_mapping:
         built_in_role_mapping:
@@ -357,11 +331,10 @@ asvm:
                   keys:
                     - {{launchpad_azuread_groups.caf_platform_maintainers.id}}           # caf_platform_maintainers
                     - {{launchpad_azuread_groups.subscription_creation_landingzones.id}} # subscription_creation_landingzones
-                    - {{launchpad_azuread_groups.level0.id}} # level0
                 azuread_groups:
                   keys:
-                    - caf_landingzone_maintainers_non_prod
-                    - caf_landingzone_maintainers_prod
+                    - caf_ac_landingzone_maintainers_non_prod
+                    - caf_ac_landingzone_maintainers_prod
 {% else %}
                 logged_in:
                   keys:
@@ -374,11 +347,10 @@ asvm:
                   keys:
                     - {{launchpad_azuread_groups.caf_platform_maintainers.id}}           # caf_platform_maintainers
                     - {{launchpad_azuread_groups.subscription_creation_landingzones.id}} # subscription_creation_landingzones
-                    - {{launchpad_azuread_groups.level0.id}} # level0
                 azuread_groups:
                   keys:
-                    - caf_landingzone_maintainers_non_prod
-                    - caf_landingzone_maintainers_prod
+                    - caf_ac_landingzone_maintainers_non_prod
+                    - caf_ac_landingzone_maintainers_prod
 {% else %}
                 logged_in:
                   keys:
@@ -392,7 +364,6 @@ asvm:
                   keys:
                     - {{launchpad_azuread_groups.caf_platform_maintainers.id}}           # caf_platform_maintainers
                     - {{launchpad_azuread_groups.subscription_creation_landingzones.id}} # subscription_creation_landingzones
-                    - {{launchpad_azuread_groups.level0.id}} # level0
 {% else %}
                 logged_in:
                   keys:
@@ -411,7 +382,6 @@ asvm:
                   keys:
                     - {{launchpad_azuread_groups.caf_platform_maintainers.id}}           # caf_platform_maintainers
                     - {{launchpad_azuread_groups.subscription_creation_landingzones.id}} # subscription_creation_landingzones
-                    - {{launchpad_azuread_groups.level0.id}} # level0
 {% else %}
                 logged_in:
                   keys:

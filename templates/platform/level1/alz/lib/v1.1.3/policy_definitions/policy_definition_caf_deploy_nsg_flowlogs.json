@@ -21,28 +21,28 @@
         "defaultValue": "DeployIfNotExists"
       },
       "flowAnalyticsEnabled": {
-        "type": "Boolean",
+        "type": "String",
         "metadata": {
           "displayName": "Enable Traffic Analytics",
           "description": "Enable Traffic Analytics"
         },
-        "defaultValue": true
+        "defaultValue": "true"
       },
       "interval": {
-        "type": "Integer",
+        "type": "String",
         "metadata": {
           "displayName": "Traffic Analytics processing interval mins (10/60)",
           "description": "Traffic Analytics processing interval mins (10/60)"
         },
-        "defaultValue": 60
+        "defaultValue": "60"
       },
       "retention": {
-        "type": "Integer",
+        "type": "String",
         "metadata": {
           "displayName": "Retention days in storage account. If you want to retain data forever and do not want to apply any retention policy, set retention (days) to 0.",
           "description": "Retention days in storage account. If you want to retain data forever and do not want to apply any retention policy, set retention (days) to 0."
         },
-        "defaultValue": 2
+        "defaultValue": "2"
       },
       "logAnalytics": {
         "type": "String",
@@ -79,10 +79,10 @@
               "mode": "Incremental",
               "parameters": {
                 "flowAnalyticsEnabled": {
-                    "value": "[parameters('flowAnalyticsEnabled')]"
+                    "value": "[bool(parameters('flowAnalyticsEnabled'))]"
                   },
                 "interval": {
-                  "value": "[parameters('interval')]"
+                  "value": "[int(parameters('interval'))]"
                 },
                 "location": {
                   "value": "[field('location')]"
@@ -91,7 +91,7 @@
                   "value": "[field('id')]"
                 },
                 "retention": {
-                  "value": "[parameters('retention')]"
+                  "value": "[int(parameters('retention'))]"
                 },
                 "storageAccountResourceId": {
                   "value": "[parameters('storageAccountResourceId')]"
@@ -217,9 +217,7 @@
           "resourceGroupName": "[if(empty(coalesce(field('Microsoft.Network/networkSecurityGroups/flowLogs'))), 'NetworkWatcherRG', split(first(field('Microsoft.Network/networkSecurityGroups/flowLogs[*].id')), '/')[4])]",
           "name": "[if(empty(coalesce(field('Microsoft.Network/networkSecurityGroups/flowLogs[*].id'))), 'null/null', concat(split(first(field('Microsoft.Network/networkSecurityGroups/flowLogs[*].id')), '/')[8], '/', split(first(field('Microsoft.Network/networkSecurityGroups/flowLogs[*].id')), '/')[10]))]",
           "roleDefinitionIds": [
-            "/providers/Microsoft.Authorization/roleDefinitions/4d97b98b-1d4f-4787-a291-c67834d212e7",
-            "/providers/Microsoft.Authorization/roleDefinitions/749f88d5-cbae-40b8-bcfc-e573ddc772fa",
-            "/providers/Microsoft.Authorization/roleDefinitions/81a9662b-bebf-436f-a333-f67b29880f12"
+            "/providers/Microsoft.Authorization/roleDefinitions/4d97b98b-1d4f-4787-a291-c67834d212e7"
           ],
           "type": "Microsoft.Network/networkWatchers/flowLogs"
         },

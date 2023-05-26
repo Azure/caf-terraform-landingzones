@@ -1,8 +1,8 @@
 custom_landing_zones = {
 {% for key, level in mg_custom.archetype_definitions.items() %}
-  {{ alz_mg_prefix }}-{{ key }} = {
+  {{ bootstrap.management_groups[region][tfstate].management_group_prefix }}-{{ key }} = {
     display_name               = "{{ level.display_name }}"
-    parent_management_group_id = "{{ alz_mg_prefix }}-{{ level.parent_management_group_id }}"
+    parent_management_group_id = "{{ bootstrap.management_groups[region][tfstate].management_group_prefix }}-{{ level.parent_management_group_id }}"
     archetype_config = {
       archetype_id     = "{{ level.archetype_id }}"
 {% if level.policy_assignments is defined %}
@@ -38,7 +38,7 @@ custom_landing_zones = {
 {% endif %}
 {% if level.archetype_config.access_control is defined %}
       access_control = {
-{% if azure_landing_zones.identity.azuread_identity_mode != "logged_in_user" %}
+{% if resources.azure_landing_zones.identity.azuread_identity_mode != "logged_in_user" %}
 {% for level_ac_key, level_ac in level.archetype_config.access_control.items() %}
         "{{level_ac_key}}" = {
 {% for level_role_key, level_role in level_ac.items()  %}
@@ -52,7 +52,7 @@ custom_landing_zones = {
 {% endfor %}
 {% else %}
       "Owner" = {
-         "principal_ids" = ["{{ billing_subscription_role_delegations.azuread_user_ea_account_owner_object_id }}"]
+         "principal_ids" = ["{{ resources.billing_subscription_role_delegations.azuread_user_ea_account_owner_object_id }}"]
       }
 {% endif %}
       }

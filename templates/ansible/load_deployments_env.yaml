@@ -25,10 +25,10 @@
   when: 
     - resources is defined
 
-- name: "Copy file {{stage}}/{{service}} - from {{platform_service_folder}}/{{topology.deployments[deployment_mode][stage][region][service][env]}}"
+- name: "Copy file {{stage}}/{{service}}"
   ansible.builtin.template:
     src: "{{platform_service_folder}}/{{topology.deployments[deployment_mode][stage][region][service][env]}}"
-    dest: "{{destination_path}}/{{stage}}/{{env}}/{{resources[service + '_prod'].tfstate.config_file}}"  
+    dest: "{{destination_path}}/{{stage}}/{{env}}/{{resources[service + '_' + env].tfstate.config_file}}"  
   loop: "{{topology.deployments[deployment_mode][stage][region][service].keys()}}"
   loop_control:
     loop_var: env

@@ -32,7 +32,7 @@ secure_firewalls_{{env}}:
             region_key: region1
       azurerm_firewalls:
         fw_secure_{{env}}:
-          name: secure-{{env}}
+          name: fw-secure-{{env}}
           resource_group_key: firewall
           sku_name: AZFW_Hub
           sku_tier: Standard

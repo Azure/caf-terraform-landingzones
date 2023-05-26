@@ -4,7 +4,6 @@
     - "{{stage}}"
     - "{{region}}"
     - "topology: {{topology}}"
-    - "resources is defined: {{resources is defined}}"
 
 - name: "Process 1 deployment file {{stage}}/{{region}}"
   set_fact:
@@ -14,17 +13,16 @@
     - stage == 'root' or stage == 'alz'
     - resources is not defined
 
-- name: "Copy file {{stage}} from {{platform_service_folder}} to {{destination_path}}"
+- name: "Copy file {{stage}} from {{platform_service_folder}}"
   ansible.builtin.template:
     src: "{{platform_service_folder}}/{{topology.deployments[deployment_mode][stage][region][item]}}"
-    dest: "{{destination_path}}/{{resources[item].tfstate.config_file}}" 
-    force: yes
+    dest: "{{destination_path}}/{{resources[item].tfstate.config_file}}"  
   loop: "{{topology.deployments[deployment_mode][stage][region].keys()}}"
   when: 
     - stage == 'root'
     - resources is defined
 
-- name: "Copy file {{stage}} from {{platform_service_folder}} to {{destination_path}}"
+- name: "Copy file {{stage}} from {{platform_service_folder}}"
   ansible.builtin.template:
     src: "{{platform_service_folder}}/{{topology.deployments[deployment_mode][stage][region][item]}}"
     dest: "{{destination_path}}/{{resources[stage + '_' + item].tfstate.config_file}}"  

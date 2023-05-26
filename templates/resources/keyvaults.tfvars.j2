@@ -33,7 +33,7 @@
 {% if value.creation_policies is defined %}
     creation_policies = {
 {% if resources.platform_identity is defined %}
-{% if azure_landing_zones.identity.azuread_identity_mode == 'logged_in_user' %}
+{% if resources.azure_landing_zones.identity.azuread_identity_mode == 'logged_in_user' %}
       logged_in_user = {
         secret_permissions = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
       }

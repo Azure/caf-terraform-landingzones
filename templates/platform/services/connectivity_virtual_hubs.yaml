@@ -1,4 +1,3 @@
-{% set service = 'virtual_hubs' %}
 virtual_hubs_{{env}}:
   gitops:
     caf_landingzone_branch: {{topology.caf_landingzone_branch}}

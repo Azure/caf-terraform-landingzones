@@ -5,14 +5,14 @@
   when: resources.configuration_folders.platform.cleanup_destination | bool
 
 - name: "[{{ level }}-{{ base_folder }}] Creates directory"
-  when: billing_subscription_role_delegations.enable == true
+  when: resources.billing_subscription_role_delegations.enable == true
   register: level0_billing_subscription_role_delegations
   file:
     path: "{{ destination_base }}/{{ resources.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}"
     state: directory
 
 - name: "[{{ level }}-{{ base_folder }}] subscription role delegation"
-  when: billing_subscription_role_delegations.enable == true
+  when: resources.billing_subscription_role_delegations.enable == true
   ansible.builtin.template:
     src: "{{ item }}"
     dest: "{{ destination_base }}/{{ resources.configuration_folders.platform.destination_relative_path }}/{{ level }}/{{ base_folder }}/{{ item | basename | regex_replace('.j2$', '') }}"

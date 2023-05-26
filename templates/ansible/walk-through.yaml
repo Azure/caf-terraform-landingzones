@@ -10,12 +10,12 @@
 - name: Get deployment user UPN
   shell: az ad signed-in-user show --query userPrincipalName -o tsv
   register: bash_upn
-  when: azuread_user_ea_account_owner is not defined
+  when: upn_owner is not defined
 
 - name: Get default user's tenant name
   shell: az rest --method get --url "https://graph.microsoft.com/v1.0/organization" --query "value[0].verifiedDomains[?isDefault].name" -o tsv
   register: bash_tenant_name
-  when: azure_landing_zones.identity.tenant_name is not defined
+  when: tenant_name is not defined
   
 - name: Get default user's tenant guid
   shell: az account show --query tenantId -o tsv
@@ -30,19 +30,17 @@
   register: subscription_name
   
 - name: Get public ip address for bootstrap whitelisting
-  shell: curl -s https://api.ipify.org/ | grep -oE '((1?[0-9][0-9]?|2[0-4][0-9]|25[0-5])\.){3}(1?[0-9][0-9]?|2[0-4][0-9]|25[0-5])'
+  shell: dig @resolver1.opendns.com A myip.opendns.com +short -4
   register: public_ip
-  when: PUBLIC_IP_WHITE_LIST is not defined
 
 - set_fact:
     regions:  "{{ azure_regions }}"
     deployment_mode: "platform"
     object_id: "{{ bash_object_id.stdout | default(AZURE_OBJECT_ID) }}"
-    upn: "{{ azuread_user_ea_account_owner | default(bash_upn.stdout) }}"
-    tenant_name: "{{ azure_landing_zones.identity.tenant_name | default(bash_tenant_name.stdout) }}"
+    upn: "{{ upn_owner | default(bash_upn.stdout) }}"
+    tenant_name: "{{ tenant_name | default(bash_tenant_name.stdout) }}"
     base_folder: "{{ base_folder | default('/tf/caf') }}"
     PUBLIC_IP_WHITE_LIST: "{{ [public_ip.stdout] }}"
-    rover_bootstrap: "{{rover_bootstrap if rover_bootstrap is defined else 'false'}}"
 
 - debug:
     msg:
@@ -51,8 +49,7 @@
       - "{{ object_id }}"
       - "{{ upn }}"
       - "{{ base_folder }}"
-      - "{{ input_caf_environment if input_caf_environment is defined else lookup('env', 'TF_VAR_environment') }}"
-      - "private_templates_folder: {{private_templates_folder is defined}}"
+      - "{{ input_caf_environment if input_caf_environment is defined else TF_VAR_environment }}"
 
 
 - name: "load {{ template_folder | default(platform_definition_folder)}}/ignite.yaml"
@@ -62,36 +59,22 @@
     depth: 1
     ignore_unknown_extensions: true
     files_matching: "ignite.yaml"
-  when: rover_bootstrap == 'true'
 
 - set_fact:
-    caf_environment: "{{ input_caf_environment if input_caf_environment is defined else lookup('env', 'TF_VAR_environment') }}"
+    caf_environment: "{{ TF_VAR_environment }}"
+  when: TF_VAR_environment is defined
   
 - set_fact:
-    bootstrap_vnet_id: "{{ lookup('env', 'bootstrap_vnet_id')  }}"
     topology: "{{ lookup('template', '{{ topology_file }}') | from_yaml }}"
     topology_deployment__to_merge: "{{ lookup('template', '{{ topology_file }}') | from_yaml }}"
     destination_path: "{{definition_folder | default(platform_definition_folder)}}"
     resource_template_folder: "{{ public_templates_folder }}/resources"
-    platform_service_folder: "{{ private_templates_folder if (private_templates_folder is defined and rover_bootstrap == 'false') else public_templates_folder + '/platform/services' }}"
+    platform_service_folder: "{{ public_templates_folder }}/platform/services"
     public_templates_variables_folder: "{{ public_templates_folder }}/variables"
-    variables_folder: "{{platform_definition_folder if (private_templates_folder is defined and rover_bootstrap == 'false') else public_templates_folder + '/variables'}}"
-    job_cache_base_path: "/home/vscode/.terraform.cache"
-    scale_out_domain_keys: "{{deployments.scale_out_domain_keys | default(bootstrap.deployments.scale_out_domain_keys)}}"
-
-- debug:
-    msg:
-      - "platform_service_folder: {{platform_service_folder}}"
-      - "variables_folder: {{variables_folder}}"
 
 - name: "Creates directory - {{destination_path}}"
   file:
     path: "{{destination_path}}"
-    state: directory
-
-- name: "Creates cache directory"
-  file:
-    path: "{{ job_cache_base_path }}/launchpad"
     state: directory
        
 #
@@ -105,74 +88,49 @@
     ignore_unknown_extensions: true
     files_matching: "_variables"
 
-- set_fact:
-    yaml_files_to_process: []
 
-- name: "Getting source templates from {{platform_service_folder}}"
-  include_tasks: process_template_file.yaml
-  loop: "{{topology.deployments.platform.keys()}}"
-  vars:
-    input: "{{topology.deployments.platform[item]}}"
-    level: 0
-    source: "{{topology.deployments.platform}}"
-
-- set_fact:
-    yaml_files_to_process: "{{yaml_files_to_process | list | unique}}"
-
-# - name: "Getting source templates from {{platform_service_folder}}"
-#   find:
-#     paths: "{{platform_service_folder}}"
-#     recurse: yes
-#     patterns: ["*.yaml","*.j2"]
-#     file_type: file
-#     excludes: "*.caf.platform.yaml"
-#   register: yaml_files_to_process
-  
 - debug:
     msg: 
-      - "templates to load: {{yaml_files_to_process}}"
       - "variables: {{variables}}"
       - "topology: {{topology}}"
-      - "item: {{item is defined}}"
-      - "region: {{region is defined}}"
-      - "bootstrap: {{bootstrap is defined}}"
-      - "alz_mg_prefix: {{alz_mg_prefix is defined}}"
 
 - include_tasks: "load_regions.yaml"
   loop: "{{topology.deployments[deployment_mode].keys()}}"
   loop_control:
     loop_var: stage
-  when: rover_bootstrap == 'false'
 
-- name: Merge resources variables
+- name: Merge deployment files into topologies variable
   merge_vars:
     suffix_to_merge: _deployment__to_merge
-    merged_var_name: merged_resources
+    merged_var_name: merged_topologies
     expected_type: 'dict'
     recursive_dict_merge: True
-  when: rover_bootstrap == 'false'
+
+- name: "Topologies merged"
+  set_fact:
+    resources:  "{{ merged_topologies }}"
+
+# - debug:
+#     msg: "{{resources}}"
+
+# Need topologies to render the following templates
+- name: "load tfstates"
+  set_fact:
+    "tfstates_deployment__to_merge": "{{ lookup('template', '{{platform_service_folder}}/tfstates.yaml') | from_yaml }}"
+
+
+- name: Merge deployment files into topologies variable
+  merge_vars:
+    suffix_to_merge: _deployment__to_merge
+    merged_var_name: merged_topologies
+    expected_type: 'dict'
+    recursive_dict_merge: True
 
 - set_fact:
-    resources:  "{{ merged_resources }}"
-  when: rover_bootstrap == 'false'
+    resources:  "{{ merged_topologies }}"
 
-- name: Load platform variables from tfstates
-  include_tasks: "load_variables.yaml"
-
-- name: Load firewall rules
-  include_tasks: "load_firewall_rules.yaml"
-  when: 
-    - deployment_mode == 'platform'
-    - rover_bootstrap == 'false'
-
-- include_tasks: "load_regions.yaml"
-  loop: "{{topology.deployments[deployment_mode].keys()}}"
-  loop_control:
-    loop_var: stage
-
-- debug:
-    msg: "resources1: {{resources}}"
-  when: resources is defined
+# - debug:
+#     msg: "resources1: {{resources}}"
 
 #
 # Generate target folder structure and files
@@ -195,7 +153,6 @@
   ansible.builtin.copy:
     src: "{{ item.path }}"
     dest: "{{destination_path}}/{{ item.path | basename }}"
-    force: no
   loop: "{{variable_files_to_process.files}}"
 
 # Copy github workflows
@@ -209,7 +166,6 @@
   ansible.builtin.template:
     src: "{{ item.path }}"
     dest: "{{base_folder}}/{{ item.path | regex_replace(public_templates_folder + '/pipelines', '') }}"
-    force: no
   loop: "{{github_workflows_to_process.files}}"
 
 # Copy default firewall rules
@@ -233,7 +189,6 @@
   ansible.builtin.copy:
     src: "{{ item.path }}"
     dest: "{{firewall_rules_path}}/{{ item.path | regex_replace(public_templates_folder + '/firewall_rules', '') }}"
-    force: no
   loop: "{{firewall_files_to_process.files}}"
 
 # Copy platform templates
@@ -242,7 +197,6 @@
     recurse: no
     patterns: "*.yaml"
     file_type: file
-    excludes: "tfstates.yaml"
   register: platform_service_template_files_to_process
 
 - name: "Creates destination directory - {{topology.private_templates_folder}}"
@@ -254,27 +208,18 @@
   ansible.builtin.copy:
     src: "{{ item.path }}"
     dest: "{{topology.private_templates_folder}}/{{ item.path | regex_replace(platform_service_folder, '') }}"
-    force: no
   loop: "{{platform_service_template_files_to_process.files}}"
 
-- name: copy README to template
-  ansible.builtin.copy:
-    src: "{{platform_service_folder}}/README.md"
-    dest: "{{topology.private_templates_folder}}/README.md"
-    force: no
-    
-- name: ignite.yaml
-  ansible.builtin.template:
-    src: "{{topology_file}}"
-    dest: "{{destination_path}}/ignite.yaml"
-  when: rover_bootstrap == 'true'
 
 - name: tfstates.yaml
   ansible.builtin.template:
     src: "{{platform_service_folder}}/tfstates.yaml"
     dest: "{{destination_path}}/tfstates.yaml"
-    force: no
-  when: rover_bootstrap == 'true'
+    
+- name: ignite.yaml
+  ansible.builtin.template:
+    src: "{{public_templates_folder}}/platform/caf_platform_prod_nonprod.yaml"
+    dest: "{{destination_path}}/ignite.yaml"
         
 - name: "{{platform_service_folder}}/README.md"
   ansible.builtin.template:

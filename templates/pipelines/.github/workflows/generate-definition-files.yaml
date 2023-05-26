@@ -21,11 +21,11 @@ on:
         required: true
         type: string
     secrets:
-      BOOTSTRAP_TOKEN:
-        required: false
       AZURE_CLIENT_ID:
         required: true
       AZURE_TENANT_ID:
+        required: true
+      AZURE_LAUNCHPAD_SUBSCRIPTION_ID:
         required: true
       AZURE_MANAGEMENT_SUBSCRIPTION_ID:
         required: false
@@ -59,20 +59,13 @@ jobs:
     name: Generate configuration files
     runs-on: [self-hosted, platform]
     
-    outputs:
-      action: ${{ steps.definition.outputs.config_to_process }}
-    
     steps:
-
-      - name: Github event
-        run: cat $GITHUB_EVENT_PATH | jq
       
       - name: Checkout Configuration
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          ref: ${{ github.event.workflow_run.head_sha }}
-          token: ${{ secrets.BOOTSTRAP_TOKEN || github.token }}
+          ref: ${{ github.event.pull_request.head.ref }}
 
       - name: 'Azure Login'
         uses: azure/login@v1
@@ -82,7 +75,6 @@ jobs:
           subscription-id: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
 
       - name: Create defnition files
-        id: definition
         run: |
           rm -rf ./landingzones
           git clone -b ${{ inputs.terraform_code_ref }} --single-branch ${{ inputs.terraform_code_repository }} ./landingzones
@@ -107,39 +99,50 @@ jobs:
           fi
 
           ansible-playbook $(readlink -f ./landingzones/templates/ansible/walk-through-bootstrap.yaml) \
+            --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)" \
             -e base_folder=$(pwd) \
-            -e topology_file=$(readlink -f ./platform/definition/ignite.yaml) \
-            -e GITHUB_SERVER_URL=${GITHUB_SERVER_URL} \
-            -e GITHUB_REPOSITORY=${GITHUB_REPOSITORY} \
-            -e GITOPS_SERVER_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY} \
-            -e RUNNER_NUMBERS=${{ secrets.RUNNER_NUMBERS }} \
-            -e AGENT_TOKEN=${{ secrets.RUNNER_REGISTRATION_TOKEN }} \
+            -e GITOPS_SERVER_URL={{GITHUB_SERVER_URL}}/{{GITHUB_REPOSITORY}} \
+            -e RUNNER_NUMBERS={{ secrets.RUNNER_NUMBERS }} \
+            -e AGENT_TOKEN={{ secrets.RUNNER_REGISTRATION_TOKEN }} \
             -e ROVER_AGENT_DOCKER_IMAGE=${{secrets.ROVER_AGENT_DOCKER_IMAGE}} \
-            -e AZURE_OBJECT_ID=${{ secrets.AZURE_OBJECT_ID }} \
             -e sub_management=${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID}} \
             -e sub_connectivity=${{ secrets.AZURE_CONNECTIVITY_SUBSCRIPTION_ID }} \
             -e sub_identity=${{ secrets.AZURE_IDENTITY_SUBSCRIPTION_ID }} \
             -e sub_security=${{secrets.AZURE_SECURITY_SUBSCRIPTION_ID}} \
             -e TF_VAR_environment=${{ inputs.environment }} \
-            -e template_folder="$(pwd)/platform/definition" \
-            -e rover_bootstrap=false \
-            --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)"
+            -e bootstrap_sp_object_id=${{secrets.AZURE_OBJECT_ID}} \
+            -e template_folder="$(pwd)/platform/definition"
 
 
+      - name: Generate PR for 
+        run: |
+          git config --global --add safe.directory $(pwd)
+          git config user.name "GitHub Actions Bot"
+          git config user.email "github-actions@github.com"
+
+          git checkout -b end2end
+          git add .
+          pre-commit
+          git commit -am "Update definition files."
+
+          git remote -v
+
+          echo ${GITHUB_HEAD_REF}
+          
           if [ -z "$(git status --porcelain)" ];
           then
               echo "Nothing to commit"
-              echo "::set-output name=config_to_process::'no'"
           else
-            git config --global --add safe.directory $(pwd)
-            git config user.name "CAF Rover Actions Bot"
-            git config user.email "caf-rover-actions@github.com"
-            
             git add --all .
             git commit -m "Update configuration files"
-            git pull
-            git push remote ${{GITHUB_HEAD_REF}}
-            echo "::set-output name=config_to_process::'yes'"
+            git push
           fi
 
+          /usr/bin/gh pr create \
+            --assignee "@me" \
+            --title "Complete the deployment of the platform services." \
+            --body "${body}" \
+            --base bootstrap \
+            -R (echo "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}" || echo "git config --get remote.origin.url" | sed -e 's#^https://github.com/##; s#^git@github.com:##; s#.git$##')
+        
 {% endraw %}

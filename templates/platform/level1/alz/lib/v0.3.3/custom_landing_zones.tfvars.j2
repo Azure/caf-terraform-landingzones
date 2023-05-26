@@ -1,8 +1,8 @@
 custom_landing_zones = {
 {% for key, level in mg_custom.archetype_definitions.items() %}
-  {{ azure_landing_zones.enterprise_scale.management_group_prefix }}-{{ key }} = {
+  {{ resources.azure_landing_zones.enterprise_scale.management_group_prefix }}-{{ key }} = {
     display_name               = "{{ mg_custom.archetype_definitions[key].display_name }}"
-    parent_management_group_id = "{{ azure_landing_zones.enterprise_scale.management_group_prefix }}-{{ mg_custom.archetype_definitions[key].parent_management_group_id }}"
+    parent_management_group_id = "{{ resources.azure_landing_zones.enterprise_scale.management_group_prefix }}-{{ mg_custom.archetype_definitions[key].parent_management_group_id }}"
     archetype_config = {
       archetype_id     = "{{mg_custom.archetype_definitions[key].archetype_id }}"
 {% if mg_custom.archetype_definitions[key].policy_assignments is defined %}

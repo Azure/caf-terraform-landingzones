@@ -1,0 +1,114 @@
+#
+# Copyright (c) Microsoft Corporation
+# Licensed under the MIT License.
+#
+
+name: bootstrap
+
+on:
+  push:
+    branches:
+      - bootstrap
+
+permissions:
+  id-token: write
+  contents: read
+{% raw %}
+concurrency: 
+  group: ${{ github.ref }}
+{% endraw %}
+env:
+  LZ_REPO: '{{resources.terraform_code_repository}}'
+  LZ_BRANCH: '{{resources.caf_landingzone_branch}}'
+  CAF_ENVIRONMENT: {{resources.caf_environment}}
+
+jobs:
+{% raw %}
+  environment:
+    name: Setup dynamic environment variables
+    runs-on: ubuntu-latest
+    outputs:
+
+      terraform_code_repository: ${{ steps.set_env.outputs.terraform_code_repository }}
+      terraform_code_ref: ${{ steps.set_env.outputs.terraform_code_ref }}
+      environment: ${{ steps.set_env.outputs.environment }}
+    steps:
+      - name: Set environment variables for re-usable workflows
+        id: set_env
+        run: |
+          echo "::set-output name=terraform_code_repository::$LZ_REPO"
+          echo "::set-output name=terraform_code_ref::$LZ_BRANCH"
+          echo "::set-output name=environment::$CAF_ENVIRONMENT"
+
+
+  launchpad:
+    uses: ./.github/workflows/rover.yaml
+    needs: [environment]
+    concurrency: 
+      group: launchpad
+    secrets:
+
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+    with:
+      terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
+      terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
+      environment: ${{ needs.environment.outputs.environment }}
+      caf_identity_aad_key: cred_level0
+      landingzone_code_path: ./landingzones/caf_launchpad
+      landingzone_configuration_path: ./platform/configuration/level0/launchpad
+      plan_path: ${GITHUB_WORKSPACE}/caf_launchpad.tfstate.tfplan
+      launchpad: true
+      tfstate: caf_launchpad.tfstate
+      level: level0
+      terraform_action: plan_apply
+
+  credentials:
+    uses: ./.github/workflows/rover.yaml
+    needs: [environment, launchpad]
+    concurrency: 
+      group: credentials
+    secrets:
+
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+    with:
+      terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
+      terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
+      environment: ${{ needs.environment.outputs.environment }}
+      landingzone_code_path: ./landingzones/caf_solution
+      landingzone_configuration_path: ./platform/configuration/level0/credentials
+      plan_path: ${GITHUB_WORKSPACE}/launchpad_credentials.tfstate.tfplan
+      tfstate: launchpad_credentials.tfstate
+      level: level0
+      terraform_action: plan_apply
+
+  generate_definition_files:
+    uses: ./.github/workflows/generate-definition-files.yaml
+    needs: [environment, credentials]
+    concurrency: 
+      group: credentials
+    secrets:
+
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+      AZURE_MANAGEMENT_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+      AZURE_CONNECTIVITY_SUBSCRIPTION_ID: ${{ secrets.AZURE_CONNECTIVITY_SUBSCRIPTION_ID }}
+      AZURE_IDENTITY_SUBSCRIPTION_ID: ${{ secrets.AZURE_IDENTITY_SUBSCRIPTION_ID }}
+      AZURE_SECURITY_SUBSCRIPTION_ID: ${{ secrets.AZURE_SECURITY_SUBSCRIPTION_ID }}
+      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_TARGET_SUBSCRIPTION_ID }}
+      RUNNER_REGISTRATION_TOKEN: ${{ secrets.RUNNER_REGISTRATION_TOKEN }}
+      RUNNER_NUMBERS: ${{ secrets.RUNNER_NUMBERS }}
+      AZURE_OBJECT_ID: ${{ secrets.AZURE_OBJECT_ID }}
+      ROVER_AGENT_DOCKER_IMAGE: ${{ secrets.ROVER_AGENT_DOCKER_IMAGE }}
+    with:
+      terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
+      terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
+      environment: ${{ needs.environment.outputs.environment }}
+
+{% endraw %}

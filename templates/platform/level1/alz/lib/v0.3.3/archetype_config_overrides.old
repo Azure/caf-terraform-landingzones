@@ -109,7 +109,7 @@ archetype_config_overrides = {
     archetype_id   = "landingzone"
     parameters     = {}
     access_control = {
-{% if azure_landing_zones.identity.azuread_identity_mode != 'logged_in_user' %}
+{% if resources.azure_landing_zones.identity.azuread_identity_mode != 'logged_in_user' %}
       "Owner" = {
         "azuread_groups" = {
           lz_key        = "{{ resources.tfstates.platform.launchpad.lz_key_name }}"
@@ -133,7 +133,7 @@ archetype_config_overrides = {
     archetype_id = "platform_connectivity"
     parameters   = {}
     access_control = {
-{% if azure_landing_zones.identity.azuread_identity_mode != 'logged_in_user' %}
+{% if resources.azure_landing_zones.identity.azuread_identity_mode != 'logged_in_user' %}
       "Owner" = {
         "azuread_groups" = {
           lz_key        = "{{ resources.tfstates.platform.launchpad.lz_key_name }}"
@@ -143,8 +143,8 @@ archetype_config_overrides = {
           ]
         }
       }
-{% if azure_landing_zones.enterprise_scale.enable_azure_subscription_vending_machine %}
-      "[{{ azure_landing_zones.enterprise_scale.management_group_prefix | upper }}-CONNECTIVITY] CAF-network-vhub-peering" = {
+{% if resources.azure_landing_zones.enterprise_scale.enable_azure_subscription_vending_machine %}
+      "[{{ resources.azure_landing_zones.enterprise_scale.management_group_prefix | upper }}-CONNECTIVITY] CAF-network-vhub-peering" = {
         "azuread_groups" = {
           lz_key        = "{{ resources.tfstates.platform.launchpad.lz_key_name }}"
           attribute_key = "id"
@@ -162,7 +162,7 @@ archetype_config_overrides = {
     archetype_id = "platform_identity"
     parameters   = {}
     access_control = {
-{% if azure_landing_zones.identity.azuread_identity_mode != 'logged_in_user' %}
+{% if resources.azure_landing_zones.identity.azuread_identity_mode != 'logged_in_user' %}
       "Owner" = {
         "azuread_groups" = {
           lz_key        = "{{ resources.tfstates.platform.launchpad.lz_key_name }}"
@@ -180,7 +180,7 @@ archetype_config_overrides = {
     archetype_id = "platform_management"
     parameters   = {}
     access_control = {
-{% if azure_landing_zones.identity.azuread_identity_mode != 'logged_in_user' %}
+{% if resources.azure_landing_zones.identity.azuread_identity_mode != 'logged_in_user' %}
       "Owner" = {
         "azuread_groups" = {
           lz_key        = "{{ resources.tfstates.platform.launchpad.lz_key_name }}"

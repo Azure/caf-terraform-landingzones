@@ -16,27 +16,27 @@
     - name: customer_name
       prompt: Set the short version of your customer name with no spaces
       private: no
-      default: "{{lookup('env', 'TF_VAR_environment') | default('contoso')}}"
+      default: contoso
 
     - name: input_caf_environment
       prompt: Set the CAF Environment value
       private: no
-      default: "{{lookup('env', 'TF_VAR_environment') | default('contoso')}}"
+      default: "{{TF_VAR_environment}}"
 
     - name: prefix
       prompt: Set the prefix to add to all resource.
       private: no
-      default: "{{lookup('env', 'TF_VAR_environment') | default('caf')}}"
+      default: caf
 
     - name: alz_mg_prefix
       prompt: Management group prefix (value must be between 2 to 10 characters long and can only contain alphanumeric characters and hyphens). 
       private: no
-      default: "{{lookup('env', 'TF_VAR_environment') | default('es')}}"
+      default: es
 
     - name: alz_mg_name
       prompt: Management group name
       private: no
-      default: "{{lookup('env', 'TF_VAR_environment') | default('Contoso')}}"
+      default: Contoso
 
     - name: default_email_address
       prompt: Email address to send all notifications
@@ -56,7 +56,7 @@
       default: region1
 
     - name: gitops_agent
-      prompt: "github or tfcloud. Select the gitops agent you are using to deploy the landing zones. (not implemented yet)"
+      prompt: "github or tfcloud. Select the gitops agent you are using to deploy the landing zones."
       private: no
       default: github
 

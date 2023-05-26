@@ -1,5 +1,5 @@
   {{ key }} = {
-    region             = "{{ value.region | default(default_region_key)}}"
+    region             = "{{ value.region | default(resources.default_region_key)}}"
     name               = "{{ value.name }}"
     resource_group_key = "{{ value.resource_group_key }}"
 {% if value.sku is defined %}

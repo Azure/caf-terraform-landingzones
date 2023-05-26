@@ -1,4 +1,3 @@
-{% set service = 'private_dns_firewalls' %}
 private_dns_firewalls_{{env}}:
   gitops:
     caf_landingzone_branch: {{topology.caf_landingzone_branch}}
@@ -86,7 +85,7 @@ private_dns_firewalls_{{env}}:
 
       virtual_hub_connections:
         vnet_to_hub:
-          name: vnet-connectivity-{{env}}-fw-plinks
+          name: vnet-connectivity-{{env}}-fw-plinks-TO-vhub-{{env}}
           virtual_hub:
             lz_key: connectivity_virtual_hubs_{{env}}
             key: {{env}}

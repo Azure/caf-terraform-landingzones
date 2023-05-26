@@ -48,7 +48,7 @@ git checkout {{ bootstrap.caf_landingzone_branch }}
 git pull
 
 rover \
-{% if bootstrap.azure_landing_zones.identity.azuread_identity_mode != "logged_in_user" and keyvaults is defined and keyvaults[tfstate_object.identity_aad_key] is defined %}
+{% if bootstrap.azure_landing_zones.identity.azuread_identity_mode != "logged_in_user" and keyvaults is defined %}
   --impersonate-sp-from-keyvault-url {{ keyvaults[tfstate_object.identity_aad_key].vault_uri }} \
 {% endif %}
   -lz {{ landingzones_folder }}/caf_launchpad \
@@ -71,7 +71,7 @@ If the plan is not successfull you need to come back to the yaml ignite.yaml, fi
 # On success plan, execute
 
 rover \
-{% if bootstrap.azure_landing_zones.identity.azuread_identity_mode != "logged_in_user" and keyvaults is defined and keyvaults['cred_level0'] is defined %}
+{% if bootstrap.azure_landing_zones.identity.azuread_identity_mode != "logged_in_user" and keyvaults is defined %}
   --impersonate-sp-from-keyvault-url {{ keyvaults.cred_level0.vault_uri }} \
 {% endif %}
   -lz {{ landingzones_folder }}/caf_launchpad \
@@ -97,9 +97,6 @@ rover login -t {{ bootstrap.azure_landing_zones.identity.tenant_name }}
 # On success, re-execute the rover ignite
 
 ansible-playbook $(readlink -f ./landingzones/templates/ansible/ansible.yaml) \
-  -e base_folder=$(pwd) \
-  -e rover_bootstrap=false \
-  -e topology_file=$(readlink -f ./platform/definition/ignite.yaml) \
   --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)"
 
 ```

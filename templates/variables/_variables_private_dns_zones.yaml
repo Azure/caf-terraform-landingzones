@@ -55,7 +55,6 @@ variables_private_dns_zones:
 
   # region will be de-tokenized by the values set in resources_allowed_regions
   regional_zones:
-    region.privatelink.azurecr.io:
     privatelink.region.azmk8s.io:
     privatelink.region.backup.windowsazure.com:
     privatelink.region.kusto.windows.net:

@@ -14,8 +14,8 @@
   register: storage_account
   shell: |
     az storage account list \
-      --subscription {{ caf_launchpad.subscription_id | default(caf_launchpad.subscription_id) }} \
-      --query "[?tags.caf_tfstate=='{{ caf_level | default('level0') }}' && tags.caf_environment=='{{ caf_environment | default(caf_environment) }}'].{name:name}[0]" -o json | jq -r .name
+      --subscription {{ resources.caf_launchpad.subscription_id }} \
+      --query "[?tags.caf_tfstate=='{{ caf_level | default('level0') }}' && tags.caf_environment=='{{ resources.caf_environment }}'].{name:name}[0]" -o json | jq -r .name
 
 - set_fact:
     "{{tfstate_key_name}}_storage_account": "{{ lookup('vars', 'storage_account') }}"
@@ -47,6 +47,9 @@
     "{{tfstate_key_name}}_tfstate": "{{ lookup('vars', 'tfstate_file') }}"
   when:
     - lookup('vars', tfstate_key_name + '_tfstate_exists').rc == 0
+
+# - debug:
+#     msg: "{{lookup('vars', tfstate_key_name + '_tfstate')}}"
 
 - name: "Get {{tfstate_key_name}} json data"
   when:
@@ -105,13 +108,6 @@
     - ["{{jsondata | default({}) | json_query(path)}}"]
   vars:
     path: 'outputs.objects.value.{{tfstate_key_name}}.{{resource_type}}.{{resource_key}}'
-
-- debug:
-    msg: "{{lookup('ansible.builtin.varnames', '^{{exported_variable_name}}$')}}"
-    
-- debug:
-    msg: "{{exported_variable_name}}: {{lookup('vars', exported_variable_name)}}"
-  when: lookup('ansible.builtin.varnames', '^' + exported_variable_name + '$')
 
 - name: "[{{resources[tfstate].relative_destination_folder}}] cleanup"
   when:

@@ -17,7 +17,7 @@ launchpad:
 
   deployments:
     landingzone:
-{% if platform_subscriptions is defined and virtual_hubs_resources is defined %}
+{% if platform_subscriptions is defined and virtual_hubs_resources %}
     custom_variables:
       virtual_hub_subscription_id: {{ platform_subscriptions.connectivity.subscription_id }}
 {% endif %}
@@ -38,10 +38,10 @@ launchpad:
         level0:
           name: l0
           resource_group_key: level0
-          account_kind: StorageV2
+          account_kind: BlobStorage
           account_tier: Standard
           shared_access_key_enabled: false
-          account_replication_type: RAGRS
+          account_replication_type: GRS
           blob_properties:
             versioning_enabled: true
             last_access_time_enabled: true
@@ -64,6 +64,11 @@ launchpad:
               - {{ ip }}
 {% endfor %}
 {% endif %}
+            subnets:
+              level0:
+                lz_key: launchpad
+                vnet_key: vnet_region1
+                subnet_key: level0
 {% if private_endpoints is defined %}
           private_endpoints:
             level0:
@@ -76,16 +81,11 @@ launchpad:
                 is_manual_connection: false
                 subresource_names:
                   - blob
-{% if private_endpoints is defined and private_dns is defined and private_dns[env|default('prod')] != '' %}
+{% if private_endpoints is defined and private_dns is defined %}
               private_dns:
                 zone_group_name: default
                 ids:
                   - {{ private_dns[env|default('prod')]["privatelink.blob.core.windows.net"].id }}
-{% else %}
-              private_dns:
-                zone_group_name: default
-                keys: 
-                  - privatelink.blob.core.windows.net
 {% endif %}
 {% endif %}
           tags:
@@ -97,10 +97,10 @@ launchpad:
         level1:
           name: l1
           resource_group_key: level1
-          account_kind: StorageV2
+          account_kind: BlobStorage
           account_tier: Standard
           shared_access_key_enabled: false
-          account_replication_type: RAGRS
+          account_replication_type: GRS
           blob_properties:
             versioning_enabled: true
             last_access_time_enabled: true
@@ -123,6 +123,11 @@ launchpad:
               - {{ ip }}
 {% endfor %}
 {% endif %}
+            subnets:
+              level1:
+                lz_key: launchpad
+                vnet_key: vnet_region1
+                subnet_key: level1
 {% if private_endpoints is defined %}
           private_endpoints:
             level1:
@@ -135,16 +140,11 @@ launchpad:
                 is_manual_connection: false
                 subresource_names:
                   - blob
-{% if private_endpoints is defined and private_dns is defined and private_dns[env|default('prod')] != '' %}
+{% if private_endpoints is defined and private_dns is defined %}
               private_dns:
                 zone_group_name: default
                 ids:
                   - {{ private_dns[env|default('prod')]["privatelink.blob.core.windows.net"].id }}
-{% else %}
-              private_dns:
-                zone_group_name: default
-                keys: 
-                  - privatelink.blob.core.windows.net
 {% endif %}
 {% endif %}
           tags:
@@ -156,10 +156,10 @@ launchpad:
         level2:
           name: l2
           resource_group_key: level2
-          account_kind: StorageV2
+          account_kind: BlobStorage
           account_tier: Standard
           shared_access_key_enabled: false
-          account_replication_type: RAGRS
+          account_replication_type: GRS
           blob_properties:
             versioning_enabled: true
             last_access_time_enabled: true
@@ -182,6 +182,11 @@ launchpad:
               - {{ ip }}
 {% endfor %}
 {% endif %}
+            subnets:
+              level2:
+                lz_key: launchpad
+                vnet_key: vnet_region1
+                subnet_key: level2
 {% if private_endpoints is defined %}
           private_endpoints:
             level2:
@@ -194,16 +199,11 @@ launchpad:
                 is_manual_connection: false
                 subresource_names:
                   - blob
-{% if private_endpoints is defined and private_dns is defined and private_dns[env|default('prod')] != '' %}
+{% if private_endpoints is defined and private_dns is defined %}
               private_dns:
                 zone_group_name: default
                 ids:
                   - {{ private_dns[env|default('prod')]["privatelink.blob.core.windows.net"].id }}
-{% else %}
-              private_dns:
-                zone_group_name: default
-                keys: 
-                  - privatelink.blob.core.windows.net
 {% endif %}
 {% endif %}
           tags:
@@ -218,8 +218,8 @@ launchpad:
           name: l0
           sku_name: premium
           resource_group_key: level0
-          purge_protection_enabled: {{ keyvault_purge_protection_enabled | lower }}
-          enable_rbac_authorization: {{ keyvault_enable_rbac_authorization | lower }}
+          purge_protection_enabled: {{ keyvault_purge_protection_enabled }}
+          enable_rbac_authorization: {{ keyvault_enable_rbac_authorization }}
           network:
             bypass: AzureServices
             default_action: Deny
@@ -229,6 +229,11 @@ launchpad:
               - {{ ip }}
 {% endfor %}
 {% endif %}
+            subnets:
+              level0:
+                lz_key: launchpad
+                vnet_key: vnet_region1
+                subnet_key: level0
 {% if private_endpoints is defined %}
           private_endpoints:
             level0:
@@ -241,16 +246,11 @@ launchpad:
                 is_manual_connection: false
                 subresource_names:
                   - vault
-{% if private_endpoints is defined and private_dns is defined and private_dns[env|default('prod')] != "" %}
+{% if private_endpoints is defined and private_dns is defined %}
               private_dns:
                 zone_group_name: default
                 ids:
                   - {{ private_dns[env|default('prod')]["privatelink.vaultcore.azure.net"].id }}
-{% else %}
-              private_dns:
-                zone_group_name: default
-                keys: 
-                  - privatelink.vaultcore.azure.net
 {% endif %}
 {% endif %}
 {% if keyvault_enable_rbac_authorization == false %}
@@ -272,8 +272,8 @@ launchpad:
           name: l1
           sku_name: premium
           resource_group_key: level1
-          purge_protection_enabled: {{ keyvault_purge_protection_enabled | lower }}
-          enable_rbac_authorization: {{ keyvault_enable_rbac_authorization | lower }}
+          purge_protection_enabled: {{ keyvault_purge_protection_enabled }}
+          enable_rbac_authorization: {{ keyvault_enable_rbac_authorization }}
           network:
             bypass: AzureServices
             default_action: Deny
@@ -283,6 +283,11 @@ launchpad:
               - {{ ip }}
 {% endfor %}
 {% endif %}
+            subnets:
+              level1:
+                lz_key: launchpad
+                vnet_key: vnet_region1
+                subnet_key: level1
 {% if private_endpoints is defined %}
           private_endpoints:
             level1:
@@ -295,16 +300,11 @@ launchpad:
                 is_manual_connection: false
                 subresource_names:
                   - vault
-{% if private_endpoints is defined and private_dns is defined and private_dns[env|default('prod')] != "" %}
+{% if private_endpoints is defined and private_dns is defined %}
               private_dns:
                 zone_group_name: default
                 ids:
                   - {{ private_dns[env|default('prod')]["privatelink.vaultcore.azure.net"].id }}
-{% else %}
-              private_dns:
-                zone_group_name: default
-                keys: 
-                  - privatelink.vaultcore.azure.net
 {% endif %}
 {% endif %}
 {% if keyvault_enable_rbac_authorization == false %}
@@ -326,8 +326,8 @@ launchpad:
           name: l2
           sku_name: premium
           resource_group_key: level2
-          purge_protection_enabled: {{ keyvault_purge_protection_enabled | lower }}
-          enable_rbac_authorization: {{ keyvault_enable_rbac_authorization | lower }}
+          purge_protection_enabled: {{ keyvault_purge_protection_enabled }}
+          enable_rbac_authorization: {{ keyvault_enable_rbac_authorization }}
           network:
             bypass: AzureServices
             default_action: Deny
@@ -337,6 +337,11 @@ launchpad:
               - {{ ip }}
 {% endfor %}
 {% endif %}
+            subnets:
+              level2:
+                lz_key: launchpad
+                vnet_key: vnet_region1
+                subnet_key: level2
 {% if private_endpoints is defined %}
           private_endpoints:
             level2:
@@ -349,16 +354,11 @@ launchpad:
                 is_manual_connection: false
                 subresource_names:
                   - vault
-{% if private_endpoints is defined and private_dns is defined and private_dns[env|default('prod')] != "" %}
+{% if private_endpoints is defined and private_dns is defined %}
               private_dns:
                 zone_group_name: default
                 ids:
                   - {{ private_dns[env|default('prod')]["privatelink.vaultcore.azure.net"].id }}
-{% else %}
-              private_dns:
-                zone_group_name: default
-                keys: 
-                  - privatelink.vaultcore.azure.net
 {% endif %}
 {% endif %}
 {% if keyvault_enable_rbac_authorization == false %}
@@ -452,35 +452,35 @@ launchpad:
         level0:
           application_name: level0
           owners:
-            - {{bootstrap_sp_object_id}}
+            - {{object_id}}
         identity:
           application_name: identity
           owners:
-            - {{bootstrap_sp_object_id}}
+            - {{object_id}}
         management:
           application_name: management
           owners:
-            - {{bootstrap_sp_object_id}}
+            - {{object_id}}
         alz:
           application_name: alz
           owners:
-            - {{bootstrap_sp_object_id}}
+            - {{object_id}}
         connectivity:
           application_name: connectivity
           owners:
-            - {{bootstrap_sp_object_id}}
+            - {{object_id}}
         security:
           application_name: security
           owners:
-            - {{bootstrap_sp_object_id}}
+            - {{object_id}}
         subscription_creation_platform:
           application_name: subscription_creation_platform
           owners:
-            - {{bootstrap_sp_object_id}}
+            - {{object_id}}
         subscription_creation_landingzones:
           application_name: subscription_creation_landingzones
           owners:
-            - {{bootstrap_sp_object_id}}
+            - {{object_id}}
 
       azuread_service_principals:
         # Manage the deployment of the level0
@@ -622,16 +622,17 @@ launchpad:
             object_ids:
                 - {{bootstrap_sp_object_id}}
           owners:
-            - {{bootstrap_sp_object_id}}
+            - {{object_id}}
         caf_platform_contributors:
           name: platform-contributors
           description: Can only execute terraform plans for level1 and level2. They can test platform improvements and propose PR.
           prevent_duplicate_name: true
           members:
             object_ids:
+                - {{object_id}}
                 - {{bootstrap_sp_object_id}}
           owners:
-            - {{bootstrap_sp_object_id}}
+            - {{object_id}}
         level0:
           name: level0
           prevent_duplicate_name: true
@@ -639,7 +640,7 @@ launchpad:
             azuread_service_principal_keys:
               - level0
           owners:
-            - {{bootstrap_sp_object_id}}
+            - {{object_id}}
         alz:
           name: alz
           prevent_duplicate_name: true
@@ -647,7 +648,7 @@ launchpad:
             azuread_service_principal_keys:
               - alz
           owners:
-            - {{bootstrap_sp_object_id}}
+            - {{object_id}}
         identity:
           name: caf-identity
           prevent_duplicate_name: true
@@ -655,7 +656,7 @@ launchpad:
             azuread_service_principal_keys:
               - identity
           owners:
-            - {{bootstrap_sp_object_id}}
+            - {{object_id}}
         management:
           name: management
           prevent_duplicate_name: true
@@ -663,7 +664,7 @@ launchpad:
             azuread_service_principal_keys:
               - management
           owners:
-            - {{bootstrap_sp_object_id}}
+            - {{object_id}}
         connectivity:
           name: connectivity
           prevent_duplicate_name: true
@@ -671,7 +672,7 @@ launchpad:
             azuread_service_principal_keys:
               - connectivity
           owners:
-            - {{bootstrap_sp_object_id}}
+            - {{object_id}}
         security:
           name: security
           prevent_duplicate_name: true
@@ -679,7 +680,7 @@ launchpad:
             azuread_service_principal_keys:
               - security
           owners:
-            - {{bootstrap_sp_object_id}}
+            - {{object_id}}
         subscription_creation_platform:
           name: subscription_creation_platform
           prevent_duplicate_name: true
@@ -687,7 +688,7 @@ launchpad:
             azuread_service_principal_keys:
               - subscription_creation_platform
           owners:
-            - {{bootstrap_sp_object_id}}
+            - {{object_id}}
         subscription_creation_landingzones:
           name: subscription_creation_landingzones
           prevent_duplicate_name: true
@@ -697,7 +698,7 @@ launchpad:
             # object_ids:
             #   - 
           owners:
-            - {{bootstrap_sp_object_id}}
+            - {{object_id}}
 
 
       role_mapping:
@@ -726,12 +727,6 @@ launchpad:
                     - security    # only when deploying in single subscription
                     - subscription_creation_landingzones # # only when deploying in single subscription
 {% endif %}
-              Contributor:
-                azuread_groups:
-                  keys:
-                    - identity      # only during bootstrap
-                    - management    # only during bootstrap
-                    - security      # only during bootstrap
               Reader:
                 azuread_groups:
                   keys:
@@ -762,11 +757,9 @@ launchpad:
                   keys:
                     - identity
                     - management
-                    - connectivity
                     - alz
                     - security
                     - subscription_creation_platform
-                    - subscription_creation_landingzones
                     - caf_platform_contributors
             level2:
               Reader:
@@ -777,7 +770,6 @@ launchpad:
                     - connectivity
                     - security
                     - subscription_creation_platform
-                    - subscription_creation_landingzones
                     - caf_platform_contributors
 
           storage_accounts:
@@ -810,9 +802,7 @@ launchpad:
                 azuread_groups:
                   keys:
                     - caf_platform_contributors
-                    - subscription_creation_landingzones
                     - level0
-                    - connectivity
             level2:
               Storage Blob Data Contributor:
                 azuread_groups:
@@ -855,7 +845,6 @@ launchpad:
                     - alz
                     - security
                     - subscription_creation_platform
-                    - subscription_creation_landingzones
                     - caf_platform_contributors
             level2:
               Key Vault Secrets Officer:
@@ -863,7 +852,6 @@ launchpad:
                   keys:
                     - level0
                     - caf_platform_maintainers
-                    - subscription_creation_landingzones
               Key Vault Secrets User:
                 azuread_groups:
                   keys:
@@ -875,46 +863,63 @@ launchpad:
                     - subscription_creation_platform
                     - caf_platform_contributors
 
+
       virtual_networks:
         vnet_region1:
           resource_group_key: gitops
           name: gitops
-          address_space:
-            - 10.101.10.0/24
-            - 10.101.8.0/23
-{% if secure_firewalls_resources is defined and secure_firewalls_resources[env | default('prod')] != "" %}
+          address_space: ["10.100.0.0/24"]
+{% if secure_firewalls_resources is defined %}
           dns_servers:
             - {{ secure_firewalls_resources[env | default('prod')].fw_secure_prod.virtual_hub[0].private_ip_address }}
 {% endif %}
           subnets:
             level0:
               name: level0
-              cidr: ["10.101.10.0/27"]
+              cidr: ["10.100.0.0/27"]
+              delegation:
+                name: Microsoft.ContainerInstance/containerGroups
+                service_delegation: Microsoft.ContainerInstance/containerGroups
+                actions:
+                  - Microsoft.Network/virtualNetworks/subnets/action
+              service_endpoints:
+                - Microsoft.KeyVault
+                - Microsoft.Storage
+{% if private_endpoints is defined %}
               enforce_private_link_endpoint_network_policies: true
+{% endif %}
             level1:
               name: level1
-              cidr: ["10.101.10.32/27"]
+              cidr: ["10.100.0.32/27"]
+              service_endpoints:
+                - Microsoft.KeyVault
+                - Microsoft.Storage
+{% if private_endpoints is defined %}
               enforce_private_link_endpoint_network_policies: true
+{% endif %}
             level2:
               name: level2
-              cidr: ["10.101.10.64/27"]
+              cidr: ["10.100.0.64/27"]
+              service_endpoints:
+                - Microsoft.KeyVault
+                - Microsoft.Storage
+{% if private_endpoints is defined %}
               enforce_private_link_endpoint_network_policies: true
+{% endif %}
             credentials:
               name: credentials
-              cidr: ["10.101.10.96/27"]
+              cidr: ["10.100.0.96/27"]
+              service_endpoints:
+                - Microsoft.KeyVault
+                - Microsoft.Storage
+{% if private_endpoints is defined %}
               enforce_private_link_endpoint_network_policies: true
-            gitops:
-              name: gitops
-              cidr: ["10.101.10.128/27"]
-              enforce_private_link_endpoint_network_policies: true
-            runners:
-              name: runners
-              cidr: ["10.101.8.0/23"]
+{% endif %}
 
 {% if virtual_hubs_resources is defined %}
       virtual_hub_connections:
         vnet_to_hub:
-          name: vnet-launchpad-prod
+          name: vnet-launchpad-prod-TO-vhub-prod
           virtual_hub:
             id: {{ virtual_hubs_resources[env | default('prod')].prod.id }}
           vnet:
@@ -928,65 +933,4 @@ launchpad:
                 labels: ["none"] # To route vnet to vnet traffic through firewall manager (private traffic)
                 ids: # Route internet traffic through firewall manager (private traffic)
                   - {{ virtual_hubs_resources[env | default('prod')].prod.id }}/hubRouteTables/noneRouteTable
-{% endif %}
-
-      managed_identities:
-        gitops:
-          name: gitops-platform-landingzones
-          resource_group_key: gitops
-
-      private_dns:
-        # privatelink.azurecr.io:
-        #   name: privatelink.azurecr.io
-        #   resource_group_key: gitops
-        #   vnet_links:
-        #     vnet_region1:
-        #       name: gitops-region1
-        #       vnet_key: vnet_region1
-        privatelink.blob.core.windows.net:
-          name: privatelink.blob.core.windows.net
-          resource_group_key: gitops
-          vnet_links:
-            vnet_region1:
-              name: gitops-region1
-              vnet_key: vnet_region1
-{% if lookup('env', 'bootstrap_vnet_id') is defined %}
-            bootstrap:
-              name: bootstrap
-              virtual_network_id: {{ lookup('env', 'bootstrap_vnet_id') }}
-{% endif %}
-        # privatelink.queue.core.windows.net:
-        #   name: privatelink.queue.core.windows.net
-        #   resource_group_key: gitops
-        #   vnet_links:
-        #     vnet_region1:
-        #       name: gitops-region1
-        #       vnet_key: vnet_region1
-        privatelink.vaultcore.azure.net:
-          name: privatelink.vaultcore.azure.net
-          resource_group_key: gitops
-          vnet_links:
-            vnet_region1:
-              name: gitops-region1
-              vnet_key: vnet_region1
-{% if lookup('env', 'bootstrap_vnet_id') is defined %}
-            bootstrap:
-              name: bootstrap
-              virtual_network_id: {{ lookup('env', 'bootstrap_vnet_id') }}
-{% endif %}
-
-{% if lookup('env', 'bootstrap_vnet_id') is defined %}
-      vnet_peerings_v1:
-        bootstrap_TO_devops:
-          name: bootstrap-TO-devops
-          from:
-            id: {{ lookup('env', 'bootstrap_vnet_id') }}
-          to:
-            vnet_key: vnet_region1
-        devops_TO_bootstrap:
-          name: devops-TO-bootstrap
-          from:
-            vnet_key: vnet_region1
-          to:
-            id: {{ lookup('env', 'bootstrap_vnet_id') }}
 {% endif %}

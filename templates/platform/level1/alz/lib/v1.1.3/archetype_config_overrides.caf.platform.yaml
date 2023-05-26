@@ -307,7 +307,7 @@ archetype_definitions:
             resource_keys:
               - connectivity
         # Make sure you replace with the Management Group ID in UPPER CASE
-        '[{{alz_mg_prefix | upper}}-CONNECTIVITY] CAF-network-vhub-peering':
+        '[{{topology.caf_environment | upper}}-CONNECTIVITY] CAF-network-vhub-peering':
           azuread_groups:
             lz_key: launchpad
             attribute_key: id
@@ -329,14 +329,6 @@ archetype_definitions:
             attribute_key: id
             resource_keys:
               - management
-        Reader:
-          azuread_groups:
-            lz_key: launchpad
-            attribute_key: id
-            resource_keys:
-              - connectivity
-              - identity
-              - security
   identity:
     archetype_id: platform_identity
     policy_assignments:

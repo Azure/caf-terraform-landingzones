@@ -2,7 +2,7 @@ resource_groups = {
 {% for key, resource_group in resources[tfstate_resource].resources[subscription_key].resource_groups.items() %}
   {{ key }} = {
     name   = "{{ resource_group.name }}"
-    region = "{{ resource_group.region_key | default(default_region_key) }}"
+    region = "{{ resource_group.region_key | default(resources.default_region_key) }}"
 {% if resource_group.tags is defined %}
     tags   = {
 {% for tag_key, tag_value in resource_group.tags.items() %}

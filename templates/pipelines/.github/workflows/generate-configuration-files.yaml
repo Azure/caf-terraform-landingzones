@@ -20,32 +20,12 @@ on:
         description: Name of the CAF environment
         required: true
         type: string
-      generate_pr:
-        description: Generate a pull request. Need to set the branch_name (default=end2end).
-        required: false
-        default: false
-        type: boolean
-      branch_name:
-        description: Name of the branch
-        required: false
-        default: end2end
-        type: string
-      commit_description:
-        description: Description of the commit attached to the PR.
-        required: false
-        type: string
-      target_branch:
-        description: Base branch name to create the PR to.
-        required: false
-        type: string
     secrets:
-      BOOTSTRAP_TOKEN:
-        required: false
       AZURE_CLIENT_ID:
         required: true
       AZURE_TENANT_ID:
         required: true
-      AZURE_MANAGEMENT_SUBSCRIPTION_ID:
+      AZURE_LAUNCHPAD_SUBSCRIPTION_ID:
         required: true
       AZURE_TARGET_SUBSCRIPTION_ID:
         required: true
@@ -71,15 +51,11 @@ jobs:
     
     steps:
       
-      - name: Github event
-        run: cat $GITHUB_EVENT_PATH | jq
-      
       - name: Checkout Configuration
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          ref: ${{ github.event.workflow_run.head_sha }}
-          token: ${{ secrets.BOOTSTRAP_TOKEN || github.token }}
+          ref: ${{ github.event.pull_request.head.ref }}
 
       - name: 'Azure Login'
         uses: azure/login@v1
@@ -118,20 +94,16 @@ jobs:
             -e RUNNER_NUMBERS=${{ secrets.RUNNER_NUMBERS }} \
             -e AZURE_OBJECT_ID=${{ secrets.AZURE_OBJECT_ID }} \
             -e GITHUB_SERVER_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY} \
-            -e rover_bootstrap=false \
             -e base_folder=$(pwd)
 
 
-      - name: Update configuration repository
-        if: inputs.generate_pr == false
-        env:
-          GH_TOKEN: ${{ secrets.BOOTSTRAP_TOKEN }}
+      - name: Update pull Request
         run: |
           git config --global --add safe.directory $(pwd)
-          git config user.name "CAF Rover Actions Bot"
-          git config user.email "caf-rover-actions@github.com"
-          git config pull.rebase false
           git remote -v
+          
+          git config user.name "GitHub Actions Bot"
+          git config user.email "github-actions@github.com"
 
           echo ${GITHUB_HEAD_REF}
           
@@ -140,45 +112,7 @@ jobs:
               echo "Nothing to commit"
           else
             git add --all .
-            pre-commit
-            git commit -am "${{inputs.commit_description}}"
-            git pull
-            git push origin HEAD
+            git commit -m "Update configuration files"
+            git push
           fi
-
-
-      - name: Create PR
-        if: inputs.generate_pr == true
-        env:
-          GH_TOKEN: ${{ secrets.BOOTSTRAP_TOKEN }}
-        run: |
-          git config --global --add safe.directory $(pwd)
-          git config user.name "CAF Rover Actions Bot"
-          git config user.email "caf-rover-actions@github.com"
-
-          echo ${GITHUB_HEAD_REF}
-
-          if [ -z "$(git status --porcelain)" ];
-          then
-              echo "Nothing to commit"
-          else
-
-            git add --all .
-            pre-commit
-            git commit -am "${{inputs.commit_description}}"
-            git push origin HEAD
-            
-            # create the target branch
-            git checkout -b ${{inputs.target_branch}} setup
-            git push --set-upstream origin ${{inputs.target_branch}}
-
-            /usr/bin/gh pr create \
-              --assignee "@me" \
-              --title "Complete the deployment of the platform services." \
-              --body "${body}" \
-              --base ${{inputs.target_branch}} \
-              --head ${{inputs.branch_name}}
-
-          fi
-
 {% endraw %}

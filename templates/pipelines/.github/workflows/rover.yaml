@@ -101,21 +101,18 @@ jobs:
     
     steps:
       
-      - name: Github event
-        run: cat $GITHUB_EVENT_PATH | jq
-      
       - name: 'Azure Login'
         uses: azure/login@v1
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_LAUNCHPAD_SUBSCRIPTION_ID }}
+          subscription-id: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
 
       - name: Checkout Configuration
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          ref: ${{ github.event.workflow_run.head_sha }}
+          ref: ${{ github.event.pull_request.head.ref }}
 
       - name: checkout base terraform landingzone code
         shell: bash
@@ -127,14 +124,14 @@ jobs:
         if: inputs.terraform_action == 'plan_apply'
         shell: bash
         run: |
-          echo "Retrieving credentials in Key Vault"
-          # Get the key vault with the credentials
+          echo "Retreiving keyvault for credentials"
+          # Get the keyvault with the credentials
           cred_vault_name=$(az keyvault list --query "[?(tags.caf_identity_aad_key=='${{inputs.caf_identity_aad_key}}' && tags.caf_environment=='${{inputs.environment}}')].{name:name}[0]" -o tsv)
           if [ -z "${cred_vault_name}" ]; then
-            echo "Cannot retrieve the credentials. Make sure the RBAC are set properly."
-            echo "Bootstrapping the environment."
+            echo "Cannot retreive the credentials. Make sure the RBAC are set properly."
+            echo "Bootstraping the environment."
           else
-            impersonate=("--impersonate-sp-from-keyvault-url https://${cred_vault_name}.vault.azure.net/ ")
+            impresonate=("--impersonate-sp-from-keyvault-url https://${cred_vault_name}.vault.azure.net/ ")
           fi
 
           set +e
@@ -144,7 +141,7 @@ jobs:
           action_apply=("-a apply ${{inputs.terraform_action_apply }} ")
           landingzone_code_path=("-lz $(readlink -f ${{inputs.landingzone_code_path}}) ")
           landingzone_configuration_path=("-var-folder $(readlink -f ${{inputs.landingzone_configuration_path}}) ")
-          tfstate_subscription_id=("-tfstate_subscription_id ${{secrets.AZURE_LAUNCHPAD_SUBSCRIPTION_ID}} ")
+          tfstate_subscription_id=("-tfstate_subscription_id ${{secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID}} ")
           target_subscription=("-target_subscription ${{secrets.AZURE_TARGET_SUBSCRIPTION_ID}} ")
           tfstate=("-tfstate ${{inputs.tfstate}} ")
           environment=("-env ${{inputs.environment}} ")
@@ -159,8 +156,8 @@ jobs:
             plan_path=("-p ${{inputs.plan_path}} ")
           fi
 
-          command_plan="${rover[@]}${impersonate[@]}${landingzone_code_path[@]}${landingzone_configuration_path[@]}${tfstate_subscription_id[@]}${target_subscription[@]}${tfstate[@]}${environment[@]}${level[@]}${launchpad[@]}${plan_path[@]}${output[@]}${action_plan[@]}${{inputs.terraform_action_plan}}"
-          command_apply="${rover[@]}${impersonate[@]}${landingzone_code_path[@]}${landingzone_configuration_path[@]}${tfstate_subscription_id[@]}${target_subscription[@]}${tfstate[@]}${environment[@]}${level[@]}${launchpad[@]}"
+          command_plan="${rover[@]}${impresonate[@]}${landingzone_code_path[@]}${landingzone_configuration_path[@]}${tfstate_subscription_id[@]}${target_subscription[@]}${tfstate[@]}${environment[@]}${level[@]}${launchpad[@]}${plan_path[@]}${output[@]}${action_plan[@]}${{inputs.terraform_action_plan}}"
+          command_apply="${rover[@]}${impresonate[@]}${landingzone_code_path[@]}${landingzone_configuration_path[@]}${tfstate_subscription_id[@]}${target_subscription[@]}${tfstate[@]}${environment[@]}${level[@]}${launchpad[@]}"
           
           echo "::set-output name=rover-command-plan::$(echo ${command_plan})"
           echo "::set-output name=rover-command-apply::$(echo ${command_apply})"
@@ -179,11 +176,6 @@ jobs:
           plan_file=${plan//' -plan:  '/}
           echo "plan file: '${plan_file}'"
 
-          if [ "${plan_file}" = "" ]; then
-            echo "condition oa"
-            exit 1
-          fi
-
           apply=false
 
           if [ "${{ inputs.terraform_action }}" = 'plan_apply' ]; then
@@ -195,8 +187,6 @@ jobs:
           fi
 
           if [ "$(cat outputfile | grep -o 'No changes')" != 'No changes' ]; then
-            apply=true
-            echo "condition 0"
             if [ "$(cat outputfile | grep -o '0 to destroy')" != '0 to destroy' ]; then
               echo "condition 1"
               apply=true

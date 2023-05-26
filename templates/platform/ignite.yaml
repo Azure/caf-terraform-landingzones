@@ -13,14 +13,11 @@ bootstrap:
         deploy_core_landing_zones: True
         clean_up_destination_folder: True
         update_lib_folder: True
-        version_to_deploy: "v3.3.0"
+        version_to_deploy: "v1.1.3"
 
   # subscription_deployment_mode: single_reuse
 
   deployments:
-    scale_out_domain_keys:
-      - prod
-      - non_prod
     platform:
       root:
         region1:
