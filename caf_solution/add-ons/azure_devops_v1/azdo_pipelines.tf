@@ -20,7 +20,7 @@ resource "azuredevops_build_definition" "build_definition" {
   dynamic "repository" {
     for_each = {
       for key, value in try(data.azuredevops_git_repositories.repos[try(each.value.repo_project_key, each.value.project_key)].repositories, {}) : key => value
-      if value.name == each.value.git_repo_name
+      if value.name == try(each.value.git_repo_name, "")
     }
 
     content {
@@ -31,9 +31,21 @@ resource "azuredevops_build_definition" "build_definition" {
     }
   }
 
+  # This block handles repos that are created by terraform
+  dynamic "repository" {
+    for_each = can(each.value.repository) ? [each.value.repository] : []
+
+    content {
+      repo_id     = module.git_repositories[repository.value.git_repository.key].id
+      repo_type   = repository.value.repo_type
+      yml_path    = can(repository.value.yaml) ? repository.value.yaml : repository.value.yml_path
+      branch_name = try(repository.value.branch_name, module.git_repositories[repository.value.git_repository.key].default_branch)
+    }
+  }
+
   # This block handles repos that are hosted in GitHub and require a service connection
   dynamic "repository" {
-    for_each = each.value.repo_type == "GitHub" ? [1] : []
+    for_each = try(each.value.repo_type, null) == "GitHub" ? [1] : []
 
     content {
       repo_id     = each.value.git_repo_name

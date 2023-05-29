@@ -75,3 +75,22 @@ variable "azdo_pat_admin" {
   default     = null
   description = "(Optional). Azure Devops PAT Token. If not provided with this value must be retrieved from the Keyvault secret."
 }
+variable "git_repositories" {
+  default     = {}
+  description = "(Optional). Manages a git repository within Azure DevOps."
+}
+variable "tf_cloud_hostname" {
+  default = null
+}
+variable "tf_cloud_organization" {
+  default = null
+}
+variable "sas_token" {
+  default = null
+}
+variable "workspace" {
+  default = {}
+}
+variable "backend_type" {
+  default = {}
+}

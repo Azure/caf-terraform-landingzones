@@ -16,8 +16,8 @@ locals {
 data "terraform_remote_state" "remote" {
   for_each = try(var.landingzone.tfstates, {})
 
-  backend = var.landingzone.backend_type
-  config  = local.remote_state[try(each.value.backend_type, var.landingzone.backend_type, "azurerm")][each.key]
+  backend = try(each.value.backend_type, "azurerm")
+  config  = local.remote_state[try(each.value.backend_type, "azurerm")][each.key]
 }
 
 locals {
@@ -31,18 +31,30 @@ locals {
         storage_account_name = try(value.storage_account_name, local.landingzone[try(value.level, "current")].storage_account_name)
         subscription_id      = try(value.subscription_id, var.tfstate_subscription_id)
         tenant_id            = try(value.tenant_id, data.azurerm_client_config.current.tenant_id)
-      }
+        sas_token            = try(value.sas_token, null) != null ? var.sas_token : null
+        use_azuread_auth     = try(value.use_azuread_auth, true)
+      } if try(value.backend_type, "azurerm") == "azurerm"
+    }
+    remote = {
+      for key, value in try(var.landingzone.tfstates, {}) : key => {
+        hostname     = try(value.hostname, var.tf_cloud_hostname)
+        organization = try(value.organization, var.tf_cloud_organization)
+        workspaces = {
+          name = value.workspace
+        }
+      } if try(value.backend_type, "azurerm") == "remote"
     }
   }
 
-  landingzone_tag = {
-    "landingzone" = var.landingzone.key
-  }
+  tags = merge(try(local.global_settings.tags, {}), try({ "environment" = local.global_settings.environment }, {}), { "rover_version" = var.rover_version }, var.tags)
 
-  tags = merge(local.global_settings.tags, local.landingzone_tag, { "level" = var.landingzone.level }, { "environment" = local.global_settings.environment }, { "rover_version" = var.rover_version }, var.tags)
-
-  global_settings = data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.objects[var.landingzone.global_settings_key].global_settings
-  diagnostics     = data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.objects[var.landingzone.global_settings_key].diagnostics
+  global_settings = merge(
+    var.global_settings,
+    try(data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.objects[var.landingzone.global_settings_key].global_settings, null),
+    try(data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.global_settings, null),
+    try(data.terraform_remote_state.remote[keys(var.landingzone.tfstates)[0]].outputs.global_settings, null),
+    var.global_settings
+  )
 
   remote = {
     aad_apps = {
