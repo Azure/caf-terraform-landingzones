@@ -5,7 +5,6 @@ keyvaults = {
     resource_group_key  = "bastion_launchpad"
     region              = "region1"
     sku_name            = "premium"
-    soft_delete_enabled = true
 
     # you can setup up to 5 profiles
     diagnostic_profiles = {

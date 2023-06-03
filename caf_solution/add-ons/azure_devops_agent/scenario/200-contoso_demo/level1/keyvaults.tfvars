@@ -4,7 +4,6 @@ keyvaults = {
     name                = "sshl1"
     resource_group_key  = "rg1"
     sku_name            = "premium"
-    soft_delete_enabled = true
 
     creation_policies = {
       keyvault_level0_rw = {
