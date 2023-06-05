@@ -14,18 +14,8 @@ resource "azurerm_virtual_machine_extension" "devops_selfhosted_agent" {
 
   #timestamp: use this field only to trigger a re-run of the script by changing value of this field.
   #           Any integer value is acceptable; it must only be different than the previous value.
-  settings = jsonencode(
-    {
-      "timestamp" : each.value.version,
-      "fileUris" : concat(local.devops_selfhosted_agent.file_uris, local.devops_selfhosted_agent.storage_account_blobs_urls),
-
-    }
-  )
-  protected_settings = jsonencode(
-    {
-      "commandToExecute" : format("bash %s '%s' '%s' '%s' '%s' '%s' '%s' '%s'", var.extensions[each.key].agent_init_script, var.settings[each.key].azure_devops.url, var.settings[each.key].agent_pat, var.settings[each.key].azure_devops.agent_pool.name, var.settings[each.key].azure_devops.agent_pool.agent_name_prefix, var.settings[each.key].azure_devops.agent_pool.num_agents, var.settings[each.key].admin_username, var.settings[each.key].azure_devops.rover_version)
-    }
-  )
+  settings           = jsonencode(local.settings)
+  protected_settings = jsonencode(local.protected_settings)
 
 }
 
@@ -41,4 +31,18 @@ locals {
 
     storage_account_blobs_urls = try(var.settings.devops_selfhosted_agent.storage_account_blobs_urls, [])
   }
+
+  settings = {
+    timestamp = var.extensions.devops_selfhosted_agent.version
+    fileUris  = concat(local.devops_selfhosted_agent.file_uris, local.devops_selfhosted_agent.storage_account_blobs_urls)
+
+  }
+
+  protected_settings = {
+    commandToExecute = format("bash %s '%s' '%s' '%s' '%s' '%s' '%s' '%s'", var.extensions["devops_selfhosted_agent"].agent_init_script, var.settings["devops_selfhosted_agent"].azure_devops.url, var.settings["devops_selfhosted_agent"].agent_pat, var.settings["devops_selfhosted_agent"].azure_devops.agent_pool.name, var.settings["devops_selfhosted_agent"].azure_devops.agent_pool.agent_name_prefix, var.settings["devops_selfhosted_agent"].azure_devops.agent_pool.num_agents, var.settings["devops_selfhosted_agent"].admin_username, var.settings["devops_selfhosted_agent"].azure_devops.rover_version)
+    managedIdentity = can(var.settings.devops_selfhosted_agent.managed_identity) ? {
+      objectId = var.settings.devops_selfhosted_agent.managed_identity
+    } : {}
+  }
+
 }

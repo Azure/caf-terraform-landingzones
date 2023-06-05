@@ -229,6 +229,10 @@ variable "vnets" {
   default = {}
 }
 
+variable "vnet_peerings_v1" {
+  default = {}
+}
+
 variable "network_security_group_definition" {
   default = {}
 }
@@ -262,5 +266,13 @@ variable "virtual_hub_connections" {
 }
 
 variable "custom_variables" {
+  default = {}
+}
+
+variable "azure_container_registries" {
+  default = {}
+}
+
+variable "private_dns" {
   default = {}
 }
