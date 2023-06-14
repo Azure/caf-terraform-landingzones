@@ -10,7 +10,7 @@ resource "kubernetes_namespace" "namespaces" {
 
 resource "kubernetes_manifest" "cluster_manifest" {
   for_each = var.manifests
-    manifest = try(yamldecode(each.value.contents), yamldecode(file("$(path.cwd)/each.value.file")), yamldecode(file("$(path.module)/each.value.file")), yamldecode(file(each.value.file)) )
+  manifest = try(yamldecode(each.value.contents), yamldecode(file("$(path.cwd)/each.value.file")), yamldecode(file("$(path.module)/each.value.file")), yamldecode(file(each.value.file)))
 }
 
 # https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release
@@ -26,7 +26,7 @@ resource "helm_release" "charts" {
   timeout          = try(each.value.timeout, 900)
   skip_crds        = try(each.value.skip_crds, false)
   create_namespace = try(each.value.create_namespace, false)
-  values           = try([ yamlencode(each.value.contents) ], [file("$(path.cwd)/each.value.file")], [file("$(path.module)/each.value.file")], [file(each.value.file)], [])
+  values           = try([yamlencode(each.value.contents)], [file("$(path.cwd)/each.value.file")], [file("$(path.module)/each.value.file")], [file(each.value.file)], [])
   version          = try(each.value.version, null)
   atomic           = try(each.value.atomic, false)
   lint             = try(each.value.lint, false)

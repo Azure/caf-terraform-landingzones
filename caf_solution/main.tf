@@ -35,43 +35,43 @@ provider "azurerm" {
   # partner identifier for CAF Terraform landing zones.
   features {
     api_management {
-      purge_soft_delete_on_destroy = try(var.provider_azurerm_features_api_management.purge_soft_delete_on_destroy, null)
-      # recover_soft_deleted_api_managements = var.provider_azurerm_features_api_management.recover_soft_deleted_api_managements
+      purge_soft_delete_on_destroy         = try(var.provider_azurerm_features_api_management.purge_soft_delete_on_destroy, null)
+      recover_soft_deleted_api_managements = try(var.provider_azurerm_features_api_management.recover_soft_deleted_api_managements, null)
     }
-    # application_insights {
-    #   disable_generated_rule = var.provider_azurerm_features_application_insights.disable_generated_rule
-    # }
+    application_insights {
+      disable_generated_rule = try(var.provider_azurerm_features_application_insights.disable_generated_rule, null)
+    }
     cognitive_account {
-      purge_soft_delete_on_destroy = var.provider_azurerm_features_cognitive_account.purge_soft_delete_on_destroy
+      purge_soft_delete_on_destroy = try(var.provider_azurerm_features_cognitive_account.purge_soft_delete_on_destroy, null)
     }
     key_vault {
-      purge_soft_delete_on_destroy = try(var.provider_azurerm_features_keyvault.purge_soft_delete_on_destroy, false)
-      # purge_soft_deleted_certificates_on_destroy = var.provider_azurerm_features_keyvault.purge_soft_deleted_certificates_on_destroy
-      # purge_soft_deleted_keys_on_destroy         = var.provider_azurerm_features_keyvault.purge_soft_deleted_keys_on_destroy
-      # purge_soft_deleted_secrets_on_destroy      = var.provider_azurerm_features_keyvault.purge_soft_deleted_secrets_on_destroy
-      # recover_soft_deleted_certificates          = var.provider_azurerm_features_keyvault.recover_soft_deleted_certificates
+      purge_soft_delete_on_destroy               = try(var.provider_azurerm_features_keyvault.purge_soft_delete_on_destroy, false)
+      purge_soft_deleted_certificates_on_destroy = try(var.provider_azurerm_features_keyvault.purge_soft_deleted_certificates_on_destroy, null)
+      purge_soft_deleted_keys_on_destroy         = try(var.provider_azurerm_features_keyvault.purge_soft_deleted_keys_on_destroy, null)
+      purge_soft_deleted_secrets_on_destroy      = try(var.provider_azurerm_features_keyvault.purge_soft_deleted_secrets_on_destroy, null)
+      recover_soft_deleted_certificates          = try(var.provider_azurerm_features_keyvault.recover_soft_deleted_certificate, null)
       recover_soft_deleted_key_vaults            = try(var.provider_azurerm_features_keyvault.recover_soft_deleted_key_vaults, true)
-      # recover_soft_deleted_keys                  = var.provider_azurerm_features_keyvault.recover_soft_deleted_keys
-      # recover_soft_deleted_secrets               = var.provider_azurerm_features_keyvault.recover_soft_deleted_secrets
+      recover_soft_deleted_keys                  = try(var.provider_azurerm_features_keyvault.recover_soft_deleted_keys, null)
+      recover_soft_deleted_secrets               = try(var.provider_azurerm_features_keyvault.recover_soft_deleted_secrets, null)
     }
-    # log_analytics_workspace {
-    #   permanently_delete_on_destroy = var.provider_azurerm_features_log_analytics_workspace.permanently_delete_on_destroy
-    # }
+    log_analytics_workspace {
+      permanently_delete_on_destroy = try(var.provider_azurerm_features_log_analytics_workspace.permanently_delete_on_destroy, null)
+    }
     resource_group {
-      prevent_deletion_if_contains_resources = var.provider_azurerm_features_resource_group.prevent_deletion_if_contains_resources
+      prevent_deletion_if_contains_resources = try(var.provider_azurerm_features_resource_group.prevent_deletion_if_contains_resources, null)
     }
     template_deployment {
-      delete_nested_items_during_deletion = var.provider_azurerm_features_template_deployment.delete_nested_items_during_deletion
+      delete_nested_items_during_deletion = try(var.provider_azurerm_features_template_deployment.delete_nested_items_during_deletion, null)
     }
     virtual_machine {
-      delete_os_disk_on_deletion     = var.provider_azurerm_features_virtual_machine.delete_os_disk_on_deletion
-      graceful_shutdown              = var.provider_azurerm_features_virtual_machine.graceful_shutdown
-      skip_shutdown_and_force_delete = var.provider_azurerm_features_virtual_machine.skip_shutdown_and_force_delete
+      delete_os_disk_on_deletion     = try(var.provider_azurerm_features_virtual_machine.delete_os_disk_on_deletion, null)
+      graceful_shutdown              = try(var.provider_azurerm_features_virtual_machine.graceful_shutdown, null)
+      skip_shutdown_and_force_delete = try(var.provider_azurerm_features_virtual_machine.skip_shutdown_and_force_delete, null)
     }
     virtual_machine_scale_set {
-      force_delete                  = var.provider_azurerm_features_virtual_machine_scale_set.force_delete
-      roll_instances_when_required  = var.provider_azurerm_features_virtual_machine_scale_set.roll_instances_when_required
-      scale_to_zero_before_deletion = var.provider_azurerm_features_virtual_machine_scale_set.scale_to_zero_before_deletion
+      force_delete                  = try(var.provider_azurerm_features_virtual_machine_scale_set.force_delete, null)
+      roll_instances_when_required  = try(var.provider_azurerm_features_virtual_machine_scale_set.roll_instances_when_required, null)
+      scale_to_zero_before_deletion = try(var.provider_azurerm_features_virtual_machine_scale_set.scale_to_zero_before_deletion, null)
     }
   }
 }
