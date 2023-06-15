@@ -39,7 +39,7 @@ module "enterprise_scale" {
 }
 
 locals {
-  subscription_id_connectivity     = var.subscription_id_connectivity == null ? data.azurerm_client_config.current.subscription_id : var.subscription_id_connectivity
-  subscription_id_management       = var.subscription_id_management == null ? data.azurerm_client_config.current.subscription_id : var.subscription_id_management
-  subscription_id_identity         = var.subscription_id_identity  == null ? data.azurerm_client_config.current.subscription_id : var.subscription_id_identity
+  subscription_id_connectivity = var.subscription_id_connectivity == null ? data.azurerm_client_config.current.subscription_id : var.subscription_id_connectivity
+  subscription_id_management   = var.subscription_id_management == null ? data.azurerm_client_config.current.subscription_id : var.subscription_id_management
+  subscription_id_identity     = var.subscription_id_identity == null ? data.azurerm_client_config.current.subscription_id : var.subscription_id_identity
 }

@@ -12,15 +12,15 @@ resource "kubernetes_role_v1" "role" {
   metadata {
     annotations = try(var.settings.annotations, null)
     labels      = try(var.settings.labels, null)
-    name = azurecaf_name.role.result
+    name        = azurecaf_name.role.result
   }
   dynamic "rule" {
     for_each = try(var.settings.rule, {})
-      content {
-        api_groups = try(rule.value.api_groups, null)
-        resource_names = try(rule.value.resource_names, null)
-        resources = try(rule.value.resources, null)
-        verbs = try(rule.value.verbs, null)
-      }
+    content {
+      api_groups     = try(rule.value.api_groups, null)
+      resource_names = try(rule.value.resource_names, null)
+      resources      = try(rule.value.resources, null)
+      verbs          = try(rule.value.verbs, null)
+    }
   }
 }

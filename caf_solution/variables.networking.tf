@@ -117,6 +117,18 @@ variable "public_ip_addresses" {
 variable "route_tables" {
   default = {}
 }
+variable "traffic_manager_azure_endpoint" {
+  default = {}
+}
+variable "traffic_manager_external_endpoint" {
+  default = {}
+}
+variable "traffic_manager_nested_endpoint" {
+  default = {}
+}
+variable "traffic_manager_profile" {
+  default = {}
+}
 variable "virtual_network_gateway_connections" {
   default = {}
 }
@@ -171,10 +183,30 @@ variable "lb_backend_address_pool" {
 variable "lb_backend_address_pool_address" {
   default = {}
 }
+variable "lb_nat_pool" {
+  default = {}
+}
+variable "lb_nat_rule" {
+  default = {}
+}
+variable "lb_outbound_rule" {
+  default = {}
+}
+variable "lb_probe" {
+  default = {}
+}
+variable "lb_rule" {
+  default = {}
+}
 variable "network_interface_backend_address_pool_association" {
   default = {}
 }
 variable "public_ip_prefixes" {
   default = {}
 }
-
+variable "relay_hybrid_connection" {
+  default = {}
+}
+variable "relay_namespace" {
+  default = {}
+}
