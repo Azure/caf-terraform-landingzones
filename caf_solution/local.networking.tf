@@ -31,10 +31,12 @@ locals {
       lb                                                      = var.lb
       lb_backend_address_pool                                 = var.lb_backend_address_pool
       lb_backend_address_pool_address                         = var.lb_backend_address_pool_address
+      lb_nat_pool                                             = var.lb_nat_pool
+      lb_nat_rule                                             = var.lb_nat_rule
+      lb_outbound_rule                                        = var.lb_outbound_rule
+      lb_probe                                                = var.lb_probe
+      lb_rule                                                 = var.lb_rule
       load_balancers                                          = var.load_balancers
-      lb                                                      = var.lb
-      lb_backend_address_pool                                 = var.lb_backend_address_pool
-      lb_backend_address_pool_address                         = var.lb_backend_address_pool_address
       local_network_gateways                                  = var.local_network_gateways
       nat_gateways                                            = var.nat_gateways
       network_interface_backend_address_pool_association      = var.network_interface_backend_address_pool_association
