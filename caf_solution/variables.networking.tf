@@ -171,6 +171,21 @@ variable "lb_backend_address_pool" {
 variable "lb_backend_address_pool_address" {
   default = {}
 }
+variable "lb_nat_pool" {
+  default = {}
+}
+variable "lb_nat_rule" {
+  default = {}
+}
+variable "lb_outbound_rule" {
+  default = {}
+}
+variable "lb_probe" {
+  default = {}
+}
+variable "lb_rule" {
+  default = {}
+}
 variable "network_interface_backend_address_pool_association" {
   default = {}
 }
