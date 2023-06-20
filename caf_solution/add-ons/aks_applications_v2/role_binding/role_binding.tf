@@ -12,20 +12,20 @@ resource "kubernetes_role_binding_v1" "role_binding" {
   metadata {
     annotations = try(var.settings.annotations, null)
     labels      = try(var.settings.labels, null)
-    name = azurecaf_name.role_binding.result
-    namespace = try(var.settings.namespace, var.namespaces[var.settings.namespace_key].name)
+    name        = azurecaf_name.role_binding.result
+    namespace   = try(var.settings.namespace, var.namespaces[var.settings.namespace_key].name)
   }
   role_ref {
-    name = try(var.role[var.settings.role_key].name, var.settings.role_name)
-    kind = "Role"
+    name      = try(var.role[var.settings.role_key].name, var.settings.role_name)
+    kind      = "Role"
     api_group = "rbac.authorization.k8s.io"
   }
   dynamic "subject" {
     for_each = try(var.settings.subjects, {})
     content {
-        name = coalesce(try(subject.value.name, null), try(var.managed_identities[subject.value.lz_key][subject.value.object_key].rbac_id, null), try(var.azuread_service_principals[subject.value.lz_key][subject.value.object_key].rbac_id, null), try(var.azuread_groups[subject.value.lz_key][subject.value.object_key].rbac_id, null))
-        kind = can(subject.value.kind) ?  subject.value.kind : can(try(var.managed_identities[subject.value.lz_key][subject.value.object_key].rbac_id, null)) ? "User" : can(try(var.azuread_service_principals[subject.value.lz_key][subject.value.object_key].rbac_id, null)) ? "User" : can(try(var.azuread_groups[subject.value.lz_key][subject.value.object_key].rbac_id, null)) ? "Group" : null
-        api_group = "rbac.authorization.k8s.io"
+      name      = coalesce(try(subject.value.name, null), try(var.managed_identities[subject.value.lz_key][subject.value.object_key].rbac_id, null), try(var.azuread_service_principals[subject.value.lz_key][subject.value.object_key].rbac_id, null), try(var.azuread_groups[subject.value.lz_key][subject.value.object_key].rbac_id, null))
+      kind      = can(subject.value.kind) ? subject.value.kind : can(try(var.managed_identities[subject.value.lz_key][subject.value.object_key].rbac_id, null)) ? "User" : can(try(var.azuread_service_principals[subject.value.lz_key][subject.value.object_key].rbac_id, null)) ? "User" : can(try(var.azuread_groups[subject.value.lz_key][subject.value.object_key].rbac_id, null)) ? "Group" : null
+      api_group = "rbac.authorization.k8s.io"
     }
   }
 }

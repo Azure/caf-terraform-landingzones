@@ -50,6 +50,9 @@ variable "data_factory_linked_services_azure_blob_storages" {
 variable "data_factory_linked_service_azure_databricks" {
   default = {}
 }
+variable "data_factory_integration_runtime_azure_ssis" {
+  default = {}
+}
 variable "data_factory_integration_runtime_self_hosted" {
   default = {}
 }
