@@ -25,3 +25,6 @@ variable "logic_app_trigger_recurrence" {
 variable "logic_app_workflow" {
   default = {}
 }
+variable "logic_app_standard" {
+  default = {}
+}

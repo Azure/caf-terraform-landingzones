@@ -1,22 +1,22 @@
 module "solution" {
-  source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=int-5.7.0"
-  # source  = "aztfmod/caf/azurerm"
-  # version = "5.6.6"
+  source  = "aztfmod/caf/azurerm"
+  version = "5.7.0"
 
   providers = {
     azurerm.vhub = azurerm.vhub
   }
 
+  aadb2c                                = var.aadb2c
+  apim                                  = local.apim
   azuread                               = local.azuread
   cloud                                 = local.cloud
-  compute                               = local.compute
-  apim                                  = local.apim
   cognitive_services                    = local.cognitive_services
+  compute                               = local.compute
   current_landingzone_key               = try(var.landingzone.key, var.landingzone[var.backend_type].key)
   custom_role_definitions               = var.custom_role_definitions
   data_factory                          = local.data_factory
-  database                              = local.database
   data_protection                       = local.data_protection
+  database                              = local.database
   diagnostic_storage_accounts           = var.diagnostic_storage_accounts
   diagnostics_definition                = var.diagnostics_definition
   diagnostics_destinations              = var.diagnostics_destinations
@@ -27,6 +27,7 @@ module "solution" {
   event_hubs                            = var.event_hubs
   global_settings                       = local.global_settings
   identity                              = local.identity
+  iot                                   = local.iot
   keyvault_access_policies              = var.keyvault_access_policies
   keyvault_access_policies_azuread_apps = var.keyvault_access_policies_azuread_apps
   keyvault_certificate_issuers          = var.keyvault_certificate_issuers
@@ -38,6 +39,7 @@ module "solution" {
   managed_identities                    = var.managed_identities
   messaging                             = local.messaging
   networking                            = local.networking
+  purview                               = local.purview
   random_strings                        = var.random_strings
   remote_objects                        = local.remote
   resource_groups                       = var.resource_groups

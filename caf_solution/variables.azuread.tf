@@ -1,6 +1,9 @@
 variable "azuread" {
   default = {}
 }
+variable "aadb2c" {
+  default = {}
+}
 variable "azuread_api_permissions" {
   default = {}
 }

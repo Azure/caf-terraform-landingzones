@@ -40,3 +40,18 @@ variable "api_management_diagnostic" {
 variable "api_management_certificate" {
   default = {}
 }
+variable "api_management_product" {
+  default = {}
+}
+variable "api_management_gateway" {
+  default = {}
+}
+variable "api_management_gateway_api" {
+  default = {}
+}
+variable "api_management_group" {
+  default = {}
+}
+variable "api_management_subscription" {
+  default = {}
+}

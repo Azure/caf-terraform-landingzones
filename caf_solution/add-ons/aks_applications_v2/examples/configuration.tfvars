@@ -21,7 +21,7 @@ namespaces = {
 kv_csi_driver = {
   workload_kv_reader = {
     aks_clusters = {
-      lz_key = "aks" 
+      lz_key = "aks"
       key    = "aks_cluster1"
     }
     keyvault = {
@@ -74,10 +74,10 @@ role_binding = {
     namespace_key = "default"
     role_name     = "admin"
     subjects = {
-			demouser = {
-				# user object id
-				name = "e74a2ee6-433c-46b3-b10f-9abac25b1ba8"
-			}
+      demouser = {
+        # user object id
+        name = "e74a2ee6-433c-46b3-b10f-9abac25b1ba8"
+      }
     }
   }
 }
