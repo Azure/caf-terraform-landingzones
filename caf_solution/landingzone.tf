@@ -56,6 +56,7 @@ module "solution" {
   user_type                             = var.user_type
   var_folder_path                       = var.var_folder_path
   webapp                                = local.webapp
+  resource_provider_registration        = var.resource_provider_registration
 
   diagnostics = {
     diagnostics_definition          = local.diagnostics.diagnostics_definition
