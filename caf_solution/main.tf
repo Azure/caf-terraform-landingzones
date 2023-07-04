@@ -35,8 +35,12 @@ provider "azurerm" {
   # partner identifier for CAF Terraform landing zones.
   features {
     api_management {
-      purge_soft_delete_on_destroy         = try(var.provider_azurerm_features_api_management.purge_soft_delete_on_destroy, null)
-      recover_soft_deleted_api_managements = try(var.provider_azurerm_features_api_management.recover_soft_deleted_api_managements, null)
+      purge_soft_delete_on_destroy = try(var.provider_azurerm_features_api_management.purge_soft_delete_on_destroy, null)
+      recover_soft_deleted         = try(var.provider_azurerm_features_api_management.recover_soft_deleted, null)
+    }
+    app_configuration = {
+      purge_soft_delete_on_destroy = try(var.provider_azurerm_features_app_configuration.purge_soft_delete_on_destroy, null)
+      recover_soft_deleted         = try(var.provider_azurerm_features_app_configuration.recover_soft_deleted, null)
     }
     application_insights {
       disable_generated_rule = try(var.provider_azurerm_features_application_insights.disable_generated_rule, null)
@@ -45,17 +49,21 @@ provider "azurerm" {
       purge_soft_delete_on_destroy = var.provider_azurerm_features_cognitive_account.purge_soft_delete_on_destroy
     }
     key_vault {
-      purge_soft_delete_on_destroy               = try(var.provider_azurerm_features_keyvault.purge_soft_delete_on_destroy, false)
-      purge_soft_deleted_certificates_on_destroy = try(var.provider_azurerm_features_keyvault.purge_soft_deleted_certificates_on_destroy, null)
-      purge_soft_deleted_keys_on_destroy         = try(var.provider_azurerm_features_keyvault.purge_soft_deleted_keys_on_destroy, null)
-      purge_soft_deleted_secrets_on_destroy      = try(var.provider_azurerm_features_keyvault.purge_soft_deleted_secrets_on_destroy, null)
-      recover_soft_deleted_certificates          = try(var.provider_azurerm_features_keyvault.recover_soft_deleted_certificates, null)
-      recover_soft_deleted_key_vaults            = try(var.provider_azurerm_features_keyvault.recover_soft_deleted_key_vaults, true)
-      recover_soft_deleted_keys                  = try(var.provider_azurerm_features_keyvault.recover_soft_deleted_keys, null)
-      recover_soft_deleted_secrets               = try(var.provider_azurerm_features_keyvault.recover_soft_deleted_secrets, null)
+      purge_soft_delete_on_destroy                            = try(var.provider_azurerm_features_keyvault.purge_soft_delete_on_destroy, false)
+      purge_soft_deleted_certificates_on_destroy              = try(var.provider_azurerm_features_keyvault.purge_soft_deleted_certificates_on_destroy, null)
+      purge_soft_deleted_keys_on_destroy                      = try(var.provider_azurerm_features_keyvault.purge_soft_deleted_keys_on_destroy, null)
+      purge_soft_deleted_secrets_on_destroy                   = try(var.provider_azurerm_features_keyvault.purge_soft_deleted_secrets_on_destroy, null)
+      purge_soft_deleted_hardware_security_modules_on_destroy = try(var.provider_azurerm_features_keyvault.purge_soft_deleted_hardware_security_modules_on_destroy, null)
+      recover_soft_deleted_certificates                       = try(var.provider_azurerm_features_keyvault.recover_soft_deleted_certificates, null)
+      recover_soft_deleted_key_vaults                         = try(var.provider_azurerm_features_keyvault.recover_soft_deleted_key_vaults, true)
+      recover_soft_deleted_keys                               = try(var.provider_azurerm_features_keyvault.recover_soft_deleted_keys, null)
+      recover_soft_deleted_secrets                            = try(var.provider_azurerm_features_keyvault.recover_soft_deleted_secrets, null)
     }
     log_analytics_workspace {
       permanently_delete_on_destroy = try(var.provider_azurerm_features_log_analytics_workspace.permanently_delete_on_destroy, null)
+    }
+    managed_disk = {
+      expand_without_downtime = try(var.provider_azurerm_features_managed_disk.expand_without_downtime, null)
     }
     resource_group {
       prevent_deletion_if_contains_resources = var.provider_azurerm_features_resource_group.prevent_deletion_if_contains_resources
