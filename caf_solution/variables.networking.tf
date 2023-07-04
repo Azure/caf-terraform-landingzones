@@ -1,23 +1,19 @@
-
-variable "application_gateway_platforms" {
-  default = {}
-}
-variable "application_gateways" {
+variable "application_gateway_applications" {
   default = {}
 }
 variable "application_gateway_applications_v1" {
   default = {}
 }
-variable "application_gateway_applications" {
+variable "application_gateway_platforms" {
   default = {}
 }
 variable "application_gateway_waf_policies" {
   default = {}
 }
-variable "application_security_groups" {
+variable "application_gateways" {
   default = {}
 }
-variable "azurerm_firewalls" {
+variable "application_security_groups" {
   default = {}
 }
 variable "azurerm_firewall_application_rule_collection_definition" {
@@ -35,13 +31,24 @@ variable "azurerm_firewall_policies" {
 variable "azurerm_firewall_policy_rule_collection_groups" {
   default = {}
 }
+variable "azurerm_firewalls" {
+  default = {}
+}
 variable "azurerm_routes" {
   default = {}
 }
-variable "cdn_profiles" {
+# Legacy support
+variable "cdn_endpoint" {
   default = {}
 }
 variable "cdn_endpoints" {
+  default = {}
+}
+# Legacy support
+variable "cdn_profile" {
+  default = {}
+}
+variable "cdn_profiles" {
   default = {}
 }
 variable "ddos_services" {
