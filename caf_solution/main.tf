@@ -38,7 +38,7 @@ provider "azurerm" {
       purge_soft_delete_on_destroy = try(var.provider_azurerm_features_api_management.purge_soft_delete_on_destroy, null)
       recover_soft_deleted         = try(var.provider_azurerm_features_api_management.recover_soft_deleted, null)
     }
-    app_configuration = {
+    app_configuration {
       purge_soft_delete_on_destroy = try(var.provider_azurerm_features_app_configuration.purge_soft_delete_on_destroy, null)
       recover_soft_deleted         = try(var.provider_azurerm_features_app_configuration.recover_soft_deleted, null)
     }
@@ -62,7 +62,7 @@ provider "azurerm" {
     log_analytics_workspace {
       permanently_delete_on_destroy = try(var.provider_azurerm_features_log_analytics_workspace.permanently_delete_on_destroy, null)
     }
-    managed_disk = {
+    managed_disk {
       expand_without_downtime = try(var.provider_azurerm_features_managed_disk.expand_without_downtime, null)
     }
     resource_group {
