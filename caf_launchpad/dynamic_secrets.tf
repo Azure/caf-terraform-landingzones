@@ -1,8 +1,7 @@
 
 module "dynamic_keyvault_secrets" {
-  # source  = "aztfmod/caf/azurerm"
-  # version = "5.7.0"
-  source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=main"
+  source  = "aztfmod/caf/azurerm"
+  version = "5.7.0"
 
   for_each = try(var.dynamic_keyvault_secrets, {})
 
