@@ -186,7 +186,7 @@ jobs:
     name: networking-200
     runs-on: ubuntu-latest
 
-    # needs: foundations200
+    needs: networking100
 
     strategy:
       fail-fast: false
