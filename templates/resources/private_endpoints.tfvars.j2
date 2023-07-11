@@ -33,6 +33,18 @@ private_endpoints = {
 {% endif %} 
     }
 {% endif %}
+{% if v.ip_configuration is defined %}
+    ip_configuration = {
+      name = "{{v.ip_configuration.name}}"
+      private_ip_address = "{{v.ip_configuration.private_ip_address}}"
+{% if v.ip_configuration.subresource_name is defined %}
+      subresource_name             = "{{v.ip_configuration.subresource_name }}"
+{% endif %}
+{% if v.ip_configuration.member_name is defined %}
+      member_name             = "{{v.ip_configuration.member_name }}"
+{% endif %}
+    }
+{% endif %}
   }
 {% endfor %}
 }
