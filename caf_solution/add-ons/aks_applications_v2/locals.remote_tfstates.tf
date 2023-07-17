@@ -59,5 +59,5 @@ locals {
   kubelogin_cred = {
     secret_prefix = try(var.keyvaults.secret_prefix, "sp")
   }
-  secret_identity_id = data.azurerm_kubernetes_cluster.kubeconfig.key_vault_secrets_provider[0].secret_identity[0].object_id
+  secret_identity_id = try(data.azurerm_kubernetes_cluster.kubeconfig.key_vault_secrets_provider[0].secret_identity[0].object_id, null)
 }
