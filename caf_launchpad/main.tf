@@ -99,7 +99,7 @@ locals {
     "landingzone" = var.landingzone.key
   }
 
-  tags = merge(local.global_settings.tags, local.landingzone_tag, { "environment" = local.global_settings.environment }, { "rover_version" = var.rover_version }, var.tags)
+  tags = merge(local.global_settings.tags, local.landingzone_tag, { "caf_environment" = local.global_settings.environment }, { "rover_version" = var.rover_version }, var.tags)
 
   global_settings = {
     default_region     = var.default_region

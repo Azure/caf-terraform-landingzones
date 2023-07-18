@@ -46,7 +46,7 @@ locals {
     }
   }
 
-  tags = merge(try(local.global_settings.tags, {}), { "level" = try(var.landingzone.level, var.landingzone[var.backend_type].level) }, try({ "environment" = local.global_settings.environment }, {}), { "rover_version" = var.rover_version }, var.tags)
+  tags = merge(try(local.global_settings.tags, {}), { "caf_level" = try(var.landingzone.level, var.landingzone[var.backend_type].level) }, try({ "caf_environment" = local.global_settings.environment }, {}), { "rover_version" = var.rover_version }, var.tags)
 
   global_settings = merge(
     var.global_settings,
