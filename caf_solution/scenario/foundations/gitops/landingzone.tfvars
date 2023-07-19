@@ -6,7 +6,7 @@ landingzone = {
   tfstates = {
     launchpad = {
       level   = "lower"
-      tfstate = "caf_slaunchpad.tfstate"
+      tfstate = "caf_launchpad.tfstate"
     }
   }
 }
