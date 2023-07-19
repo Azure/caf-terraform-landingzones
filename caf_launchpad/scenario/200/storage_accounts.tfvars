@@ -9,9 +9,9 @@ storage_accounts = {
     tags = {
       ## Those tags must never be changed after being set as they are used by the rover to locate the launchpad and the tfstates.
       # Only adjust the environment value at creation time
-      tfstate     = "level0"
-      environment = "sandpit"
-      launchpad   = "launchpad"
+      caf_tfstate     = "level0"
+      caf_environment = "is replaced with real value by the module"
+      launchpad       = "launchpad"
       ##
     }
     blob_properties = {
@@ -34,9 +34,9 @@ storage_accounts = {
     account_replication_type = "RAGRS"
     tags = {
       # Those tags must never be changed while set as they are used by the rover to locate the launchpad and the tfstates.
-      tfstate     = "level1"
-      environment = "sandpit"
-      launchpad   = "launchpad"
+      caf_tfstate     = "level1"
+      caf_environment = "is replaced with real value by the module"
+      launchpad       = "launchpad"
     }
     blob_properties = {
       versioning_enabled                = true
@@ -58,9 +58,9 @@ storage_accounts = {
     account_replication_type = "RAGRS"
     tags = {
       # Those tags must never be changed while set as they are used by the rover to locate the launchpad and the tfstates.
-      tfstate     = "level2"
-      environment = "sandpit"
-      launchpad   = "launchpad"
+      caf_tfstate     = "level2"
+      caf_environment = "is replaced with real value by the module"
+      launchpad       = "launchpad"
     }
     blob_properties = {
       versioning_enabled                = true
@@ -82,9 +82,9 @@ storage_accounts = {
     account_replication_type = "RAGRS"
     tags = {
       # Those tags must never be changed while set as they are used by the rover to locate the launchpad and the tfstates.
-      tfstate     = "level3"
-      environment = "sandpit"
-      launchpad   = "launchpad"
+      caf_tfstate     = "level3"
+      caf_environment = "is replaced with real value by the module"
+      launchpad       = "launchpad"
     }
     blob_properties = {
       versioning_enabled                = true
@@ -106,9 +106,9 @@ storage_accounts = {
     account_replication_type = "RAGRS"
     tags = {
       # Those tags must never be changed while set as they are used by the rover to locate the launchpad and the tfstates.
-      tfstate     = "level4"
-      environment = "sandpit"
-      launchpad   = "launchpad"
+      caf_tfstate     = "level4"
+      caf_environment = "is replaced with real value by the module"
+      launchpad       = "launchpad"
     }
     blob_properties = {
       versioning_enabled                = true

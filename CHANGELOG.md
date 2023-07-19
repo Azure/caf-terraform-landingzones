@@ -1,3 +1,26 @@
+## 5.7.2
+
+### rover
+
+min version: required_version = ">= 1.3.5" 
+https://hub.docker.com/repository/docker/aztfmod/rover/tags?page=1&ordering=last_updated&name=1.3.9
+https://hub.docker.com/repository/docker/aztfmod/rover/tags?page=1&ordering=last_updated&name=1.4.
+
+Rover has been upgraded to support new features like:
+
+* Using MSAL library to connect to azurerm backend storage accounts (> 1.3.5)
+* leverage precondition to evaluate additional check at plan time
+
+### caf_launchpad
+
+BREAKING CHANGES:
+
+* replace in your tfvars the tags ***tfstate*** and ***environment*** by ***caf_tfstate*** and ***caf_environment***. You need to upgrade to the minimum rover version as stated in this upgrade note.
+
+UPGRADE:
+
+* use azuread_applications instead of azuread_apps to support the decoupling of apps and service principals. Refer to caf_launchpad/scenario/200/iam_azuread.tfvars for a complete example.
+
 ## v9.0.2009 (September 2020)
 
 BREAKING CHANGES:

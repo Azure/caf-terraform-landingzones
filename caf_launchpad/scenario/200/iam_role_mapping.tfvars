@@ -14,7 +14,8 @@ role_mapping = {
           managed_identities = {
             keys = ["level0", "level1", "level2", "level3", "level4"]
           }
-          azuread_apps = {
+          # azuread_apps = {
+          azuread_service_principals = {
             keys = ["caf_launchpad_level0"]
           }
         }
@@ -26,7 +27,7 @@ role_mapping = {
     subscriptions = {
       logged_in_subscription = {
         "Contributor" = {
-          azuread_apps = {
+          azuread_service_principals = {
             keys = ["caf_launchpad_level0"]
           }
           managed_identities = {
@@ -74,7 +75,8 @@ role_mapping = {
           azuread_groups = {
             keys = ["keyvault_level0_rw"]
           }
-          azuread_apps = {
+          # More for testing as it is already member of the azure ad group keyvault_level0_rw
+          azuread_service_principals = {
             keys = ["caf_launchpad_level0"]
           }
           managed_identities = {
@@ -143,6 +145,82 @@ role_mapping = {
       }
       level4 = {
         "Storage Blob Data Contributor" = {
+          logged_in = {
+            keys = ["user"]
+          }
+        }
+      }
+    }
+
+    #
+    # From 5.7.0 prefer role mappings for keyvault permissions
+    #
+    keyvaults = {
+      "level0" = {
+        "Key Vault Secrets Officer" = {
+          azuread_groups = {
+            keys = ["keyvault_level0_rw"]
+          }
+          logged_in = {
+            keys = ["user"]
+          }
+        }
+        "Key Vault Secrets User" = {
+          azuread_groups = {
+            keys = ["keyvault_level1_rw"]
+          }
+        }
+      }
+      "level1" = {
+        "Key Vault Secrets Officer" = {
+          azuread_groups = {
+            keys = ["keyvault_level1_rw"]
+          }
+          logged_in = {
+            keys = ["user"]
+          }
+        }
+        "Key Vault Secrets User" = {
+          azuread_groups = {
+            keys = ["keyvault_level2_rw"]
+          }
+        }
+      }
+      "level2" = {
+        "Key Vault Secrets Officer" = {
+          azuread_groups = {
+            keys = ["keyvault_level2_rw"]
+          }
+          logged_in = {
+            keys = ["user"]
+          }
+        }
+        "Key Vault Secrets User" = {
+          azuread_groups = {
+            keys = ["keyvault_level3_rw"]
+          }
+        }
+      }
+      "level3" = {
+        "Key Vault Secrets Officer" = {
+          azuread_groups = {
+            keys = ["keyvault_level3_rw"]
+          }
+          logged_in = {
+            keys = ["user"]
+          }
+        }
+        "Key Vault Secrets User" = {
+          azuread_groups = {
+            keys = ["keyvault_level4_rw"]
+          }
+        }
+      }
+      "level4" = {
+        "Key Vault Secrets Officer" = {
+          azuread_groups = {
+            keys = ["keyvault_level4_rw"]
+          }
           logged_in = {
             keys = ["user"]
           }
