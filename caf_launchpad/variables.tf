@@ -276,3 +276,6 @@ variable "azure_container_registries" {
 variable "private_dns" {
   default = {}
 }
+variable "data_sources" {
+  default = {}
+}
