@@ -11,6 +11,9 @@ variable "storage_account_blobs" {
 variable "storage_accounts" {
   default = {}
 }
+variable "storage_account_file_shares" {
+  default = {}
+}
 variable "storage_account_queues" {
   default = {}
 }
