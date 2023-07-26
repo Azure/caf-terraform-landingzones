@@ -21,6 +21,20 @@ keyvaults = {
     #   }
     # }
 
+    # you can setup up to 5 profiles
+    diagnostic_profiles = {
+      operations = {
+        definition_key   = "default_all"
+        destination_type = "log_analytics"
+        destination_key  = "central_logs"
+      }
+      siem = {
+        definition_key   = "siem_all"
+        destination_type = "storage"
+        destination_key  = "all_regions"
+      }
+    }
+
   }
 
   level1 = {
@@ -42,6 +56,19 @@ keyvaults = {
     #   }
     # }
 
+    # you can setup up to 5 profiles
+    diagnostic_profiles = {
+      operations = {
+        definition_key   = "default_all"
+        destination_type = "log_analytics"
+        destination_key  = "central_logs"
+      }
+      siem = {
+        definition_key   = "siem_all"
+        destination_type = "storage"
+        destination_key  = "all_regions"
+      }
+    }
   }
 
   level2 = {
@@ -63,6 +90,19 @@ keyvaults = {
     #   }
     # }
 
+    # you can setup up to 5 profiles
+    diagnostic_profiles = {
+      operations = {
+        definition_key   = "default_all"
+        destination_type = "log_analytics"
+        destination_key  = "central_logs"
+      }
+      siem = {
+        definition_key   = "siem_all"
+        destination_type = "storage"
+        destination_key  = "all_regions"
+      }
+    }
 
   }
 
@@ -85,6 +125,19 @@ keyvaults = {
     #   }
     # }
 
+    # you can setup up to 5 profiles
+    diagnostic_profiles = {
+      operations = {
+        definition_key   = "default_all"
+        destination_type = "log_analytics"
+        destination_key  = "central_logs"
+      }
+      siem = {
+        definition_key   = "siem_all"
+        destination_type = "storage"
+        destination_key  = "all_regions"
+      }
+    }
 
   }
 
@@ -108,6 +161,19 @@ keyvaults = {
     # }
 
 
+    # you can setup up to 5 profiles
+    diagnostic_profiles = {
+      operations = {
+        definition_key   = "default_all"
+        destination_type = "log_analytics"
+        destination_key  = "central_logs"
+      }
+      siem = {
+        definition_key   = "siem_all"
+        destination_type = "storage"
+        destination_key  = "all_regions"
+      }
+    }
   }
 
 }
