@@ -1,5 +1,5 @@
 {
-    "name": "Azure CAF landing zones",
+    "name": "Azure platform engineering",
 
     // Update the 'dockerComposeFile' list if you have more compose files or use different names.
     "dockerComposeFile": "docker-compose.yml",
@@ -15,14 +15,6 @@
     // connected. This is typically a volume mount in .devcontainer/docker-compose.yml
     "workspaceFolder": "/tf/caf",
 
-    // Use 'settings' to set *default* container specific settings.json values on container create.
-    // You can edit these settings after create using File > Preferences > Settings > Remote.
-    "settings": {
-        "files.eol": "\n",
-        "editor.tabSize": 2,
-        "terminal.integrated.scrollback": 64000,
-    },
-
     // Uncomment the next line if you want start specific services in your Docker Compose config.
     // "runServices": [],
 
@@ -31,10 +23,16 @@
 
     // Uncomment the next line to run commands after the container is created.
     "postCreateCommand": "sudo cp -R /tmp/.ssh-localhost/* ~/.ssh && sudo chown -R $(whoami):$(whoami) /tf/caf ~/.ssh && sudo chmod 400 ~/.ssh/* && git config --global core.editor vim && pre-commit install && pre-commit autoupdate",
-    
+
     // Add the IDs of extensions you want installed when the container is created in the array below.
-    "extensions": [
-        "4ops.terraform",
-        "mutantdino.resourcemonitor"
-    ]
+    "customizations": {
+        "vscode": {
+            "extensions": [
+				"hashicorp.terraform",
+				"mutantdino.resourcemonitor",
+				"eamodio.gitlens",
+				"GitHub.copilot"
+			]
+        }
+    }
 }
