@@ -13,7 +13,7 @@ alz_{{item}}:
     config_file: alz_{{item}}.yaml
     template_lib_folder: platform/level1/alz
     sub_template_folder: platform/level1/alz
-    alz_version: {{topology.management_groups[region][item].version_to_deploy | default('v1.1.3')}}
+    alz_version: {{topology.management_groups[region][item].version_to_deploy | default('v2.1.0')}}
     yaml: platform/level1/alz/ansible.yaml
     # Do not rename the item_key_name
     tfstate_key_name: alz_{{item}}

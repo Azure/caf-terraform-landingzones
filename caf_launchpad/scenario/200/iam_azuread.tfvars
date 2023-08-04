@@ -10,7 +10,8 @@ azuread_groups = {
       object_ids  = []
       group_keys  = []
 
-      service_principal_keys = [
+      # service_principal_keys = [
+      azuread_service_principal_keys = [
         "caf_launchpad_level0"
       ]
 
@@ -18,7 +19,7 @@ azuread_groups = {
     owners = {
       user_principal_names = [
       ]
-      service_principal_keys = [
+      azuread_service_principal_keys = [
         "caf_launchpad_level0"
       ]
     }
@@ -90,7 +91,7 @@ azuread_groups = {
       object_ids  = []
       group_keys  = []
 
-      service_principal_keys = [
+      azuread_service_principal_keys = [
         "caf_launchpad_level0"
       ]
 
@@ -98,7 +99,7 @@ azuread_groups = {
     owners = {
       user_principal_names = [
       ]
-      service_principal_keys = [
+      azuread_service_principal_keys = [
         "caf_launchpad_level0"
       ]
     }
@@ -106,36 +107,39 @@ azuread_groups = {
   }
 }
 
-azuread_users = {
+# azuread_users = {
 
-  # don't change that key
-  aad-user-devops-user-admin = {
-    useprefix               = true
-    user_name               = "caf-level0-security-devops-pat-rotation"
-    password_expire_in_days = 180
+#   # don't change that key
+#   aad-user-devops-user-admin = {
+#     useprefix               = true
+#     user_name               = "caf-level0-security-devops-pat-rotation"
+#     password_expire_in_days = 180
 
-    # Value must match with var.keyvaults[keyname] to store username and password for password rotation
-    keyvault_key = "level0"
+#     # Value must match with var.keyvaults[keyname] to store username and password for password rotation
+#     keyvault_key = "level0"
+#   }
+
+# }
+
+#
+# from 5.7.0 need to use azuread_applications instead of azuread_apps to support the decoupling of apps and service principals
+#
+azuread_applications = {
+  # Do not rename the key "launchpad" to be able to upgrade to the standard launchpad
+  caf_launchpad_level0 = {
+    useprefix        = true
+    application_name = "caf_launchpad_level0"
   }
 
 }
 
-azuread_apps = {
-  # Do not rename the key "launchpad" to be able to upgrade to the standard launchpad
-  caf_launchpad_level0 = {
-    useprefix               = true
-    application_name        = "caf_launchpad_level0"
-    password_expire_in_days = 180
 
-    # Store the ${secret_prefix}-client-id, ${secret_prefix}-client-secret...
-    # Set the policy during the creation process of the launchpad
-    keyvaults = {
-      level0 = {
-        secret_prefix = "aadapp-caf-launchpad-level0"
-      }
+azuread_service_principals = {
+  caf_launchpad_level0 = {
+    azuread_application = {
+      key = "caf_launchpad_level0"
     }
   }
-
 }
 
 #
@@ -143,7 +147,11 @@ azuread_apps = {
 # az rest --method Get --uri https://graph.microsoft.com/v1.0/directoryRoleTemplates -o json | jq -r .value[].displayName
 #
 azuread_roles = {
-  azuread_apps = {
+  #
+  # To be replaced by azuread_service_principals
+  #
+  # azuread_apps = {
+  azuread_service_principals = {
     caf_launchpad_level0 = {
       roles = [
         "Application Administrator",

@@ -1,6 +1,3 @@
-variable "digital_twins_instances" {
-  default = {}
-}
 variable "digital_twins_endpoint_eventhubs" {
   default = {}
 }
@@ -10,19 +7,10 @@ variable "digital_twins_endpoint_eventgrids" {
 variable "digital_twins_endpoint_servicebuses" {
   default = {}
 }
-variable "iot_hub" {
+variable "digital_twins_instances" {
   default = {}
 }
-variable "iot_hub_consumer_groups" {
-  default = {}
-}
-variable "iot_hub_certificate" {
-  default = {}
-}
-variable "iot_hub_shared_access_policy" {
-  default = {}
-}
-variable "iot_hub_dps" {
+variable "iot_central_application" {
   default = {}
 }
 variable "iot_dps_certificate" {
@@ -31,12 +19,24 @@ variable "iot_dps_certificate" {
 variable "iot_dps_shared_access_policy" {
   default = {}
 }
-variable "iot_security_solution" {
+variable "iot_hub" {
+  default = {}
+}
+variable "iot_hub_certificate" {
+  default = {}
+}
+variable "iot_hub_consumer_groups" {
+  default = {}
+}
+variable "iot_hub_dps" {
+  default = {}
+}
+variable "iot_hub_shared_access_policy" {
   default = {}
 }
 variable "iot_security_device_group" {
   default = {}
 }
-variable "iot_central_application" {
+variable "iot_security_solution" {
   default = {}
 }

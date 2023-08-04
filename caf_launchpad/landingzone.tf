@@ -1,6 +1,7 @@
 module "launchpad" {
   source  = "aztfmod/caf/azurerm"
-  version = "5.6.10"
+  version = "5.7.2"
+  # source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=main"
 
   providers = {
     azurerm.vhub = azurerm.vhub
@@ -8,6 +9,7 @@ module "launchpad" {
 
   current_landingzone_key               = var.landingzone.key
   custom_role_definitions               = var.custom_role_definitions
+  data_sources                          = var.data_sources
   enable                                = var.enable
   event_hub_namespaces                  = var.event_hub_namespaces
   global_settings                       = local.global_settings
@@ -31,6 +33,7 @@ module "launchpad" {
     azuread_api_permissions             = var.azuread_api_permissions
     azuread_applications                = var.azuread_applications
     azuread_apps                        = var.azuread_apps
+    azuread_conditional_access          = var.azuread_conditional_access
     azuread_credential_policies         = var.azuread_credential_policies
     azuread_groups                      = var.azuread_groups
     azuread_groups_membership           = var.azuread_groups_membership

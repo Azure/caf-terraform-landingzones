@@ -80,3 +80,7 @@ variable "monitor_autoscale_settings" {
   default     = {}
   description = "The map from the monitor_autoscale_settings module configuration"
 }
+
+variable "monitor_private_link_scope" {
+  default = {}
+}

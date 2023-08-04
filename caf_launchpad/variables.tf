@@ -116,6 +116,9 @@ variable "azuread_users" {
 variable "azuread_roles" {
   default = {}
 }
+variable "azuread_conditional_access" {
+  default = {}
+}
 variable "azuread_credential_policies" {
   default = {}
 }
@@ -271,5 +274,8 @@ variable "azure_container_registries" {
 }
 
 variable "private_dns" {
+  default = {}
+}
+variable "data_sources" {
   default = {}
 }

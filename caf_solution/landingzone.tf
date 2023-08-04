@@ -1,6 +1,7 @@
 module "solution" {
   source  = "aztfmod/caf/azurerm"
-  version = "5.6.10"
+  version = "5.7.2"
+  # source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=main"
 
   providers = {
     azurerm.vhub = azurerm.vhub
@@ -11,11 +12,13 @@ module "solution" {
   azuread                               = local.azuread
   cloud                                 = local.cloud
   cognitive_services                    = local.cognitive_services
+  communication                         = local.communication
   compute                               = local.compute
   current_landingzone_key               = try(var.landingzone.key, var.landingzone[var.backend_type].key)
   custom_role_definitions               = var.custom_role_definitions
   data_factory                          = local.data_factory
   data_protection                       = local.data_protection
+  data_sources                          = var.data_sources
   database                              = local.database
   diagnostic_storage_accounts           = var.diagnostic_storage_accounts
   diagnostics_definition                = var.diagnostics_definition
@@ -58,14 +61,14 @@ module "solution" {
   webapp                                = local.webapp
 
   diagnostics = {
-    diagnostics_definition          = local.diagnostics.diagnostics_definition
-    diagnostics_destinations        = local.diagnostics.diagnostics_destinations
-    storage_accounts                = local.diagnostics.storage_accounts
-    log_analytics                   = local.diagnostics.log_analytics
-    event_hub_namespaces            = local.diagnostics.event_hub_namespaces
     diagnostic_event_hub_namespaces = try(local.diagnostics.diagnostic_event_hub_namespaces, var.diagnostic_event_hub_namespaces)
     diagnostic_log_analytics        = try(local.diagnostics.diagnostic_log_analytics, var.diagnostic_log_analytics)
     diagnostic_storage_accounts     = try(local.diagnostics.diagnostic_storage_accounts, var.diagnostic_storage_accounts)
+    diagnostics_definition          = local.diagnostics.diagnostics_definition
+    diagnostics_destinations        = local.diagnostics.diagnostics_destinations
+    event_hub_namespaces            = local.diagnostics.event_hub_namespaces
+    log_analytics                   = local.diagnostics.log_analytics
+    storage_accounts                = local.diagnostics.storage_accounts
   }
 
 }
