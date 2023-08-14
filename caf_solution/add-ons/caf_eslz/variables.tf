@@ -163,7 +163,7 @@ variable "custom_landing_zones" {
     object({
       display_name               = string
       parent_management_group_id = string
-      subscription_ids           = list(string)
+      subscription_ids           = optional(list(string))
       subscriptions = map(
         object({
           lz_key = string
