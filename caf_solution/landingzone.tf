@@ -1,6 +1,6 @@
 module "solution" {
   source  = "aztfmod/caf/azurerm"
-  version = "5.7.2"
+  version = "5.7.3"
   # source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=main"
 
   providers = {
@@ -38,7 +38,7 @@ module "solution" {
   log_analytics                         = var.log_analytics
   logged_aad_app_objectId               = var.logged_aad_app_objectId
   logged_user_objectId                  = var.logged_user_objectId
-  logic_app                             = var.logic_app
+  logic_app                             = local.logic_app
   managed_identities                    = var.managed_identities
   messaging                             = local.messaging
   networking                            = local.networking
