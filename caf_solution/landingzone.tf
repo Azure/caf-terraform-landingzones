@@ -59,7 +59,7 @@ module "solution" {
   user_type                             = var.user_type
   var_folder_path                       = var.var_folder_path
   webapp                                = local.webapp
-  maps                                  = local.maps
+  maps                                  = var.maps
 
   diagnostics = {
     diagnostic_event_hub_namespaces = try(local.diagnostics.diagnostic_event_hub_namespaces, var.diagnostic_event_hub_namespaces)
