@@ -1,3 +1,3 @@
-variable "maps_accounts" {
+variable "maps_account" {
   default = {}
 }
