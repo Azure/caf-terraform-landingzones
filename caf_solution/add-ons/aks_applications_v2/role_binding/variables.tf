@@ -21,3 +21,7 @@ variable "settings" {}
 variable "namespaces" {
   default = {}
 }
+
+variable "namespaces_v1" {
+  default = {}
+}

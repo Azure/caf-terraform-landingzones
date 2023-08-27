@@ -19,6 +19,7 @@ module "role_binding" {
   azuread_groups             = local.remote.azuread_groups
   azuread_service_principals = local.remote.azuread_service_principals
   namespaces                 = var.namespaces
+  namespaces_v1              = var.namespaces_v1
 }
 
 module "cluster_role" {

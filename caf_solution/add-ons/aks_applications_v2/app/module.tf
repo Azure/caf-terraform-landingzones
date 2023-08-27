@@ -21,7 +21,7 @@ resource "helm_release" "charts" {
   repository = each.value.repository
   chart      = each.value.chart
 
-  namespace        = try(each.value.namespace, var.namespaces[each.value.namespace_key].name)
+  namespace        = try(each.value.namespace, var.namespaces[each.value.namespace_key].name, var.namespaces_v1[each.value.namespace_key].name)
   wait             = try(each.value.wait, true)
   timeout          = try(each.value.timeout, 900)
   skip_crds        = try(each.value.skip_crds, false)

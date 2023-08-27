@@ -55,9 +55,15 @@ locals {
     azure_container_registries = {
       for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].azure_container_registries, {}))
     }
+    resource_groups = {
+      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].resource_groups, {}))
+    }
+    azuread_applications = {
+      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].azuread_applications, {}))
+    }
   }
   kubelogin_cred = {
     secret_prefix = try(var.keyvaults.secret_prefix, "sp")
   }
-  secret_identity_id = try(data.azurerm_kubernetes_cluster.kubeconfig.key_vault_secrets_provider[0].secret_identity[0].object_id, null)
+  secret_identity_id = data.azurerm_kubernetes_cluster.kubeconfig.key_vault_secrets_provider[0].secret_identity[0].object_id
 }
