@@ -11,7 +11,7 @@ module "role" {
 module "role_binding" {
   source                     = "./role_binding"
   for_each                   = var.role_binding
-  depends_on                 = [module.app]
+  depends_on                 = [module.namespaces_v1]
   role                       = var.role
   global_settings            = local.global_settings
   settings                   = each.value
