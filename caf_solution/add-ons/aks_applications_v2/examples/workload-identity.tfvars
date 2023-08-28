@@ -12,23 +12,23 @@ workload_identities = {
     name                 = "mi-wi-demo"
     namespace_key        = "demo"
     service_account_name = "workload-sa-mi-demo"
-    parent_type = "managed_identity"
+    parent_type          = "managed_identity"
     managed_identity = {
-      key    = "workload_sa_mi"
+      key = "workload_sa_mi"
       #lz_key = ""
     }
     resource_group = {
-      key    = "aks_rg"
+      key = "aks_rg"
       #lz_key = ""
     }
   }
   app = {
-    display_name = "app-wi-fed"
-    namespace_key       = "demo"
+    display_name         = "app-wi-fed"
+    namespace_key        = "demo"
     service_account_name = "workload-sa-app-demo"
-    parent_type = "azuread_application"
+    parent_type          = "azuread_application"
     azuread_application = {
-      key    = "aks_auth_app"
+      key = "aks_auth_app"
       #lz_key = ""
     }
   }
