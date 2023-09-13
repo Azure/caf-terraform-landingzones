@@ -2,7 +2,7 @@ locals {
   maps = merge(
     var.maps,
     {
-      maps_account  = var.maps_account
+      maps_accounts  = var.maps_accounts
     }
   )
 }
