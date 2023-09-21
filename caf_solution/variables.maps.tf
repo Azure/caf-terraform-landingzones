@@ -1,5 +1,5 @@
 variable "maps" {
- default = {}
+  default = {}
 }
 
 variable "maps_accounts" {
