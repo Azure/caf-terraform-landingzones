@@ -9,11 +9,11 @@ diagnostics_definition = {
     categories = {
       log = [
         # ["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
-        ["Audit", true, false, 7],
+        ["Audit", true, false, 0],
       ]
       metric = [
         #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
-        ["AllMetrics", true, false, 7],
+        ["AllMetrics", true, false, 0],
       ]
     }
 
@@ -24,11 +24,11 @@ diagnostics_definition = {
     categories = {
       log = [
         # ["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
-        ["AuditEvent", true, false, 7],
+        ["AuditEvent", true, false, 0],
       ]
       metric = [
         #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
-        ["AllMetrics", true, false, 7],
+        ["AllMetrics", true, false, 0],
       ]
     }
 
@@ -39,7 +39,7 @@ diagnostics_definition = {
     categories = {
       log = [
         # ["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
-        ["BastionAuditLogs", true, false, 7],
+        ["BastionAuditLogs", true, false, 0],
       ]
     }
 
@@ -50,11 +50,11 @@ diagnostics_definition = {
     categories = {
       log = [
         # ["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
-        ["VMProtectionAlerts", true, false, 7],
+        ["VMProtectionAlerts", true, false, 0],
       ]
       metric = [
         #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
-        ["AllMetrics", true, false, 7],
+        ["AllMetrics", true, false, 0],
       ]
     }
 
@@ -65,13 +65,13 @@ diagnostics_definition = {
     categories = {
       log = [
         # ["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
-        ["DDoSProtectionNotifications", true, false, 7],
-        ["DDoSMitigationFlowLogs", true, false, 7],
-        ["DDoSMitigationReports", true, false, 7],
+        ["DDoSProtectionNotifications", true, false, 0],
+        ["DDoSMitigationFlowLogs", true, false, 0],
+        ["DDoSMitigationReports", true, false, 0],
       ]
       metric = [
         #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
-        ["AllMetrics", true, false, 7],
+        ["AllMetrics", true, false, 0],
       ]
     }
 
@@ -82,8 +82,8 @@ diagnostics_definition = {
     categories = {
       log = [
         # ["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
-        ["NetworkSecurityGroupEvent", true, false, 7],
-        ["NetworkSecurityGroupRuleCounter", true, false, 7],
+        ["NetworkSecurityGroupEvent", true, false, 0],
+        ["NetworkSecurityGroupRuleCounter", true, false, 0],
       ]
     }
 
@@ -94,11 +94,11 @@ diagnostics_definition = {
     categories = {
       # log = [
       #   # ["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
-      #   ["AuditEvent", true, false, 7],
+      #   ["AuditEvent", true, false, 0],
       # ]
       metric = [
         #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
-        ["AllMetrics", true, false, 7],
+        ["AllMetrics", true, false, 0],
       ]
     }
 
@@ -109,12 +109,12 @@ diagnostics_definition = {
     categories = {
       log = [
         # ["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
-        ["ContainerRegistryRepositoryEvents", true, false, 7],
-        ["ContainerRegistryLoginEvents", true, false, 7],
+        ["ContainerRegistryRepositoryEvents", true, false, 0],
+        ["ContainerRegistryLoginEvents", true, false, 0],
       ]
       metric = [
         #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
-        ["AllMetrics", true, false, 7],
+        ["AllMetrics", true, false, 0],
       ]
     }
   }
@@ -124,17 +124,17 @@ diagnostics_definition = {
     categories = {
       log = [
         # ["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
-        ["kube-apiserver", true, false, 7],
-        ["kube-audit", true, false, 7],
-        ["kube-audit-admin", true, false, 7],
-        ["kube-controller-manager", true, false, 7],
-        ["kube-scheduler", true, false, 7],
-        ["cluster-autoscaler", true, false, 7],
-        ["guard", true, false, 7],
+        ["kube-apiserver", true, false, 0],
+        ["kube-audit", true, false, 0],
+        ["kube-audit-admin", true, false, 0],
+        ["kube-controller-manager", true, false, 0],
+        ["kube-scheduler", true, false, 0],
+        ["cluster-autoscaler", true, false, 0],
+        ["guard", true, false, 0],
       ]
       metric = [
         #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
-        ["AllMetrics", true, false, 7],
+        ["AllMetrics", true, false, 0],
       ]
     }
   }
@@ -145,20 +145,20 @@ diagnostics_definition = {
     categories = {
       log = [
         # ["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
-        ["AzureBackupReport", true, true, 7],
-        ["CoreAzureBackup", true, true, 7],
-        ["AddonAzureBackupAlerts", true, true, 7],
-        ["AddonAzureBackupJobs", true, true, 7],
-        ["AddonAzureBackupPolicy", true, true, 7],
-        ["AddonAzureBackupProtectedInstance", true, true, 7],
-        ["AddonAzureBackupStorage", true, true, 7],
-        ["AzureSiteRecoveryJobs", true, true, 7],
-        ["AzureSiteRecoveryEvents", true, true, 7],
-        ["AzureSiteRecoveryReplicatedItems", true, true, 7],
-        ["AzureSiteRecoveryReplicationStats", true, true, 7],
-        ["AzureSiteRecoveryRecoveryPoints", true, true, 7],
-        ["AzureSiteRecoveryReplicationDataUploadRate", true, true, 7],
-        ["AzureSiteRecoveryProtectedDiskDataChurn", true, true, 30],
+        ["AzureBackupReport", true, true, 0],
+        ["CoreAzureBackup", true, true, 0],
+        ["AddonAzureBackupAlerts", true, true, 0],
+        ["AddonAzureBackupJobs", true, true, 0],
+        ["AddonAzureBackupPolicy", true, true, 0],
+        ["AddonAzureBackupProtectedInstance", true, true, 0],
+        ["AddonAzureBackupStorage", true, true, 0],
+        ["AzureSiteRecoveryJobs", true, true, 0],
+        ["AzureSiteRecoveryEvents", true, true, 0],
+        ["AzureSiteRecoveryReplicatedItems", true, true, 0],
+        ["AzureSiteRecoveryReplicationStats", true, true, 0],
+        ["AzureSiteRecoveryRecoveryPoints", true, true, 0],
+        ["AzureSiteRecoveryReplicationDataUploadRate", true, true, 0],
+        ["AzureSiteRecoveryProtectedDiskDataChurn", true, true, 0],
       ]
       metric = [
         #["AllMetrics", 60, True],
@@ -172,13 +172,13 @@ diagnostics_definition = {
     categories = {
       log = [
         # ["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
-        ["JobLogs", true, true, 30],
-        ["JobStreams", true, true, 30],
-        ["DscNodeStatus", true, true, 30],
+        ["JobLogs", true, true, 0],
+        ["JobStreams", true, true, 0],
+        ["DscNodeStatus", true, true, 0],
       ]
       metric = [
         # ["Category name",  "Metric Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
-        ["AllMetrics", true, true, 30],
+        ["AllMetrics", true, true, 0],
       ]
     }
 
@@ -189,17 +189,17 @@ diagnostics_definition = {
     categories = {
       log = [
         # ["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
-        ["ArchiveLogs", true, false, 7],
-        ["OperationalLogs", true, false, 7],
-        ["AutoScaleLogs", true, false, 7],
-        ["KafkaCoordinatorLogs", true, false, 7],
-        ["KafkaUserErrorLogs", true, false, 7],
-        ["EventHubVNetConnectionEvent", true, false, 7],
-        ["CustomerManagedKeyUserLogs", true, false, 7],
+        ["ArchiveLogs", true, false, 0],
+        ["OperationalLogs", true, false, 0],
+        ["AutoScaleLogs", true, false, 0],
+        ["KafkaCoordinatorLogs", true, false, 0],
+        ["KafkaUserErrorLogs", true, false, 0],
+        ["EventHubVNetConnectionEvent", true, false, 0],
+        ["CustomerManagedKeyUserLogs", true, false, 0],
       ]
       metric = [
         #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
-        ["AllMetrics", true, false, 7],
+        ["AllMetrics", true, false, 0],
       ]
     }
 
@@ -210,11 +210,11 @@ diagnostics_definition = {
     categories = {
       log = [
         # ["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
-        ["AuditEvent", true, true, 365],
+        ["AuditEvent", true, true, 0],
       ]
       metric = [
         #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
-        ["AllMetrics", false, false, 7],
+        ["AllMetrics", false, false, 0],
       ]
     }
 
