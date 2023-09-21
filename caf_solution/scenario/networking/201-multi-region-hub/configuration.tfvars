@@ -718,12 +718,12 @@ diagnostics_definition = {
     categories = {
       log = [
         #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
-        ["AzureFirewallApplicationRule", true, true, 7],
-        ["AzureFirewallNetworkRule", true, true, 7],
-        ["AzureFirewallDnsProxy", true, true, 7],
+        ["AzureFirewallApplicationRule", true, true, 0],
+        ["AzureFirewallNetworkRule", true, true, 0],
+        ["AzureFirewallDnsProxy", true, true, 0],
       ]
       metric = [
-        ["AllMetrics", true, true, 7],
+        ["AllMetrics", true, true, 0],
       ]
     }
   }
@@ -733,12 +733,12 @@ diagnostics_definition = {
     categories = {
       log = [
         #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
-        ["DDoSProtectionNotifications", true, true, 7],
-        ["DDoSMitigationFlowLogs", true, true, 7],
-        ["DDoSMitigationReports", true, true, 7],
+        ["DDoSProtectionNotifications", true, true, 0],
+        ["DDoSMitigationFlowLogs", true, true, 0],
+        ["DDoSMitigationReports", true, true, 0],
       ]
       metric = [
-        ["AllMetrics", true, true, 7],
+        ["AllMetrics", true, true, 0],
       ]
     }
   }
@@ -748,12 +748,12 @@ diagnostics_definition = {
     categories = {
       log = [
         # ["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
-        ["ContainerRegistryRepositoryEvents", true, false, 7],
-        ["ContainerRegistryLoginEvents", true, false, 7],
+        ["ContainerRegistryRepositoryEvents", true, false, 0],
+        ["ContainerRegistryLoginEvents", true, false, 0],
       ]
       metric = [
         #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
-        ["AllMetrics", true, false, 7],
+        ["AllMetrics", true, false, 0],
       ]
     }
   }

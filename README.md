@@ -2,22 +2,20 @@
 
 [![Gitter](https://badges.gitter.im/aztfmod/community.svg)](https://gitter.im/aztfmod/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-# Cloud Adoption Framework for Azure Terraform landing zones
+# Azure Terraform SRE
 
-Microsoft [Cloud Adoption Framework for Azure](https://docs.microsoft.com/azure/cloud-adoption-framework/overview) provides you with guidance and best practices to adopt Azure.
 
-CAF Terraform landing zones team mission statement is to:
+Azure Terraform SRE (formely CAF Terraform) ambitions:
 
 * Equip the Site Reliability Engineering teams for Terraform on Azure.
 * Democratize an IaC: Infrastructure-as-Configuration.
 * Commoditize state management and enterprise-wide composition.
-* Standardize deployments using Azure enterprise-scale landing zones.
-* Implement Azure enterprise-scale design and approach with native Terraform and DevOps.
+* Standardize deployments leveraging official Azure landing zones components.
 * Propose a prescriptive guidance on how to enable DevOps for infrastructure as code on Microsoft Azure.
 * Foster a community of Azure *Terraformers* using a common set of practices and sharing best practices.
 
 
-You can review the different components parts of the Cloud Adoption Framework for Azure Terraform landing zones and look at the quick intro video below:
+You can review the different components parts of the Azure Terraform SRE and look at the quick intro video below:
 
 [![caf_elements](./_pictures/caf_elements.png)](https://www.youtube.com/watch?v=FlQ17u4NNts "CAF Introduction")
 
@@ -26,7 +24,7 @@ You can review the different components parts of the Cloud Adoption Framework fo
 
 When starting an enterprise deployment, we recommend you start creating a configuration repository where you craft the configuration files for your environments.
 
-The best way to start is to clone the [platform starter repository](https://github.com/Azure/caf-terraform-landingzones-platform-starter) and getting started with the configuration files. 
+The best way to start is to clone the [platform starter repository](https://github.com/Azure/caf-terraform-landingzones-platform-starter) and getting started with the configuration files.
 
 If you are reading this, you are probably interested also in reading the doc as below:
 :books: Read our [centralized documentation page](https://aka.ms/caf/terraform)
