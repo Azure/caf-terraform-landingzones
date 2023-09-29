@@ -36,12 +36,12 @@ locals {
     for secret in try(var.settings.secrets, null) : [
       {
         name          = secret.name
-        value         = try(var.combined_resources.dynamic_keyvault_secrets[try(secret.keyvault_key, secret.keyvault.key)][secret.dynamic_keyvault_secret_key].secret_name, null)
+        value         = try(secret.value, null)
         identity_id   = try(try(secret.managed_identity_id, var.combined_resources.managed_identities[try(secret.managed_identity.lz_key, var.client_config.landingzone_key)][try(secret.managed_identity_key, secret.managed_identity.key)].id), null)
         keyvault_url  = try(
           try(
             secret.keyvault_url, 
-            format("%s/secrets/%s", var.combined_resources.keyvaults[try(secret.keyvault.lz_key, var.client_config.landingzone_key)][try(secret.keyvault_key, secret.keyvault.key)].vault_uri, try(var.combined_resources.dynamic_keyvault_secrets[try(secret.keyvault_key, secret.keyvault.key)][secret.dynamic_keyvault_secret_key].secret_name, null))
+            format("%ssecrets/%s", var.combined_resources.keyvaults[try(secret.keyvault.lz_key, var.client_config.landingzone_key)][try(secret.keyvault_key, secret.keyvault.key)].vault_uri, try(var.combined_resources.dynamic_keyvault_secrets[try(secret.keyvault_key, secret.keyvault.key)][secret.dynamic_keyvault_secret_key].secret_name, null))
           )
         , null)
       }
