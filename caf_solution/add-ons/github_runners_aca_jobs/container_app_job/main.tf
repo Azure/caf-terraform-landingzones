@@ -35,10 +35,11 @@ locals {
   secrets = flatten([
     for secret in try(var.settings.secrets, null) : [
       {
-        name          = secret.name,
-        identity_id   = try(secret.managed_identity_id, local.managed_identities[try(secret.managed_identity.lz_key, var.client_config.landingzone_key)][try(secret.managed_identity_key, secret.managed_identity.key)].id)
-        keyvault_url = try(secret.keyvault_url, var.combined_resources.keyvaults[try(secret.keyvault.lz_key, var.client_config.landingzone_key)][try(secret.keyvault_key, secret.keyvault.key)].vault_uri)
+        name          = secret.name
+        value         = try(secret.value, null)
+        identity_id   = try(try(secret.managed_identity_id, local.managed_identities[try(secret.managed_identity.lz_key, var.client_config.landingzone_key)][try(secret.managed_identity_key, secret.managed_identity.key)].id), null)
+        keyvault_url  = try(try(secret.keyvault_url, var.combined_resources.keyvaults[try(secret.keyvault.lz_key, var.client_config.landingzone_key)][try(secret.keyvault_key, secret.keyvault.key)].vault_uri), null)
       }
-    ] if can(try(secret.managed_identity_id, try(secret.managed_identity_key, secret.managed_identity.key)))
+    ] if can(secret.value) || can(try(secret.managed_identity_id, try(secret.managed_identity_key, secret.managed_identity.key)))
   ])
 }
