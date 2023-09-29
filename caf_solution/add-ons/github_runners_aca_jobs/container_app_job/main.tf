@@ -33,7 +33,7 @@ locals {
   managed_identities = concat(local.provided_identities, local.managed_local_identities, local.managed_remote_identities)
 
   secrets = flatten([
-    for secret in try(var.secrets, null) : [
+    for secret in try(var.settings.secrets, null) : [
       {
         name          = secret.name,
         identity_id   = try(secret.managed_identity_id, local.managed_identities[try(secret.managed_identity.lz_key, var.client_config.landingzone_key)][try(secret.managed_identity_key, secret.managed_identity.key)].id)
