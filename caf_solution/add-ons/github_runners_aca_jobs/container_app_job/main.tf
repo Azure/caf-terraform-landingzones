@@ -37,11 +37,11 @@ locals {
       {
         name          = secret.name
         value         = try(secret.value, null)
-        identity_id   = try(try(secret.managed_identity_id, var.combined_resources.managed_identities[try(secret.managed_identity.lz_key, var.client_config.landingzone_key)][try(secret.managed_identity_key, secret.managed_identity.key)].id), null)
-        keyvault_url  = try(
+        identity      = try(try(secret.managed_identity_id, var.combined_resources.managed_identities[try(secret.managed_identity.lz_key, var.client_config.landingzone_key)][try(secret.managed_identity_key, secret.managed_identity.key)].id), null)
+        keyVaultUrl   = try(
           try(
             secret.keyvault_url, 
-            format("%ssecrets/%s", var.combined_resources.keyvaults[try(secret.keyvault.lz_key, var.client_config.landingzone_key)][try(secret.keyvault_key, secret.keyvault.key)].vault_uri, try(var.combined_resources.dynamic_keyvault_secrets[try(secret.keyvault_key, secret.keyvault.key)][secret.dynamic_keyvault_secret_key].secret_name, null))
+            format("%ssecrets/%s", var.combined_resources.keyvaults[try(secret.keyvault.lz_key, var.client_config.landingzone_key)][try(secret.keyvault_key, secret.keyvault.key)].vault_uri, try(var.combined_resources.dynamic_keyvault_secrets[try(secret.keyvault_key, secret.keyvault.key)][secret.dynamic_keyvault_secret_key].secret_name, try(secret.keyvault_secret_name, null)))
           )
         , null)
       }
