@@ -24,7 +24,7 @@ resource "azapi_resource" "container_app_job" {
       environmentId       = var.container_app_environment_id
       workloadProfileName = var.settings.workload_profile_name
       configuration = {
-        secrets               = try(var.settings.secrets, null)
+        secrets               = try(local.secrets, null)
         triggerType           = "Event"
         replicaTimeout        = try(var.settings.replica_timeout,86400)
         replicaRetryLimit     = try(var.settings.replica_retry_limit, 1)

@@ -31,4 +31,14 @@ locals {
   provided_identities = try(var.settings.identity.managed_identity_ids, [])
 
   managed_identities = concat(local.provided_identities, local.managed_local_identities, local.managed_remote_identities)
+
+  secrets = flatten([
+    for secret in try(var.secrets, null) : [
+      {
+        name          = secret.name,
+        identity_id   = try(secret.managed_identity_id, local.managed_identities[try(secret.managed_identity.lz_key, var.client_config.landingzone_key)][try(secret.managed_identity_key, secret.managed_identity.key)].id)
+        keyvault_url = try(secret.keyvault_url, var.combined_resources.keyvaults[try(secret.keyvault.lz_key, var.client_config.landingzone_key)][try(secret.keyvault_key, secret.keyvault.key)].vault_uri)
+      }
+    ] if can(try(secret.managed_identity_id, try(secret.managed_identity_key, secret.managed_identity.key)))
+  ])
 }
