@@ -11,7 +11,3 @@ module "dynamic_keyvault_secrets" {
   keyvault = module.caf.keyvaults[each.key]
   objects  = module.caf
 }
-
-output "dynamic_keyvault_secrets" {
-  value = module.dynamic_keyvault_secrets
-}
