@@ -24,21 +24,21 @@ resource "azapi_resource" "container_app_job" {
       environmentId       = var.container_app_environment_id
       workloadProfileName = var.settings.workload_profile_name
       configuration = {
-        secrets               = var.settings.secrets
+        secrets               = try(var.settings.secrets, null)
         triggerType           = "Event"
-        replicaTimeout        = var.settings.replica_timeout
-        replicaRetryLimit     = var.settings.replica_retry_limit
+        replicaTimeout        = try(var.settings.replica_timeout,86400)
+        replicaRetryLimit     = try(var.settings.replica_retry_limit, 1)
         manualTriggerConfig   = null
         scheduleTriggerConfig = null
-        registries            = null
+        registries            = try(var.settings.registries, null)
         dapr                  = null
         eventTriggerConfig = {
-          replicaCompletionCount = null
+          replicaCompletionCount = try(var.settings.replica_completion_count, 1)
           parallelism            = var.settings.parallelism
           scale = {
-            minExecutions   = var.settings.scale_min_executions
-            maxExecutions   = var.settings.scale_max_executions
-            pollingInterval = var.settings.scale_polling_interval
+            minExecutions   = try(var.settings.scale_min_executions, 0)
+            maxExecutions   = try(var.settings.scale_max_executions, 10)
+            pollingInterval = try(var.settings.scale_polling_interval, 30)
             rules           = var.settings.rules
           }
         }
@@ -47,19 +47,19 @@ resource "azapi_resource" "container_app_job" {
         containers = [
           {
             image   = var.settings.image
-            name    = "ghrunnersacajobs"
-            command = null
-            args    = null
+            name    = try(var.settings.container_name, var.settings.name)
+            command = try(var.settings.command, null)
+            args    = try(var.settings.args, null)
             env     = var.settings.env
             resources = {
               cpu    = var.settings.cpu
               memory = var.settings.memory
             }
-            volumeMounts = null
+            volumeMounts = try(var.settings.volumeMounts, null)
           }
         ]
-        initContainers = null
-        volumes        = null
+        initContainers = try(var.settings.initContainers, null)
+        volumes        = try(var.settings.volumes, null)
       }
     }
   })

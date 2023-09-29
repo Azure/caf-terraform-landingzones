@@ -13,6 +13,8 @@ module "container_app_jobs" {
 
   combined_resources                  = {
     managed_identities                = try(local.combined.managed_identities, {})
+    keyvaults                         = try(local.combined.keyvaults, {})
+    dynamic_keyvault_secrets          = try(module.dynamic_keyvault_secrets,{})
   }
   
 }
