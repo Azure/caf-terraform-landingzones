@@ -41,4 +41,6 @@ module "cluster_role_binding" {
   managed_identities         = local.remote.managed_identities
   azuread_groups             = local.remote.azuread_groups
   azuread_service_principals = local.remote.azuread_service_principals
+  namespaces                 = var.namespaces
+  namespaces_v1              = var.namespaces_v1
 }
