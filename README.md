@@ -4,6 +4,9 @@
 
 # Azure Terraform SRE
 
+> :warning: This solution, offered by the Open-Source community, will no longer receive contributions from Microsoft. Customers are encouraged to transition to [Microsoft Azure Verified Modules](https://aka.ms/avm) for Microsoft support and updates.
+
+> :warning: This repository has moved! Please go to <https://github.com/aztfmod/caf-terraform-landingzones> for the latest version.
 
 Azure Terraform SRE (formely CAF Terraform) ambitions:
 
@@ -14,17 +17,15 @@ Azure Terraform SRE (formely CAF Terraform) ambitions:
 * Propose a prescriptive guidance on how to enable DevOps for infrastructure as code on Microsoft Azure.
 * Foster a community of Azure *Terraformers* using a common set of practices and sharing best practices.
 
-
 You can review the different components parts of the Azure Terraform SRE and look at the quick intro video below:
 
 [![caf_elements](./_pictures/caf_elements.png)](https://www.youtube.com/watch?v=FlQ17u4NNts "CAF Introduction")
-
 
 ## :rocket: Getting started
 
 When starting an enterprise deployment, we recommend you start creating a configuration repository where you craft the configuration files for your environments.
 
-The best way to start is to clone the [platform starter repository](https://github.com/Azure/caf-terraform-landingzones-platform-starter) and getting started with the configuration files.
+The best way to start is to clone the [platform starter repository](https://github.com/aztfmod/caf-terraform-landingzones-platform-starter) and getting started with the configuration files.
 
 If you are reading this, you are probably interested also in reading the doc as below:
 :books: Read our [centralized documentation page](https://aka.ms/caf/terraform)
@@ -41,7 +42,7 @@ You can also reach us on [Gitter](https://gitter.im/aztfmod/community?utm_source
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
+the rights to use your contribution. For details, visit <https://cla.opensource.microsoft.com>.
 
 When you submit a pull request, a CLA bot will automatically determine whether you need to provide
 a CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions

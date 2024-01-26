@@ -1,4 +1,4 @@
-# Azure Cloud Adoption Framework landing zones guidance
+# Azure Terraform SRE landing zones guidance
 
 In this series of articles, we describe the development, code architecture, the delivery mechanisms and operations guide for enterprise adoption of landing zones.
 
