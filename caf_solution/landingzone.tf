@@ -1,6 +1,6 @@
 module "solution" {
   source  = "aztfmod/caf/azurerm"
-  version = "5.7.8"
+  version = "5.7.9"
   # source = "git::https://github.com/aztfmod/terraform-azurerm-caf.git?ref=main"
 
   providers = {
