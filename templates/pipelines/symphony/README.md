@@ -24,7 +24,7 @@ ansible-playbook e2e.yaml \
 ```bash
 branch={{ resources.alz.private_lib[resources.alz.private_lib.version_to_deploy].caf_landingzone_branch }}
 cd {{ destination_base_path }}
-git clone --branch ${branch} https://github.com/Azure/caf-terraform-landingzones.git landingzones
+git clone --branch ${branch} https://github.com/aztfmod/caf-terraform-landingzones.git landingzones
 
 # If you are planning to submit PR you can clone the a forked version instead
 git clone --branch ${branch} git@github.com:Azure/caf-terraform-landingzones.git landingzones
@@ -41,7 +41,6 @@ git pull
 
 ```
 
-
 # Only launchpad
 
  rover deploy \
@@ -51,6 +50,5 @@ git pull
   -env sandpit \
   -ct launchpad \
   -level level0
-
 
 ```

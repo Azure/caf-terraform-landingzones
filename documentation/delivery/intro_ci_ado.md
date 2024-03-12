@@ -1,4 +1,4 @@
-# Deploying landing zones with Azure DevOps
+# Deploying Azure Terraform SRE with Azure DevOps
 
 Starting in version 2005.xxxx, we introduced the support for the rover to run into GitHub Actions (GHA) and Azure DevOps, in this guide, you will find steps to deploy landing zones using rover.
 
@@ -135,6 +135,7 @@ jobs:
 ```
 
 In this example, we are checking out the repository and configuration inside the rover /tf/caf and /tf/caf/tfvars and then:
+
 1. Authenticating using ```az login --identity```
 2. Applying the landing zone using rover, stitching the code and variables for the specific pipeline.
 

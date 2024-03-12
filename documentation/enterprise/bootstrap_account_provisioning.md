@@ -1,6 +1,6 @@
 # Setting up identity bootstrap account
 
-The purpose of the CAF Level 0 (L0) bootstrap Azure AD application is to own the creation of the launchpads. During that process a new Azure AD application is created with less permissions on the directory and also more specific Azure permissions to fulfill the Azure operations of the
+The purpose of the Azure Terraform SRE Level 0 (L0) bootstrap Azure AD application is to own the creation of the launchpads. During that process a new Azure AD application is created with less permissions on the directory and also more specific Azure permissions to fulfill the Azure operations of the
 level0 (subscription creation for example)
 
 This document explains the manual process to create the L0 Azure AD app and the following information must be captured:

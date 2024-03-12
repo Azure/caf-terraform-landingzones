@@ -1,6 +1,6 @@
 # Delivery model for landing zones
 
-Cloud Adoption Framework for Azure landing zones for Terraform are to be delivered mainly by DevOps pipelines. The example below shows what could be an execution environment for DevOps using a combination of GitHub and Azure DevOps.
+Azure Terraform SRE are to be delivered mainly by DevOps pipelines. The example below shows what could be an execution environment for DevOps using a combination of GitHub and Azure DevOps.
 
 ## DevOps components
 
@@ -34,7 +34,7 @@ Virtual Machine will be deployed per level and each Virtual Machine will
 manage a few self-hosted agents depending on concurrent deployments
 needs, in order to control privileges and reduce attack surface, we propose a hierarchy of pipelines that is described [here](../code_architecture/hierarchy.md).
 
-## GitOps for Azure landing zones
+## GitOps for Azure Terraform SRE
 
 Changes in the different environments introduced and promoted following GitOps concepts, principles and mechanisms:
 

@@ -76,7 +76,7 @@ To prepare the environment for the multiple stages we need to configure authenti
 
 ## Running the unit tests
 
-The Cloud Adoption Framework with Terraform supports version 0.12 and onwards, which means we can safely use the JSON Output Format introduced with theterraform show -json \<FILE\> command to generate a JSON representation of a plan or state file. See the terraform show documentation for more details.
+The Azure Terraform SRE supports version 0.12 and onwards, which means we can safely use the JSON Output Format introduced with theterraform show -json \<FILE\> command to generate a JSON representation of a plan or state file. See the terraform show documentation for more details.
 The unit testing phase consists of the following steps:
 
 1) Retrieve the latest code from the repository
@@ -107,7 +107,6 @@ Make sure your unit tests include the following dependencies :
 
 - “github.com/Azure/azure-sdk-for-go/services/resourcegraph/mgmt/2019–04–01/resourcegraph” to perform a Resource Graph query
 - “github.com/Azure/go-autorest/autorest/azure/auth” to perform authentication against my Azure subscription. A Unit test simply calls the Resource Graph query and validates the output against the expected result.
-
 
 ![alt text](../../_pictures/test/unit_test_sample.png?raw=true)
 
