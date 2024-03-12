@@ -59,7 +59,7 @@ azure_devops = {
     contoso_demo = {
       endpoint_name       = "terraformdev (terraformdev.onmicrosoft.com) - contoso_demo"
       subscription_name   = "ase-landingzone"
-      subscription_id     = "1d53e782-9f46-4720-b6b3-cff29106e9f6"
+      subscription_id     = "0000000-0000-0000-0000-000000000000"
       aad_app_key         = "contoso_demo"
       secret_keyvault_key = "devops"
     }
