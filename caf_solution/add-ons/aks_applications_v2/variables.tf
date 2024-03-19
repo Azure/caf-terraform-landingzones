@@ -29,6 +29,10 @@ variable "helm_charts" {
 variable "aks_clusters" {
   default = {}
 }
+
+variable "aks_cluster_rg_name" {
+  default = null
+}
 variable "role" {
   default = {}
 }
@@ -49,5 +53,12 @@ variable "secret_identity_id" {
   default = null
 }
 variable "manifests" {
+  default = {}
+}
+variable "workload_identities" {
+  default = {}
+}
+
+variable "namespaces_v1" {
   default = {}
 }

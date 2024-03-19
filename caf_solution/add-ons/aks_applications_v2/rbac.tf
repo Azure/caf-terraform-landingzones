@@ -11,7 +11,7 @@ module "role" {
 module "role_binding" {
   source                     = "./role_binding"
   for_each                   = var.role_binding
-  depends_on                 = [module.app]
+  depends_on                 = [module.namespaces_v1]
   role                       = var.role
   global_settings            = local.global_settings
   settings                   = each.value
@@ -19,6 +19,7 @@ module "role_binding" {
   azuread_groups             = local.remote.azuread_groups
   azuread_service_principals = local.remote.azuread_service_principals
   namespaces                 = var.namespaces
+  namespaces_v1              = var.namespaces_v1
 }
 
 module "cluster_role" {
@@ -40,4 +41,6 @@ module "cluster_role_binding" {
   managed_identities         = local.remote.managed_identities
   azuread_groups             = local.remote.azuread_groups
   azuread_service_principals = local.remote.azuread_service_principals
+  namespaces                 = var.namespaces
+  namespaces_v1              = var.namespaces_v1
 }
