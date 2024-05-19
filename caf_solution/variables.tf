@@ -221,10 +221,13 @@ variable "role_mapping" {
   }
 }
 
-variable "dynamic_keyvault_secrets" {
+variable "dynamic_keyvault_certificates" {
   default = {}
 }
 
+variable "dynamic_keyvault_secrets" {
+  default = {}
+}
 
 variable "diagnostic_storage_accounts" {
   default = {}
