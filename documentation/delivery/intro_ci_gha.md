@@ -1,4 +1,4 @@
-# Deploying landing zones with GitHub Actions
+# Deploying Azure Terraform SRE with GitHub Actions
 
 Starting in version 2005.xxxx, we introduced the support for the rover to run into GitHub Actions (GHA) and Azure DevOps, in this guide, you will find steps to deploy landing zones using rover.
 

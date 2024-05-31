@@ -1,8 +1,8 @@
-# Getting started with Azure Cloud Adoption Framework landing zones for Terraform
+# Getting started with Azure Terraform SRE
 
 ## Prerequisites
 
-In order to start deploying your with CAF landing zones, you need an Azure subscription (Trial, MSDN, etc.) and you need to install the following components on your machine:
+In order to start deploying your with Azure Terraform SRE, you need an Azure subscription (Trial, MSDN, etc.) and you need to install the following components on your machine:
 
 - [Visual Studio Code](https://code.visualstudio.com/)
 - [Docker Desktop](https://docs.docker.com/docker-for-windows/install/) or [Rancher Desktop](https://rancherdesktop.io/) in dockerd mode.
@@ -12,18 +12,18 @@ You can deploy it easily on Windows and MacOS with the following software manage
 
 | MacOS  | Windows |
 | ------ | ------- |
-|```brew cask install visual-studio-code docker``` </br> ```brew install git ``` | Install Chocolatey (https://chocolatey.org/docs/installation) </br> ``` choco install git vscode docker-desktop ``` |
+|```brew cask install visual-studio-code docker``` </br> ```brew install git``` | Install Chocolatey (<https://chocolatey.org/docs/installation>) </br> ``` choco install git vscode docker-desktop ``` |
 
 Once installed, open **Visual Studio Code** and install "**Remote Development**" extension as follow: ![RemoteDevelopment](../../_pictures/caf_setup_remotedev.png)
 
 ## Cloning the starter repository
 
 The starter repository contains the basic configuration files and scenarios. It will allow you to compose your configuration files in the integrated environment.
-You can find more information on the [platform starter repository](https://github.com/Azure/caf-terraform-landingzones-platform-starter)
+You can find more information on the [platform starter repository](https://github.com/aztfmod/caf-terraform-landingzones-platform-starter)
 Clone the repository using the following command:
 
 ```bash
-git clone https://github.com/Azure/caf-terraform-landingzones-platform-starter.git
+git clone https://github.com/aztfmod/caf-terraform-landingzones-platform-starter.git
 ```
 
 ## Open the repository in Visual Studio Code
