@@ -82,6 +82,11 @@ variable "rover_version" {
   default = "caf_standalone"
 }
 
+variable "provider_azurerm_auxiliary_tenant_ids" {
+  description = "List of auxiliary Tenant IDs required for multi-tenancy and cross-tenant scenarios."
+  default = null
+}
+
 variable "client_config" {
   default = {}
 }
