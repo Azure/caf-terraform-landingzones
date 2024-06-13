@@ -17,3 +17,5 @@ variable "managed_identities" {
   default = {}
 }
 variable "settings" {}
+variable "namespaces_v1" {}
+variable "namespaces" {}

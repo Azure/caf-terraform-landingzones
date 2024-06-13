@@ -16,6 +16,7 @@ locals {
       azuread_service_principal_passwords = var.azuread_service_principal_passwords
       azuread_service_principals          = var.azuread_service_principals
       azuread_users                       = var.azuread_users
+      azuread_federated_credentials       = var.azuread_federated_credentials
     }
   )
 }

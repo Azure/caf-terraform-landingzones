@@ -40,6 +40,7 @@ module "solution" {
   logged_user_objectId                  = var.logged_user_objectId
   logic_app                             = local.logic_app
   managed_identities                    = var.managed_identities
+  mi_federated_credentials              = var.mi_federated_credentials
   messaging                             = local.messaging
   networking                            = local.networking
   purview                               = local.purview
