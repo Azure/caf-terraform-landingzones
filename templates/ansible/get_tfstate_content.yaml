@@ -105,9 +105,9 @@
     "{{exported_variable_name}}": "{{ lookup('vars', exported_variable_name, default={}) | combine({item.0: item.1}, recursive=True )) }}"
   with_together:
     - ["{{env}}"]
-    - ["{{jsondata | default({}) | json_query(path)}}"]
+    - ["{{jsondata | default({}) | json_query(path) if resource_key is defined else omit}}"]
   vars:
-    path: 'outputs.objects.value.{{tfstate_key_name}}.{{resource_type}}.{{resource_key}}'
+    path: "outputs.objects.value.{{tfstate_key_name}}.{{resource_type}}{{'.' + resource_key if resource_key is defined else ''}}"
 
 - name: "[{{resources[tfstate].relative_destination_folder}}] cleanup"
   when:
