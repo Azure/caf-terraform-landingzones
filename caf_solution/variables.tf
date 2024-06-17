@@ -265,3 +265,8 @@ variable "random_strings" {
 variable "data_sources" {
   default = {}
 }
+
+variable "search_services" {
+  description = "Search service Configration Objects"
+  default = {}
+}
