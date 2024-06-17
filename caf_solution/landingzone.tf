@@ -47,6 +47,7 @@ module "solution" {
   remote_objects                        = local.remote
   resource_groups                       = var.resource_groups
   role_mapping                          = var.role_mapping
+  search_services                       = local.search_services
   security                              = local.security
   shared_services                       = local.shared_services
   storage                               = local.storage
