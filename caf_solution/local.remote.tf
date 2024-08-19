@@ -289,6 +289,12 @@ locals {
     image_definitions = {
       for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].image_definitions, {}))
     }
+    azuread_federated_credentials = {
+      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].azuread_federated_credentials, {}))
+    }
+    mi_federated_credentials = {
+      for key, value in try(var.landingzone.tfstates, {}) : key => merge(try(data.terraform_remote_state.remote[key].outputs.objects[key].mi_federated_credentials, {}))
+    }
   }
 
 }

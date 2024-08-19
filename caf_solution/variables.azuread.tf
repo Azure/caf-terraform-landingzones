@@ -46,3 +46,9 @@ variable "azuread_service_principals" {
 variable "azuread_users" {
   default = {}
 }
+variable "azuread_federated_credentials" {
+  default = {}
+}
+variable "mi_federated_credentials" {
+  default     = {}
+}
