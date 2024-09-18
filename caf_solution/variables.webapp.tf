@@ -21,6 +21,12 @@ variable "app_service_plans" {
 variable "app_services" {
   default = {}
 }
+variable "windows_web_apps" {
+  default = {}
+}
+variable "linux_web_apps" {
+  default = {}
+}
 variable "azurerm_application_insights" {
   default = {}
 }
