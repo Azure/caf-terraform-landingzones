@@ -82,6 +82,7 @@ provider "azurerm" {
       scale_to_zero_before_deletion = try(var.provider_azurerm_features_virtual_machine_scale_set.scale_to_zero_before_deletion, null)
     }
   }
+  auxiliary_tenant_ids = try(var.provider_azurerm_auxiliary_tenant_ids, null)
 }
 
 provider "azurerm" {
