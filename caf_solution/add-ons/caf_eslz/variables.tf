@@ -254,3 +254,8 @@ variable "tf_cloud_hostname" {
   default     = "app.terraform.io"
   description = "When user backend_type with remote, set the TFC/TFE hostname."
 }
+
+variable "strict_subscription_association" {
+  default     = true
+  description = "If set to true, subscriptions associated to management groups will be exclusively set by the module and any added by another process will be removed. If set to false, the module will will only enforce association of the specified subscriptions and those added to management groups by other processes will not be removed. Default is false as this works better with subscription vending."
+}
