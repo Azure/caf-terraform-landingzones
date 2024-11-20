@@ -65,7 +65,7 @@
   when: TF_VAR_environment is defined
   
 - set_fact:
-    topology: "{{ lookup('template', '{{ topology_file }}') | from_yaml }}"
+    topology: "{{ lookup('template', '{{ topology_file }}') | from_yaml | replace('{{base_folder}}', base_folder) }}"
     topology_deployment__to_merge: "{{ lookup('template', '{{ topology_file }}') | from_yaml }}"
     destination_path: "{{definition_folder | default(platform_definition_folder)}}"
     resource_template_folder: "{{ public_templates_folder }}/resources"
